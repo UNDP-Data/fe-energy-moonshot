@@ -4,7 +4,7 @@ import { Select, Radio, Checkbox } from 'antd';
 import domtoimage from 'dom-to-image';
 import { CtxDataType, IndicatorMetaDataWithYear } from '../Types';
 import Context from '../Context/Context';
-import { DEFAULT_VALUES, INCOME_GROUPS } from '../Constants';
+import { DEFAULT_VALUES } from '../Constants';
 import {
   ChevronDown, ChevronLeft,
 } from '../Icons';
@@ -99,65 +99,31 @@ export const Settings = (props: Props) => {
   const {
     graphType,
     xAxisIndicator,
-    yAxisIndicator,
-    showLabel,
-    useSameRange,
     showMostRecentData,
     selectedCountryGroup,
     selectedCountries,
-    selectedIncomeGroups,
     selectedRegions,
-    reverseOrder,
     updateSelectedCountryGroup,
-    updateColorIndicator,
     updateXAxisIndicator,
-    updateYAxisIndicator,
-    updateSizeIndicator,
     updateSelectedRegions,
     updateSelectedCountries,
-    updateSelectedIncomeGroups,
-    updateShowLabel,
     updateShowMostRecentData,
-    updateShowSource,
-    updateUseSameRange,
     updateMultiCountrytrendChartCountries,
-    updateReverseOrder,
-    verticalBarLayout,
-    updateBarLayout,
   } = useContext(Context) as CtxDataType;
-  const options = graphType === 'scatterPlot'
-    ? indicators.filter((d) => d.ScatterPlot).map((d) => d.IndicatorLabelTable)
-    : graphType === 'map'
-      ? indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable)
-      : graphType === 'barGraph'
-        ? indicators.filter((d) => d.BarGraph).map((d) => d.IndicatorLabelTable)
-        : indicators.filter((d) => d.years.length > 0).map((d) => d.IndicatorLabelTable);
-  const sizeOptions = indicators.filter((d) => d.Sizing).map((d) => d.IndicatorLabelTable);
-  const colorOptions = indicators.filter((d) => d.IsCategorical).map((d) => d.IndicatorLabelTable);
-  colorOptions.unshift('Human Development Index');
-  colorOptions.unshift('Income Groups');
-  colorOptions.unshift('Continents');
+
+  const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
   const [settingExpanded, setSettingsExpanded] = useState(true);
   const [filterExpanded, setFilterExpanded] = useState(true);
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
     }
-    if (options.findIndex((d) => d === yAxisIndicator) === -1 && (graphType === 'scatterPlot')) {
-      updateYAxisIndicator(options[0]);
-    }
   }, [graphType, options]);
   return (
     <El>
       <DropdownEl>
         <DropdownTitle>
-          {
-            graphType === 'scatterPlot'
-              ? 'X-Axis'
-              : graphType === 'map'
-                ? 'Primary Indicator to color region'
-                : 'Primary Indicator'
-          }
+          Primary Indicator
         </DropdownTitle>
         <Select
           showSearch
@@ -179,120 +145,7 @@ export const Settings = (props: Props) => {
           }
         </Select>
       </DropdownEl>
-      {
-        graphType === 'scatterPlot'
-          ? (
-            <DropdownEl>
-              <DropdownTitle>
-                Y-Axis
-              </DropdownTitle>
-              <Select
-                showSearch
-                style={{ width: '100%' }}
-                value={yAxisIndicator}
-                placeholder='Please select'
-                onChange={(d) => { updateYAxisIndicator(d); }}
-                defaultValue={DEFAULT_VALUES.secondMetric}
-              >
-                {
-                  options.map((d) => (
-                    <Select.Option key={d}>{d}</Select.Option>
-                  ))
-                }
-              </Select>
-            </DropdownEl>
-          ) : graphType === 'map' ? (
-            <DropdownEl>
-              <DropdownTitle>
-                Secondary Indicator (optional)
-              </DropdownTitle>
-              <Select
-                showSearch
-                allowClear
-                style={{ width: '100%' }}
-                value={yAxisIndicator}
-                placeholder='Please select'
-                onChange={(d) => { updateYAxisIndicator(d); }}
-                defaultValue={DEFAULT_VALUES.secondMetric}
-              >
-                {
-                  options.map((d) => (
-                    <Select.Option key={d}>{d}</Select.Option>
-                  ))
-                }
-              </Select>
-            </DropdownEl>
-          ) : graphType === 'trendLine' ? (
-            <DropdownEl>
-              <DropdownTitle>
-                Secondary Indicator (optional)
-              </DropdownTitle>
-              <Select
-                showSearch
-                allowClear
-                style={{ width: '100%' }}
-                value={yAxisIndicator}
-                placeholder='Please select'
-                onChange={(d) => { updateYAxisIndicator(d); }}
-                defaultValue={DEFAULT_VALUES.secondMetric}
-              >
-                {
-                  options.map((d) => (
-                    <Select.Option key={d}>{d}</Select.Option>
-                  ))
-                }
-              </Select>
-            </DropdownEl>
-          ) : null
-      }
-      {
-        graphType === 'map' || graphType === 'scatterPlot' ? (
-          <DropdownEl>
-            <DropdownTitle>
-              {graphType === 'map' ? 'Choose an indicator to overlay' : 'Size By'}
-              {' '}
-              (optional)
-            </DropdownTitle>
-            <Select
-              allowClear
-              showSearch
-              style={{ width: '100%' }}
-              placeholder='Size By'
-              onChange={(d) => { updateSizeIndicator(d); }}
-            >
-              {
-                sizeOptions.map((d) => (
-                  <Select.Option key={d}>{d}</Select.Option>
-                ))
-              }
-            </Select>
-          </DropdownEl>
-        ) : null
-      }
-      {
-        graphType === 'barGraph' || graphType === 'scatterPlot' ? (
-          <DropdownEl>
-            <DropdownTitle>
-              Color By
-            </DropdownTitle>
-            <Select
-              showSearch
-              style={{ width: '100%' }}
-              placeholder='Color By'
-              onChange={(d) => { updateColorIndicator(d); }}
-              defaultValue={DEFAULT_VALUES.colorMetric}
-            >
-              {
-                colorOptions.map((d) => (
-                  <Select.Option key={d}>{d}</Select.Option>
-                ))
-              }
-            </Select>
-          </DropdownEl>
-        ) : null
-      }
       <ButtonEl>
-        <button className='primary' type='button' onClick={() => { updateShowSource(true); }}>Data Description & Download</button>
         <button
           className='primary'
           type='button'
@@ -328,150 +181,77 @@ export const Settings = (props: Props) => {
           </div>
         </FilterTitle>
         <div style={{ display: settingExpanded ? 'inline' : 'none' }}>
-          {
-            graphType !== 'trendLine' && graphType !== 'multiCountryTrendLine'
-              ? (
-                <CheckboxContainer>
-                  {
-                    graphType === 'scatterPlot'
-                      ? (
-                        <CheckboxEl>
-                          <Checkbox checked={showLabel} onChange={(e) => { updateShowLabel(e.target.checked); }}>Show Label</Checkbox>
-                        </CheckboxEl>
-                      )
-                      : null
-                  }
-                  <CheckboxEl>
-                    <Checkbox checked={showMostRecentData} onChange={(e) => { updateShowMostRecentData(e.target.checked); }}>Show Most Recent Available Data</Checkbox>
-                  </CheckboxEl>
-                  {
-                    graphType === 'barGraph'
-                      ? (
-                        <>
-                          <CheckboxEl>
-                            <Checkbox checked={!verticalBarLayout} onChange={(e) => { updateBarLayout(!e.target.checked); }}>Show Horizontal</Checkbox>
-                          </CheckboxEl>
-                          <CheckboxEl>
-                            <Checkbox disabled={!verticalBarLayout} checked={reverseOrder} onChange={(e) => { updateReverseOrder(e.target.checked); }}>Show Largest First</Checkbox>
-                          </CheckboxEl>
-                        </>
-                      )
-                      : null
-                  }
-                </CheckboxContainer>
-              ) : null
-          }
-          {
-            graphType === 'trendLine'
-              ? (
-                <CheckboxContainer>
-                  <CheckboxEl>
-                    <Checkbox checked={showLabel} onChange={(e) => { updateShowLabel(e.target.checked); }}>Show Label</Checkbox>
-                  </CheckboxEl>
-                  <CheckboxEl>
-                    <Checkbox checked={useSameRange} disabled={!yAxisIndicator} onChange={(e) => { updateUseSameRange(e.target.checked); }}>Use Same Range for Both Y-Axes</Checkbox>
-                  </CheckboxEl>
-                </CheckboxContainer>
-              ) : null
-          }
-          {
-            graphType === 'multiCountryTrendLine'
-              ? (
-                <CheckboxEl>
-                  <Checkbox checked={showLabel} onChange={(e) => { updateShowLabel(e.target.checked); }}>Show Label</Checkbox>
-                </CheckboxEl>
-              ) : null
-          }
+          <CheckboxContainer>
+            <CheckboxEl>
+              <Checkbox checked={showMostRecentData} onChange={(e) => { updateShowMostRecentData(e.target.checked); }}>Show Most Recent Available Data</Checkbox>
+            </CheckboxEl>
+          </CheckboxContainer>
         </div>
       </FiltersEl>
-      {
-        graphType !== 'trendLine' && graphType !== 'multiCountryTrendLine'
-          ? (
-            <FiltersEl>
-              <FilterTitle onClick={() => { setFilterExpanded(!filterExpanded); }}>
-                <AccordionIconEl>
-                  {
-                    filterExpanded
-                      ? <ChevronDown fill='#212121' size={20} /> : <ChevronLeft fill='#212121' size={20} />
-                  }
-                </AccordionIconEl>
-                <div style={{ marginTop: '2px' }}>
-                  Filter or Highlight By
-                </div>
-              </FilterTitle>
-              <div style={{ display: filterExpanded ? 'inline' : 'none' }}>
-                <DropdownEl>
-                  <DropdownTitle>
-                    Region
-                  </DropdownTitle>
-                  <Select
-                    mode='multiple'
-                    allowClear
-                    style={{ width: '100%' }}
-                    placeholder='Filter By Regions'
-                    value={selectedRegions}
-                    onChange={(d: string[]) => { updateSelectedRegions(d); }}
-                  >
-                    {
-                    regions.map((d) => (
-                      <Select.Option key={d}>{d}</Select.Option>
-                    ))
-                  }
-                  </Select>
-                </DropdownEl>
-                <DropdownEl>
-                  <DropdownTitle>
-                    Income Group
-                  </DropdownTitle>
-                  <Select
-                    mode='multiple'
-                    allowClear
-                    style={{ width: '100%' }}
-                    placeholder='Filter By Income Group'
-                    value={selectedIncomeGroups}
-                    onChange={(d: string[]) => { updateSelectedIncomeGroups(d); }}
-                  >
-                    {
-                    INCOME_GROUPS.map((d) => (
-                      <Select.Option key={d}>{d}</Select.Option>
-                    ))
-                  }
-                  </Select>
-                </DropdownEl>
-                <DropdownEl>
-                  <DropdownTitle>
-                    Country Groups
-                  </DropdownTitle>
-                  <Radio.Group onChange={(d) => { updateSelectedCountryGroup(d.target.value); }} value={selectedCountryGroup} buttonStyle='solid' size='small'>
-                    <Radio.Button value='All'><span title='All'>All</span></Radio.Button>
-                    <Radio.Button value='LDC'><span title='Least Developed Countries'>LDC</span></Radio.Button>
-                    <Radio.Button value='LLDC'><span title='Land Locked Developing Countries'>LLDC</span></Radio.Button>
-                    <Radio.Button value='SIDS'><span title='Small Island Developing States'>SIDS</span></Radio.Button>
-                  </Radio.Group>
-                </DropdownEl>
-                <DropdownEl>
-                  <DropdownTitle>
-                    Countries
-                  </DropdownTitle>
-                  <Select
-                    mode='multiple'
-                    allowClear
-                    style={{ width: '100%' }}
-                    value={selectedCountries}
-                    placeholder='Filter By Countries'
-                    onChange={(d: string[]) => { updateSelectedCountries(d); updateMultiCountrytrendChartCountries(d); }}
-                  >
-                    {
-                      countries.map((d) => (
-                        <Select.Option key={d}>{d}</Select.Option>
-                      ))
-                    }
-                  </Select>
-                </DropdownEl>
-              </div>
-            </FiltersEl>
-          ) : null
-      }
+      <FiltersEl>
+        <FilterTitle onClick={() => { setFilterExpanded(!filterExpanded); }}>
+          <AccordionIconEl>
+            {
+              filterExpanded
+                ? <ChevronDown fill='#212121' size={20} /> : <ChevronLeft fill='#212121' size={20} />
+            }
+          </AccordionIconEl>
+          <div style={{ marginTop: '2px' }}>
+            Filter or Highlight By
+          </div>
+        </FilterTitle>
+        <div style={{ display: filterExpanded ? 'inline' : 'none' }}>
+          <DropdownEl>
+            <DropdownTitle>
+              Region
+            </DropdownTitle>
+            <Select
+              mode='multiple'
+              allowClear
+              style={{ width: '100%' }}
+              placeholder='Filter By Regions'
+              value={selectedRegions}
+              onChange={(d: string[]) => { updateSelectedRegions(d); }}
+            >
+              {
+              regions.map((d) => (
+                <Select.Option key={d}>{d}</Select.Option>
+              ))
+            }
+            </Select>
+          </DropdownEl>
+          <DropdownEl>
+            <DropdownTitle>
+              Country Groups
+            </DropdownTitle>
+            <Radio.Group onChange={(d) => { updateSelectedCountryGroup(d.target.value); }} value={selectedCountryGroup} buttonStyle='solid' size='small'>
+              <Radio.Button value='All'><span title='All'>All</span></Radio.Button>
+              <Radio.Button value='LDC'><span title='Least Developed Countries'>LDC</span></Radio.Button>
+              <Radio.Button value='LLDC'><span title='Land Locked Developing Countries'>LLDC</span></Radio.Button>
+              <Radio.Button value='SIDS'><span title='Small Island Developing States'>SIDS</span></Radio.Button>
+            </Radio.Group>
+          </DropdownEl>
+          <DropdownEl>
+            <DropdownTitle>
+              Countries
+            </DropdownTitle>
+            <Select
+              mode='multiple'
+              allowClear
+              style={{ width: '100%' }}
+              value={selectedCountries}
+              placeholder='Filter By Countries'
+              onChange={(d: string[]) => { updateSelectedCountries(d); updateMultiCountrytrendChartCountries(d); }}
+            >
+              {
+                countries.map((d) => (
+                  <Select.Option key={d}>{d}</Select.Option>
+                ))
+              }
+            </Select>
+          </DropdownEl>
+        </div>
+      </FiltersEl>
     </El>
   );
 };
