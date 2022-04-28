@@ -8,7 +8,6 @@ import { Settings } from './Settings';
 import { Graph } from './Graph';
 import { DataSources } from './DataSources';
 import { GetEmbedParams } from '../Components/GetEmbedParams';
-import { CopyLinkWithParamButton } from '../Components/CopyLinkWithParamButton';
 
 interface Props {
   data: DataType[];
@@ -47,15 +46,6 @@ const GraphEl = styled.div`
   @media (max-width: 960px) {
     display: inline;
   }  
-`;
-
-const ButtonsEl = styled.div`
-  button{
-    margin: 0 0.5rem 0 0.5rem;   
-    &:last-of-type{
-      margin-right: 0;
-    }
-  }
 `;
 
 const H1 = styled.div`
@@ -97,23 +87,10 @@ export const GrapherComponent = (props: Props) => {
           <TitleEl>
             <Logo height={50} />
             <div>
-              <H1>Data Futures Platform</H1>
+              <H1>Energy Hub Dashboard</H1>
               <H2>Explore All Data</H2>
             </div>
           </TitleEl>
-          <ButtonsEl>
-            {
-              queryParams.get('embeded') === 'true' ? null
-                : (
-                  <CopyLinkWithParamButton />
-                )
-            }
-            <button className='primary' type='button' onClick={() => { setModalVisibility(true); }}>
-              {
-                window.innerWidth < 600 ? '</>' : '</> Embed'
-              }
-            </button>
-          </ButtonsEl>
         </HeadingEl>
         <RootEl>
           <GraphEl>
