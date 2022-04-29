@@ -6,9 +6,7 @@ import { geoEqualEarth } from 'd3-geo';
 import { zoom } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
-import maxBy from 'lodash.maxby';
-import max from 'lodash.max';
-import { scaleThreshold, scaleOrdinal, scaleSqrt } from 'd3-scale';
+import { scaleThreshold, scaleOrdinal } from 'd3-scale';
 import {
   CtxDataType, DataType, HoverDataType, HoverRowDataType, IndicatorMetaDataWithYear,
 } from '../Types';
@@ -62,9 +60,7 @@ export const UnivariateMap = (props: Props) => {
   const {
     year,
     xAxisIndicator,
-    sizeIndicator,
     selectedCountries,
-    showMostRecentData,
     selectedRegions,
     selectedIncomeGroups,
     selectedCountryGroup,
@@ -78,21 +74,10 @@ export const UnivariateMap = (props: Props) => {
   const mapG = useRef<SVGGElement>(null);
   const projection = geoEqualEarth().rotate([0, 0]).scale(180).translate([470, 315]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.IndicatorLabelTable === xAxisIndicator)];
-  const sizeIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.IndicatorLabelTable === sizeIndicator)];
   const valueArray = xIndicatorMetaData.IsCategorical ? xIndicatorMetaData.Categories : xIndicatorMetaData.BinningRangeLarge.length === 0 ? xIndicatorMetaData.BinningRange5 : xIndicatorMetaData.BinningRangeLarge;
   const colorArray = xIndicatorMetaData.IsDivergent ? COLOR_SCALES.Divergent[`Color${(valueArray.length + 1) as 4 | 5 | 7 | 9 | 11}`] : COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
   const colorScale = xIndicatorMetaData.IsCategorical ? scaleOrdinal<number, string>().domain(valueArray).range(colorArray) : scaleThreshold<number, string>().domain(valueArray).range(colorArray);
 
-  const maxRadiusValue = [0];
-  if (sizeIndicator) {
-    data.forEach((d) => {
-      const indicatorIndex = d.indicators.findIndex((el) => sizeIndicatorMetaData.DataKey === el.indicator);
-      if (indicatorIndex !== -1) {
-        if (maxBy(d.indicators[indicatorIndex].yearlyData, (el) => el.value)?.value !== undefined) { maxRadiusValue.push(maxBy(d.indicators[indicatorIndex].yearlyData, (el) => el.value)?.value as number); }
-      }
-    });
-  }
-  const radiusScale = scaleSqrt().domain([0, max(maxRadiusValue) as number]).range([0.25, 40]).nice();
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -166,8 +151,7 @@ export const UnivariateMap = (props: Props) => {
               const index = (World as any).features.findIndex((el: any) => d['Alpha-3 code-1'] === el.properties.ISO3);
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
               const val = indicatorIndex === -1 ? undefined
-                : year !== -1 && !showMostRecentData ? d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.findIndex((el) => el.year === year)]?.value
-                  : d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.value;
+                : d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.findIndex((el) => el.year === year)]?.value;
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
 
               const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
@@ -180,26 +164,12 @@ export const UnivariateMap = (props: Props) => {
                   title: xAxisIndicator,
                   value: val === undefined ? 'NA' : val,
                   type: 'color',
-                  year: year === -1 || showMostRecentData ? d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.year : year,
+                  year: d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.year,
                   color,
                   prefix: xIndicatorMetaData?.LabelPrefix,
                   suffix: xIndicatorMetaData?.LabelSuffix,
                 },
               ];
-              if (sizeIndicatorMetaData) {
-                const sizeIndicatorIndex = d.indicators.findIndex((el) => sizeIndicatorMetaData?.DataKey === el.indicator);
-                const sizeVal = sizeIndicatorIndex === -1 ? undefined
-                  : year !== -1 && !showMostRecentData ? d.indicators[sizeIndicatorIndex].yearlyData[d.indicators[sizeIndicatorIndex].yearlyData.findIndex((el) => el.year === year)]?.value
-                    : d.indicators[sizeIndicatorIndex].yearlyData[d.indicators[sizeIndicatorIndex].yearlyData.length - 1]?.value;
-                rowData.push({
-                  title: sizeIndicator,
-                  value: sizeVal !== undefined ? sizeVal : 'NA',
-                  type: 'size',
-                  prefix: sizeIndicatorMetaData?.LabelPrefix,
-                  suffix: sizeIndicatorMetaData?.LabelSuffix,
-                  year: year === -1 || showMostRecentData ? d.indicators[sizeIndicatorIndex].yearlyData[d.indicators[sizeIndicatorIndex].yearlyData.length - 1]?.year : year,
-                });
-              }
               return (
                 <g
                   key={i}
@@ -325,112 +295,10 @@ export const UnivariateMap = (props: Props) => {
                   }
                 </G>
               )) : null
-          }
-          {
-            sizeIndicatorMetaData ? (
-              <>
-                {
-                  data.map((d, i) => {
-                    const sizeIndicatorIndex = d.indicators.findIndex((el) => sizeIndicatorMetaData.DataKey === el.indicator);
-                    const sizeVal = sizeIndicatorIndex === -1 ? undefined
-                      : year !== -1 && !showMostRecentData ? d.indicators[sizeIndicatorIndex].yearlyData[d.indicators[sizeIndicatorIndex].yearlyData.findIndex((el) => el.year === year)]?.value
-                        : d.indicators[sizeIndicatorIndex].yearlyData[d.indicators[sizeIndicatorIndex].yearlyData.length - 1]?.value;
-                    const center = projection([d['Longitude (average)'], d['Latitude (average)']]) as [number, number];
-                    const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
-                    const val = indicatorIndex === -1 ? undefined
-                      : year !== -1 && !showMostRecentData ? d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.findIndex((el) => el.year === year)]?.value
-                        : d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.value;
-                    const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
-
-                    const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
-                    const incomeGroupOpacity = selectedIncomeGroups.length === 0 || selectedIncomeGroups.indexOf(d['Income group']) !== -1;
-                    const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
-                    const countryGroupOpacity = selectedCountryGroup === 'All' ? true : d[selectedCountryGroup];
-
-                    const rowData: HoverRowDataType[] = [
-                      {
-                        title: xAxisIndicator,
-                        value: val === undefined ? 'NA' : val,
-                        type: 'color',
-                        year: year === -1 || showMostRecentData ? d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.year : year,
-                        color,
-                        prefix: xIndicatorMetaData?.LabelPrefix,
-                        suffix: xIndicatorMetaData?.LabelSuffix,
-                      },
-                    ];
-                    if (sizeIndicatorMetaData) {
-                      rowData.push({
-                        title: sizeIndicator,
-                        value: sizeVal !== undefined ? sizeVal : 'NA',
-                        type: 'size',
-                        prefix: sizeIndicatorMetaData?.LabelPrefix,
-                        suffix: sizeIndicatorMetaData?.LabelSuffix,
-                        year: year === -1 || showMostRecentData ? d.indicators[sizeIndicatorIndex].yearlyData[d.indicators[sizeIndicatorIndex].yearlyData.length - 1]?.year : year,
-                      });
-                    }
-                    return (
-                      <circle
-                        key={i}
-                        onMouseEnter={(event) => {
-                          setHoverData({
-                            country: d['Country or Area'],
-                            continent: d['Group 1'],
-                            rows: rowData,
-                            xPosition: event.clientX,
-                            yPosition: event.clientY,
-                          });
-                        }}
-                        onMouseMove={(event) => {
-                          setHoverData({
-                            country: d['Country or Area'],
-                            continent: d['Group 1'],
-                            rows: rowData,
-                            xPosition: event.clientX,
-                            yPosition: event.clientY,
-                          });
-                        }}
-                        onMouseLeave={() => {
-                          setHoverData(undefined);
-                        }}
-                        cx={center[0]}
-                        cy={center[1]}
-                        r={sizeVal !== undefined ? radiusScale(sizeVal) : 0}
-                        stroke='#212121'
-                        strokeWidth={1}
-                        fill='none'
-                        opacity={
-                          !hoverData
-                            ? selectedColor
-                              ? selectedColor === color ? 1 : 0.1
-                              : regionOpacity && incomeGroupOpacity && countryOpacity && countryGroupOpacity ? 1 : 0.1
-                            : hoverData.country === d['Country or Area'] ? 1 : 0.1
-                        }
-                      />
-                    );
-                  })
-                }
-              </>
-            ) : null
-          }
+            }
         </g>
       </svg>
       <LegendEl>
-        {
-          sizeIndicator
-            ? (
-              <>
-                <TitleEl>{sizeIndicatorMetaData.IndicatorLabelTable}</TitleEl>
-                <svg width='135' height='90' viewBox='0 0 175 100' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <text fontSize={12} fontWeight={700} textAnchor='middle' fill='#212121' x={4} y={95}>0</text>
-                  <text fontSize={12} fontWeight={700} textAnchor='middle' fill='#212121' x={130} y={95}>{format('~s')(radiusScale.invert(40))}</text>
-                  <path d='M4 41L130 0V80L4 41Z' fill='#E9ECF6' />
-                  <circle cx='4' cy='41' r='0.25' fill='white' stroke='#212121' strokeWidth='2' />
-                  <circle cx='130' cy='41' r='40' fill='white' stroke='#212121' strokeWidth='2' />
-                </svg>
-              </>
-            )
-            : null
-        }
         <TitleEl>{xIndicatorMetaData.IndicatorLabelTable}</TitleEl>
         <svg width='100%' viewBox={`0 0 ${320} ${30}`}>
           <g>
