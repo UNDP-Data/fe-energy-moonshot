@@ -337,18 +337,22 @@ const App = () => {
   useEffect(() => {
     queue()
       .defer(json, './data/ALL-DATA.json')
+      .defer(json, './data/results.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Indicators-MetaData/main/indicatorMetaData.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
-      .await((err: any, data: any[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
+      .await((err: any, data: any[], resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
         if (err) throw err;
         const dataWithYear = data.map((d: any) => {
           const Year = new Date(d.Year).getFullYear();
           return { ...d, Year };
         });
-
         const groupedData = nest()
           .key((d: any) => d['Alpha-3 code'])
           .entries(dataWithYear);
+        const groupedData2 = nest()
+          .key((d: any) => d['Lead Country'])
+          .entries(resultsData);
+        /* Build list of indicators */
         const indicators: string[] = [];
         dataWithYear.forEach((d: any) => {
           const keys = Object.keys(d);
@@ -356,6 +360,15 @@ const App = () => {
             if (indicators.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year') { indicators.push(key); }
           });
         });
+        const indicators2: string[] = [];
+        resultsData.forEach((d: any) => {
+          const keys = Object.keys(d);
+          keys.forEach((key) => {
+            if (indicators2.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country') { indicators2.push(key); }
+          });
+        });
+        /* this step builds an object where for each indicator, we have an array of all possible years of data
+           available for that indcator and build an empty array to populate the value for each year */
         const countryIndicatorObj = indicators.map((d: string) => {
           const yearList: number[] = [];
           dataWithYear.forEach((el: any) => {
@@ -398,6 +411,25 @@ const App = () => {
             indicators: indTemp,
           });
         });
+        console.log(countryData[0]);
+        const countryData2 = groupedData2.map((d) => {
+          const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === d.key)];
+          const indTemp = indicators2.map((indicator) => {
+            const value = d.values[0][indicator] !== undefined ? d.values[0][indicator] : undefined;
+            return (
+              {
+                indicator,
+                value,
+              }
+            );
+          });
+          return ({
+            ...countryGroup,
+            indicatorsAvailable: indTemp.map((ind) => ind.indicator),
+            indicators: indTemp,
+          });
+        });
+        console.log(countryData2[1]);
         setFinalData(countryData);
         setCountryList(countryData.map((d) => d['Country or Area']));
         setRegionList(uniqBy(countryData, (d) => d['Group 2']).map((d) => d['Group 2']));
