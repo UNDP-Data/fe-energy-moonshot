@@ -8,7 +8,7 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { scaleThreshold, scaleOrdinal } from 'd3-scale';
 import {
-  CtxDataType, DataType, HoverDataType, HoverRowDataType, IndicatorMetaDataWithYear,
+  CtxDataType, DataType, HoverDataType, HoverRowDataType, IndicatorMetaDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import World from '../Data/worldMap.json';
@@ -17,7 +17,7 @@ import { Tooltip } from '../Components/Tooltip';
 
 interface Props {
   data: DataType[];
-  indicators: IndicatorMetaDataWithYear[];
+  indicators: IndicatorMetaDataType[];
 }
 
 const El = styled.div`
@@ -58,7 +58,6 @@ export const UnivariateMap = (props: Props) => {
     indicators,
   } = props;
   const {
-    year,
     xAxisIndicator,
     selectedCountries,
     selectedRegions,
@@ -150,8 +149,7 @@ export const UnivariateMap = (props: Props) => {
             data.map((d, i: number) => {
               const index = (World as any).features.findIndex((el: any) => d['Alpha-3 code-1'] === el.properties.ISO3);
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
-              const val = indicatorIndex === -1 ? undefined
-                : d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.findIndex((el) => el.year === year)]?.value;
+              const val = indicatorIndex === -1 ? undefined : d.indicators[indicatorIndex].value;
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
 
               const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
@@ -164,7 +162,7 @@ export const UnivariateMap = (props: Props) => {
                   title: xAxisIndicator,
                   value: val === undefined ? 'NA' : val,
                   type: 'color',
-                  year: d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.year,
+                  // year: d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.year,
                   color,
                   prefix: xIndicatorMetaData?.LabelPrefix,
                   suffix: xIndicatorMetaData?.LabelSuffix,

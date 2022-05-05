@@ -1,17 +1,16 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Modal } from 'antd';
-import { CtxDataType, DataType, IndicatorMetaDataWithYear } from '../Types';
+import { CtxDataType, DataType, IndicatorMetaDataType } from '../Types';
 import { Logo } from '../Icons';
 import Context from '../Context/Context';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
-import { DataSources } from './DataSources';
 import { GetEmbedParams } from '../Components/GetEmbedParams';
 
 interface Props {
   data: DataType[];
-  indicators: IndicatorMetaDataWithYear[];
+  indicators: IndicatorMetaDataType[];
   regions: string[];
   countries: string[];
 }
@@ -106,12 +105,7 @@ export const GrapherComponent = (props: Props) => {
             }
             {
             showSource
-              ? (
-                <DataSources
-                  indicators={indicators}
-                  data={data}
-                />
-              )
+              ? null
               : (
                 <Graph
                   data={data}

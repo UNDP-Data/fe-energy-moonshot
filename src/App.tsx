@@ -3,13 +3,13 @@ import { useState, useEffect, useReducer } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { json } from 'd3-request';
 import { nest } from 'd3-collection';
-import sortBy from 'lodash.sortby';
+// import sortBy from 'lodash.sortby';
 import uniqBy from 'lodash.uniqby';
 import { queue } from 'd3-queue';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import {
-  DataType, CountryGroupDataType, IndicatorMetaDataType, IndicatorMetaDataWithYear,
+  DataType, CountryGroupDataType, IndicatorMetaDataType,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -183,7 +183,7 @@ const VizAreaEl = styled.div`
 
 const App = () => {
   const [finalData, setFinalData] = useState<DataType[] | undefined>(undefined);
-  const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataWithYear[] | undefined>(undefined);
+  const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<string[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
   const queryParams = new URLSearchParams(window.location.search);
@@ -337,21 +337,24 @@ const App = () => {
   useEffect(() => {
     queue()
       .defer(json, './data/ALL-DATA.json')
-      .defer(json, './data/results.json')
+      .defer(json, './data/resultsByCountry.json')
+      .defer(json, './data/indicatorMetaData.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Indicators-MetaData/main/indicatorMetaData.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
-      .await((err: any, data: any[], resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
+      .await((err: any, data: any[], resultsData: any[], indicatorMetaData2: IndicatorMetaDataType[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
         if (err) throw err;
         const dataWithYear = data.map((d: any) => {
           const Year = new Date(d.Year).getFullYear();
           return { ...d, Year };
         });
-        const groupedData = nest()
-          .key((d: any) => d['Alpha-3 code'])
-          .entries(dataWithYear);
+
+        // const groupedData = nest()
+        //   .key((d: any) => d['Alpha-3 code'])
+        //   .entries(dataWithYear);
         const groupedData2 = nest()
           .key((d: any) => d['Lead Country'])
           .entries(resultsData);
+
         /* Build list of indicators */
         const indicators: string[] = [];
         dataWithYear.forEach((d: any) => {
@@ -367,51 +370,53 @@ const App = () => {
             if (indicators2.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country') { indicators2.push(key); }
           });
         });
+
         /* this step builds an object where for each indicator, we have an array of all possible years of data
            available for that indcator and build an empty array to populate the value for each year */
-        const countryIndicatorObj = indicators.map((d: string) => {
-          const yearList: number[] = [];
-          dataWithYear.forEach((el: any) => {
-            if (el[d] && yearList.indexOf(el.Year) === -1) {
-              yearList.push(el.Year);
-            }
-          });
-          return ({
-            indicator: d,
-            yearAvailable: sortBy(yearList),
-            yearlyData: sortBy(yearList).map((year) => ({
-              year,
-              value: undefined,
-            })),
-          });
-        });
-        const countryData = groupedData.map((d) => {
-          const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Alpha-3 code-1'] === d.key)];
-          const indTemp = countryIndicatorObj.map((indicatorObj) => {
-            const yearlyData = indicatorObj.yearlyData.map((year) => {
-              const indx = d.values.findIndex((val: { Year: string; }) => parseInt(val.Year, 10) === year.year);
-              const value: undefined | number = indx !== -1 ? d.values[indx][indicatorObj.indicator] : undefined;
-              return (
-                {
-                  ...year,
-                  value,
-                }
-              );
-            }).filter((val) => val.value !== undefined);
-            return (
-              {
-                ...indicatorObj,
-                yearlyData,
-              }
-            );
-          });
-          return ({
-            ...countryGroup,
-            indicatorAvailable: indTemp.map((ind) => ind.indicator),
-            indicators: indTemp,
-          });
-        });
-        console.log(countryData[0]);
+        // const countryIndicatorObj = indicators.map((d: string) => {
+        //   const yearList: number[] = [];
+        //   dataWithYear.forEach((el: any) => {
+        //     if (el[d] && yearList.indexOf(el.Year) === -1) {
+        //       yearList.push(el.Year);
+        //     }
+        //   });
+        //   return ({
+        //     indicator: d,
+        //     yearAvailable: sortBy(yearList),
+        //     yearlyData: sortBy(yearList).map((year) => ({
+        //       year,
+        //       value: undefined,
+        //     })),
+        //   });
+        // });
+
+        // const countryData = groupedData.map((d) => {
+        //   const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Alpha-3 code-1'] === d.key)];
+        //   const indTemp = countryIndicatorObj.map((indicatorObj) => {
+        //     const yearlyData = indicatorObj.yearlyData.map((year) => {
+        //       const indx = d.values.findIndex((val: { Year: string; }) => parseInt(val.Year, 10) === year.year);
+        //       const value: undefined | number = indx !== -1 ? d.values[indx][indicatorObj.indicator] : undefined;
+        //       return (
+        //         {
+        //           ...year,
+        //           value,
+        //         }
+        //       );
+        //     }).filter((val) => val.value !== undefined);
+        //     return (
+        //       {
+        //         ...indicatorObj,
+        //         yearlyData,
+        //       }
+        //     );
+        //   });
+        //   return ({
+        //     ...countryGroup,
+        //     indicatorAvailable: indTemp.map((ind) => ind.indicator),
+        //     indicators: indTemp,
+        //   });
+        // });
+        // console.log(countryData[0]);
         const countryData2 = groupedData2.map((d) => {
           const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === d.key)];
           const indTemp = indicators2.map((indicator) => {
@@ -429,15 +434,15 @@ const App = () => {
             indicators: indTemp,
           });
         });
-        console.log(countryData2[1]);
-        setFinalData(countryData);
-        setCountryList(countryData.map((d) => d['Country or Area']));
-        setRegionList(uniqBy(countryData, (d) => d['Group 2']).map((d) => d['Group 2']));
-        const indicatorWithYears: IndicatorMetaDataWithYear[] = indicatorMetaData.map((d) => ({
-          ...d,
-          years: countryIndicatorObj[countryIndicatorObj.findIndex((el) => el.indicator === d.DataKey)].yearAvailable,
-        }));
-        setIndicatorsList(indicatorWithYears);
+        setFinalData(countryData2);
+        setCountryList(countryData2.map((d) => d['Country or Area']));
+        setRegionList(uniqBy(countryData2, (d) => d['Group 2']).map((d) => d['Group 2']));
+        // const indicatorWithYears: IndicatorMetaDataWithYear[] = indicatorMetaData.map((d) => ({
+        //   ...d,
+        //   years: countryIndicatorObj[countryIndicatorObj.findIndex((el) => el.indicator === d.DataKey)].yearAvailable,
+        // }));
+        // setIndicatorsList(indicatorWithYears);
+        setIndicatorsList(indicatorMetaData2);
       });
   }, []);
   return (

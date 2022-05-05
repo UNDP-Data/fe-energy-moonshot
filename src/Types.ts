@@ -17,15 +17,12 @@ export interface CountryGroupDataType {
 
 export interface IndicatorDataType {
   indicator: string;
-  yearAvailable: number[];
-  yearlyData: {
-      year: number;
-      value?: number;
-    }[];
+  value?: number;
 }
+
 export interface DataType extends CountryGroupDataType {
   indicators: IndicatorDataType[];
-  indicatorAvailable: string[];
+  indicatorsAvailable: string[];
 }
 
 export interface IndicatorOptionsDataType {

@@ -1,0 +1,76 @@
+[
+    {
+      "Pillar": [],
+      "Goal": [],
+      "Indicator": "Number of people benefiting",
+      "IndicatorLabelTable": "Number of people benefiting",
+      "IndicatorDescription": "The total number of people benefiting from these projects",
+      "DataKey": "Number of people impacted",
+      "DataSourceName": "???",
+      "DataSourceLink": "???",
+      "LabelSuffix": "",
+      "LabelPrefix": "",
+      "LabelFormat": "",
+      "BinningRange5": [
+        100,
+        1000,
+        10000,
+        100000
+      ],
+      "BinningRangeLarge": [
+        100,
+        500,
+        1000,
+        10000,
+        50000,
+        100000,
+        1000000
+      ],
+      "Categories": [],
+      "CategorizeByRanking": false,
+      "IsCategorical": false,
+      "IsDivergent": false,
+      "ScatterPlot": true,
+      "Map": true,
+      "BarGraph": true,
+      "Sizing": true,
+      "Color": true
+    },
+    {
+      "Pillar": [],
+      "Goal": [],
+      "Indicator": "Tonnes of CO2 emissions reduced",
+      "IndicatorLabelTable": "Tonnes of CO2 emissions reduced",
+      "IndicatorDescription": "The total amount of CO2 emissions (in tonnes) reduced from these projects",
+      "DataKey": "Tonnes of CO2 emissions reduced",
+      "DataSourceName": "???",
+      "DataSourceLink": "???",
+      "LabelSuffix": "",
+      "LabelPrefix": "",
+      "LabelFormat": "",
+      "BinningRange5": [
+        100000,
+        1000000,
+        3000000,
+        10000000
+      ],
+      "BinningRangeLarge": [
+        10000,
+        50000,
+        100000,
+        500000,
+        1000000,
+        5000000,
+        10000000
+      ],
+      "Categories": [],
+      "CategorizeByRanking": false,
+      "IsCategorical": false,
+      "IsDivergent": false,
+      "ScatterPlot": true,
+      "Map": true,
+      "BarGraph": true,
+      "Sizing": true,
+      "Color": true
+    }
+]

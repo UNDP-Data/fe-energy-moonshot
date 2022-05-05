@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Select, Radio, Checkbox } from 'antd';
 import domtoimage from 'dom-to-image';
-import { CtxDataType, IndicatorMetaDataWithYear } from '../Types';
+import { CtxDataType, IndicatorMetaDataType } from '../Types';
 import Context from '../Context/Context';
 import { DEFAULT_VALUES } from '../Constants';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../Icons';
 
 interface Props {
-  indicators: IndicatorMetaDataWithYear[];
+  indicators: IndicatorMetaDataType[];
   regions: string[];
   countries: string[];
 }
