@@ -395,5 +395,42 @@
       "BarGraph": true,
       "Sizing": true,
       "Color": true
+    },
+    {
+      "Pillar": [],
+      "Goal": [],
+      "Indicator": "Number of projects",
+      "IndicatorLabelTable": "Number of projects",
+      "IndicatorDescription": "Number of projects",
+      "DataKey": "Number of projects",
+      "DataSourceName": "???",
+      "DataSourceLink": "???",
+      "LabelSuffix": "",
+      "LabelPrefix": "",
+      "LabelFormat": "",
+      "BinningRange5": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "BinningRangeLarge": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "Categories": [],
+      "CategorizeByRanking": false,
+      "IsCategorical": false,
+      "IsDivergent": false,
+      "ScatterPlot": true,
+      "Map": true,
+      "BarGraph": true,
+      "Sizing": true,
+      "Color": true
     }
 ]
