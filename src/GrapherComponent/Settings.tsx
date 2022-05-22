@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Select } from 'antd';
 import domtoimage from 'dom-to-image';
-import { CtxDataType, IndicatorMetaDataType } from '../Types';
+import { CtxDataType, IndicatorMetaDataType, DataType } from '../Types';
 import Context from '../Context/Context';
 import { DEFAULT_VALUES } from '../Constants';
 import {
@@ -13,6 +13,7 @@ interface Props {
   indicators: IndicatorMetaDataType[];
   regions: string[];
   countries: string[];
+  data: DataType[];
 }
 
 const El = styled.div`
@@ -81,6 +82,7 @@ export const Settings = (props: Props) => {
     indicators,
     regions,
     countries,
+    data,
   } = props;
   const {
     graphType,
@@ -95,6 +97,7 @@ export const Settings = (props: Props) => {
 
   const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
   const [filterExpanded, setFilterExpanded] = useState(true);
+  const availableCountries = selectedRegions.length > 0 ? data.filter((d) => selectedRegions.indexOf(d['Group 2']) > -1).map((d) => d['Country or Area']) : countries;
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
@@ -190,7 +193,7 @@ export const Settings = (props: Props) => {
               onChange={(d: string[]) => { updateSelectedCountries(d); updateMultiCountrytrendChartCountries(d); }}
             >
               {
-                countries.map((d) => (
+                availableCountries.map((d) => (
                   <Select.Option key={d}>{d}</Select.Option>
                 ))
               }

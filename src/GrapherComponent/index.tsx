@@ -1,7 +1,11 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Modal } from 'antd';
-import { CtxDataType, DataType, IndicatorMetaDataType } from '../Types';
+import {
+  CtxDataType,
+  DataType,
+  IndicatorMetaDataType,
+} from '../Types';
 import { Logo } from '../Icons';
 import Context from '../Context/Context';
 import { Settings } from './Settings';
@@ -100,6 +104,7 @@ export const GrapherComponent = (props: Props) => {
                     indicators={indicators}
                     regions={regions}
                     countries={countries}
+                    data={data}
                   />
                 )
             }
