@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Select, Radio, Checkbox } from 'antd';
+import { Select } from 'antd';
 import domtoimage from 'dom-to-image';
 import { CtxDataType, IndicatorMetaDataType } from '../Types';
 import Context from '../Context/Context';
@@ -63,13 +63,6 @@ const FilterTitle = styled.div`
   cursor: pointer;
 `;
 
-const CheckboxEl = styled.div`
-  margin: 1rem 0;
-  @media (max-width: 960px) {
-    margin: 0 0.5rem;
-  }  
-`;
-
 const ButtonEl = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -77,13 +70,6 @@ const ButtonEl = styled.div`
   button {
     margin: 0.5rem 1rem 0.5rem 0;
   }
-`;
-
-const CheckboxContainer = styled.div`
-  display: inline;
-  @media (max-width: 960px) {
-    display: flex;
-  }  
 `;
 
 const AccordionIconEl = styled.div`
@@ -99,20 +85,15 @@ export const Settings = (props: Props) => {
   const {
     graphType,
     xAxisIndicator,
-    showMostRecentData,
-    selectedCountryGroup,
     selectedCountries,
     selectedRegions,
-    updateSelectedCountryGroup,
     updateXAxisIndicator,
     updateSelectedRegions,
     updateSelectedCountries,
-    updateShowMostRecentData,
     updateMultiCountrytrendChartCountries,
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
-  const [settingExpanded, setSettingsExpanded] = useState(true);
   const [filterExpanded, setFilterExpanded] = useState(true);
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
@@ -123,7 +104,7 @@ export const Settings = (props: Props) => {
     <El>
       <DropdownEl>
         <DropdownTitle>
-          Primary Indicator
+          Select Indicator
         </DropdownTitle>
         <Select
           showSearch
@@ -165,30 +146,6 @@ export const Settings = (props: Props) => {
         </button>
       </ButtonEl>
       <FiltersEl>
-        <FilterTitle onClick={() => { setSettingsExpanded(!settingExpanded); }}>
-          <AccordionIconEl>
-            {
-              settingExpanded
-                ? <ChevronDown fill='#212121' size={20} /> : <ChevronLeft fill='#212121' size={20} />
-            }
-          </AccordionIconEl>
-          <div style={{ marginTop: '2px' }}>
-            Settings
-            {' '}
-            &
-            {' '}
-            Options
-          </div>
-        </FilterTitle>
-        <div style={{ display: settingExpanded ? 'inline' : 'none' }}>
-          <CheckboxContainer>
-            <CheckboxEl>
-              <Checkbox checked={showMostRecentData} onChange={(e) => { updateShowMostRecentData(e.target.checked); }}>Show Most Recent Available Data</Checkbox>
-            </CheckboxEl>
-          </CheckboxContainer>
-        </div>
-      </FiltersEl>
-      <FiltersEl>
         <FilterTitle onClick={() => { setFilterExpanded(!filterExpanded); }}>
           <AccordionIconEl>
             {
@@ -219,17 +176,6 @@ export const Settings = (props: Props) => {
               ))
             }
             </Select>
-          </DropdownEl>
-          <DropdownEl>
-            <DropdownTitle>
-              Country Groups
-            </DropdownTitle>
-            <Radio.Group onChange={(d) => { updateSelectedCountryGroup(d.target.value); }} value={selectedCountryGroup} buttonStyle='solid' size='small'>
-              <Radio.Button value='All'><span title='All'>All</span></Radio.Button>
-              <Radio.Button value='LDC'><span title='Least Developed Countries'>LDC</span></Radio.Button>
-              <Radio.Button value='LLDC'><span title='Land Locked Developing Countries'>LLDC</span></Radio.Button>
-              <Radio.Button value='SIDS'><span title='Small Island Developing States'>SIDS</span></Radio.Button>
-            </Radio.Group>
           </DropdownEl>
           <DropdownEl>
             <DropdownTitle>
