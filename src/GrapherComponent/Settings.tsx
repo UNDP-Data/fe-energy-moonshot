@@ -129,25 +129,6 @@ export const Settings = (props: Props) => {
           }
         </Select>
       </DropdownEl>
-      <ButtonEl>
-        <button
-          className='primary'
-          type='button'
-          onClick={() => {
-            const node = document.getElementById('graph-node') as HTMLElement;
-            domtoimage
-              .toPng(node, { height: node.scrollHeight })
-              .then((dataUrl: any) => {
-                const link = document.createElement('a');
-                link.download = 'graph.png';
-                link.href = dataUrl;
-                link.click();
-              });
-          }}
-        >
-          Download Graph
-        </button>
-      </ButtonEl>
       <FiltersEl>
         <FilterTitle onClick={() => { setFilterExpanded(!filterExpanded); }}>
           <AccordionIconEl>
@@ -201,6 +182,25 @@ export const Settings = (props: Props) => {
           </DropdownEl>
         </div>
       </FiltersEl>
+      <ButtonEl>
+        <button
+          className='primary'
+          type='button'
+          onClick={() => {
+            const node = document.getElementById('graph-node') as HTMLElement;
+            domtoimage
+              .toPng(node, { height: node.scrollHeight })
+              .then((dataUrl: any) => {
+                const link = document.createElement('a');
+                link.download = 'graph.png';
+                link.href = dataUrl;
+                link.click();
+              });
+          }}
+        >
+          Download Graph
+        </button>
+      </ButtonEl>
     </El>
   );
 };
