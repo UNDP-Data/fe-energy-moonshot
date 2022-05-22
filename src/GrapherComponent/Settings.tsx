@@ -92,7 +92,6 @@ export const Settings = (props: Props) => {
     updateXAxisIndicator,
     updateSelectedRegions,
     updateSelectedCountries,
-    updateMultiCountrytrendChartCountries,
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
@@ -147,12 +146,11 @@ export const Settings = (props: Props) => {
               Region
             </DropdownTitle>
             <Select
-              mode='multiple'
               allowClear
               style={{ width: '100%' }}
               placeholder='Filter By Regions'
               value={selectedRegions}
-              onChange={(d: string[]) => { updateSelectedRegions(d); }}
+              onChange={(d: string[]) => { updateSelectedRegions(d === undefined ? [] : d); }}
             >
               {
               regions.map((d) => (
@@ -166,12 +164,11 @@ export const Settings = (props: Props) => {
               Countries
             </DropdownTitle>
             <Select
-              mode='multiple'
               allowClear
               style={{ width: '100%' }}
               value={selectedCountries}
               placeholder='Filter By Countries'
-              onChange={(d: string[]) => { updateSelectedCountries(d); updateMultiCountrytrendChartCountries(d); }}
+              onChange={(d: string[]) => { updateSelectedCountries(d === undefined ? [] : d); }}
             >
               {
                 availableCountries.map((d) => (
