@@ -436,7 +436,7 @@ const App = () => {
         });
         setFinalData(countryData2);
         setCountryList(countryData2.map((d) => d['Country or Area']));
-        setRegionList(uniqBy(countryData2, (d) => d['Group 2']).map((d) => d['Group 2']));
+        setRegionList(uniqBy(countryData2.filter((d) => d['Group 2'] !== undefined), (d) => d['Group 2']).map((d) => d['Group 2']));
         // const indicatorWithYears: IndicatorMetaDataWithYear[] = indicatorMetaData.map((d) => ({
         //   ...d,
         //   years: countryIndicatorObj[countryIndicatorObj.findIndex((el) => el.indicator === d.DataKey)].yearAvailable,
