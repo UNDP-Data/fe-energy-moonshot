@@ -21,7 +21,7 @@ interface Props {
 }
 
 const El = styled.div`
-  height: calc(100% - 110px);
+  height: calc(100% - 132px);
   overflow-y: hidden;
 `;
 

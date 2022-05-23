@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import sumBy from 'lodash.sumby';
-// import { format } from 'd3-format';
+import { format } from 'd3-format';
 import {
   CtxDataType, DataType,
 } from '../Types';
@@ -22,6 +22,12 @@ const Card = styled.div`
   padding: 1em;
   background-color: rgb(242, 247, 255);
   border-radius: 10px;
+`;
+
+const MetricNumber = styled.span`
+  font-weight: bold;
+  font-size: 2em;
+  line-height: 1.5em;
 `;
 
 export const Cards = (props: Props) => {
@@ -47,21 +53,21 @@ export const Cards = (props: Props) => {
       <Card>
         Number of people benefiting:
         <br />
-        { cardData['Number of people benefiting'] }
+        <MetricNumber>{ format(',')(cardData['Number of people benefiting']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
       <Card>
         Emissions reduced:
         <br />
-        { cardData['Emissions reduced'] }
+        <MetricNumber>{ format(',.0f')(cardData['Emissions reduced']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
       <Card>
         Total spending:
         <br />
-        { cardData['Total spending'] }
+        <MetricNumber>{ format(',')(cardData['Total spending']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
