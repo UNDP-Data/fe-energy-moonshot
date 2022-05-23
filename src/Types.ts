@@ -83,8 +83,8 @@ export interface HoverDataType {
 
 export interface CtxDataType {
   graphType: 'scatterPlot' | 'map' | 'barGraph' | 'trendLine' | 'multiCountryTrendLine';
-  selectedRegions: string[];
-  selectedCountries: string[];
+  selectedRegions: string;
+  selectedCountries: string;
   selectedIncomeGroups: string[];
   year: number;
   selectedCountryGroup: 'All' | 'SIDS' | 'LLDC' | 'LDC';
@@ -101,8 +101,8 @@ export interface CtxDataType {
   reverseOrder: boolean;
   verticalBarLayout: boolean;
   updateGraphType: (_d: 'scatterPlot' | 'map' | 'barGraph' | 'trendLine' | 'multiCountryTrendLine') => void;
-  updateSelectedRegions: (_d: string[]) => void;
-  updateSelectedCountries: (_d: string[]) => void;
+  updateSelectedRegions: (_d: string) => void;
+  updateSelectedCountries: (_d: string) => void;
   updateSelectedIncomeGroups: (_d: string[]) => void;
   updateYear: (_d: number) => void;
   updateSelectedCountryGroup: (_d: 'All' | 'SIDS' | 'LLDC' | 'LDC') => void;

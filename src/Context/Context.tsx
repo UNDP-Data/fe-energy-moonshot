@@ -3,8 +3,8 @@ import { CtxDataType } from '../Types';
 
 const Context = createContext<CtxDataType>({
   graphType: 'map',
-  selectedRegions: [],
-  selectedCountries: [],
+  selectedRegions: '',
+  selectedCountries: '',
   selectedIncomeGroups: [],
   selectedCountryGroup: 'All',
   showMostRecentData: false,
@@ -21,8 +21,8 @@ const Context = createContext<CtxDataType>({
   verticalBarLayout: true,
   multiCountrytrendChartCountries: ['China', 'India', 'United States of America', 'Indonesia', 'Pakistan'],
   updateGraphType: (_d: 'scatterPlot' | 'map' | 'barGraph' | 'trendLine' | 'multiCountryTrendLine') => {},
-  updateSelectedRegions: (_d: string[]) => {},
-  updateSelectedCountries: (_d: string[]) => {},
+  updateSelectedRegions: (_d: string) => {},
+  updateSelectedCountries: (_d: string) => {},
   updateSelectedIncomeGroups: (_d: string[]) => {},
   updateYear: (_d: number) => {},
   updateSelectedCountryGroup: (_d: 'All' | 'SIDS' | 'LLDC' | 'LDC') => {},

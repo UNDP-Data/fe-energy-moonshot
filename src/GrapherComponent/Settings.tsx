@@ -150,7 +150,7 @@ export const Settings = (props: Props) => {
               style={{ width: '100%' }}
               placeholder='Filter By Regions'
               value={selectedRegions}
-              onChange={(d: string[]) => { updateSelectedRegions(d === undefined ? [] : d); }}
+              onChange={(d: string) => { updateSelectedRegions(d === undefined ? '' : d); }}
             >
               {
               regions.map((d) => (
@@ -168,7 +168,7 @@ export const Settings = (props: Props) => {
               style={{ width: '100%' }}
               value={selectedCountries}
               placeholder='Filter By Countries'
-              onChange={(d: string[]) => { updateSelectedCountries(d === undefined ? [] : d); }}
+              onChange={(d: string) => { updateSelectedCountries(d === undefined ? '' : d); }}
             >
               {
                 availableCountries.map((d) => (

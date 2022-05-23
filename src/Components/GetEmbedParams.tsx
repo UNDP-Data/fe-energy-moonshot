@@ -54,8 +54,8 @@ export const GetEmbedParams = () => {
     verticalBarLayout,
   } = useContext(Context) as CtxDataType;
   const graphParam = `graphType=${graphType}`;
-  const regionsParam = selectedRegions.length > 0 ? `&regions=${ArrToString(selectedRegions)}` : '';
-  const countries = selectedCountries.length > 0 ? `&countries=${ArrToString(selectedCountries)}` : '';
+  const regionsParam = selectedRegions.length > 0 ? `&regions=${CovertStringForParam(selectedRegions)}` : '';
+  const countries = selectedCountries.length > 0 ? `&countries=${CovertStringForParam(selectedCountries)}` : '';
   const incomeGroupsParam = selectedRegions.length > 0 ? `&incomeGroups=${ArrToString(selectedIncomeGroups)}` : '';
   const countryGroupParam = selectedCountryGroup === 'All' ? '' : `&countryGroup=${CovertStringForParam(selectedCountryGroup)}`;
   const firstMetricParam = `&firstMetric=${CovertStringForParam(xAxisIndicator)}`;
