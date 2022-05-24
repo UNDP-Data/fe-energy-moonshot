@@ -39,14 +39,20 @@ export const Cards = (props: Props) => {
     selectedRegions,
   } = useContext(Context) as CtxDataType;
 
-  const relevantData = selectedCountries ? data.filter((d) => d['Country or Area'] === selectedCountries)
-    : selectedRegions ? data.filter((d) => d['Group 2'] === selectedRegions)
-      : data;
+  const relevantData = () => {
+    if (selectedCountries.length > 0) {
+      return data.filter((d) => d['Country or Area'] === selectedCountries);
+    }
+    if (selectedRegions.length > 0) {
+      return data.filter((d) => d['Group 2'] === selectedRegions);
+    }
+    return data;
+  };
   const cardData = {
-    geography: selectedCountries || selectedRegions || 'Global',
-    'Number of people benefiting': sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of people impacted')[0].value),
-    'Emissions reduced': sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
-    'Total spending': sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant Amount')[0].value),
+    geography: selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global',
+    'Number of people benefiting': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of people impacted')[0].value),
+    'Emissions reduced': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
+    'Total spending': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant Amount')[0].value),
   };
   return (
     <Wrapper>
