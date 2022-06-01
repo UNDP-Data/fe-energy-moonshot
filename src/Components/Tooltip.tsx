@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-// import { format } from 'd3-format';
+import { format } from 'd3-format';
 import { HoverDataType } from '../Types';
 
 interface Props {
@@ -87,6 +87,13 @@ export const Tooltip = (props: Props) => {
   const {
     data,
   } = props;
+  const formatData = (d: undefined | number) => {
+    if (d === undefined) return d;
+
+    if (d < 1000000) return format(',')(parseFloat(d.toFixed(2))).replace(',', ' ');
+    return format('.3s')(d).replace('G', 'B');
+  };
+
   return (
     <TooltipEl x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
       <TooltipHead>
@@ -106,7 +113,7 @@ export const Tooltip = (props: Props) => {
             People directly benefiting:
           </RowTitleEl>
           <RowValue>
-            {data.peopleDirectlyBenefiting}
+            {formatData(data.peopleDirectlyBenefiting)}
           </RowValue>
         </RowEl>
         <RowEl>
@@ -114,7 +121,7 @@ export const Tooltip = (props: Props) => {
             People indirectly benefiting:
           </RowTitleEl>
           <RowValue>
-            {data.peopleIndirectlyBenefiting}
+            {formatData(data.peopleIndirectlyBenefiting)}
           </RowValue>
         </RowEl>
         <RowEl>
@@ -122,8 +129,7 @@ export const Tooltip = (props: Props) => {
             CO2 emissions reduced (tonnes):
           </RowTitleEl>
           <RowValue>
-            {/* {data.emissionsReduced !== undefined ? data.emissionsReduced < 1000000 ? format(',')(parseFloat(data.emissionsReduced.toFixed(2))).replace(',', ' ') : format('.3s')(data.emissionsReduced).replace('G', 'B') : data.emissionsReduced } */}
-            {data.emissionsReduced}
+            {formatData(data.emissionsReduced)}
           </RowValue>
         </RowEl>
         <RowEl>
@@ -131,7 +137,7 @@ export const Tooltip = (props: Props) => {
             Grant Amount (USD):
           </RowTitleEl>
           <RowValue>
-            {data.grantAmount}
+            {formatData(data.grantAmount)}
           </RowValue>
         </RowEl>
         <RowEl>
@@ -139,7 +145,7 @@ export const Tooltip = (props: Props) => {
             GL Expenses (USD):
           </RowTitleEl>
           <RowValue>
-            {data.glExpenses}
+            {formatData(data.glExpenses)}
           </RowValue>
         </RowEl>
         <RowEl>
@@ -147,7 +153,7 @@ export const Tooltip = (props: Props) => {
             Co-Financing (USD):
           </RowTitleEl>
           <RowValue>
-            {data.coFinancing}
+            {formatData(data.coFinancing)}
           </RowValue>
         </RowEl>
         {/* {
