@@ -54,6 +54,10 @@ const TooltipBody = styled.div`
   padding: 2rem;
 `;
 
+const MetricGrp = styled.div`
+  margin-bottom: 2rem;
+`;
+
 const RowEl = styled.div`
   font-size: 1.3rem;
   color: var(--dark-grey);
@@ -108,54 +112,58 @@ export const Tooltip = (props: Props) => {
         </TooltipTitle>
       </TooltipHead>
       <TooltipBody>
-        <RowEl>
-          <RowTitleEl>
-            People directly benefiting:
-          </RowTitleEl>
-          <RowValue>
-            {formatData(data.peopleDirectlyBenefiting)}
-          </RowValue>
-        </RowEl>
-        <RowEl>
-          <RowTitleEl>
-            People indirectly benefiting:
-          </RowTitleEl>
-          <RowValue>
-            {formatData(data.peopleIndirectlyBenefiting)}
-          </RowValue>
-        </RowEl>
-        <RowEl>
-          <RowTitleEl>
-            CO2 emissions reduced (tonnes):
-          </RowTitleEl>
-          <RowValue>
-            {formatData(data.emissionsReduced)}
-          </RowValue>
-        </RowEl>
-        <RowEl>
-          <RowTitleEl>
-            Grant Amount (USD):
-          </RowTitleEl>
-          <RowValue>
-            {formatData(data.grantAmount)}
-          </RowValue>
-        </RowEl>
-        <RowEl>
-          <RowTitleEl>
-            GL Expenses (USD):
-          </RowTitleEl>
-          <RowValue>
-            {formatData(data.glExpenses)}
-          </RowValue>
-        </RowEl>
-        <RowEl>
-          <RowTitleEl>
-            Co-Financing (USD):
-          </RowTitleEl>
-          <RowValue>
-            {formatData(data.coFinancing)}
-          </RowValue>
-        </RowEl>
+        <MetricGrp>
+          <RowEl>
+            <RowTitleEl>
+              People directly benefiting:
+            </RowTitleEl>
+            <RowValue>
+              {formatData(data.peopleDirectlyBenefiting)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              People indirectly benefiting:
+            </RowTitleEl>
+            <RowValue>
+              {formatData(data.peopleIndirectlyBenefiting)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              CO2 emissions reduced (tonnes):
+            </RowTitleEl>
+            <RowValue>
+              {formatData(data.emissionsReduced)}
+            </RowValue>
+          </RowEl>
+        </MetricGrp>
+        <MetricGrp>
+          <RowEl>
+            <RowTitleEl>
+              Grant Amount (USD):
+            </RowTitleEl>
+            <RowValue>
+              {formatData(data.grantAmount)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              GL Expenses (USD):
+            </RowTitleEl>
+            <RowValue>
+              {formatData(data.glExpenses)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              Co-Financing (USD):
+            </RowTitleEl>
+            <RowValue>
+              {formatData(data.coFinancing)}
+            </RowValue>
+          </RowEl>
+        </MetricGrp>
         {/* {
           data.rows.map((d, i) => (
             <RowEl key={i}>
