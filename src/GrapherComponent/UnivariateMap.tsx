@@ -92,7 +92,15 @@ export const UnivariateMap = (props: Props) => {
   }, [svgHeight, svgWidth]);
   return (
     <El>
-      <svg width='100%' height='100%' viewBox={`0 0 ${svgWidth} ${svgHeight}`} ref={mapSvg}>
+      <svg
+        width='100%'
+        height='100%'
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        ref={mapSvg}
+        onClick={() => {
+          updateSelectedCountries('');
+        }}
+      >
         <g ref={mapG}>
           {
             (World as any).features.map((d: any, i: number) => {
@@ -102,6 +110,9 @@ export const UnivariateMap = (props: Props) => {
                 <g
                   key={i}
                   opacity={!selectedColor ? 1 : 0.3}
+                  onClick={() => {
+                    updateSelectedCountries('');
+                  }}
                 >
                   {
                   d.geometry.type === 'MultiPolygon' ? d.geometry.coordinates.map((el:any, j: any) => {
@@ -198,8 +209,10 @@ export const UnivariateMap = (props: Props) => {
                   onMouseLeave={() => {
                     setHoverData(undefined);
                   }}
-                  onClick={() => {
+                  onClick={(e) => {
                     updateSelectedCountries(d['Country or Area']);
+                    e.stopPropagation();
+                    e.nativeEvent.stopImmediatePropagation();
                   }}
                 >
                   {
