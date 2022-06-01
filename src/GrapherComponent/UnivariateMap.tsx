@@ -63,6 +63,7 @@ export const UnivariateMap = (props: Props) => {
     selectedRegions,
     selectedIncomeGroups,
     selectedCountryGroup,
+    updateSelectedCountries,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
@@ -196,6 +197,9 @@ export const UnivariateMap = (props: Props) => {
                   }}
                   onMouseLeave={() => {
                     setHoverData(undefined);
+                  }}
+                  onClick={() => {
+                    updateSelectedCountries(d['Country or Area']);
                   }}
                 >
                   {

@@ -16,7 +16,6 @@ interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
   regions: string[];
-  countries: string[];
 }
 
 const Container = styled.div`
@@ -76,7 +75,6 @@ export const GrapherComponent = (props: Props) => {
     data,
     indicators,
     regions,
-    countries,
   } = props;
   const {
     showSource,
@@ -103,8 +101,6 @@ export const GrapherComponent = (props: Props) => {
                   <Settings
                     indicators={indicators}
                     regions={regions}
-                    countries={countries}
-                    data={data}
                   />
                 )
             }

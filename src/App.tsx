@@ -479,7 +479,6 @@ const App = () => {
                   data={finalData}
                   indicators={indicatorsList}
                   regions={regionList}
-                  countries={countryList}
                 />
               </Context.Provider>
             </>
