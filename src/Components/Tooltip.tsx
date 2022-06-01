@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { format } from 'd3-format';
+// import { format } from 'd3-format';
 import { HoverDataType } from '../Types';
-import { HorizontalArrow, VerticalArrow } from '../Icons';
 
 interface Props {
   data: HoverDataType;
@@ -25,7 +24,7 @@ const TooltipEl = styled.div<TooltipElProps>`
   word-wrap: break-word;
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
-  max-width: 24rem;
+  /* max-width: 24rem; */
   transform: ${(props) => `translate(${props.horizontalAlignment === 'left' ? '-100%' : '0%'},${props.verticalAlignment === 'top' ? '-100%' : '0%'})`};
 `;
 
@@ -58,25 +57,17 @@ const TooltipBody = styled.div`
 const RowEl = styled.div`
   font-size: 1.3rem;
   color: var(--dark-grey);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: flex-start; 
 `;
 
 const RowTitleEl = styled.div`
   font-weight: 400;
-  font-size: 1.2rem;
-  line-height: 1.4rem;
-  margin-bottom: 0.3rem;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin-right: 5px;
   color: var(--navy);
-`;
-
-const RowMetaData = styled.div`
-  font-weight: 400;
-  font-size: 1.2rem;
-  color: var(--navy);
-  opacity: 0.5;
-  margin-bottom: -5px;
 `;
 
 const RowValue = styled.div`
@@ -90,35 +81,6 @@ const TooltipHead = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-interface ColorIconProps {
-  fill?:string;
-}
-
-const ColorIcon = styled.div<ColorIconProps>`
-  width: 1.6rem;
-  height: 1.6rem;
-  margin: 0 0.2rem;
-  background-color: ${(props) => (props.fill ? props.fill : 'var(--yellow)')};
-  border: ${(props) => (props.fill === '#FFF' || props.fill === '#fff' || props.fill === '#FFFFFF' || props.fill === '#ffffff' ? '1px solid #AAA' : `1px solid ${props.fill}`)};
-`;
-
-const SizeIcon = styled.div`
-  width: 1.4rem;
-  height: 1.4rem;
-  margin: 0 0.2rem;
-  border-radius: 1.4rem;
-  border: 2px solid var(--navy);
-`;
-
-const IconDiv = styled.div`
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
-`;
-
-const IconEl = styled.div`
-  margin-top: 0.5rem;
 `;
 
 export const Tooltip = (props: Props) => {
@@ -139,34 +101,74 @@ export const Tooltip = (props: Props) => {
         </TooltipTitle>
       </TooltipHead>
       <TooltipBody>
-        {
-        data.rows.map((d, i) => (
-          <RowEl key={i}>
-            <IconDiv>
-              {
-                d.type === 'x-axis' ? <IconEl><HorizontalArrow size={20} /></IconEl>
-                  : d.type === 'y-axis' ? <IconEl><VerticalArrow size={20} /></IconEl>
-                    : d.type === 'color' ? <ColorIcon fill={d.color} />
-                      : d.type === 'size' ? <SizeIcon />
-                        : null
-              }
-            </IconDiv>
-            <div>
-              <RowMetaData>{d.year}</RowMetaData>
-              <RowTitleEl>{d.title}</RowTitleEl>
-              <RowValue>
-                {
-                  d.prefix && d.value && d.value !== 'NA' ? `${d.prefix} ` : ''
-                }
-                {typeof d.value === 'number' ? d.value < 1000000 ? format(',')(parseFloat(d.value.toFixed(2))).replace(',', ' ') : format('.3s')(d.value).replace('G', 'B') : d.value }
-                {
-                  d.suffix && d.value && d.value !== 'NA' ? ` ${d.suffix}` : ''
-                }
-              </RowValue>
-            </div>
-          </RowEl>
-        ))
-      }
+        <RowEl>
+          <RowTitleEl>
+            People directly benefiting:
+          </RowTitleEl>
+          <RowValue>
+            {data.peopleDirectlyBenefiting}
+          </RowValue>
+        </RowEl>
+        <RowEl>
+          <RowTitleEl>
+            People indirectly benefiting:
+          </RowTitleEl>
+          <RowValue>
+            {data.peopleIndirectlyBenefiting}
+          </RowValue>
+        </RowEl>
+        <RowEl>
+          <RowTitleEl>
+            CO2 emissions reduced (tonnes):
+          </RowTitleEl>
+          <RowValue>
+            {/* {data.emissionsReduced !== undefined ? data.emissionsReduced < 1000000 ? format(',')(parseFloat(data.emissionsReduced.toFixed(2))).replace(',', ' ') : format('.3s')(data.emissionsReduced).replace('G', 'B') : data.emissionsReduced } */}
+            {data.emissionsReduced}
+          </RowValue>
+        </RowEl>
+        <RowEl>
+          <RowTitleEl>
+            Grant Amount (USD):
+          </RowTitleEl>
+          <RowValue>
+            {data.grantAmount}
+          </RowValue>
+        </RowEl>
+        <RowEl>
+          <RowTitleEl>
+            GL Expenses (USD):
+          </RowTitleEl>
+          <RowValue>
+            {data.glExpenses}
+          </RowValue>
+        </RowEl>
+        <RowEl>
+          <RowTitleEl>
+            Co-Financing (USD):
+          </RowTitleEl>
+          <RowValue>
+            {data.coFinancing}
+          </RowValue>
+        </RowEl>
+        {/* {
+          data.rows.map((d, i) => (
+            <RowEl key={i}>
+              <div>
+                <RowMetaData>{d.year}</RowMetaData>
+                <RowTitleEl>{d.title}</RowTitleEl>
+                <RowValue>
+                  {
+                    d.prefix && d.value && d.value !== 'NA' ? `${d.prefix} ` : ''
+                  }
+                  {typeof d.value === 'number' ? d.value < 1000000 ? format(',')(parseFloat(d.value.toFixed(2))).replace(',', ' ') : format('.3s')(d.value).replace('G', 'B') : d.value }
+                  {
+                    d.suffix && d.value && d.value !== 'NA' ? ` ${d.suffix}` : ''
+                  }
+                </RowValue>
+              </div>
+            </RowEl>
+          ))
+        } */}
       </TooltipBody>
     </TooltipEl>
   );

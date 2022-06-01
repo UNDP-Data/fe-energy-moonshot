@@ -76,7 +76,12 @@ export interface HoverRowDataType {
 export interface HoverDataType {
   country: string;
   continent: string;
-  rows: HoverRowDataType[];
+  peopleDirectlyBenefiting: undefined | number;
+  peopleIndirectlyBenefiting: undefined | number;
+  emissionsReduced: undefined | number;
+  grantAmount: undefined | number;
+  glExpenses: undefined | number;
+  coFinancing: undefined | number;
   xPosition: number;
   yPosition: number;
 }

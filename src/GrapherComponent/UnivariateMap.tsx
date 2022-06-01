@@ -8,7 +8,7 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { scaleThreshold, scaleOrdinal } from 'd3-scale';
 import {
-  CtxDataType, DataType, HoverDataType, HoverRowDataType, IndicatorMetaDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import World from '../Data/worldMap.json';
@@ -169,17 +169,6 @@ export const UnivariateMap = (props: Props) => {
               const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
               const countryGroupOpacity = selectedCountryGroup === 'All' ? true : d[selectedCountryGroup];
 
-              const rowData: HoverRowDataType[] = [
-                {
-                  title: xAxisIndicator,
-                  value: val === undefined ? 'NA' : val,
-                  type: 'color',
-                  // year: d.indicators[indicatorIndex].yearlyData[d.indicators[indicatorIndex].yearlyData.length - 1]?.year,
-                  color,
-                  prefix: xIndicatorMetaData?.LabelPrefix,
-                  suffix: xIndicatorMetaData?.LabelSuffix,
-                },
-              ];
               return (
                 <g
                   key={i}
@@ -192,7 +181,12 @@ export const UnivariateMap = (props: Props) => {
                     setHoverData({
                       country: d['Country or Area'],
                       continent: d['Group 1'],
-                      rows: rowData,
+                      peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'Number of people impacted')[0].value,
+                      peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
+                      emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                      grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
+                      glExpenses: d.indicators.filter((ind) => ind.indicator === 'GL Expenses')[0].value,
+                      coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });
@@ -201,7 +195,12 @@ export const UnivariateMap = (props: Props) => {
                     setHoverData({
                       country: d['Country or Area'],
                       continent: d['Group 1'],
-                      rows: rowData,
+                      peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'Number of people impacted')[0].value,
+                      peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
+                      emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                      grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
+                      glExpenses: d.indicators.filter((ind) => ind.indicator === 'GL Expenses')[0].value,
+                      coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });
