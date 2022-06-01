@@ -135,7 +135,7 @@ export const Settings = (props: Props) => {
             <Select
               allowClear
               style={{ width: '100%' }}
-              placeholder='Filter By Regions'
+              placeholder='Select a region'
               value={selectedRegions}
               onChange={(d: string) => { updateSelectedRegions(d === undefined ? '' : d); }}
             >
