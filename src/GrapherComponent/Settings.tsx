@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Select } from 'antd';
 import domtoimage from 'dom-to-image';
@@ -74,7 +74,6 @@ export const Settings = (props: Props) => {
     regions,
   } = props;
   const {
-    graphType,
     xAxisIndicator,
     selectedRegions,
     updateXAxisIndicator,
@@ -82,12 +81,11 @@ export const Settings = (props: Props) => {
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
-  const [filterExpanded, setFilterExpanded] = useState(true);
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
     }
-  }, [graphType, options]);
+  }, [options]);
   return (
     <El>
       <DropdownEl>
@@ -115,12 +113,12 @@ export const Settings = (props: Props) => {
         </Select>
       </DropdownEl>
       <FiltersEl>
-        <FilterTitle onClick={() => { setFilterExpanded(!filterExpanded); }}>
+        <FilterTitle>
           <div style={{ marginTop: '2px' }}>
             Filter or Highlight By
           </div>
         </FilterTitle>
-        <div style={{ display: filterExpanded ? 'inline' : 'none' }}>
+        <div>
           <DropdownEl>
             <DropdownTitle>
               Region

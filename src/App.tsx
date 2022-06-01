@@ -186,57 +186,13 @@ const App = () => {
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<string[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
-  const queryParams = new URLSearchParams(window.location.search);
   const initialState = {
-    graphType: queryParams.get('graphType') || 'map',
-    selectedRegions: queryParams.get('regions')?.split('~') || [],
-    selectedCountries: queryParams.get('countries')?.split('~') || [],
-    selectedIncomeGroups: queryParams.get('incomeGroups')?.split('~') || [],
-    year: 2021,
-    selectedCountryGroup: queryParams.get('countryGroup') || 'All',
-    xAxisIndicator: queryParams.get('firstMetric') || DEFAULT_VALUES.firstMetric,
-    yAxisIndicator: queryParams.get('secondMetric') || DEFAULT_VALUES.secondMetric,
-    colorIndicator: queryParams.get('colorMetric') || DEFAULT_VALUES.colorMetric,
-    sizeIndicator: queryParams.get('sizeMetric') || undefined,
-    showMostRecentData: queryParams.get('showMostRecentData') === 'true',
-    showLabel: queryParams.get('showLabel') === 'true',
-    showSource: false,
-    trendChartCountry: queryParams.get('trendChartCountry') || undefined,
-    multiCountrytrendChartCountries: queryParams.get('multiCountrytrendChartCountries')?.split('~') || ['China', 'India', 'United States of America', 'Indonesia', 'Pakistan'],
-    useSameRange: queryParams.get('useSameRange') === 'true',
-    reverseOrder: queryParams.get('reverseOrder') === 'true',
-    verticalBarLayout: queryParams.get('verticalBarLayout') !== 'false',
+    selectedRegions: [],
+    selectedCountries: [],
+    xAxisIndicator: DEFAULT_VALUES.firstMetric,
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
-
-  const updateGraphType = (graphType: 'scatterPlot' | 'map' | 'barGraph' | 'trendLine') => {
-    dispatch({
-      type: 'UPDATE_GRAPH_TYPE',
-      payload: graphType,
-    });
-  };
-
-  const updateMultiCountrytrendChartCountries = (multiCountrytrendChartCountries: string[]) => {
-    dispatch({
-      type: 'UPDATE_MULTI_COUNTRY_TREND_CHART_COUNTRIES',
-      payload: multiCountrytrendChartCountries,
-    });
-  };
-
-  const updateReverseOrder = (reverseOrder: boolean) => {
-    dispatch({
-      type: 'UPDATE_REVERSE_ORDER',
-      payload: reverseOrder,
-    });
-  };
-
-  const updateTrendChartCountry = (trendChartCountry: string) => {
-    dispatch({
-      type: 'UPDATE_TREND_CHART_COUNTRY',
-      payload: trendChartCountry,
-    });
-  };
 
   const updateSelectedRegions = (selectedRegions: string[]) => {
     dispatch({
@@ -251,19 +207,6 @@ const App = () => {
       payload: selectedCountries,
     });
   };
-  const updateYear = (year: number) => {
-    dispatch({
-      type: 'UPDATE_YEAR',
-      payload: year,
-    });
-  };
-
-  const updateSelectedCountryGroup = (selectedCountryGroup: 'All' | 'SIDS' | 'LLDC' | 'LDC') => {
-    dispatch({
-      type: 'UPDATE_SELECTED_COUNTRY_GROUP',
-      payload: selectedCountryGroup,
-    });
-  };
 
   const updateXAxisIndicator = (xAxisIndicator: string) => {
     dispatch({
@@ -272,154 +215,30 @@ const App = () => {
     });
   };
 
-  const updateYAxisIndicator = (yAxisIndicator?: string) => {
-    dispatch({
-      type: 'UPDATE_Y_AXIS_INDICATOR',
-      payload: yAxisIndicator,
-    });
-  };
-
-  const updateColorIndicator = (colorIndicator?: string) => {
-    dispatch({
-      type: 'UPDATE_COLOR_INDICATOR',
-      payload: colorIndicator,
-    });
-  };
-
-  const updateSizeIndicator = (sizeIndicator?: string) => {
-    dispatch({
-      type: 'UPDATE_SIZE_INDICATOR',
-      payload: sizeIndicator,
-    });
-  };
-
-  const updateSelectedIncomeGroups = (selectedIncomeGroups?: string) => {
-    dispatch({
-      type: 'UPDATE_SELECTED_INCOME_GROUPS',
-      payload: selectedIncomeGroups,
-    });
-  };
-
-  const updateShowMostRecentData = (selectedIncomeGroups: boolean) => {
-    dispatch({
-      type: 'UPDATE_SHOW_MOST_RECENT_DATA',
-      payload: selectedIncomeGroups,
-    });
-  };
-
-  const updateShowLabel = (showLabel: boolean) => {
-    dispatch({
-      type: 'UPDATE_SHOW_LABEL',
-      payload: showLabel,
-    });
-  };
-
-  const updateShowSource = (showSource: boolean) => {
-    dispatch({
-      type: 'UPDATE_SHOW_SOURCE',
-      payload: showSource,
-    });
-  };
-
-  const updateUseSameRange = (useSameRange: boolean) => {
-    dispatch({
-      type: 'UPDATE_USE_SAME_RANGE',
-      payload: useSameRange,
-    });
-  };
-  const updateBarLayout = (varticalBarLayout: boolean) => {
-    dispatch({
-      type: 'UPDATE_BAR_LAYOUT',
-      payload: varticalBarLayout,
-    });
-  };
-
   useEffect(() => {
     queue()
-      .defer(json, './data/ALL-DATA.json')
       .defer(json, './data/resultsByCountry.json')
       .defer(json, './data/indicatorMetaData.json')
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Indicators-MetaData/main/indicatorMetaData.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
-      .await((err: any, data: any[], resultsData: any[], indicatorMetaData2: IndicatorMetaDataType[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
+      .await((err: any, resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
         if (err) throw err;
-        const dataWithYear = data.map((d: any) => {
-          const Year = new Date(d.Year).getFullYear();
-          return { ...d, Year };
-        });
 
-        // const groupedData = nest()
-        //   .key((d: any) => d['Alpha-3 code'])
-        //   .entries(dataWithYear);
-        const groupedData2 = nest()
+        const groupedData = nest()
           .key((d: any) => d['Lead Country'])
           .entries(resultsData);
 
         /* Build list of indicators */
         const indicators: string[] = [];
-        dataWithYear.forEach((d: any) => {
-          const keys = Object.keys(d);
-          keys.forEach((key) => {
-            if (indicators.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year') { indicators.push(key); }
-          });
-        });
-        const indicators2: string[] = [];
         resultsData.forEach((d: any) => {
           const keys = Object.keys(d);
           keys.forEach((key) => {
-            if (indicators2.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country') { indicators2.push(key); }
+            if (indicators.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country') { indicators.push(key); }
           });
         });
 
-        /* this step builds an object where for each indicator, we have an array of all possible years of data
-           available for that indcator and build an empty array to populate the value for each year */
-        // const countryIndicatorObj = indicators.map((d: string) => {
-        //   const yearList: number[] = [];
-        //   dataWithYear.forEach((el: any) => {
-        //     if (el[d] && yearList.indexOf(el.Year) === -1) {
-        //       yearList.push(el.Year);
-        //     }
-        //   });
-        //   return ({
-        //     indicator: d,
-        //     yearAvailable: sortBy(yearList),
-        //     yearlyData: sortBy(yearList).map((year) => ({
-        //       year,
-        //       value: undefined,
-        //     })),
-        //   });
-        // });
-
-        // const countryData = groupedData.map((d) => {
-        //   const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Alpha-3 code-1'] === d.key)];
-        //   const indTemp = countryIndicatorObj.map((indicatorObj) => {
-        //     const yearlyData = indicatorObj.yearlyData.map((year) => {
-        //       const indx = d.values.findIndex((val: { Year: string; }) => parseInt(val.Year, 10) === year.year);
-        //       const value: undefined | number = indx !== -1 ? d.values[indx][indicatorObj.indicator] : undefined;
-        //       return (
-        //         {
-        //           ...year,
-        //           value,
-        //         }
-        //       );
-        //     }).filter((val) => val.value !== undefined);
-        //     return (
-        //       {
-        //         ...indicatorObj,
-        //         yearlyData,
-        //       }
-        //     );
-        //   });
-        //   return ({
-        //     ...countryGroup,
-        //     indicatorAvailable: indTemp.map((ind) => ind.indicator),
-        //     indicators: indTemp,
-        //   });
-        // });
-        // console.log(countryData[0]);
-        const countryData2 = groupedData2.map((d) => {
+        const countryData = groupedData.map((d) => {
           const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === d.key)];
-          const indTemp = indicators2.map((indicator) => {
+          const indTemp = indicators.map((indicator) => {
             const value = d.values[0][indicator] !== undefined ? d.values[0][indicator] : undefined;
             return (
               {
@@ -434,15 +253,10 @@ const App = () => {
             indicators: indTemp,
           });
         });
-        setFinalData(countryData2);
-        setCountryList(countryData2.map((d) => d['Country or Area']));
-        setRegionList(uniqBy(countryData2.filter((d) => d['Group 2'] !== undefined), (d) => d['Group 2']).map((d) => d['Group 2']));
-        // const indicatorWithYears: IndicatorMetaDataWithYear[] = indicatorMetaData.map((d) => ({
-        //   ...d,
-        //   years: countryIndicatorObj[countryIndicatorObj.findIndex((el) => el.indicator === d.DataKey)].yearAvailable,
-        // }));
-        // setIndicatorsList(indicatorWithYears);
-        setIndicatorsList(indicatorMetaData2);
+        setFinalData(countryData);
+        setCountryList(countryData.map((d) => d['Country or Area']));
+        setRegionList(uniqBy(countryData.filter((d) => d['Group 2'] !== undefined), (d) => d['Group 2']).map((d) => d['Group 2']));
+        setIndicatorsList(indicatorMetaData);
       });
   }, []);
   return (
@@ -455,24 +269,9 @@ const App = () => {
               <Context.Provider
                 value={{
                   ...state,
-                  updateGraphType,
                   updateSelectedRegions,
-                  updateYear,
                   updateSelectedCountries,
-                  updateSelectedCountryGroup,
                   updateXAxisIndicator,
-                  updateYAxisIndicator,
-                  updateColorIndicator,
-                  updateSizeIndicator,
-                  updateSelectedIncomeGroups,
-                  updateShowMostRecentData,
-                  updateShowLabel,
-                  updateShowSource,
-                  updateTrendChartCountry,
-                  updateMultiCountrytrendChartCountries,
-                  updateUseSameRange,
-                  updateReverseOrder,
-                  updateBarLayout,
                 }}
               >
                 <GrapherComponent

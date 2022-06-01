@@ -61,8 +61,6 @@ export const UnivariateMap = (props: Props) => {
     xAxisIndicator,
     selectedCountries,
     selectedRegions,
-    selectedIncomeGroups,
-    selectedCountryGroup,
     updateSelectedCountries,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
@@ -165,9 +163,7 @@ export const UnivariateMap = (props: Props) => {
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
 
               const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
-              const incomeGroupOpacity = selectedIncomeGroups.length === 0 || selectedIncomeGroups.indexOf(d['Income group']) !== -1;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
-              const countryGroupOpacity = selectedCountryGroup === 'All' ? true : d[selectedCountryGroup];
 
               return (
                 <g
@@ -175,7 +171,7 @@ export const UnivariateMap = (props: Props) => {
                   opacity={
                     selectedColor
                       ? selectedColor === color ? 1 : 0.1
-                      : regionOpacity && incomeGroupOpacity && countryOpacity && countryGroupOpacity ? 1 : 0.1
+                      : regionOpacity && countryOpacity ? 1 : 0.1
                   }
                   onMouseEnter={(event) => {
                     setHoverData({

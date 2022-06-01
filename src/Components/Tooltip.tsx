@@ -164,25 +164,6 @@ export const Tooltip = (props: Props) => {
             </RowValue>
           </RowEl>
         </MetricGrp>
-        {/* {
-          data.rows.map((d, i) => (
-            <RowEl key={i}>
-              <div>
-                <RowMetaData>{d.year}</RowMetaData>
-                <RowTitleEl>{d.title}</RowTitleEl>
-                <RowValue>
-                  {
-                    d.prefix && d.value && d.value !== 'NA' ? `${d.prefix} ` : ''
-                  }
-                  {typeof d.value === 'number' ? d.value < 1000000 ? format(',')(parseFloat(d.value.toFixed(2))).replace(',', ' ') : format('.3s')(d.value).replace('G', 'B') : d.value }
-                  {
-                    d.suffix && d.value && d.value !== 'NA' ? ` ${d.suffix}` : ''
-                  }
-                </RowValue>
-              </div>
-            </RowEl>
-          ))
-        } */}
       </TooltipBody>
     </TooltipEl>
   );

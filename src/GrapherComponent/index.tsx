@@ -1,16 +1,11 @@
-import { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Modal } from 'antd';
 import {
-  CtxDataType,
   DataType,
   IndicatorMetaDataType,
 } from '../Types';
 import { Logo } from '../Icons';
-import Context from '../Context/Context';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
-import { GetEmbedParams } from '../Components/GetEmbedParams';
 
 interface Props {
   data: DataType[];
@@ -76,11 +71,6 @@ export const GrapherComponent = (props: Props) => {
     indicators,
     regions,
   } = props;
-  const {
-    showSource,
-  } = useContext(Context) as CtxDataType;
-  const [modalVisibility, setModalVisibility] = useState(false);
-  const queryParams = new URLSearchParams(window.location.search);
   return (
     <>
       <Container>
@@ -95,42 +85,18 @@ export const GrapherComponent = (props: Props) => {
         </HeadingEl>
         <RootEl>
           <GraphEl>
-            {
-              queryParams.get('showSettings') === 'false' ? null
-                : (
-                  <Settings
-                    indicators={indicators}
-                    regions={regions}
-                  />
-                )
-            }
-            {
-            showSource
-              ? null
-              : (
-                <Graph
-                  data={data}
-                  indicators={indicators}
-                  fullWidth={queryParams.get('showSettings') === 'false'}
-                />
-              )
-          }
+            <Settings
+              indicators={indicators}
+              regions={regions}
+            />
+            <Graph
+              data={data}
+              indicators={indicators}
+              fullWidth
+            />
           </GraphEl>
         </RootEl>
       </Container>
-      <Modal
-        visible={modalVisibility}
-        title='Embed Code'
-        onOk={() => { setModalVisibility(false); }}
-        onCancel={() => { setModalVisibility(false); }}
-        footer={[
-          <button className='primary' key='back' type='button' onClick={() => { setModalVisibility(false); }}>
-            Close
-          </button>,
-        ]}
-      >
-        <GetEmbedParams />
-      </Modal>
     </>
   );
 };

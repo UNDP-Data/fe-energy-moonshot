@@ -63,15 +63,6 @@ export interface IndicatorMetaDataType {
 export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
   years: number[];
 }
-export interface HoverRowDataType {
-  title?: string;
-  value?: string | number;
-  prefix?: string;
-  suffix?:string;
-  type: 'x-axis' | 'y-axis' | 'color' | 'size';
-  year?: number;
-  color?: string;
-}
 
 export interface HoverDataType {
   country: string;
@@ -87,40 +78,10 @@ export interface HoverDataType {
 }
 
 export interface CtxDataType {
-  graphType: 'scatterPlot' | 'map' | 'barGraph' | 'trendLine' | 'multiCountryTrendLine';
   selectedRegions: string;
   selectedCountries: string;
-  selectedIncomeGroups: string[];
-  year: number;
-  selectedCountryGroup: 'All' | 'SIDS' | 'LLDC' | 'LDC';
   xAxisIndicator: string;
-  yAxisIndicator?: string;
-  colorIndicator: string;
-  sizeIndicator?: string;
-  showMostRecentData: boolean;
-  showLabel: boolean;
-  showSource: boolean;
-  trendChartCountry: undefined | string;
-  multiCountrytrendChartCountries: string[];
-  useSameRange: boolean;
-  reverseOrder: boolean;
-  verticalBarLayout: boolean;
-  updateGraphType: (_d: 'scatterPlot' | 'map' | 'barGraph' | 'trendLine' | 'multiCountryTrendLine') => void;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
-  updateSelectedIncomeGroups: (_d: string[]) => void;
-  updateYear: (_d: number) => void;
-  updateSelectedCountryGroup: (_d: 'All' | 'SIDS' | 'LLDC' | 'LDC') => void;
   updateXAxisIndicator: (_d: string) => void;
-  updateYAxisIndicator: (_d?: string) => void;
-  updateColorIndicator: (_d?: string) => void;
-  updateSizeIndicator: (_d?: string) => void;
-  updateShowMostRecentData: (_d: boolean) => void;
-  updateShowSource: (_d: boolean) => void;
-  updateShowLabel: (_d: boolean) => void;
-  updateUseSameRange: (_d: boolean) => void;
-  updateReverseOrder: (_d: boolean) => void;
-  updateTrendChartCountry: (_d: string) => void;
-  updateMultiCountrytrendChartCountries: (_d: string[]) => void;
-  updateBarLayout: (_d: boolean) => void;
 }
