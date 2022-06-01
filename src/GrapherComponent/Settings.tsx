@@ -5,9 +5,6 @@ import domtoimage from 'dom-to-image';
 import { CtxDataType, IndicatorMetaDataType, DataType } from '../Types';
 import Context from '../Context/Context';
 import { DEFAULT_VALUES } from '../Constants';
-import {
-  ChevronDown, ChevronLeft,
-} from '../Icons';
 
 interface Props {
   indicators: IndicatorMetaDataType[];
@@ -73,10 +70,6 @@ const ButtonEl = styled.div`
   }
 `;
 
-const AccordionIconEl = styled.div`
-  display: flex;
-`;
-
 export const Settings = (props: Props) => {
   const {
     indicators,
@@ -130,12 +123,6 @@ export const Settings = (props: Props) => {
       </DropdownEl>
       <FiltersEl>
         <FilterTitle onClick={() => { setFilterExpanded(!filterExpanded); }}>
-          <AccordionIconEl>
-            {
-              filterExpanded
-                ? <ChevronDown fill='#212121' size={20} /> : <ChevronLeft fill='#212121' size={20} />
-            }
-          </AccordionIconEl>
           <div style={{ marginTop: '2px' }}>
             Filter or Highlight By
           </div>
