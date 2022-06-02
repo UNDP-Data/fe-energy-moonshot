@@ -121,14 +121,14 @@ export const Tooltip = (props: Props) => {
               {formatData(data.peopleDirectlyBenefiting)}
             </RowValue>
           </RowEl>
-          <RowEl>
+          {/* <RowEl>
             <RowTitleEl>
               People indirectly benefiting:
             </RowTitleEl>
             <RowValue>
               {formatData(data.peopleIndirectlyBenefiting)}
             </RowValue>
-          </RowEl>
+          </RowEl> */}
           <RowEl>
             <RowTitleEl>
               CO2 emissions reduced (tonnes):

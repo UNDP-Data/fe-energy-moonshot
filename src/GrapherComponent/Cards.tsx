@@ -50,16 +50,16 @@ export const Cards = (props: Props) => {
   };
   const cardData = {
     geography: selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global',
-    'Number of people benefiting': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of people impacted')[0].value),
+    'People directly benefiting': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'People directly benefiting')[0].value),
     'Emissions reduced': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
     'Total spending': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant Amount')[0].value),
   };
   return (
     <Wrapper>
       <Card>
-        Number of people benefiting:
+        People directly benefiting:
         <br />
-        <MetricNumber>{ format(',')(cardData['Number of people benefiting']) }</MetricNumber>
+        <MetricNumber>{ format(',')(cardData['People directly benefiting']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>

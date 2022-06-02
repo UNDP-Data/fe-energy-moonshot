@@ -9,7 +9,7 @@ export const EMBED_LINK_ROOT = 'https://data.undp.org/access-all-data-viz-v2/';
 export const PARENT_LINK_ROOT = 'https://data.undp.org/explore-all-data/';
 
 export const DEFAULT_VALUES = {
-  firstMetric: 'Number of people benefiting',
+  firstMetric: 'People directly benefiting',
   secondMetric: 'Tonnes of CO2 emissions reduced',
   colorMetric: 'Continents',
 };
