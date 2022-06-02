@@ -8,7 +8,7 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { scaleThreshold, scaleOrdinal } from 'd3-scale';
 import {
-  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectCoordinateDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import World from '../Data/worldMap.json';
@@ -17,6 +17,7 @@ import { Tooltip } from '../Components/Tooltip';
 
 interface Props {
   data: DataType[];
+  projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
 }
 
@@ -55,6 +56,7 @@ const G = styled.g`
 export const UnivariateMap = (props: Props) => {
   const {
     data,
+    projectCoordinatesData,
     indicators,
   } = props;
   const {
@@ -250,6 +252,27 @@ export const UnivariateMap = (props: Props) => {
                         );
                       })
                   }
+                </g>
+              );
+            })
+          }
+          {
+            projectCoordinatesData.map((d, i: number) => {
+              const point = projection([d.Longitude, d.Latitude]) as [number, number];
+              return (
+                <g
+                  key={i}
+                  opacity={0.8}
+                >
+                  <circle
+                    key={i}
+                    cx={point[0]}
+                    cy={point[1]}
+                    r='2px'
+                    fill={COLOR_SCALES.Categorical[6]}
+                    stroke='#FFF'
+                    strokeWidth={0.5}
+                  />
                 </g>
               );
             })

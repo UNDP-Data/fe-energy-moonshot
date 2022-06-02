@@ -9,7 +9,7 @@ import { queue } from 'd3-queue';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import {
-  DataType, CountryGroupDataType, IndicatorMetaDataType,
+  DataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -183,6 +183,7 @@ const VizAreaEl = styled.div`
 
 const App = () => {
   const [finalData, setFinalData] = useState<DataType[] | undefined>(undefined);
+  const [projectCoordinatesData, setProjectCoordinatesData] = useState<ProjectCoordinateDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<string[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
@@ -227,8 +228,9 @@ const App = () => {
     queue()
       .defer(json, './data/resultsByCountry.json')
       .defer(json, './data/indicatorMetaData.json')
+      .defer(json, './data/projectCoordinates.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
-      .await((err: any, resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], countryGroupData: CountryGroupDataType[]) => {
+      .await((err: any, resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupData: CountryGroupDataType[]) => {
         if (err) throw err;
 
         const groupedData = nest()
@@ -262,6 +264,7 @@ const App = () => {
           });
         });
         setFinalData(countryData);
+        setProjectCoordinatesData(projectCoordinates);
         setCountryList(countryData.map((d) => d['Country or Area']));
         setRegionList(uniqBy(countryData.filter((d) => d['Group 2'] !== undefined), (d) => d['Group 2']).map((d) => d['Group 2']));
         setIndicatorsList(indicatorMetaData);
@@ -271,7 +274,7 @@ const App = () => {
     <>
       <GlobalStyle />
       {
-        indicatorsList && finalData && regionList && countryList
+        indicatorsList && finalData && regionList && countryList && projectCoordinatesData
           ? (
             <>
               <Context.Provider
@@ -285,6 +288,7 @@ const App = () => {
               >
                 <GrapherComponent
                   data={finalData}
+                  projectCoordinatesData={projectCoordinatesData}
                   indicators={indicatorsList}
                   regions={regionList}
                 />

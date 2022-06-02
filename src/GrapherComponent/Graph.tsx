@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { DataType, IndicatorMetaDataType } from '../Types';
+import { DataType, IndicatorMetaDataType, ProjectCoordinateDataType } from '../Types';
 import { Cards } from './Cards';
 import { UnivariateMap } from './UnivariateMap';
 
 interface Props {
   data: DataType[];
+  projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
   fullWidth: boolean;
 }
@@ -28,6 +29,7 @@ const El = styled.div<ElProps>`
 export const Graph = (props: Props) => {
   const {
     data,
+    projectCoordinatesData,
     indicators,
     fullWidth,
   } = props;
@@ -39,6 +41,7 @@ export const Graph = (props: Props) => {
       />
       <UnivariateMap
         data={data}
+        projectCoordinatesData={projectCoordinatesData}
         indicators={indicators}
       />
     </El>

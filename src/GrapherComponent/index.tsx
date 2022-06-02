@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   DataType,
   IndicatorMetaDataType,
+  ProjectCoordinateDataType,
 } from '../Types';
 import { Logo } from '../Icons';
 import { Settings } from './Settings';
@@ -9,6 +10,7 @@ import { Graph } from './Graph';
 
 interface Props {
   data: DataType[];
+  projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
   regions: string[];
 }
@@ -68,6 +70,7 @@ const H2 = styled.div`
 export const GrapherComponent = (props: Props) => {
   const {
     data,
+    projectCoordinatesData,
     indicators,
     regions,
   } = props;
@@ -91,6 +94,7 @@ export const GrapherComponent = (props: Props) => {
             />
             <Graph
               data={data}
+              projectCoordinatesData={projectCoordinatesData}
               indicators={indicators}
               fullWidth
             />
