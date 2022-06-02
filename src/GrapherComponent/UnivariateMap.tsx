@@ -258,33 +258,6 @@ export const UnivariateMap = (props: Props) => {
             })
           }
           {
-            showProjectLocations
-            && projectCoordinatesData.map((d, i: number) => {
-              // const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.Region) !== -1;
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Lead Country']) !== -1;
-
-              const point = projection([d.Longitude, d.Latitude]) as [number, number];
-              return (
-                <g
-                  key={i}
-                  pointerEvents='none'
-                  // opacity={regionOpacity && countryOpacity ? 0.8 : 0.1}
-                  opacity={countryOpacity ? 0.8 : 0.1}
-                >
-                  <circle
-                    key={i}
-                    cx={point[0]}
-                    cy={point[1]}
-                    r='2px'
-                    fill={COLOR_SCALES.Categorical[6]}
-                    stroke='#FFF'
-                    strokeWidth={0.5}
-                  />
-                </g>
-              );
-            })
-          }
-          {
             hoverData
               ? (World as any).features.filter((d: any) => d.properties.ISO3 === data[data.findIndex((el: DataType) => el['Country or Area'] === hoverData?.country)]['Alpha-3 code-1']).map((d: any) => (
                 <G
@@ -335,7 +308,34 @@ export const UnivariateMap = (props: Props) => {
                   }
                 </G>
               )) : null
-            }
+          }
+          {
+            showProjectLocations
+            && projectCoordinatesData.map((d, i: number) => {
+              // const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.Region) !== -1;
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Lead Country']) !== -1;
+
+              const point = projection([d.Longitude, d.Latitude]) as [number, number];
+              return (
+                <g
+                  key={i}
+                  pointerEvents='none'
+                  // opacity={regionOpacity && countryOpacity ? 0.8 : 0.1}
+                  opacity={countryOpacity ? 0.8 : 0.1}
+                >
+                  <circle
+                    key={i}
+                    cx={point[0]}
+                    cy={point[1]}
+                    r='2px'
+                    fill={COLOR_SCALES.Categorical[6]}
+                    stroke='#FFF'
+                    strokeWidth={0.5}
+                  />
+                </g>
+              );
+            })
+          }
         </g>
       </svg>
       <LegendEl>
