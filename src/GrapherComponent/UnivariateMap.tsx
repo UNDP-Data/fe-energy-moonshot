@@ -260,11 +260,16 @@ export const UnivariateMap = (props: Props) => {
           {
             showProjectLocations
             && projectCoordinatesData.map((d, i: number) => {
+              // const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.Region) !== -1;
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Lead Country']) !== -1;
+
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
-                  opacity={0.8}
+                  pointerEvents='none'
+                  // opacity={regionOpacity && countryOpacity ? 0.8 : 0.1}
+                  opacity={countryOpacity ? 0.8 : 0.1}
                 >
                   <circle
                     key={i}
