@@ -196,6 +196,15 @@ const App = () => {
 
   const [state, dispatch] = useReducer(Reducer, initialState);
 
+  const indicatorsToExclude = [
+    'HA directly impacted',
+    'People indirectly benefiting',
+    'Tonnes of CO2 emissions reduced in agriculture and forestry',
+    'Tonnes of CO2-eq emissions reduced from buildings, cities, industries and appliances',
+    'MJ of energy saved through improved efficiency',
+    'MW of renewable energy capacity installed',
+  ];
+
   const updateSelectedRegions = (selectedRegions: string[]) => {
     dispatch({
       type: 'UPDATE_SELECTED_REGIONS',
@@ -267,7 +276,7 @@ const App = () => {
         setProjectCoordinatesData(projectCoordinates);
         setCountryList(countryData.map((d) => d['Country or Area']));
         setRegionList(uniqBy(countryData.filter((d) => d['Group 2'] !== undefined), (d) => d['Group 2']).map((d) => d['Group 2']));
-        setIndicatorsList(indicatorMetaData);
+        setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
   }, []);
   return (
