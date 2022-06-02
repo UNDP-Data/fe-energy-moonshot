@@ -63,6 +63,7 @@ export const UnivariateMap = (props: Props) => {
     xAxisIndicator,
     selectedCountries,
     selectedRegions,
+    showProjectLocations,
     updateSelectedCountries,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
@@ -257,7 +258,8 @@ export const UnivariateMap = (props: Props) => {
             })
           }
           {
-            projectCoordinatesData.map((d, i: number) => {
+            showProjectLocations
+            && projectCoordinatesData.map((d, i: number) => {
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
