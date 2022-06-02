@@ -81,7 +81,9 @@ export interface CtxDataType {
   selectedRegions: string;
   selectedCountries: string;
   xAxisIndicator: string;
+  showProjectLocations: boolean;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
+  updateShowProjectLocations: (_d: boolean) => void;
 }

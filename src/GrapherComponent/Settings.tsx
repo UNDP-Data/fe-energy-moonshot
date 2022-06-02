@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Select } from 'antd';
+import { Select, Checkbox } from 'antd';
 import domtoimage from 'dom-to-image';
 import { CtxDataType, IndicatorMetaDataType } from '../Types';
 import Context from '../Context/Context';
@@ -68,6 +68,20 @@ const ButtonEl = styled.div`
   }
 `;
 
+const CheckboxContainer = styled.div`
+  display: inline;
+  @media (max-width: 960px) {
+    display: flex;
+  }  
+`;
+
+const CheckboxEl = styled.div`
+  margin: 1rem 0;
+  @media (max-width: 960px) {
+    margin: 0 0.5rem;
+  }  
+`;
+
 export const Settings = (props: Props) => {
   const {
     indicators,
@@ -76,8 +90,10 @@ export const Settings = (props: Props) => {
   const {
     xAxisIndicator,
     selectedRegions,
+    showProjectLocations,
     updateXAxisIndicator,
     updateSelectedRegions,
+    updateShowProjectLocations,
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
@@ -137,6 +153,13 @@ export const Settings = (props: Props) => {
             }
             </Select>
           </DropdownEl>
+        </div>
+        <div>
+          <CheckboxContainer>
+            <CheckboxEl>
+              <Checkbox checked={showProjectLocations} onChange={(e) => { updateShowProjectLocations(e.target.checked); }}>Show project locations</Checkbox>
+            </CheckboxEl>
+          </CheckboxContainer>
         </div>
       </FiltersEl>
       <ButtonEl>

@@ -190,6 +190,7 @@ const App = () => {
     selectedRegions: [],
     selectedCountries: [],
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
+    showProjectLocations: false,
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -212,6 +213,13 @@ const App = () => {
     dispatch({
       type: 'UPDATE_X_AXIS_INDICATOR',
       payload: xAxisIndicator,
+    });
+  };
+
+  const updateShowProjectLocations = (showProjectLocations: boolean) => {
+    dispatch({
+      type: 'UPDATE_SHOW_PROJECT_LOCATIONS',
+      payload: showProjectLocations,
     });
   };
 
@@ -272,6 +280,7 @@ const App = () => {
                   updateSelectedRegions,
                   updateSelectedCountries,
                   updateXAxisIndicator,
+                  updateShowProjectLocations,
                 }}
               >
                 <GrapherComponent
