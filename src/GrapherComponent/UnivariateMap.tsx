@@ -177,40 +177,46 @@ export const UnivariateMap = (props: Props) => {
                       : regionOpacity && countryOpacity ? 1 : 0.1
                   }
                   onMouseEnter={(event) => {
-                    setHoverData({
-                      country: d['Country or Area'],
-                      continent: d['Group 1'],
-                      peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
-                      peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                      emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
-                      grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
-                      glExpenses: d.indicators.filter((ind) => ind.indicator === 'GL Expenses')[0].value,
-                      coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
-                      xPosition: event.clientX,
-                      yPosition: event.clientY,
-                    });
+                    if (regionOpacity) {
+                      setHoverData({
+                        country: d['Country or Area'],
+                        continent: d['Group 1'],
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
+                        peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
+                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
+                        glExpenses: d.indicators.filter((ind) => ind.indicator === 'GL Expenses')[0].value,
+                        coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
+                        xPosition: event.clientX,
+                        yPosition: event.clientY,
+                      });
+                    }
                   }}
                   onMouseMove={(event) => {
-                    setHoverData({
-                      country: d['Country or Area'],
-                      continent: d['Group 1'],
-                      peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
-                      peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                      emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
-                      grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
-                      glExpenses: d.indicators.filter((ind) => ind.indicator === 'GL Expenses')[0].value,
-                      coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
-                      xPosition: event.clientX,
-                      yPosition: event.clientY,
-                    });
+                    if (regionOpacity) {
+                      setHoverData({
+                        country: d['Country or Area'],
+                        continent: d['Group 1'],
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
+                        peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
+                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
+                        glExpenses: d.indicators.filter((ind) => ind.indicator === 'GL Expenses')[0].value,
+                        coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
+                        xPosition: event.clientX,
+                        yPosition: event.clientY,
+                      });
+                    }
                   }}
                   onMouseLeave={() => {
                     setHoverData(undefined);
                   }}
                   onClick={(e) => {
-                    updateSelectedCountries(d['Country or Area']);
-                    e.stopPropagation();
-                    e.nativeEvent.stopImmediatePropagation();
+                    if (regionOpacity) {
+                      updateSelectedCountries(d['Country or Area']);
+                      e.stopPropagation();
+                      e.nativeEvent.stopImmediatePropagation();
+                    }
                   }}
                 >
                   {
