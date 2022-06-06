@@ -106,11 +106,15 @@ export const UnivariateMap = (props: Props) => {
           {
             (World as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code-1'] === d.properties.ISO3);
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
+
               if ((index !== -1) || d.properties.NAME === 'Antarctica') return null;
               return (
                 <g
                   key={i}
-                  opacity={!selectedColor ? 1 : 0.3}
+                  // opacity={!selectedColor ? 1 : 0.3}
+                  opacity={regionOpacity && countryOpacity ? 1 : 0.2}
                   onClick={() => {
                     updateSelectedCountries('');
                   }}
