@@ -96,7 +96,7 @@ export const Settings = (props: Props) => {
     updateShowProjectLocations,
   } = useContext(Context) as CtxDataType;
 
-  const options = indicators.filter((d) => d.Map).map((d) => d.IndicatorLabelTable);
+  const options = indicators.filter((d) => d.Map).map((d) => d.Indicator);
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
