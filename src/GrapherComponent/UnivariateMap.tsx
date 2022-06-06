@@ -113,8 +113,7 @@ export const UnivariateMap = (props: Props) => {
               return (
                 <g
                   key={i}
-                  // opacity={!selectedColor ? 1 : 0.3}
-                  opacity={regionOpacity && countryOpacity ? 1 : 0.2}
+                  opacity={regionOpacity && countryOpacity && !selectedColor ? 1 : 0.2}
                   onClick={() => {
                     updateSelectedCountries('');
                   }}
