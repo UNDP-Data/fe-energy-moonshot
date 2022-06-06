@@ -39,6 +39,12 @@ export const Cards = (props: Props) => {
     selectedRegions,
   } = useContext(Context) as CtxDataType;
 
+  const formatData = (d: undefined | number) => {
+    if (d === undefined) return d;
+
+    if (d < 1000000) return format(',')(parseFloat(d.toFixed(2))).replace(',', ' ');
+    return format('.3s')(d).replace('G', 'B');
+  };
   const relevantData = () => {
     if (selectedCountries.length > 0) {
       return data.filter((d) => d['Country or Area'] === selectedCountries);
@@ -59,21 +65,21 @@ export const Cards = (props: Props) => {
       <Card>
         People directly benefiting:
         <br />
-        <MetricNumber>{ format(',')(cardData['People directly benefiting']) }</MetricNumber>
+        <MetricNumber>{ formatData(cardData['People directly benefiting']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
       <Card>
-        Emissions reduced:
+        Emissions reduced (tonnes):
         <br />
-        <MetricNumber>{ format(',.0f')(cardData['Emissions reduced']) }</MetricNumber>
+        <MetricNumber>{ formatData(cardData['Emissions reduced']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
       <Card>
-        Total spending:
+        Total spending (USD):
         <br />
-        <MetricNumber>{ format(',')(cardData['Total spending']) }</MetricNumber>
+        <MetricNumber>{ formatData(cardData['Total spending']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
