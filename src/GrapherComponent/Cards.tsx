@@ -14,7 +14,7 @@ interface Props {
 const Wrapper = styled.div`
     display: flex;
     gap: 1%;
-    margin: 0 1em;
+    margin-bottom: 1em;
 `;
 
 const Card = styled.div`

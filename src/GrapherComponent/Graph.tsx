@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { DataType, IndicatorMetaDataType, ProjectCoordinateDataType } from '../Types';
-import { Cards } from './Cards';
 import { UnivariateMap } from './UnivariateMap';
 
 interface Props {
@@ -36,9 +35,6 @@ export const Graph = (props: Props) => {
 
   return (
     <El id='graph-node' fullWidth={fullWidth}>
-      <Cards
-        data={data}
-      />
       <UnivariateMap
         data={data}
         projectCoordinatesData={projectCoordinatesData}

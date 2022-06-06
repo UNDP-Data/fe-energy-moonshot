@@ -5,6 +5,7 @@ import {
   ProjectCoordinateDataType,
 } from '../Types';
 import { Logo } from '../Icons';
+import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
 
@@ -86,6 +87,9 @@ export const GrapherComponent = (props: Props) => {
             </div>
           </TitleEl>
         </HeadingEl>
+        <Cards
+          data={data}
+        />
         <RootEl>
           <GraphEl>
             <Settings
