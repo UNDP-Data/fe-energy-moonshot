@@ -149,10 +149,10 @@ export const Tooltip = (props: Props) => {
           </RowEl>
           <RowEl>
             <RowTitleEl>
-              GL Expenses (USD):
+              Expenses (USD):
             </RowTitleEl>
             <RowValue>
-              {formatData(data.glExpenses)}
+              {formatData(data.expenses)}
             </RowValue>
           </RowEl>
           <RowEl>

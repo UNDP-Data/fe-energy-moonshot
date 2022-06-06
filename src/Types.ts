@@ -79,7 +79,7 @@ export interface HoverDataType {
   peopleIndirectlyBenefiting: undefined | number;
   emissionsReduced: undefined | number;
   grantAmount: undefined | number;
-  glExpenses: undefined | number;
+  expenses: undefined | number;
   coFinancing: undefined | number;
   xPosition: number;
   yPosition: number;
