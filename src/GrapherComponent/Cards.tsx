@@ -77,7 +77,7 @@ export const Cards = (props: Props) => {
         { cardData.geography }
       </Card>
       <Card>
-        Total spending (USD):
+        Total grant amount (USD):
         <br />
         <MetricNumber>{ formatData(cardData['Total spending']) }</MetricNumber>
         <br />
