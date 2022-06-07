@@ -76,7 +76,6 @@ export interface HoverDataType {
   country: string;
   continent: string;
   peopleDirectlyBenefiting: undefined | number;
-  peopleIndirectlyBenefiting: undefined | number;
   emissionsReduced: undefined | number;
   grantAmount: undefined | number;
   expenses: undefined | number;

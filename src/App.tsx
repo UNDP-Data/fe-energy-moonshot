@@ -202,7 +202,6 @@ const App = () => {
     'Tonnes of CO2 emissions reduced in agriculture and forestry',
     'Tonnes of CO2-eq emissions reduced from buildings, cities, industries and appliances',
     'MJ of energy saved through improved efficiency',
-    'MW of renewable energy capacity installed',
   ];
 
   const updateSelectedRegions = (selectedRegions: string[]) => {

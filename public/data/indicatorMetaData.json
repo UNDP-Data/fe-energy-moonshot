@@ -256,8 +256,8 @@
     {
       "Pillar": [],
       "Goal": [],
-      "Indicator": "MW of renewable energy capacity installed",
-      "IndicatorLabelTable": "MW of renewable energy capacity installed",
+      "Indicator": "Renewable energy capacity installed",
+      "IndicatorLabelTable": "Renewable energy capacity installed (MW)",
       "IndicatorDescription": "MW of renewable energy capacity installed",
       "DataKey": "MW of renewable energy capacity installed",
       "DataSourceName": "???",
@@ -266,18 +266,20 @@
       "LabelPrefix": "",
       "LabelFormat": "",
       "BinningRange5": [
+        1,
+        10,
+        100,
         1000,
         10000,
-        100000,
-        1000000,
-        1000000000
+        100000
       ],
       "BinningRangeLarge": [
-        100000,
-        1000000,
-        10000000,
-        100000000,
-        1000000000
+        1,
+        10,
+        100,
+        1000,
+        10000,
+        100000
       ],
       "Categories": [],
       "CategorizeByRanking": false,
