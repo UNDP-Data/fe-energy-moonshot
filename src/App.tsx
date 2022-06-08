@@ -234,9 +234,9 @@ const App = () => {
 
   useEffect(() => {
     queue()
-      .defer(json, './data/resultsByCountry.json')
-      .defer(json, './data/indicatorMetaData.json')
-      .defer(json, './data/projectCoordinates.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/resultsByCountry.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/indicatorMetaData.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projectCoordinates.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
       .await((err: any, resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupData: CountryGroupDataType[]) => {
         if (err) throw err;
