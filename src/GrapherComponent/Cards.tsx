@@ -24,10 +24,16 @@ const Card = styled.div`
   border-radius: 10px;
 `;
 
-const MetricNumber = styled.span`
+const MetricNumber = styled.div`
   font-weight: bold;
   font-size: 2em;
   line-height: 1.5em;
+`;
+
+const MetricShare = styled.div`
+  margin-bottom: 0.5em;
+  margin-top: -0.5em;
+  font-style: italic;
 `;
 
 export const Cards = (props: Props) => {
@@ -60,18 +66,30 @@ export const Cards = (props: Props) => {
   const cardData = cardMetrics.map((m) => ({
     metricLabel: m.metriclabel,
     metricValue: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
+    globalTotal: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
   }));
   return (
     <Wrapper>
       {
         cardData.map((d) => (
           <Card>
-            {d.metricLabel}
-            :
-            <br />
-            <MetricNumber>{formatData(d.metricValue)}</MetricNumber>
-            <br />
-            { selectedGeography }
+            <h4>
+              {d.metricLabel}
+              :
+            </h4>
+            <MetricNumber>{d.metricValue === undefined ? 'N/A' : formatData(d.metricValue)}</MetricNumber>
+            {
+              selectedGeography !== 'Global' && d.metricValue !== undefined && (
+              <MetricShare>
+                (
+                {format('.1%')(d.metricValue / d.globalTotal)}
+                &nbsp;of total portfolio)
+              </MetricShare>
+              )
+            }
+            <div>
+              { selectedGeography }
+            </div>
           </Card>
         ))
       }
