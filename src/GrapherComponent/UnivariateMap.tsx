@@ -78,7 +78,6 @@ export const UnivariateMap = (props: Props) => {
   const valueArray = xIndicatorMetaData.IsCategorical ? xIndicatorMetaData.Categories : xIndicatorMetaData.BinningRangeLarge.length === 0 ? xIndicatorMetaData.BinningRange5 : xIndicatorMetaData.BinningRangeLarge;
   const colorArray = xIndicatorMetaData.IsDivergent ? COLOR_SCALES.Divergent[`Color${(valueArray.length + 1) as 4 | 5 | 7 | 9 | 11}`] : COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
   const colorScale = xIndicatorMetaData.IsCategorical ? scaleOrdinal<number, string>().domain(valueArray).range(colorArray) : scaleThreshold<number, string>().domain(valueArray).range(colorArray);
-  console.log(valueArray);
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -191,6 +190,7 @@ export const UnivariateMap = (props: Props) => {
                         grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
                         expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
                         coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
+                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
@@ -207,6 +207,7 @@ export const UnivariateMap = (props: Props) => {
                         grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
                         expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
                         coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
+                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
