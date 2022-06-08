@@ -45,52 +45,36 @@ export const Cards = (props: Props) => {
     if (d < 1000000) return format(',')(parseFloat(d.toFixed(2))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
-  const relevantData = () => {
-    if (selectedCountries.length > 0) {
-      return data.filter((d) => d['Country or Area'] === selectedCountries);
-    }
-    if (selectedRegions.length > 0) {
-      return data.filter((d) => d['Group 2'] === selectedRegions);
-    }
-    return data;
-  };
-  const cardData = {
-    geography: selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global',
-    'People directly benefiting': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'People directly benefiting')[0].value),
-    'Emissions reduced': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
-    'Total spending': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant Amount')[0].value),
-    'Number of projects': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of projects')[0].value),
-  };
+
+  const relevantData = selectedCountries.length > 0
+    ? data.filter((d) => d['Country or Area'] === selectedCountries)
+    : selectedRegions.length > 0
+      ? data.filter((d) => d['Group 2'] === selectedRegions) : data;
+  const selectedGeography = selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global';
+  const cardMetrics = [
+    { metriclabel: 'People directly benefiting', metricName: 'People directly benefiting' },
+    { metriclabel: 'Emissions reduced (tonnes)', metricName: 'Tonnes of CO2 emissions reduced' },
+    { metriclabel: 'Total grant amount (USD)', metricName: 'Grant Amount' },
+    { metriclabel: 'Number of projects', metricName: 'Number of projects' },
+  ];
+  const cardData = cardMetrics.map((m) => ({
+    metricLabel: m.metriclabel,
+    metricValue: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
+  }));
   return (
     <Wrapper>
-      <Card>
-        People directly benefiting:
-        <br />
-        <MetricNumber>{ formatData(cardData['People directly benefiting']) }</MetricNumber>
-        <br />
-        { cardData.geography }
-      </Card>
-      <Card>
-        Emissions reduced (tonnes):
-        <br />
-        <MetricNumber>{ formatData(cardData['Emissions reduced']) }</MetricNumber>
-        <br />
-        { cardData.geography }
-      </Card>
-      <Card>
-        Total grant amount (USD):
-        <br />
-        <MetricNumber>{ formatData(cardData['Total spending']) }</MetricNumber>
-        <br />
-        { cardData.geography }
-      </Card>
-      <Card>
-        Total number of projects:
-        <br />
-        <MetricNumber>{ formatData(cardData['Number of projects']) }</MetricNumber>
-        <br />
-        { cardData.geography }
-      </Card>
+      {
+        cardData.map((d) => (
+          <Card>
+            {d.metricLabel}
+            :
+            <br />
+            <MetricNumber>{formatData(d.metricValue)}</MetricNumber>
+            <br />
+            { selectedGeography }
+          </Card>
+        ))
+      }
     </Wrapper>
   );
 };
