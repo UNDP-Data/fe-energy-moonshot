@@ -30,7 +30,7 @@ const LegendEl = styled.div`
   padding: 1rem 1rem 0 1rem;
   background-color:rgba(255,255,255,0.1);
   box-shadow: var(--shadow);
-  width: 32rem;
+  width: 44rem;
   margin-left: 1rem;
   margin-top: -2rem;
   position: relative;
@@ -78,7 +78,7 @@ export const UnivariateMap = (props: Props) => {
   const valueArray = xIndicatorMetaData.IsCategorical ? xIndicatorMetaData.Categories : xIndicatorMetaData.BinningRangeLarge.length === 0 ? xIndicatorMetaData.BinningRange5 : xIndicatorMetaData.BinningRangeLarge;
   const colorArray = xIndicatorMetaData.IsDivergent ? COLOR_SCALES.Divergent[`Color${(valueArray.length + 1) as 4 | 5 | 7 | 9 | 11}`] : COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
   const colorScale = xIndicatorMetaData.IsCategorical ? scaleOrdinal<number, string>().domain(valueArray).range(colorArray) : scaleThreshold<number, string>().domain(valueArray).range(colorArray);
-
+  console.log(valueArray);
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -166,7 +166,8 @@ export const UnivariateMap = (props: Props) => {
               const index = (World as any).features.findIndex((el: any) => d['Alpha-3 code-1'] === el.properties.ISO3);
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
               const val = indicatorIndex === -1 ? undefined : d.indicators[indicatorIndex].value;
-              const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
+              // const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
+              const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : '#f5f9fe';
 
               const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
@@ -349,7 +350,7 @@ export const UnivariateMap = (props: Props) => {
       </svg>
       <LegendEl>
         <TitleEl>{xIndicatorMetaData.IndicatorLabelTable}</TitleEl>
-        <svg width='100%' viewBox={`0 0 ${320} ${30}`}>
+        <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {
               valueArray.map((d, i) => (
@@ -398,6 +399,32 @@ export const UnivariateMap = (props: Props) => {
                   </g>
                 )
             }
+            <g>
+              <g
+                key='null'
+                onMouseOver={() => { setSelectedColor('#f5f9fe'); }}
+                onMouseLeave={() => { setSelectedColor(undefined); }}
+                style={{ cursor: 'pointer' }}
+              >
+                <rect
+                  x={340}
+                  y={1}
+                  width={38}
+                  height={8}
+                  fill='#f5f9fe'
+                  stroke={selectedColor === '#f5f9fe' ? '#212121' : '#f5f9fe'}
+                />
+                <text
+                  x={360}
+                  y={25}
+                  textAnchor='middle'
+                  fontSize={12}
+                  fill='#212121'
+                >
+                  Missing
+                </text>
+              </g>
+            </g>
           </g>
         </svg>
       </LegendEl>
