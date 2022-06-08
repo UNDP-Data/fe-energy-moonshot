@@ -118,7 +118,7 @@ export const Tooltip = (props: Props) => {
               People directly benefiting:
             </RowTitleEl>
             <RowValue>
-              {formatData(data.peopleDirectlyBenefiting)}
+              {data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting)}
             </RowValue>
           </RowEl>
           {/* <RowEl>
@@ -134,7 +134,7 @@ export const Tooltip = (props: Props) => {
               CO2 emissions reduced (tonnes):
             </RowTitleEl>
             <RowValue>
-              {formatData(data.emissionsReduced)}
+              {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
             </RowValue>
           </RowEl>
         </MetricGrp>
@@ -144,7 +144,7 @@ export const Tooltip = (props: Props) => {
               Grant Amount (USD):
             </RowTitleEl>
             <RowValue>
-              {formatData(data.grantAmount)}
+              {data.grantAmount === undefined ? 'N/A' : formatData(data.grantAmount)}
             </RowValue>
           </RowEl>
           <RowEl>
@@ -152,7 +152,7 @@ export const Tooltip = (props: Props) => {
               Expenses (USD):
             </RowTitleEl>
             <RowValue>
-              {formatData(data.expenses)}
+              {data.expenses === undefined ? 'N/A' : formatData(data.expenses)}
             </RowValue>
           </RowEl>
           <RowEl>
@@ -160,7 +160,7 @@ export const Tooltip = (props: Props) => {
               Co-Financing (USD):
             </RowTitleEl>
             <RowValue>
-              {formatData(data.coFinancing)}
+              {data.coFinancing === undefined ? 'N/A' : formatData(data.coFinancing)}
             </RowValue>
           </RowEl>
         </MetricGrp>
