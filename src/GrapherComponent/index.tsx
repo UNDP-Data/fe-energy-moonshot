@@ -68,6 +68,10 @@ const H2 = styled.div`
   }
 `;
 
+const Note = styled.p`
+  margin-top: 1em;
+`;
+
 export const GrapherComponent = (props: Props) => {
   const {
     data,
@@ -83,7 +87,7 @@ export const GrapherComponent = (props: Props) => {
             <Logo height={50} />
             <div>
               <H1>Sustainable Energy Hub</H1>
-              <H2>Explore All Data</H2>
+              <H2>Explore All Data (1991 - 2022)</H2>
             </div>
           </TitleEl>
         </HeadingEl>
@@ -104,6 +108,7 @@ export const GrapherComponent = (props: Props) => {
             />
           </GraphEl>
         </RootEl>
+        <Note>Note: this map presents data from PIMS+ and Transparency Portal</Note>
       </Container>
     </>
   );
