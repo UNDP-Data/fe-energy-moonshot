@@ -82,7 +82,7 @@ export const GrapherComponent = (props: Props) => {
           <TitleEl>
             <Logo height={50} />
             <div>
-              <H1>Energy Hub Dashboard</H1>
+              <H1>Sustainable Energy Hub</H1>
               <H2>Explore All Data</H2>
             </div>
           </TitleEl>
