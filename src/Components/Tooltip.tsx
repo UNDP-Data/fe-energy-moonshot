@@ -164,6 +164,16 @@ export const Tooltip = (props: Props) => {
             </RowValue>
           </RowEl>
         </MetricGrp>
+        <MetricGrp>
+          <RowEl>
+            <RowTitleEl>
+              Number of projects:
+            </RowTitleEl>
+            <RowValue>
+              {data.numberProjects === undefined ? 'N/A' : formatData(data.numberProjects)}
+            </RowValue>
+          </RowEl>
+        </MetricGrp>
       </TooltipBody>
     </TooltipEl>
   );

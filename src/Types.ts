@@ -80,6 +80,7 @@ export interface HoverDataType {
   grantAmount: undefined | number;
   expenses: undefined | number;
   coFinancing: undefined | number;
+  numberProjects: undefined | number;
   xPosition: number;
   yPosition: number;
 }

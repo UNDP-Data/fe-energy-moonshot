@@ -190,7 +190,7 @@ export const UnivariateMap = (props: Props) => {
                         grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
                         expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
                         coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
-                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                        numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
@@ -207,7 +207,7 @@ export const UnivariateMap = (props: Props) => {
                         grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
                         expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
                         coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
-                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                        numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
