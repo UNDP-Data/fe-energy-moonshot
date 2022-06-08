@@ -59,6 +59,7 @@ export const Cards = (props: Props) => {
     'People directly benefiting': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'People directly benefiting')[0].value),
     'Emissions reduced': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
     'Total spending': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant Amount')[0].value),
+    'Number of projects': sumBy(relevantData(), (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of projects')[0].value),
   };
   return (
     <Wrapper>
@@ -80,6 +81,13 @@ export const Cards = (props: Props) => {
         Total grant amount (USD):
         <br />
         <MetricNumber>{ formatData(cardData['Total spending']) }</MetricNumber>
+        <br />
+        { cardData.geography }
+      </Card>
+      <Card>
+        Total number of projects:
+        <br />
+        <MetricNumber>{ formatData(cardData['Number of projects']) }</MetricNumber>
         <br />
         { cardData.geography }
       </Card>
