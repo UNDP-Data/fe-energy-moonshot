@@ -4,7 +4,6 @@ import {
   IndicatorMetaDataType,
   ProjectCoordinateDataType,
 } from '../Types';
-import { Logo } from '../Icons';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
@@ -84,9 +83,8 @@ export const GrapherComponent = (props: Props) => {
       <Container>
         <HeadingEl>
           <TitleEl>
-            <Logo height={50} />
             <div>
-              <H1>Sustainable Energy Hub</H1>
+              <H1>UN Energy-Related Projects</H1>
               <H2>Explore All Data (1991 - 2022)</H2>
             </div>
           </TitleEl>
