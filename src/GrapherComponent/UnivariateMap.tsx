@@ -168,8 +168,8 @@ export const UnivariateMap = (props: Props) => {
               // const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : '#f5f9fe';
 
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d['Group 2'];
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
 
               return (
                 <g
