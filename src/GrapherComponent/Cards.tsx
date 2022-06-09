@@ -24,16 +24,17 @@ const Card = styled.div`
   border-radius: 10px;
 `;
 
-const MetricNumber = styled.div`
+const MetricNumber = styled.span`
   font-weight: bold;
   font-size: 2em;
   line-height: 1.5em;
+  margin-right: 10px;
 `;
 
-const MetricShare = styled.div`
+const MetricShare = styled.span`
   margin-bottom: 0.5em;
   margin-top: -0.5em;
-  font-style: italic;
+  font-size: 1.4rem;
 `;
 
 export const Cards = (props: Props) => {
@@ -78,15 +79,13 @@ export const Cards = (props: Props) => {
               :
             </h4>
             <MetricNumber>{d.metricValue === undefined ? 'N/A' : formatData(d.metricValue)}</MetricNumber>
-            {
-              selectedGeography !== 'Global' && d.metricValue !== undefined && (
-              <MetricShare>
-                (
-                {format('.1%')(d.metricValue / d.globalTotal)}
-                &nbsp;of total portfolio)
-              </MetricShare>
-              )
-            }
+            <MetricShare>
+              {
+                selectedGeography !== 'Global' && d.metricValue !== undefined
+                  ? `(${format('.1%')(d.metricValue / d.globalTotal)} of total portfolio)`
+                  : null
+              }
+            </MetricShare>
             <div>
               { selectedGeography }
             </div>
