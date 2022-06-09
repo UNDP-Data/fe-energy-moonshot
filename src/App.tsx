@@ -190,6 +190,7 @@ const App = () => {
   const initialState = {
     selectedRegions: [],
     selectedCountries: [],
+    selectedProjects: undefined,
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
     showProjectLocations: false,
   };
@@ -215,6 +216,13 @@ const App = () => {
     dispatch({
       type: 'UPDATE_SELECTED_COUNTRIES',
       payload: selectedCountries,
+    });
+  };
+
+  const updateSelectedProjects = (selectedProjects: string) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_PROJECTS',
+      payload: selectedProjects,
     });
   };
 
@@ -290,6 +298,7 @@ const App = () => {
                   ...state,
                   updateSelectedRegions,
                   updateSelectedCountries,
+                  updateSelectedProjects,
                   updateXAxisIndicator,
                   updateShowProjectLocations,
                 }}

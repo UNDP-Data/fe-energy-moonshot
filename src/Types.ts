@@ -55,7 +55,7 @@ export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
 }
 
 export interface ProjectCoordinateDataType {
-  'PIMS ID': string,
+  'PIMS ID': number,
   'Lead Country': string,
   'Region': string,
   'Participating Countries': string,
@@ -88,10 +88,12 @@ export interface HoverDataType {
 export interface CtxDataType {
   selectedRegions: string;
   selectedCountries: string;
+  selectedProjects: string;
   xAxisIndicator: string;
   showProjectLocations: boolean;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
+  updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
   updateShowProjectLocations: (_d: boolean) => void;
 }

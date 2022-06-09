@@ -63,8 +63,10 @@ export const UnivariateMap = (props: Props) => {
     xAxisIndicator,
     selectedCountries,
     selectedRegions,
+    selectedProjects,
     showProjectLocations,
     updateSelectedCountries,
+    updateSelectedProjects,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
@@ -106,7 +108,7 @@ export const UnivariateMap = (props: Props) => {
             (World as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code-1'] === d.properties.ISO3);
               const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Country or Area']) !== -1;
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
               if ((index !== -1) || d.properties.NAME === 'Antarctica') return null;
               return (
@@ -323,16 +325,56 @@ export const UnivariateMap = (props: Props) => {
           {
             showProjectLocations
             && projectCoordinatesData.map((d, i: number) => {
-              // const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.Region) !== -1;
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries.indexOf(d['Lead Country']) !== -1;
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
+              // const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
+              const projectOpacity = selectedProjects === '' || selectedProjects === d['PIMS ID'].toString();
 
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
-                  pointerEvents='none'
                   // opacity={regionOpacity && countryOpacity ? 0.8 : 0.1}
-                  opacity={countryOpacity ? 0.8 : 0.1}
+                  // opacity={projectOpacity ? 0.8 : countryOpacity ? 0.8 : 0.1}
+                  opacity={projectOpacity ? 0.8 : 0.1}
+                  onMouseEnter={() => {
+                    updateSelectedProjects(d['PIMS ID'].toString());
+                    if (regionOpacity) {
+                      // setHoverData({
+                      //   project name,
+                      //   donor,
+                      //   project timeframe
+                      //   project budget
+                      //   project expenses
+                      //   status
+                      //   grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
+                      //   expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
+                      //   xPosition: event.clientX,
+                      //   yPosition: event.clientY,
+                      // });
+                    }
+                  }}
+                  onMouseMove={() => {
+                    updateSelectedProjects(d['PIMS ID'].toString());
+                    // if (regionOpacity) {
+                    //   setHoverData({
+                    //     country: d['Country or Area'],
+                    //     continent: d['Group 1'],
+                    //     peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
+                    //     // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
+                    //     emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                    //     grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
+                    //     expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
+                    //     coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
+                    //     numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                    //     xPosition: event.clientX,
+                    //     yPosition: event.clientY,
+                    //   });
+                    // }
+                  }}
+                  onMouseLeave={() => {
+                    updateSelectedProjects('');
+                    // setHoverData(undefined);
+                  }}
                 >
                   <circle
                     key={i}
