@@ -56,6 +56,10 @@ export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
 
 export interface ProjectCoordinateDataType {
   'PIMS ID': number,
+  'Short Title': string,
+  'Full Title': string,
+  'Sources of Funds': string,
+  'Programme Period': string,
   'Lead Country': string,
   'Region': string,
   'Participating Countries': string,
@@ -65,10 +69,6 @@ export interface ProjectCoordinateDataType {
   'Grant Amount': undefined | number,
   'GL Expenses': undefined | number,
   'Co-Financing': undefined | number,
-  'people directly benefiting': undefined | number;
-  'people indirectly benefiting': undefined | number;
-  'tonnes of CO2-eq emissions avoided or reduced': undefined | number,
-  'km of coast strengthened and/or better managed for climate change': undefined | number,
   'status': 'Completed' | 'Active'
 }
 
@@ -81,6 +81,17 @@ export interface HoverDataType {
   expenses: undefined | number;
   coFinancing: undefined | number;
   numberProjects: undefined | number;
+  xPosition: number;
+  yPosition: number;
+}
+
+export interface ProjectHoverDataType {
+  name: string,
+  donor: string,
+  timeframe: string,
+  status: string,
+  grantAmount: undefined | number;
+  expenses: undefined | number;
   xPosition: number;
   yPosition: number;
 }

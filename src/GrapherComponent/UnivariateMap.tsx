@@ -8,12 +8,13 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { scaleThreshold, scaleOrdinal } from 'd3-scale';
 import {
-  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectCoordinateDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectCoordinateDataType, ProjectHoverDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import World from '../Data/worldMap.json';
 import { COLOR_SCALES } from '../Constants';
 import { Tooltip } from '../Components/Tooltip';
+import { ProjectTooltip } from '../Components/ProjectTooltip';
 
 interface Props {
   data: DataType[];
@@ -70,6 +71,7 @@ export const UnivariateMap = (props: Props) => {
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
+  const [projectHoverData, setProjectHoverData] = useState<ProjectHoverDataType | undefined>(undefined);
   const queryParams = new URLSearchParams(window.location.search);
   const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960 ? 1280 : 960;
   const svgHeight = 678;
@@ -325,55 +327,48 @@ export const UnivariateMap = (props: Props) => {
           {
             showProjectLocations
             && projectCoordinatesData.map((d, i: number) => {
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
-              // const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
+              // const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
               const projectOpacity = selectedProjects === '' || selectedProjects === d['PIMS ID'].toString();
 
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
-                  // opacity={regionOpacity && countryOpacity ? 0.8 : 0.1}
-                  // opacity={projectOpacity ? 0.8 : countryOpacity ? 0.8 : 0.1}
-                  opacity={projectOpacity ? 0.8 : 0.1}
-                  onMouseEnter={() => {
+                  opacity={projectOpacity && countryOpacity ? 0.8 : 0.01}
+                  onMouseEnter={(event) => {
                     updateSelectedProjects(d['PIMS ID'].toString());
-                    if (regionOpacity) {
-                      // setHoverData({
-                      //   project name,
-                      //   donor,
-                      //   project timeframe
-                      //   project budget
-                      //   project expenses
-                      //   status
-                      //   grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
-                      //   expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
-                      //   xPosition: event.clientX,
-                      //   yPosition: event.clientY,
-                      // });
+                    if (countryOpacity) {
+                      setProjectHoverData({
+                        name: d['Short Title'],
+                        donor: d['Sources of Funds'],
+                        timeframe: d['Programme Period'],
+                        status: d.status,
+                        grantAmount: d['Grant Amount'],
+                        expenses: d['GL Expenses'],
+                        xPosition: event.clientX,
+                        yPosition: event.clientY,
+                      });
                     }
                   }}
-                  onMouseMove={() => {
+                  onMouseMove={(event) => {
                     updateSelectedProjects(d['PIMS ID'].toString());
-                    // if (regionOpacity) {
-                    //   setHoverData({
-                    //     country: d['Country or Area'],
-                    //     continent: d['Group 1'],
-                    //     peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
-                    //     // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                    //     emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
-                    //     grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant Amount')[0].value,
-                    //     expenses: d.indicators.filter((ind) => ind.indicator === 'Expenses')[0].value,
-                    //     coFinancing: d.indicators.filter((ind) => ind.indicator === 'Co-Financing')[0].value,
-                    //     numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
-                    //     xPosition: event.clientX,
-                    //     yPosition: event.clientY,
-                    //   });
-                    // }
+                    if (countryOpacity) {
+                      setProjectHoverData({
+                        name: d['Short Title'],
+                        donor: d['Sources of Funds'],
+                        timeframe: d['Programme Period'],
+                        status: d.status,
+                        grantAmount: d['Grant Amount'],
+                        expenses: d['GL Expenses'],
+                        xPosition: event.clientX,
+                        yPosition: event.clientY,
+                      });
+                    }
                   }}
                   onMouseLeave={() => {
                     updateSelectedProjects('');
-                    // setHoverData(undefined);
+                    setProjectHoverData(undefined);
                   }}
                 >
                   <circle
@@ -473,6 +468,9 @@ export const UnivariateMap = (props: Props) => {
       </LegendEl>
       {
         hoverData ? <Tooltip data={hoverData} /> : null
+      }
+      {
+        projectHoverData ? <ProjectTooltip data={projectHoverData} /> : null
       }
     </El>
   );
