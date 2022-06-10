@@ -24,7 +24,7 @@ const TooltipEl = styled.div<TooltipElProps>`
   word-wrap: break-word;
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
-  /* max-width: 24rem; */
+  max-width: 50rem;
   transform: ${(props) => `translate(${props.horizontalAlignment === 'left' ? '-100%' : '0%'},${props.verticalAlignment === 'top' ? '-100%' : '0%'})`};
 `;
 
@@ -107,7 +107,7 @@ export const ProjectTooltip = (props: Props) => {
               Donor:
             </RowTitleEl>
             <RowValue>
-              {data.donor}
+              {data.donor === undefined ? 'N/A' : data.donor}
             </RowValue>
           </RowEl>
           <RowEl>
@@ -115,7 +115,7 @@ export const ProjectTooltip = (props: Props) => {
               Timeframe:
             </RowTitleEl>
             <RowValue>
-              {data.timeframe}
+              {data.timeframe === undefined ? 'N/A' : data.timeframe}
             </RowValue>
           </RowEl>
           <RowEl>
@@ -123,7 +123,7 @@ export const ProjectTooltip = (props: Props) => {
               Status:
             </RowTitleEl>
             <RowValue>
-              {data.status}
+              {data.status === undefined ? 'N/A' : data.status}
             </RowValue>
           </RowEl>
         </MetricGrp>
