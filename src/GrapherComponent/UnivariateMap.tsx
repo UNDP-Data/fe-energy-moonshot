@@ -330,7 +330,6 @@ export const UnivariateMap = (props: Props) => {
               // const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
               const projectOpacity = selectedProjects === '' || selectedProjects === d['PIMS ID'].toString();
-
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g

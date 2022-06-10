@@ -190,7 +190,7 @@ const App = () => {
   const initialState = {
     selectedRegions: [],
     selectedCountries: [],
-    selectedProjects: undefined,
+    selectedProjects: '',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
     showProjectLocations: false,
   };
