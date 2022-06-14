@@ -98,6 +98,7 @@ export const Tooltip = (props: Props) => {
     return format('.3s')(d).replace('G', 'B');
   };
 
+  const tooltipRow = { label: 'People directly benefiting', metricName: 'peopleDirectlyBenefiting' };
   return (
     <TooltipEl x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
       <TooltipHead>
@@ -115,10 +116,10 @@ export const Tooltip = (props: Props) => {
         <MetricGrp>
           <RowEl>
             <RowTitleEl>
-              People directly benefiting:
+              {tooltipRow.label}
             </RowTitleEl>
             <RowValue>
-              {data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting)}
+              { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
             </RowValue>
           </RowEl>
           {/* <RowEl>
