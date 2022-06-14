@@ -19,7 +19,7 @@ export const INCOME_GROUPS = ['Low income', 'Lower middle income', 'Upper middle
 export const HDI_LEVELS = ['Low', 'Medium', 'High', 'Very High'];
 
 export const COLOR_SCALES = {
-  Null: '#FFF',
+  Null: '#fafaf8',
   Linear: {
     RedColor4: ['#ffffcc', '#a1dab4', '#41b6c4', '#225ea8'],
     RedColor5: ['#ffffcc', '#a1dab4', '#41b6c4', '#2c7fb8', '#253494'],
