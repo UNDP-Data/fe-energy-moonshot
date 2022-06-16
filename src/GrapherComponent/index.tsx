@@ -84,7 +84,7 @@ export const GrapherComponent = (props: Props) => {
         <HeadingEl>
           <TitleEl>
             <div>
-              <H1>UN Energy-Related Projects</H1>
+              <H1>UNDP Energy-Related Projects</H1>
               <H2>Explore All Data (1991 - 2022)</H2>
             </div>
           </TitleEl>
