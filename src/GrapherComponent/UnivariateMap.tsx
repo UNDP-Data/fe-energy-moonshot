@@ -86,7 +86,7 @@ export const UnivariateMap = (props: Props) => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
     const zoomBehaviour = zoom()
-      .scaleExtent([1, 6])
+      .scaleExtent([1, 12])
       .translateExtent([[-20, 0], [svgWidth + 20, svgHeight]])
       .on('zoom', ({ transform }) => {
         mapGSelect.attr('transform', transform);
