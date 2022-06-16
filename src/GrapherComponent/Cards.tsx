@@ -31,7 +31,7 @@ const MetricNumber = styled.span`
   margin-right: 10px;
 `;
 
-const MetricShare = styled.span`
+const MetricShare = styled.div`
   margin-bottom: 0.5em;
   margin-top: -0.5em;
   font-size: 1.4rem;
@@ -52,7 +52,6 @@ export const Cards = (props: Props) => {
     if (d < 1000000) return format(',')(parseFloat(d.toFixed(2))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
-
   const relevantData = selectedCountries.length > 0
     ? data.filter((d) => d['Country or Area'] === selectedCountries)
     : selectedRegions.length > 0
@@ -61,14 +60,22 @@ export const Cards = (props: Props) => {
   const cardMetrics = [
     { metriclabel: 'People directly benefiting', metricName: 'People directly benefiting' },
     { metriclabel: 'Emissions reduced (tonnes)', metricName: 'Tonnes of CO2 emissions reduced' },
+    { metriclabel: 'Renewable energy capacity installed (MW)', metricName: 'MW of renewable energy capacity installed' },
     { metriclabel: 'Total grant amount (USD)', metricName: 'Grant Amount' },
-    { metriclabel: 'Number of projects', metricName: 'Number of projects' },
   ];
+
   const cardData = cardMetrics.map((m) => ({
     metricLabel: m.metriclabel,
     metricValue: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
     globalTotal: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
   }));
+
+  cardData.push({
+    metricLabel: 'Number of countries',
+    metricValue: relevantData.length,
+    globalTotal: data.length,
+  });
+
   return (
     <Wrapper>
       {
@@ -81,7 +88,7 @@ export const Cards = (props: Props) => {
             <MetricNumber>{d.metricValue === undefined ? 'N/A' : formatData(d.metricValue)}</MetricNumber>
             <MetricShare>
               {
-                selectedGeography !== 'Global' && d.metricValue !== undefined
+                selectedGeography !== 'Global' && d.metricValue !== undefined && d.metricLabel !== 'Number of countries'
                   ? `(${format('.1%')(d.metricValue / d.globalTotal)} of total portfolio)`
                   : null
               }
