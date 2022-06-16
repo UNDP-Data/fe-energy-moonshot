@@ -22,6 +22,7 @@ const Card = styled.div`
   padding: 1em;
   background-color: rgb(242, 247, 255);
   border-radius: 10px;
+  height: 191px;
 `;
 
 const MetricNumber = styled.span`
