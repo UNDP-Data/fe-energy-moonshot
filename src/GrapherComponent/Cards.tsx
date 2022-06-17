@@ -15,6 +15,7 @@ const Wrapper = styled.div`
     display: flex;
     gap: 1%;
     margin-bottom: 1em;
+    flex-wrap: wrap;
 `;
 
 const Card = styled.div`
@@ -82,55 +83,65 @@ export const Cards = (props: Props) => {
   };
 
   return (
-    <Wrapper>
-      <Card>
-        <h4>People directly benefiting</h4>
-        <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
-        <div>
-          { selectedGeography }
-        </div>
-      </Card>
-      <Card>
-        <h4>Emissions reduced</h4>
-        <MetricNumber>
-          {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
-        </MetricNumber>
-        <div>
-          (equivalent to
-          {' '}
-          {formatData(cardData.treeEquivalent)}
-          {' '}
-          trees per year)
-        </div>
-        <div>
-          { selectedGeography }
-        </div>
-      </Card>
-      <Card>
-        <h4>Total grant amount (USD)</h4>
-        <div style={{ display: 'flex' }}>
-          <div>
-            Vertical Fund:
+    <>
+      <Wrapper>
+        <Card>
+          <h4>People directly benefiting</h4>
+          <div style={{ height: 20 }}>
             {' '}
-            <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
+          </div>
+          <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
+          <div>
+            { selectedGeography }
+          </div>
+        </Card>
+        <Card>
+          <h4>Total grant amount (USD)</h4>
+          <div style={{ display: 'flex' }}>
+            <div>
+              Vertical Fund:
+              {' '}
+              <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
+            </div>
+            <div>
+              Non-vertical fund:
+              {' '}
+              <MetricNumber>{cardData.grantAmountNonVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountNonVerticalFunds)}</MetricNumber>
+            </div>
           </div>
           <div>
-            Non-vertical fund:
-            {' '}
-            <MetricNumber>{cardData.grantAmountNonVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountNonVerticalFunds)}</MetricNumber>
+            { selectedGeography }
           </div>
-        </div>
-        <div>
-          { selectedGeography }
-        </div>
-      </Card>
-      <Card>
-        <h4>Number of countries</h4>
-        <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
-        <div>
-          { selectedGeography }
-        </div>
-      </Card>
-    </Wrapper>
+        </Card>
+        <Card>
+          <h4>Number of countries</h4>
+          <div style={{ height: 20 }}>
+            {' '}
+          </div>
+          <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
+          <div>
+            { selectedGeography }
+          </div>
+        </Card>
+      </Wrapper>
+      <Wrapper>
+        <Card>
+          <h4>Emissions reduced</h4>
+          <MetricNumber>
+            {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
+          </MetricNumber>
+          <div>
+            (equivalent to
+            {' '}
+            {formatData(cardData.treeEquivalent)}
+            {' '}
+            trees per year)
+          </div>
+          <div>
+            { selectedGeography }
+          </div>
+        </Card>
+      </Wrapper>
+    </>
   );
 };
