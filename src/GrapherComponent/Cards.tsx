@@ -49,7 +49,7 @@ export const Cards = (props: Props) => {
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
-    if (d < 1000000) return format(',')(parseFloat(d.toFixed(2))).replace(',', ' ');
+    if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
   const relevantData = selectedCountries.length > 0
