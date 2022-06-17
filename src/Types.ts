@@ -77,9 +77,12 @@ export interface HoverDataType {
   continent: string;
   peopleDirectlyBenefiting: undefined | number;
   emissionsReduced: undefined | number;
-  grantAmount: undefined | number;
-  expenses: undefined | number;
-  coFinancing: undefined | number;
+  grantAmountVerticalFund: undefined | number;
+  expensesVerticalFund: undefined | number;
+  coFinancingVerticalFund: undefined | number;
+  grantAmountNonVerticalFund: undefined | number;
+  expensesNonVerticalFund: undefined | number;
+  coFinancingNonVerticalFund: undefined | number;
   numberProjects: undefined | number;
   xPosition: number;
   yPosition: number;

@@ -140,12 +140,13 @@ export const Tooltip = (props: Props) => {
           </RowEl>
         </MetricGrp>
         <MetricGrp>
+          Vertical Fund Projects:
           <RowEl>
             <RowTitleEl>
               Grant Amount (USD):
             </RowTitleEl>
             <RowValue>
-              {data.grantAmount === undefined ? 'N/A' : formatData(data.grantAmount)}
+              {data.grantAmountVerticalFund === undefined ? 'N/A' : formatData(data.grantAmountVerticalFund)}
             </RowValue>
           </RowEl>
           <RowEl>
@@ -153,7 +154,7 @@ export const Tooltip = (props: Props) => {
               Expenses (USD):
             </RowTitleEl>
             <RowValue>
-              {data.expenses === undefined ? 'N/A' : formatData(data.expenses)}
+              {data.expensesVerticalFund === undefined ? 'N/A' : formatData(data.expensesVerticalFund)}
             </RowValue>
           </RowEl>
           <RowEl>
@@ -161,7 +162,34 @@ export const Tooltip = (props: Props) => {
               Co-Financing (USD):
             </RowTitleEl>
             <RowValue>
-              {data.coFinancing === undefined ? 'N/A' : formatData(data.coFinancing)}
+              {data.coFinancingVerticalFund === undefined ? 'N/A' : formatData(data.coFinancingVerticalFund)}
+            </RowValue>
+          </RowEl>
+        </MetricGrp>
+        <MetricGrp>
+          Non-vertical Fund Projects:
+          <RowEl>
+            <RowTitleEl>
+              Grant Amount (USD):
+            </RowTitleEl>
+            <RowValue>
+              {data.grantAmountNonVerticalFund === undefined ? 'N/A' : formatData(data.grantAmountNonVerticalFund)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              Expenses (USD):
+            </RowTitleEl>
+            <RowValue>
+              {data.expensesNonVerticalFund === undefined ? 'N/A' : formatData(data.expensesNonVerticalFund)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              Co-Financing (USD):
+            </RowTitleEl>
+            <RowValue>
+              {data.coFinancingNonVerticalFund === undefined ? 'N/A' : formatData(data.coFinancingNonVerticalFund)}
             </RowValue>
           </RowEl>
         </MetricGrp>
