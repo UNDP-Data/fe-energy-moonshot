@@ -132,10 +132,10 @@ export const Tooltip = (props: Props) => {
           </RowEl> */}
           <RowEl>
             <RowTitleEl>
-              CO2 emissions reduced equivalent to this many trees per year :
+              CO2 emissions reduced (tonnes):
             </RowTitleEl>
             <RowValue>
-              {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
+              {data.emissionsReduced === undefined ? 'N/A' : `${formatData(data.emissionsReduced)} (equivalent to ${formatData(data.treeEquivalent)} trees per year)`}
             </RowValue>
           </RowEl>
         </MetricGrp>

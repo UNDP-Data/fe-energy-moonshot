@@ -73,7 +73,8 @@ export const Cards = (props: Props) => {
 
   const cardData = {
     peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'People directly benefiting')[0].value),
-    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
+    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
+    treeEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
     // renewableEnergyInstalled: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'MW of renewable energy capacity installed')[0].value),
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
     grantAmountNonVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_nonvertical_fund')[0].value),
@@ -90,12 +91,17 @@ export const Cards = (props: Props) => {
         </div>
       </Card>
       <Card>
-        <h4>Emissions reduced equivalent to</h4>
+        <h4>Emissions reduced</h4>
         <MetricNumber>
           {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
-          {' '}
-          trees per year
         </MetricNumber>
+        <div>
+          (equivalent to
+          {' '}
+          {formatData(cardData.treeEquivalent)}
+          {' '}
+          trees per year)
+        </div>
         <div>
           { selectedGeography }
         </div>
