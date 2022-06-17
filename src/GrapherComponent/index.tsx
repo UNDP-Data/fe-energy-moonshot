@@ -107,9 +107,9 @@ export const GrapherComponent = (props: Props) => {
           </GraphEl>
         </RootEl>
         <Note>
-          Note: this map presents data from PIMS+ and Transparency Portal. Tree equivalent are own estimates based on a conversion factor of
+          Note: this map presents data from PIMS+ and Transparency Portal. Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from
           {' '}
-          <a href='https://ecotree.green/en/how-much-co2-does-a-tree-absorb'>25 kg of CO2/year/tree</a>
+          <a href='https://sunroof.withgoogle.com/building/37.476876/-122.253535/#?f=buy'>here</a>
           .
         </Note>
       </Container>

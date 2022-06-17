@@ -23,13 +23,41 @@ const Card = styled.div`
   padding: 1em;
   background-color: rgb(242, 247, 255);
   border-radius: 10px;
+  text-align: center;
 `;
 
-const MetricNumber = styled.span`
+const MetricTitle = styled.h4`
+  text-transform: uppercase;
+  font-size: 1.4rem;
+`;
+
+const MetricNumber = styled.div`
   font-weight: bold;
   font-size: 2em;
   line-height: 1.1em;
-  margin-right: 10px;
+`;
+
+const MetricAnnotation = styled.div`
+  font-size: 1.3rem;
+`;
+
+const MetricLocation = styled.div`
+  margin-top: 1rem;
+`;
+
+const EmissionsWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+  padding-left: 100px;
+`;
+
+const EmissionsItem = styled.div`
+`;
+
+const EqualSignDiv = styled.div`
+  font-size: 2.4rem;
+  font-weight: bold;
 `;
 
 // const MetricShare = styled.div`
@@ -59,23 +87,11 @@ export const Cards = (props: Props) => {
       ? data.filter((d) => d['Group 2'] === selectedRegions) : data;
   const selectedGeography = selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global';
 
-  // const cardMetrics = [
-  //   { metriclabel: 'People directly benefiting', metricName: 'People directly benefiting' },
-  //   { metriclabel: 'Emissions reduced (tonnes)', metricName: 'Tonnes of CO2 emissions reduced' },
-  //   { metriclabel: 'Renewable energy capacity installed (MW)', metricName: 'MW of renewable energy capacity installed' },
-  //   { metriclabel: 'Total grant amount (USD)', metricName: 'Grant Amount' },
-  // ];
-
-  // const cardData = cardMetrics.map((m) => ({
-  //   metricLabel: m.metriclabel,
-  //   metricValue: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
-  //   globalTotal: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === m.metricName)[0].value),
-  // }));
-
   const cardData = {
     peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'People directly benefiting')[0].value),
     emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
     treeEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
+    carsEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'car_equivalent')[0].value),
     // renewableEnergyInstalled: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'MW of renewable energy capacity installed')[0].value),
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
     grantAmountNonVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_nonvertical_fund')[0].value),
@@ -86,60 +102,70 @@ export const Cards = (props: Props) => {
     <>
       <Wrapper>
         <Card>
-          <h4>People directly benefiting</h4>
+          <MetricTitle>People directly benefiting</MetricTitle>
           <div style={{ height: 20 }}>
             {' '}
           </div>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
-          <div>
+          <MetricLocation>
             { selectedGeography }
-          </div>
+          </MetricLocation>
         </Card>
         <Card>
-          <h4>Total grant amount (USD)</h4>
-          <div style={{ display: 'flex' }}>
+          <MetricTitle>Total grant amount (USD)</MetricTitle>
+          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
             <div>
-              Vertical Fund:
-              {' '}
+              <MetricAnnotation>Vertical Fund:</MetricAnnotation>
               <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
             </div>
             <div>
-              Non-vertical fund:
-              {' '}
+              <MetricAnnotation>Non-vertical fund:</MetricAnnotation>
               <MetricNumber>{cardData.grantAmountNonVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountNonVerticalFunds)}</MetricNumber>
             </div>
           </div>
-          <div>
+          <MetricLocation>
             { selectedGeography }
-          </div>
+          </MetricLocation>
         </Card>
         <Card>
-          <h4>Number of countries</h4>
+          <MetricTitle>Number of countries</MetricTitle>
           <div style={{ height: 20 }}>
             {' '}
           </div>
           <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
-          <div>
+          <MetricLocation>
             { selectedGeography }
-          </div>
+          </MetricLocation>
         </Card>
       </Wrapper>
       <Wrapper>
         <Card>
-          <h4>Emissions reduced</h4>
-          <MetricNumber>
-            {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
-          </MetricNumber>
-          <div>
-            (equivalent to
-            {' '}
-            {formatData(cardData.treeEquivalent)}
-            {' '}
-            trees per year)
-          </div>
-          <div>
+          <MetricTitle>Emissions reduced</MetricTitle>
+          <EmissionsWrapper>
+            <EmissionsItem>
+              <MetricNumber>
+                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
+              </MetricNumber>
+              <MetricAnnotation>metric tons of Carbon Dioxide</MetricAnnotation>
+            </EmissionsItem>
+            <EqualSignDiv>=</EqualSignDiv>
+            <EmissionsItem>
+              <MetricNumber>
+                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
+              </MetricNumber>
+              <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
+            </EmissionsItem>
+            <EqualSignDiv>=</EqualSignDiv>
+            <EmissionsItem>
+              <MetricNumber>
+                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
+              </MetricNumber>
+              <MetricAnnotation>passenger cars taken off the road for 1 year</MetricAnnotation>
+            </EmissionsItem>
+          </EmissionsWrapper>
+          <MetricLocation>
             { selectedGeography }
-          </div>
+          </MetricLocation>
         </Card>
       </Wrapper>
     </>
