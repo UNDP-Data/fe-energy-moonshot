@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Select, Checkbox } from 'antd';
+import { Select, Radio, Checkbox } from 'antd';
 import domtoimage from 'dom-to-image';
 import { CtxDataType, IndicatorMetaDataType } from '../Types';
 import Context from '../Context/Context';
@@ -91,9 +91,11 @@ export const Settings = (props: Props) => {
     xAxisIndicator,
     selectedRegions,
     showProjectLocations,
+    selectedProjectType,
     updateXAxisIndicator,
     updateSelectedRegions,
     updateShowProjectLocations,
+    updateSelectedProjectType,
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.filter((d) => d.Map).map((d) => d.Indicator);
@@ -104,6 +106,15 @@ export const Settings = (props: Props) => {
   }, [options]);
   return (
     <El>
+      <DropdownEl>
+        <DropdownTitle>
+          Select Project Type
+        </DropdownTitle>
+        <Radio.Group onChange={(d) => { updateSelectedProjectType(d.target.value); }} value={selectedProjectType} buttonStyle='solid' size='small'>
+          <Radio.Button value='Active'><span title='Active'>Active</span></Radio.Button>
+          <Radio.Button value='Completed'><span title='Completed'>Completed</span></Radio.Button>
+        </Radio.Group>
+      </DropdownEl>
       <DropdownEl>
         <DropdownTitle>
           Select Indicator

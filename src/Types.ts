@@ -55,9 +55,8 @@ export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
 }
 
 export interface ProjectCoordinateDataType {
-  'PIMS ID': number,
+  'project_id': number,
   'Short Title': string,
-  'Full Title': string,
   'Sources of Funds': string,
   'Programme Period': string,
   'Lead Country': string,
@@ -105,9 +104,11 @@ export interface CtxDataType {
   selectedProjects: string;
   xAxisIndicator: string;
   showProjectLocations: boolean;
+  selectedProjectType: string;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
   updateShowProjectLocations: (_d: boolean) => void;
+  updateSelectedProjectType: (_d: string) => void;
 }

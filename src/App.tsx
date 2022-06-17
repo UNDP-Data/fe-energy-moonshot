@@ -187,12 +187,14 @@ const App = () => {
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<string[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
+
   const initialState = {
     selectedRegions: [],
     selectedCountries: [],
     selectedProjects: '',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
     showProjectLocations: false,
+    selectedProjectType: 'Active',
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -240,6 +242,13 @@ const App = () => {
     });
   };
 
+  const updateSelectedProjectType = (selectedProjectType: string) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_PROJECT_TYPE',
+      payload: selectedProjectType,
+    });
+  };
+
   useEffect(() => {
     queue()
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/resultsByCountry.json')
@@ -279,6 +288,7 @@ const App = () => {
             indicators: indTemp,
           });
         });
+        console.log(projectCoordinates);
         setFinalData(countryData);
         setProjectCoordinatesData(projectCoordinates);
         setCountryList(countryData.map((d) => d['Country or Area']));
@@ -301,6 +311,7 @@ const App = () => {
                   updateSelectedProjects,
                   updateXAxisIndicator,
                   updateShowProjectLocations,
+                  updateSelectedProjectType,
                 }}
               >
                 <GrapherComponent

@@ -10,6 +10,8 @@ export default (state: any, action: any) => {
       return { ...state, xAxisIndicator: action.payload };
     case 'UPDATE_SHOW_PROJECT_LOCATIONS':
       return { ...state, showProjectLocations: action.payload };
+    case 'UPDATE_SELECTED_PROJECT_TYPE':
+      return { ...state, selectedProjectType: action.payload };
     default:
       return { ...state };
   }
