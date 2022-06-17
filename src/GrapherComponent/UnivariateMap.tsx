@@ -66,6 +66,7 @@ export const UnivariateMap = (props: Props) => {
     selectedRegions,
     selectedProjects,
     showProjectLocations,
+    selectedProjectType,
     updateSelectedCountries,
     updateSelectedProjects,
   } = useContext(Context) as CtxDataType;
@@ -333,17 +334,17 @@ export const UnivariateMap = (props: Props) => {
           }
           {
             showProjectLocations
-            && projectCoordinatesData.map((d, i: number) => {
+            && projectCoordinatesData.filter((d) => d.status === selectedProjectType).map((d, i: number) => {
               // const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
-              const projectOpacity = selectedProjects === '' || selectedProjects === d['PIMS ID'].toString();
+              const projectOpacity = selectedProjects === '' || selectedProjects === d.project_id.toString();
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
                   opacity={projectOpacity && countryOpacity ? 0.8 : 0.01}
                   onMouseEnter={(event) => {
-                    updateSelectedProjects(d['PIMS ID'].toString());
+                    updateSelectedProjects(d.project_id.toString());
                     if (countryOpacity) {
                       setProjectHoverData({
                         name: d['Short Title'],
@@ -358,7 +359,7 @@ export const UnivariateMap = (props: Props) => {
                     }
                   }}
                   onMouseMove={(event) => {
-                    updateSelectedProjects(d['PIMS ID'].toString());
+                    updateSelectedProjects(d.project_id.toString());
                     if (countryOpacity) {
                       setProjectHoverData({
                         name: d['Short Title'],
