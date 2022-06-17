@@ -94,7 +94,7 @@ export const Tooltip = (props: Props) => {
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
-    if (d < 1000000) return format(',')(parseFloat(d.toFixed(2))).replace(',', ' ');
+    if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
 
@@ -132,7 +132,7 @@ export const Tooltip = (props: Props) => {
           </RowEl> */}
           <RowEl>
             <RowTitleEl>
-              CO2 emissions reduced (tonnes):
+              CO2 emissions reduced equivalent to this many trees per year :
             </RowTitleEl>
             <RowValue>
               {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
