@@ -79,8 +79,6 @@ export const Cards = (props: Props) => {
     grantAmountNonVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_nonvertical_fund')[0].value),
     numberCountries: relevantData.length,
   };
-  console.log(data);
-  console.log(relevantData);
 
   return (
     <Wrapper>
