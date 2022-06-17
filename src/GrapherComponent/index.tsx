@@ -51,8 +51,8 @@ const H1 = styled.div`
   font-size: 3rem;
   font-weight: bold;
   color: var(--primary-blue);
-  line-height: 2rem;
-  margin: 1rem 0 0.5rem 1rem;
+  line-height: 3rem;
+  margin: 1rem 0 0.75rem 1rem;
   @media (max-width: 600px) {
     font-size: 2rem;
   }
@@ -106,7 +106,12 @@ export const GrapherComponent = (props: Props) => {
             />
           </GraphEl>
         </RootEl>
-        <Note>Note: this map presents data from PIMS+ and Transparency Portal</Note>
+        <Note>
+          Note: this map presents data from PIMS+ and Transparency Portal. Tree equivalent are own estimates based on a conversion factor of
+          {' '}
+          <a href='https://ecotree.green/en/how-much-co2-does-a-tree-absorb'>25 kg of CO2/year/tree</a>
+          .
+        </Note>
       </Container>
     </>
   );
