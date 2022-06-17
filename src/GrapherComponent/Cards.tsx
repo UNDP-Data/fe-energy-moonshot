@@ -27,7 +27,7 @@ const Card = styled.div`
 const MetricNumber = styled.span`
   font-weight: bold;
   font-size: 2em;
-  line-height: 1.5em;
+  line-height: 1.1em;
   margin-right: 10px;
 `;
 
@@ -73,7 +73,7 @@ export const Cards = (props: Props) => {
 
   const cardData = {
     peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'People directly benefiting')[0].value),
-    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Tonnes of CO2 emissions reduced')[0].value),
+    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
     // renewableEnergyInstalled: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'MW of renewable energy capacity installed')[0].value),
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
     grantAmountNonVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_nonvertical_fund')[0].value),
@@ -90,8 +90,12 @@ export const Cards = (props: Props) => {
         </div>
       </Card>
       <Card>
-        <h4>Emissions reduced (tonnes)</h4>
-        <MetricNumber>{cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}</MetricNumber>
+        <h4>Emissions reduced equivalent to</h4>
+        <MetricNumber>
+          {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
+          {' '}
+          trees per year
+        </MetricNumber>
         <div>
           { selectedGeography }
         </div>
