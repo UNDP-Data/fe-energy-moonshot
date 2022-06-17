@@ -55,9 +55,8 @@ export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
 }
 
 export interface ProjectCoordinateDataType {
-  'PIMS ID': number,
+  'project_id': number,
   'Short Title': string,
-  'Full Title': string,
   'Sources of Funds': string,
   'Programme Period': string,
   'Lead Country': string,
