@@ -168,6 +168,39 @@ export const PlayIcon = (props: IconProps) => {
   );
 };
 
+export const CarIcon = (props: IconProps) => {
+  const { size, fill, opacity } = props;
+  return (
+    <IconEl height={size ? (size * 91) / 212 : 91}>
+      <svg width={size || 212} height={size ? (size * 91) / 212 : 91} viewBox='0 0 212 91' fill='none' xmlns='http://www.w3.org/2000/svg' opacity={opacity || 1}>
+        <path d='M64.7285 67.6953L151.616 67.6953' stroke={fill || '#006eEB'} strokeWidth='5' strokeLinecap='round' strokeLinejoin='round' />
+        <line x1='64.1897' y1='6.29785' x2='86.616' y2='52.5521' stroke={fill || '#006eEB'} strokeWidth='5' strokeLinecap='round' />
+        <circle cx='41.6293' cy='66.2116' r='22.4636' stroke={fill || '#006eEB'} strokeWidth='5' />
+        <circle cx='41.629' cy='66.2118' r='11.0199' stroke={fill || '#006eEB'} strokeWidth='5' />
+        <circle cx='175.987' cy='66.2118' r='11.0199' stroke={fill || '#006eEB'} strokeWidth='5' />
+        <circle cx='175.987' cy='66.2116' r='22.4636' stroke={fill || '#006eEB'} strokeWidth='5' />
+        <path d='M87.4038 35.2715H98.3177' stroke={fill || '#006eEB'} strokeWidth='5' strokeLinecap='round' strokeLinejoin='round' />
+        <path d='M17.4702 67.6954V67.6954C13.8214 67.6954 10.3372 66.1768 7.85327 63.504L7.32133 62.9315C3.90105 59.251 2 54.4127 2 49.3883L2 35.0596M157.02 23.7219C150.309 16.4812 128.156 2.00001 93.2318 2.00001C69.4798 2.00001 49.3806 9.38416 36.0742 16.6196C26.5518 21.7974 16.1602 25.947 5.32115 25.947V25.947C3.48693 25.947 2 27.434 2 29.2682L2 35.0596M157.02 23.7219L73.6291 23.7219M157.02 23.7219C165.136 23.5471 178.24 24.4356 189.55 27.8204M198.662 67.6954V67.6954C204.924 67.6954 210 62.6193 210 56.3576L210 43.3245M2 35.0596L11.0066 35.0596M189.55 27.8204C198.251 30.4245 205.89 34.5064 209.378 40.7185C209.822 41.5101 210 42.4166 210 43.3245V43.3245M189.55 27.8204L192.917 33.5501C196.477 39.6057 202.976 43.3245 210 43.3245V43.3245' stroke={fill || '#006eEB'} strokeWidth='5' strokeLinecap='round' strokeLinejoin='round' />
+      </svg>
+    </IconEl>
+  );
+};
+
+export const TreeIcon = (props: IconProps) => {
+  const { size, fill, opacity } = props;
+  return (
+    <IconEl height={size ? (size * 151) / 140 : 151}>
+      <svg width={size || 140} height={size ? (size * 151) / 140 : 151} viewBox='0 0 140 151' fill='none' xmlns='http://www.w3.org/2000/svg' opacity={opacity || 1}>
+        <path d='M107.614 109H27.9685C17.7953 109 2 98.6065 2 81.0174C2 63.4284 15.2966 53.7011 21.9449 51.0361C16.7244 39.8431 25.0236 2 63.4409 2C94.1748 2 103.822 30.0714 104.803 44.1071C117.654 44.1071 138 49.7036 138 78.8854C138 102.231 117.743 108.689 107.614 109Z' stroke={fill || '#59BA47'} strokeWidth='8' strokeLinejoin='round' />
+        <line x1='49.7824' y1='148.507' x2='81.507' y2='148.655' stroke={fill || '#59BA47'} strokeWidth='8' strokeLinecap='round' />
+        <path d='M66 147L66 25' stroke={fill || '#59BA47'} strokeWidth='8' strokeLinecap='round' />
+        <line opacity='0.8' x1='66.8267' y1='99.5955' x2='91.7053' y2='74.7168' stroke={fill || '#59BA47'} strokeWidth='8' strokeLinecap='round' />
+        <line opacity='0.8' x1='65.8823' y1='65.8766' x2='45.6994' y2='43.1963' stroke={fill || '#59BA47'} strokeWidth='8' strokeLinecap='round' />
+      </svg>
+    </IconEl>
+  );
+};
+
 interface LogoProps {
   height?: number;
   opacity?: number;

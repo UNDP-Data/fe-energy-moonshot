@@ -5,6 +5,9 @@ import { format } from 'd3-format';
 import {
   CtxDataType, DataType,
 } from '../Types';
+import {
+  CarIcon, TreeIcon,
+} from '../Icons';
 import Context from '../Context/Context';
 
 interface Props {
@@ -53,6 +56,14 @@ const EmissionsWrapper = styled.div`
 `;
 
 const EmissionsItem = styled.div`
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-evenly;
+  margin-left: 32px;
+  margin-right: 32px;
 `;
 
 const EqualSignDiv = styled.div`
@@ -150,16 +161,22 @@ export const Cards = (props: Props) => {
             </EmissionsItem>
             <EqualSignDiv>=</EqualSignDiv>
             <EmissionsItem>
-              <MetricNumber>
-                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
-              </MetricNumber>
+              <IconWrapper>
+                <MetricNumber>
+                  {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
+                </MetricNumber>
+                <TreeIcon size={23} fill='rgb(33, 33, 33)' />
+              </IconWrapper>
               <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
             </EmissionsItem>
             <EqualSignDiv>=</EqualSignDiv>
             <EmissionsItem>
-              <MetricNumber>
-                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
-              </MetricNumber>
+              <IconWrapper>
+                <MetricNumber>
+                  {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
+                </MetricNumber>
+                <CarIcon size={50} fill='rgb(33, 33, 33)' />
+              </IconWrapper>
               <MetricAnnotation>passenger cars taken off the road for 1 year</MetricAnnotation>
             </EmissionsItem>
           </EmissionsWrapper>
