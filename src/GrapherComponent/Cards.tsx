@@ -168,10 +168,15 @@ export const Cards = (props: Props) => {
             </EmissionsItem>
           </EmissionsWrapper>
         </Card>
-        <Card>
-          <MetricTitle>Number of countries:</MetricTitle>
-          <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
-        </Card>
+        {
+          !selectedCountries
+          && (
+            <Card>
+              <MetricTitle>Number of countries:</MetricTitle>
+              <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
+            </Card>
+          )
+        }
       </Wrapper>
     </>
   );
