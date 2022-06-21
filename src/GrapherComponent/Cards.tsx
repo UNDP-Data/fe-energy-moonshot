@@ -152,7 +152,7 @@ export const Cards = (props: Props) => {
                 <MetricNumber>
                   {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
                 </MetricNumber>
-                <TreeIcon size={23} fill='rgb(33, 33, 33)' />
+                <TreeIcon size={18} fill='rgb(33, 33, 33)' />
               </IconWrapper>
               <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
             </EmissionsItem>
@@ -162,7 +162,7 @@ export const Cards = (props: Props) => {
                 <MetricNumber>
                   {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
                 </MetricNumber>
-                <CarIcon size={50} fill='rgb(33, 33, 33)' />
+                <CarIcon size={40} fill='rgb(33, 33, 33)' />
               </IconWrapper>
               <MetricAnnotation>passenger cars taken off the road for 1 year</MetricAnnotation>
             </EmissionsItem>
