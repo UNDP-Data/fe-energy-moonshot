@@ -346,33 +346,29 @@ export const UnivariateMap = (props: Props) => {
                   opacity={projectOpacity && countryOpacity ? 0.8 : 0.01}
                   onMouseEnter={(event) => {
                     updateSelectedProjects(d.project_id.toString());
-                    if (countryOpacity) {
-                      setProjectHoverData({
-                        name: d['Short Title'],
-                        donor: d['Sources of Funds'],
-                        timeframe: d['Programme Period'],
-                        status: d.status,
-                        grantAmount: d['Grant Amount'],
-                        expenses: d['GL Expenses'],
-                        xPosition: event.clientX,
-                        yPosition: event.clientY,
-                      });
-                    }
+                    setProjectHoverData({
+                      name: d['Short Title'],
+                      donor: d['Sources of Funds'],
+                      timeframe: d['Programme Period'],
+                      status: d.status,
+                      grantAmount: d['Grant Amount'],
+                      expenses: d['GL Expenses'],
+                      xPosition: event.clientX,
+                      yPosition: event.clientY,
+                    });
                   }}
                   onMouseMove={(event) => {
                     updateSelectedProjects(d.project_id.toString());
-                    if (countryOpacity) {
-                      setProjectHoverData({
-                        name: d['Short Title'],
-                        donor: d['Sources of Funds'],
-                        timeframe: d['Programme Period'],
-                        status: d.status,
-                        grantAmount: d['Grant Amount'],
-                        expenses: d['GL Expenses'],
-                        xPosition: event.clientX,
-                        yPosition: event.clientY,
-                      });
-                    }
+                    setProjectHoverData({
+                      name: d['Short Title'],
+                      donor: d['Sources of Funds'],
+                      timeframe: d['Programme Period'],
+                      status: d.status,
+                      grantAmount: d['Grant Amount'],
+                      expenses: d['GL Expenses'],
+                      xPosition: event.clientX,
+                      yPosition: event.clientY,
+                    });
                   }}
                   onMouseLeave={() => {
                     updateSelectedProjects('');
