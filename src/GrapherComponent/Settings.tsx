@@ -15,7 +15,7 @@ const El = styled.div`
   box-shadow: var(--shadow-bottom);
   padding: 1.5em 2em;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: end;
   gap: 2em;
 
