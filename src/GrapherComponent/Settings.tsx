@@ -12,8 +12,8 @@ interface Props {
 }
 
 const El = styled.div`
-  box-shadow: var(--shadow-right);
-  padding: 1em 2em;
+  box-shadow: var(--shadow-bottom);
+  padding: 1.5em 2em;
   display: flex;
   justify-content: space-between;
   align-items: center;

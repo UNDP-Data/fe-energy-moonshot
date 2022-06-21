@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Wrapper = styled.div`
-  width: 25%;
+  width: 27%;
   padding: 1em 2em;
   display: flex;
   gap: 2em;
