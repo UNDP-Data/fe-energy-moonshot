@@ -5,7 +5,7 @@ interface IconElProps {
 }
 
 const IconEl = styled.div<IconElProps>`
-  margin: 0 12px;
+  margin: 5px 0;
   height: ${(props) => (props.height ? `${props.height}px` : 'auto')};
 `;
 

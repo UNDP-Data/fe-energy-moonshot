@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   width: 27%;
   padding: 1em 2em;
   display: flex;
-  gap: 2em;
+  gap: 2.5em;
   flex-direction: column;
   justify-content: start;
   border-right: 1px solid var(--black-400);
@@ -54,33 +54,21 @@ const EmissionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   /* justify-content: space-evenly; */
-  /* align-items: baseline; */
+  /* align-items: end; */
 `;
 
 const EmissionsItem = styled.div`
+  flex: 1;
 `;
 
 const IconWrapper = styled.div`
-  display: flex;
-  align-items: baseline;
-  /* justify-content: space-evenly; */
 `;
 
 const EqualSignDiv = styled.div`
   font-size: 1.4rem;
   font-style: italic;
-  margin: 0.8em 0;
-
-  /* &:first-child {
-    margin-bottom: 0.5em;
-  } */
+  margin: 0.8em 0 0.5em;
 `;
-
-// const MetricShare = styled.div`
-//   margin-bottom: 0.5em;
-//   margin-top: -0.5em;
-//   font-size: 1.4rem;
-// `;
 
 export const Cards = (props: Props) => {
   const {
@@ -126,12 +114,12 @@ export const Cards = (props: Props) => {
         </Card>
         <Card>
           <MetricTitle>Total grant amount (USD):</MetricTitle>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1 }}>
               <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
               <MetricAnnotation>Vertical Fund</MetricAnnotation>
             </div>
-            <div>
+            <div style={{ flex: 1 }}>
               <MetricNumber>{cardData.grantAmountNonVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountNonVerticalFunds)}</MetricNumber>
               <MetricAnnotation>Non-vertical fund</MetricAnnotation>
             </div>
@@ -147,29 +135,30 @@ export const Cards = (props: Props) => {
               <MetricAnnotation>metric tons of Carbon Dioxide</MetricAnnotation>
             </EmissionsItem>
             <EqualSignDiv>equivalent to</EqualSignDiv>
-            <EmissionsItem>
-              <IconWrapper>
-                <MetricNumber>
-                  {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
-                </MetricNumber>
-                <TreeIcon size={18} fill='rgb(33, 33, 33)' />
-              </IconWrapper>
-              <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
-            </EmissionsItem>
-            <EqualSignDiv>equivalent to</EqualSignDiv>
-            <EmissionsItem>
-              <IconWrapper>
-                <MetricNumber>
-                  {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
-                </MetricNumber>
-                <CarIcon size={40} fill='rgb(33, 33, 33)' />
-              </IconWrapper>
-              <MetricAnnotation>passenger cars taken off the road for 1 year</MetricAnnotation>
-            </EmissionsItem>
+            <div style={{ display: 'flex', gap: '5%', alignItems: 'baseline' }}>
+              <EmissionsItem>
+                <IconWrapper>
+                  <TreeIcon size={20} fill='rgb(33, 33, 33)' />
+                  <MetricNumber>
+                    {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
+                  </MetricNumber>
+                </IconWrapper>
+                <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
+              </EmissionsItem>
+              <EmissionsItem>
+                <IconWrapper>
+                  <CarIcon size={40} fill='rgb(33, 33, 33)' />
+                  <MetricNumber>
+                    {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
+                  </MetricNumber>
+                </IconWrapper>
+                <MetricAnnotation>passenger cars taken off the road for 1 year</MetricAnnotation>
+              </EmissionsItem>
+            </div>
           </EmissionsWrapper>
         </Card>
         {
-          !selectedCountries
+          (!selectedCountries || selectedCountries.length === 0)
           && (
             <Card>
               <MetricTitle>Number of countries:</MetricTitle>
