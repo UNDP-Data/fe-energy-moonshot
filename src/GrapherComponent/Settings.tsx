@@ -27,7 +27,10 @@ const El = styled.div`
 `;
 
 const DropdownEl = styled.div`
-  flex: 2;
+  flex-basis: 15%;
+  &:first-of-type {
+    flex-basis: 30%;
+  }
 `;
 
 const DropdownTitle = styled.div`
@@ -38,14 +41,14 @@ const DropdownTitle = styled.div`
 `;
 
 const ButtonEl = styled.div`
-  flex: 1;
+  /* flex: 1; */
   button {
     margin: 0.5rem 1rem 0.5rem 0;
   }
 `;
 
 const CheckboxContainer = styled.div` 
-  flex: 1;
+  /* flex: 1; */
 `;
 
 const CheckboxEl = styled.div`

@@ -110,7 +110,7 @@ export const UnivariateMap = (props: Props) => {
           {
             (World as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code-1'] === d.properties.ISO3);
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.region) !== -1;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
               if ((index !== -1) || d.properties.NAME === 'Antarctica') return null;
@@ -173,7 +173,7 @@ export const UnivariateMap = (props: Props) => {
               // const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : '#f5f9fe';
 
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d['Group 2'];
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
 
               return (

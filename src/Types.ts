@@ -23,6 +23,7 @@ export interface IndicatorDataType {
 export interface DataType extends CountryGroupDataType {
   indicators: IndicatorDataType[];
   indicatorsAvailable: string[];
+  region: string;
 }
 
 export interface IndicatorMetaDataType {

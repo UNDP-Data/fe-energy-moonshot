@@ -89,7 +89,7 @@ export const Cards = (props: Props) => {
   const relevantData = selectedCountries.length > 0
     ? data.filter((d) => d['Country or Area'] === selectedCountries)
     : selectedRegions.length > 0
-      ? data.filter((d) => d['Group 2'] === selectedRegions) : data;
+      ? data.filter((d) => d.region === selectedRegions) : data;
   const selectedGeography = selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global';
 
   const cardData = {
