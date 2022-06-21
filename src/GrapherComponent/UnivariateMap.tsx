@@ -336,14 +336,14 @@ export const UnivariateMap = (props: Props) => {
           {
             showProjectLocations
             && projectCoordinatesData.map((d, i: number) => {
-              // const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
               const projectOpacity = selectedProjects === '' || selectedProjects === d.project_id.toString();
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
-                  opacity={projectOpacity && countryOpacity ? 0.8 : 0.01}
+                  opacity={projectOpacity && countryOpacity && regionOpacity ? 0.8 : 0.01}
                   onMouseEnter={(event) => {
                     updateSelectedProjects(d.project_id.toString());
                     setProjectHoverData({
