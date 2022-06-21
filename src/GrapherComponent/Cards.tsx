@@ -18,14 +18,15 @@ const Wrapper = styled.div`
   width: 27%;
   padding: 1em 2em;
   display: flex;
-  gap: 2.5em;
+  /* gap: 1em; */
   flex-direction: column;
   justify-content: start;
   border-right: 1px solid var(--black-400);
 `;
 
 const Card = styled.div`
-  /* flex: 1; */
+  border-bottom: 1px solid var(--black-400);
+  padding: 1.3em 0;
 `;
 
 const MetricTitle = styled.h4`
