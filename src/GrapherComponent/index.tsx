@@ -89,14 +89,14 @@ export const GrapherComponent = (props: Props) => {
             </div>
           </TitleEl>
         </HeadingEl>
-        <Cards
-          data={data}
-        />
         <RootEl>
+          <Settings
+            indicators={indicators}
+            regions={regions}
+          />
           <GraphEl>
-            <Settings
-              indicators={indicators}
-              regions={regions}
+            <Cards
+              data={data}
             />
             <Graph
               data={data}

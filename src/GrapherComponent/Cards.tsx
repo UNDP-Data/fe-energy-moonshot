@@ -15,44 +15,46 @@ interface Props {
 }
 
 const Wrapper = styled.div`
-    display: flex;
-    gap: 1%;
-    margin-bottom: 1em;
-    flex-wrap: wrap;
+  width: 25%;
+  padding: 1em 2em;
+  display: flex;
+  gap: 2em;
+  flex-direction: column;
+  justify-content: start;
+  border-right: 1px solid var(--black-400);
 `;
 
 const Card = styled.div`
-  flex: 1;
-  padding: 1em;
-  background-color: rgb(242, 247, 255);
-  border-radius: 10px;
-  text-align: center;
+  /* flex: 1; */
 `;
 
 const MetricTitle = styled.h4`
-  text-transform: uppercase;
   font-size: 1.4rem;
+  line-height: 1.5;
+  font-weight: 400;
 `;
 
 const MetricNumber = styled.div`
   font-weight: bold;
-  font-size: 2em;
+  font-size: 1.5em;
   line-height: 1.1em;
 `;
 
 const MetricAnnotation = styled.div`
   font-size: 1.3rem;
+  line-height: 1.5;
 `;
 
 const MetricLocation = styled.div`
-  margin-top: 1rem;
+  line-height: 1.4;
+  font-weight: 700;
 `;
 
 const EmissionsWrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  align-items: baseline;
-  padding-left: 100px;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+  /* align-items: baseline; */
 `;
 
 const EmissionsItem = styled.div`
@@ -61,14 +63,17 @@ const EmissionsItem = styled.div`
 const IconWrapper = styled.div`
   display: flex;
   align-items: baseline;
-  justify-content: space-evenly;
-  margin-left: 32px;
-  margin-right: 32px;
+  /* justify-content: space-evenly; */
 `;
 
 const EqualSignDiv = styled.div`
-  font-size: 2.4rem;
-  font-weight: bold;
+  font-size: 1.4rem;
+  font-style: italic;
+  margin: 0.8em 0;
+
+  /* &:first-child {
+    margin-bottom: 0.5em;
+  } */
 `;
 
 // const MetricShare = styled.div`
@@ -112,44 +117,26 @@ export const Cards = (props: Props) => {
   return (
     <>
       <Wrapper>
+        <MetricLocation>
+          { selectedGeography }
+        </MetricLocation>
         <Card>
-          <MetricTitle>People directly benefiting</MetricTitle>
-          <div style={{ height: 20 }}>
-            {' '}
-          </div>
+          <MetricTitle>People directly benefiting:</MetricTitle>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
-          <MetricLocation>
-            { selectedGeography }
-          </MetricLocation>
         </Card>
         <Card>
-          <MetricTitle>Total grant amount (USD)</MetricTitle>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <MetricTitle>Total grant amount (USD):</MetricTitle>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
-              <MetricAnnotation>Vertical Fund:</MetricAnnotation>
               <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
+              <MetricAnnotation>Vertical Fund</MetricAnnotation>
             </div>
             <div>
-              <MetricAnnotation>Non-vertical fund:</MetricAnnotation>
               <MetricNumber>{cardData.grantAmountNonVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountNonVerticalFunds)}</MetricNumber>
+              <MetricAnnotation>Non-vertical fund</MetricAnnotation>
             </div>
           </div>
-          <MetricLocation>
-            { selectedGeography }
-          </MetricLocation>
         </Card>
-        <Card>
-          <MetricTitle>Number of countries</MetricTitle>
-          <div style={{ height: 20 }}>
-            {' '}
-          </div>
-          <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
-          <MetricLocation>
-            { selectedGeography }
-          </MetricLocation>
-        </Card>
-      </Wrapper>
-      <Wrapper>
         <Card>
           <MetricTitle>Emissions reduced</MetricTitle>
           <EmissionsWrapper>
@@ -159,7 +146,7 @@ export const Cards = (props: Props) => {
               </MetricNumber>
               <MetricAnnotation>metric tons of Carbon Dioxide</MetricAnnotation>
             </EmissionsItem>
-            <EqualSignDiv>=</EqualSignDiv>
+            <EqualSignDiv>equivalent to</EqualSignDiv>
             <EmissionsItem>
               <IconWrapper>
                 <MetricNumber>
@@ -169,7 +156,7 @@ export const Cards = (props: Props) => {
               </IconWrapper>
               <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
             </EmissionsItem>
-            <EqualSignDiv>=</EqualSignDiv>
+            <EqualSignDiv>equivalent to</EqualSignDiv>
             <EmissionsItem>
               <IconWrapper>
                 <MetricNumber>
@@ -180,9 +167,10 @@ export const Cards = (props: Props) => {
               <MetricAnnotation>passenger cars taken off the road for 1 year</MetricAnnotation>
             </EmissionsItem>
           </EmissionsWrapper>
-          <MetricLocation>
-            { selectedGeography }
-          </MetricLocation>
+        </Card>
+        <Card>
+          <MetricTitle>Number of countries:</MetricTitle>
+          <MetricNumber>{cardData.numberCountries === undefined ? 'N/A' : formatData(cardData.numberCountries)}</MetricNumber>
         </Card>
       </Wrapper>
     </>
