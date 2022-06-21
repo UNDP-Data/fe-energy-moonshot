@@ -16,7 +16,7 @@ const El = styled.div`
   padding: 1.5em 2em;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
   gap: 2em;
 
   @media (max-width: 960px) {
