@@ -110,12 +110,12 @@ export const Settings = (props: Props) => {
       </DropdownEl>
       <DropdownEl>
         <DropdownTitle>
-          Select a Region
+          Select a Bureau
         </DropdownTitle>
         <Select
           allowClear
           style={{ width: '100%' }}
-          placeholder='Select a region'
+          placeholder='Select a bureau'
           value={selectedRegions}
           onChange={(d: string) => { updateSelectedRegions(d === undefined ? '' : d); }}
         >
