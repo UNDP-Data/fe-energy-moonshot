@@ -336,7 +336,7 @@ export const UnivariateMap = (props: Props) => {
           }
           {
             showProjectLocations
-            && projectCoordinatesData.filter((d) => d.status === selectedProjectType).map((d, i: number) => {
+            && projectCoordinatesData.filter((d) => selectedProjectType === 'All' || d.status === selectedProjectType).map((d, i: number) => {
               const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
               const projectOpacity = selectedProjects === '' || selectedProjects === d.project_id.toString();

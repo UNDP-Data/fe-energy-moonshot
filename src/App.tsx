@@ -194,7 +194,7 @@ const App = () => {
     selectedProjects: '',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
     showProjectLocations: false,
-    selectedProjectType: 'Active',
+    selectedProjectType: 'All',
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -267,9 +267,10 @@ const App = () => {
         resultsData.forEach((d: any) => {
           const keys = Object.keys(d);
           keys.forEach((key) => {
-            if (indicators.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country' && key !== 'Region') { indicators.push(key); }
+            if (indicators.indexOf(key) === -1 && key !== 'Lead Country' && key !== 'Region') { indicators.push(key); }
           });
         });
+        console.log(resultsData);
 
         const countryData = groupedData.map((d) => {
           const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === d.key)];

@@ -80,6 +80,7 @@ export const Settings = (props: Props) => {
           Select Project Type
         </DropdownTitle>
         <Radio.Group onChange={(d) => { updateSelectedProjectType(d.target.value); }} value={selectedProjectType} buttonStyle='solid' size='small'>
+          <Radio.Button value='All'><span title='All'>All</span></Radio.Button>
           <Radio.Button value='Active'><span title='Active'>Active</span></Radio.Button>
           <Radio.Button value='Completed'><span title='Completed'>Completed</span></Radio.Button>
         </Radio.Group>
