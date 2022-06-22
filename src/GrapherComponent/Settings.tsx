@@ -17,7 +17,7 @@ const El = styled.div`
   display: flex;
   /* justify-content: space-between; */
   align-items: end;
-  gap: 2em;
+  gap: 4em;
 
   @media (max-width: 960px) {
     box-shadow: var(--shadow-bottom);
@@ -27,10 +27,7 @@ const El = styled.div`
 `;
 
 const DropdownEl = styled.div`
-  flex-basis: 15%;
-  &:first-of-type {
-    flex-basis: 30%;
-  }
+  /* flex-basis: 15%; */
 `;
 
 const DropdownTitle = styled.div`
