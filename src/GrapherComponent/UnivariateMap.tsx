@@ -78,7 +78,7 @@ export const UnivariateMap = (props: Props) => {
   const svgHeight = 678;
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
-  const projection = geoMercator().rotate([0, 0]).scale(135).translate([470, 375]);
+  const projection = geoMercator().rotate([0, 0]).scale(135).translate([470, 410]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
   const valueArray = xIndicatorMetaData.IsCategorical ? xIndicatorMetaData.Categories : xIndicatorMetaData.BinningRangeLarge.length === 0 ? xIndicatorMetaData.BinningRange5 : xIndicatorMetaData.BinningRangeLarge;
   const colorArray = xIndicatorMetaData.IsDivergent ? COLOR_SCALES.Divergent[`Color${(valueArray.length + 1) as 4 | 5 | 7 | 9 | 11}`] : COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
@@ -111,7 +111,7 @@ export const UnivariateMap = (props: Props) => {
           {
             (World as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code-1'] === d.properties.ISO3);
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d['Group 2']) !== -1;
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.region) !== -1;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
               if ((index !== -1) || d.properties.NAME === 'Antarctica') return null;
@@ -174,7 +174,7 @@ export const UnivariateMap = (props: Props) => {
               // const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : '#f5f9fe';
 
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d['Group 2'];
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
 
               return (
@@ -193,6 +193,7 @@ export const UnivariateMap = (props: Props) => {
                         peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
                         // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
                         emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                        treeEquivalent: d.indicators.filter((ind) => ind.indicator === 'tree_equivalent')[0].value,
                         grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
                         expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
                         coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
@@ -213,6 +214,7 @@ export const UnivariateMap = (props: Props) => {
                         peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
                         // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
                         emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                        treeEquivalent: d.indicators.filter((ind) => ind.indicator === 'tree_equivalent')[0].value,
                         grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
                         expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
                         coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
@@ -335,43 +337,39 @@ export const UnivariateMap = (props: Props) => {
           {
             showProjectLocations
             && projectCoordinatesData.filter((d) => d.status === selectedProjectType).map((d, i: number) => {
-              // const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
+              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
               const projectOpacity = selectedProjects === '' || selectedProjects === d.project_id.toString();
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
-                  opacity={projectOpacity && countryOpacity ? 0.8 : 0.01}
+                  opacity={projectOpacity && countryOpacity && regionOpacity ? 0.8 : 0.01}
                   onMouseEnter={(event) => {
                     updateSelectedProjects(d.project_id.toString());
-                    if (countryOpacity) {
-                      setProjectHoverData({
-                        name: d['Short Title'],
-                        donor: d['Sources of Funds'],
-                        timeframe: d['Programme Period'],
-                        status: d.status,
-                        grantAmount: d['Grant Amount'],
-                        expenses: d['GL Expenses'],
-                        xPosition: event.clientX,
-                        yPosition: event.clientY,
-                      });
-                    }
+                    setProjectHoverData({
+                      name: d['Short Title'],
+                      donor: d['Sources of Funds'],
+                      timeframe: d['Programme Period'],
+                      status: d.status,
+                      grantAmount: d['Grant Amount'],
+                      expenses: d['GL Expenses'],
+                      xPosition: event.clientX,
+                      yPosition: event.clientY,
+                    });
                   }}
                   onMouseMove={(event) => {
                     updateSelectedProjects(d.project_id.toString());
-                    if (countryOpacity) {
-                      setProjectHoverData({
-                        name: d['Short Title'],
-                        donor: d['Sources of Funds'],
-                        timeframe: d['Programme Period'],
-                        status: d.status,
-                        grantAmount: d['Grant Amount'],
-                        expenses: d['GL Expenses'],
-                        xPosition: event.clientX,
-                        yPosition: event.clientY,
-                      });
-                    }
+                    setProjectHoverData({
+                      name: d['Short Title'],
+                      donor: d['Sources of Funds'],
+                      timeframe: d['Programme Period'],
+                      status: d.status,
+                      grantAmount: d['Grant Amount'],
+                      expenses: d['GL Expenses'],
+                      xPosition: event.clientX,
+                      yPosition: event.clientY,
+                    });
                   }}
                   onMouseLeave={() => {
                     updateSelectedProjects('');

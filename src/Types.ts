@@ -23,6 +23,7 @@ export interface IndicatorDataType {
 export interface DataType extends CountryGroupDataType {
   indicators: IndicatorDataType[];
   indicatorsAvailable: string[];
+  region: string;
 }
 
 export interface IndicatorMetaDataType {
@@ -76,6 +77,7 @@ export interface HoverDataType {
   continent: string;
   peopleDirectlyBenefiting: undefined | number;
   emissionsReduced: undefined | number;
+  treeEquivalent: undefined | number;
   grantAmountVerticalFund: undefined | number;
   expensesVerticalFund: undefined | number;
   coFinancingVerticalFund: undefined | number;

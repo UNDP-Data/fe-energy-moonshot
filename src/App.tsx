@@ -267,12 +267,13 @@ const App = () => {
         resultsData.forEach((d: any) => {
           const keys = Object.keys(d);
           keys.forEach((key) => {
-            if (indicators.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country') { indicators.push(key); }
+            if (indicators.indexOf(key) === -1 && key !== 'Alpha-3 code' && key !== 'Country or Area' && key !== 'Year' && key !== 'Lead Country' && key !== 'Region') { indicators.push(key); }
           });
         });
 
         const countryData = groupedData.map((d) => {
           const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === d.key)];
+          const region = d.values[0].Region;
           const indTemp = indicators.map((indicator) => {
             const value = d.values[0][indicator] !== undefined ? d.values[0][indicator] : undefined;
             return (
@@ -284,15 +285,15 @@ const App = () => {
           });
           return ({
             ...countryGroup,
+            region,
             indicatorsAvailable: indTemp.map((ind) => ind.indicator),
             indicators: indTemp,
           });
         });
-        console.log(projectCoordinates);
         setFinalData(countryData);
         setProjectCoordinatesData(projectCoordinates);
         setCountryList(countryData.map((d) => d['Country or Area']));
-        setRegionList(uniqBy(countryData.filter((d) => d['Group 2'] !== undefined), (d) => d['Group 2']).map((d) => d['Group 2']));
+        setRegionList(uniqBy(countryData.filter((d) => d.region !== undefined && ['Global', 'BPPS'].indexOf(d.region) === -1), (d) => d.region).map((d) => d.region).sort());
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
   }, []);

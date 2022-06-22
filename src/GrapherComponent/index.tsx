@@ -51,8 +51,8 @@ const H1 = styled.div`
   font-size: 3rem;
   font-weight: bold;
   color: var(--primary-blue);
-  line-height: 2rem;
-  margin: 1rem 0 0.5rem 1rem;
+  line-height: 3rem;
+  margin: 1rem 0 0.75rem 1rem;
   @media (max-width: 600px) {
     font-size: 2rem;
   }
@@ -89,14 +89,14 @@ export const GrapherComponent = (props: Props) => {
             </div>
           </TitleEl>
         </HeadingEl>
-        <Cards
-          data={data}
-        />
         <RootEl>
+          <Settings
+            indicators={indicators}
+            regions={regions}
+          />
           <GraphEl>
-            <Settings
-              indicators={indicators}
-              regions={regions}
+            <Cards
+              data={data}
             />
             <Graph
               data={data}
@@ -106,7 +106,12 @@ export const GrapherComponent = (props: Props) => {
             />
           </GraphEl>
         </RootEl>
-        <Note>Note: this map presents data from PIMS+ and Transparency Portal</Note>
+        <Note>
+          Note: this map presents data from PIMS+ and Transparency Portal. Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from
+          {' '}
+          <a href='https://sunroof.withgoogle.com/building/37.476876/-122.253535/#?f=buy'>here</a>
+          .
+        </Note>
       </Container>
     </>
   );

@@ -12,25 +12,24 @@ interface Props {
 }
 
 const El = styled.div`
-  width: 25%;
-  box-shadow: var(--shadow-right);
-  height: 74rem;
-  padding: 2rem;
-  border-right: 1px solid var(--black-400);
-  overflow: auto;
+  box-shadow: var(--shadow-bottom);
+  padding: 1.5em 2em;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: end;
+  gap: 2em;
+
   @media (max-width: 960px) {
-    width: 100%;
     box-shadow: var(--shadow-bottom);
     border-right: 0px solid var(--black-400);
     padding-bottom: 0;
-    height: auto;
   }  
 `;
 
 const DropdownEl = styled.div`
-  margin: 2rem 0;
-  &:first-of-type{
-    margin-top: 0;
+  flex-basis: 15%;
+  &:first-of-type {
+    flex-basis: 30%;
   }
 `;
 
@@ -41,45 +40,18 @@ const DropdownTitle = styled.div`
   line-height: 1.8rem;
 `;
 
-const FiltersEl = styled.div`
-  padding: 1rem 0 0 0;
-  border-top: 1px solid var(--black-400);
-  @media (max-width: 960px) {
-    padding: 2rem 0;
-  }  
-`;
-
-const FilterTitle = styled.div`
-  font-size: 1.6rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  margin-left: -5px;
-  margin-bottom: 1rem;
-  cursor: pointer;
-`;
-
 const ButtonEl = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 1rem 0 2rem 0;
+  /* flex: 1; */
   button {
     margin: 0.5rem 1rem 0.5rem 0;
   }
 `;
 
-const CheckboxContainer = styled.div`
-  display: inline;
-  @media (max-width: 960px) {
-    display: flex;
-  }  
+const CheckboxContainer = styled.div` 
+  /* flex: 1; */
 `;
 
 const CheckboxEl = styled.div`
-  margin: 1rem 0;
-  @media (max-width: 960px) {
-    margin: 0 0.5rem;
-  }  
 `;
 
 export const Settings = (props: Props) => {
@@ -139,40 +111,29 @@ export const Settings = (props: Props) => {
           }
         </Select>
       </DropdownEl>
-      <FiltersEl>
-        <FilterTitle>
-          <div style={{ marginTop: '2px' }}>
-            Filter or Highlight By
-          </div>
-        </FilterTitle>
-        <div>
-          <DropdownEl>
-            <DropdownTitle>
-              Region
-            </DropdownTitle>
-            <Select
-              allowClear
-              style={{ width: '100%' }}
-              placeholder='Select a region'
-              value={selectedRegions}
-              onChange={(d: string) => { updateSelectedRegions(d === undefined ? '' : d); }}
-            >
-              {
-              regions.map((d) => (
-                <Select.Option key={d}>{d}</Select.Option>
-              ))
-            }
-            </Select>
-          </DropdownEl>
-        </div>
-        <div>
-          <CheckboxContainer>
-            <CheckboxEl>
-              <Checkbox checked={showProjectLocations} onChange={(e) => { updateShowProjectLocations(e.target.checked); }}>Show project locations</Checkbox>
-            </CheckboxEl>
-          </CheckboxContainer>
-        </div>
-      </FiltersEl>
+      <DropdownEl>
+        <DropdownTitle>
+          Select a Region
+        </DropdownTitle>
+        <Select
+          allowClear
+          style={{ width: '100%' }}
+          placeholder='Select a region'
+          value={selectedRegions}
+          onChange={(d: string) => { updateSelectedRegions(d === undefined ? '' : d); }}
+        >
+          {
+          regions.map((d) => (
+            <Select.Option key={d}>{d}</Select.Option>
+          ))
+        }
+        </Select>
+      </DropdownEl>
+      <CheckboxContainer>
+        <CheckboxEl>
+          <Checkbox checked={showProjectLocations} onChange={(e) => { updateShowProjectLocations(e.target.checked); }}>Show project locations</Checkbox>
+        </CheckboxEl>
+      </CheckboxContainer>
       <ButtonEl>
         <button
           className='primary'
