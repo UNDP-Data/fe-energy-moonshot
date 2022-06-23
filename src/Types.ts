@@ -55,6 +55,21 @@ export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
   years: number[];
 }
 
+export interface ProjectDataType {
+  'Lead Country': string,
+  'project_id': number,
+  'status': 'Completed' | 'Active'
+  'Short Title': string,
+  'Region': string,
+  'Number of projects': number,
+  grant_amount_vertical_fund: undefined | number,
+  expenses_vertical_fund: undefined | number,
+  cofinancing_vertical_fund: undefined | number,
+  grant_amount_nonvertical_fund: undefined | number,
+  expenses_nonvertical_fund: undefined | number,
+  cofinancing_nonvertical_fund: undefined | number,
+}
+
 export interface ProjectCoordinateDataType {
   'project_id': number,
   'Short Title': string,

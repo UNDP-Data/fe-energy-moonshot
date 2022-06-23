@@ -190,9 +190,9 @@ export const UnivariateMap = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d['Group 1'],
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting')[0].value,
                         // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
                         treeEquivalent: d.indicators.filter((ind) => ind.indicator === 'tree_equivalent')[0].value,
                         grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
                         expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
@@ -211,9 +211,9 @@ export const UnivariateMap = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d['Group 1'],
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People directly benefiting')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting')[0].value,
                         // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'Tonnes of CO2 emissions reduced')[0].value,
+                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
                         treeEquivalent: d.indicators.filter((ind) => ind.indicator === 'tree_equivalent')[0].value,
                         grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
                         expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,

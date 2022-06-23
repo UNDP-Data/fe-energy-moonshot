@@ -7,7 +7,7 @@ const Context = createContext<CtxDataType>({
   selectedProjects: '',
   xAxisIndicator: '',
   showProjectLocations: false,
-  selectedProjectType: 'Active',
+  selectedProjectType: 'All',
   updateSelectedRegions: (_d: string) => {},
   updateSelectedCountries: (_d: string) => {},
   updateSelectedProjects: (_d: string) => {},

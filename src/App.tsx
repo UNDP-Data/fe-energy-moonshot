@@ -9,7 +9,7 @@ import { queue } from 'd3-queue';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import {
-  DataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType,
+  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -182,7 +182,8 @@ const VizAreaEl = styled.div`
 `;
 
 const App = () => {
-  const [finalData, setFinalData] = useState<DataType[] | undefined>(undefined);
+  const [finalData, setFinalData] = useState<ProjectDataType[] | undefined>(undefined);
+  const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [projectCoordinatesData, setProjectCoordinatesData] = useState<ProjectCoordinateDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<string[] | undefined>(undefined);
@@ -252,10 +253,13 @@ const App = () => {
   useEffect(() => {
     queue()
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/resultsByCountry.json')
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/indicatorMetaData.json')
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projectCoordinates.json')
+      .defer(json, './data/projects.json')
+      // .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/indicatorMetaData.json')
+      // .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projectCoordinates.json')
+      .defer(json, './data/indicatorMetaData.json')
+      .defer(json, './data/projectCoordinates.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
-      .await((err: any, resultsData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupData: CountryGroupDataType[]) => {
+      .await((err: any, resultsData: any[], projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
 
         const groupedData = nest()
@@ -270,10 +274,9 @@ const App = () => {
             if (indicators.indexOf(key) === -1 && key !== 'Lead Country' && key !== 'Region') { indicators.push(key); }
           });
         });
-        console.log(resultsData);
 
         const countryData = groupedData.map((d) => {
-          const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === d.key)];
+          const countryGroup = countryGroupDataRaw[countryGroupDataRaw.findIndex((el) => el['Country or Area'] === d.key)];
           const region = d.values[0].Region;
           const indTemp = indicators.map((indicator) => {
             const value = d.values[0][indicator] !== undefined ? d.values[0][indicator] : undefined;
@@ -291,7 +294,8 @@ const App = () => {
             indicators: indTemp,
           });
         });
-        setFinalData(countryData);
+        setFinalData(projectData);
+        setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinates);
         setCountryList(countryData.map((d) => d['Country or Area']));
         setRegionList(uniqBy(countryData.filter((d) => d.region !== undefined && ['Global', 'BPPS'].indexOf(d.region) === -1), (d) => d.region).map((d) => d.region).sort());
@@ -302,7 +306,7 @@ const App = () => {
     <>
       <GlobalStyle />
       {
-        indicatorsList && finalData && regionList && countryList && projectCoordinatesData
+        indicatorsList && finalData && regionList && countryList && projectCoordinatesData && countryGroupData
           ? (
             <>
               <Context.Provider
@@ -318,6 +322,7 @@ const App = () => {
               >
                 <GrapherComponent
                   data={finalData}
+                  countryGroupData={countryGroupData}
                   projectCoordinatesData={projectCoordinatesData}
                   indicators={indicatorsList}
                   regions={regionList}

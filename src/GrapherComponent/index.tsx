@@ -1,15 +1,22 @@
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { nest } from 'd3-collection';
+import sumBy from 'lodash.sumby';
 import {
-  DataType,
+  CountryGroupDataType,
+  CtxDataType,
+  ProjectDataType,
   IndicatorMetaDataType,
   ProjectCoordinateDataType,
 } from '../Types';
+import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
 
 interface Props {
-  data: DataType[];
+  data: ProjectDataType[];
+  countryGroupData: CountryGroupDataType[];
   projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
   regions: string[];
@@ -28,15 +35,15 @@ const RootEl = styled.div`
 `;
 
 const HeadingEl = styled.div`
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   padding: 2rem 0;
-  align-items: center;
+  /* align-items: center; */
 `;
 
 const TitleEl = styled.div`
-  display: flex;
-  align-items: center;
+  /* display: flex; */
+  /* align-items: center; */
 `;
 
 const GraphEl = styled.div`
@@ -74,10 +81,45 @@ const Note = styled.p`
 export const GrapherComponent = (props: Props) => {
   const {
     data,
+    countryGroupData,
     projectCoordinatesData,
     indicators,
     regions,
   } = props;
+  const {
+    selectedProjectType,
+  } = useContext(Context) as CtxDataType;
+  const filteredProjectData = data.filter((d) => selectedProjectType === 'All' || d.status === selectedProjectType);
+  function calculateCountryTotals() {
+    const groupedData = nest()
+      .key((d: any) => d['Lead Country'])
+      .entries(filteredProjectData);
+
+    const countryData = groupedData.map((country) => {
+      const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
+      const region = country.values[0].Region;
+      const indTemp = indicators.map((indicator) => {
+        const indicatorName = indicator.DataKey;
+        const value = sumBy(country.values, (project:any) => project[indicatorName]);
+        return (
+          {
+            indicator: indicatorName,
+            value,
+          }
+        );
+      });
+      indTemp.push({ indicator: 'tree_equivalent', value: sumBy(country.values, (project: any) => project.tree_equivalent) });
+      indTemp.push({ indicator: 'car_equivalent', value: sumBy(country.values, (project: any) => project.car_equivalent) });
+      return ({
+        ...countryGroup,
+        region,
+        indicatorsAvailable: indTemp.map((ind) => ind.indicator),
+        indicators: indTemp,
+      });
+    });
+    return (countryData);
+  }
+  const mapData = calculateCountryTotals();
   return (
     <>
       <Container>
@@ -88,6 +130,7 @@ export const GrapherComponent = (props: Props) => {
               <H2>Explore All Data (1991 - 2022)</H2>
             </div>
           </TitleEl>
+          <div style={{ marginLeft: '1rem', marginTop: '1.5rem' }}>Data from Non-Vertical Funds (NVF) is currently being revised.</div>
         </HeadingEl>
         <RootEl>
           <Settings
@@ -96,10 +139,10 @@ export const GrapherComponent = (props: Props) => {
           />
           <GraphEl>
             <Cards
-              data={data}
+              data={mapData}
             />
             <Graph
-              data={data}
+              data={mapData}
               projectCoordinatesData={projectCoordinatesData}
               indicators={indicators}
               fullWidth
