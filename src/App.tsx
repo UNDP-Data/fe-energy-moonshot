@@ -2,7 +2,6 @@
 import { useState, useEffect, useReducer } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { json } from 'd3-request';
-import { nest } from 'd3-collection';
 // import sortBy from 'lodash.sortby';
 import uniqBy from 'lodash.uniqby';
 import { queue } from 'd3-queue';
@@ -252,53 +251,18 @@ const App = () => {
 
   useEffect(() => {
     queue()
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/resultsByCountry.json')
-      .defer(json, './data/projects.json')
-      // .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/indicatorMetaData.json')
-      // .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projectCoordinates.json')
-      .defer(json, './data/indicatorMetaData.json')
-      .defer(json, './data/projectCoordinates.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projects.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/indicatorMetaData.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projectCoordinates.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
-      .await((err: any, resultsData: any[], projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
+      .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
 
-        const groupedData = nest()
-          .key((d: any) => d['Lead Country'])
-          .entries(resultsData);
-
-        /* Build list of indicators */
-        const indicators: string[] = [];
-        resultsData.forEach((d: any) => {
-          const keys = Object.keys(d);
-          keys.forEach((key) => {
-            if (indicators.indexOf(key) === -1 && key !== 'Lead Country' && key !== 'Region') { indicators.push(key); }
-          });
-        });
-
-        const countryData = groupedData.map((d) => {
-          const countryGroup = countryGroupDataRaw[countryGroupDataRaw.findIndex((el) => el['Country or Area'] === d.key)];
-          const region = d.values[0].Region;
-          const indTemp = indicators.map((indicator) => {
-            const value = d.values[0][indicator] !== undefined ? d.values[0][indicator] : undefined;
-            return (
-              {
-                indicator,
-                value,
-              }
-            );
-          });
-          return ({
-            ...countryGroup,
-            region,
-            indicatorsAvailable: indTemp.map((ind) => ind.indicator),
-            indicators: indTemp,
-          });
-        });
         setFinalData(projectData);
         setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinates);
-        setCountryList(countryData.map((d) => d['Country or Area']));
-        setRegionList(uniqBy(countryData.filter((d) => d.region !== undefined && ['Global', 'BPPS'].indexOf(d.region) === -1), (d) => d.region).map((d) => d.region).sort());
+        setCountryList(projectData.map((d) => d['Lead Country']));
+        setRegionList(uniqBy(projectData.filter((d) => d.region !== undefined && ['Global', 'BPPS'].indexOf(d.region) === -1), (d) => d.region).map((d) => d.region).sort());
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
   }, []);
