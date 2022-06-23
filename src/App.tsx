@@ -262,7 +262,7 @@ const App = () => {
         setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinates);
         setCountryList(projectData.map((d) => d['Lead Country']));
-        setRegionList(uniqBy(projectData.filter((d) => d.region !== undefined && ['Global', 'BPPS'].indexOf(d.region) === -1), (d) => d.region).map((d) => d.region).sort());
+        setRegionList(uniqBy(projectData.filter((d) => d.Region !== undefined && ['Global', 'BPPS'].indexOf(d.Region) === -1), (d) => d.Region).map((d) => d.Region).sort());
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
   }, []);
