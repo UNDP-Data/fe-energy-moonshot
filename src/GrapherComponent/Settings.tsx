@@ -1,7 +1,6 @@
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Select, Checkbox } from 'antd';
-import domtoimage from 'dom-to-image';
+import { Select, Switch } from 'antd';
 import { CtxDataType, IndicatorMetaDataType } from '../Types';
 import Context from '../Context/Context';
 import { DEFAULT_VALUES } from '../Constants';
@@ -12,24 +11,23 @@ interface Props {
 }
 
 const El = styled.div`
-  box-shadow: var(--shadow-bottom);
-  padding: 1.5em 2em;
+  padding: 0 1rem 2rem 1rem;
   display: flex;
-  /* justify-content: space-between; */
   align-items: end;
-  gap: 2em;
+  justify-content: space-between;
 
   @media (max-width: 960px) {
-    box-shadow: var(--shadow-bottom);
     border-right: 0px solid var(--black-400);
     padding-bottom: 0;
   }  
 `;
 
 const DropdownEl = styled.div`
-  flex-basis: 15%;
-  &:first-of-type {
-    flex-basis: 30%;
+  flex-grow: 1;
+  margin-right: 2rem;
+  &:last-of-type {
+    margin-right: 0;
+    flex-grow: 0;
   }
 `;
 
@@ -40,20 +38,6 @@ const DropdownTitle = styled.div`
   line-height: 1.8rem;
 `;
 
-const ButtonEl = styled.div`
-  /* flex: 1; */
-  button {
-    margin: 0.5rem 1rem 0.5rem 0;
-  }
-`;
-
-const CheckboxContainer = styled.div` 
-  /* flex: 1; */
-`;
-
-const CheckboxEl = styled.div`
-`;
-
 export const Settings = (props: Props) => {
   const {
     indicators,
@@ -62,7 +46,6 @@ export const Settings = (props: Props) => {
   const {
     xAxisIndicator,
     selectedRegions,
-    showProjectLocations,
     updateXAxisIndicator,
     updateSelectedRegions,
     updateShowProjectLocations,
@@ -118,30 +101,12 @@ export const Settings = (props: Props) => {
         }
         </Select>
       </DropdownEl>
-      <CheckboxContainer>
-        <CheckboxEl>
-          <Checkbox checked={showProjectLocations} onChange={(e) => { updateShowProjectLocations(e.target.checked); }}>Show project locations</Checkbox>
-        </CheckboxEl>
-      </CheckboxContainer>
-      <ButtonEl>
-        <button
-          className='primary'
-          type='button'
-          onClick={() => {
-            const node = document.getElementById('graph-node') as HTMLElement;
-            domtoimage
-              .toPng(node, { height: node.scrollHeight })
-              .then((dataUrl: any) => {
-                const link = document.createElement('a');
-                link.download = 'graph.png';
-                link.href = dataUrl;
-                link.click();
-              });
-          }}
-        >
-          Download Graph
-        </button>
-      </ButtonEl>
+      <DropdownEl>
+        <DropdownTitle>
+          Show project locations
+        </DropdownTitle>
+        <Switch style={{ margin: '0.5rem 0' }} onChange={(e) => { updateShowProjectLocations(e); }} />
+      </DropdownEl>
     </El>
   );
 };

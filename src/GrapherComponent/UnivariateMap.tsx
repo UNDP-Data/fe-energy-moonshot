@@ -25,6 +25,7 @@ interface Props {
 const El = styled.div`
   height: 100%;
   overflow-y: hidden;
+  background-color: #fff;
 `;
 
 const LegendEl = styled.div`
@@ -105,7 +106,7 @@ export const UnivariateMap = (props: Props) => {
           updateSelectedCountries('');
         }}
       >
-        <rect y='-20' width={svgWidth} height={svgHeight + 40} fill='#d4dadc' />
+        <rect y='-20' width={svgWidth} height={svgHeight + 40} fill='#fff' />
         <g ref={mapG}>
           {
             (World as any).features.map((d: any, i: number) => {
@@ -138,7 +139,7 @@ export const UnivariateMap = (props: Props) => {
                       <path
                         key={j}
                         d={masterPath}
-                        stroke='#f0e4e4'
+                        stroke='#999'
                         strokeWidth={0.25}
                         fill={COLOR_SCALES.Null}
                       />
@@ -154,7 +155,7 @@ export const UnivariateMap = (props: Props) => {
                       <path
                         key={j}
                         d={path}
-                        stroke='#f0e4e4'
+                        stroke='#999'
                         strokeWidth={0.25}
                         fill={COLOR_SCALES.Null}
                       />
@@ -254,7 +255,7 @@ export const UnivariateMap = (props: Props) => {
                           <path
                             key={j}
                             d={masterPath}
-                            stroke='#f0e4e4'
+                            stroke='#999'
                             strokeWidth={0.25}
                             fill={color}
                           />
@@ -270,7 +271,7 @@ export const UnivariateMap = (props: Props) => {
                           <path
                             key={j}
                             d={path}
-                            stroke='#f0e4e4'
+                            stroke='#999'
                             strokeWidth={0.25}
                             fill={color}
                           />
