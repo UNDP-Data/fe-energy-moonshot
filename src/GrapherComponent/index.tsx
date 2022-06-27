@@ -31,7 +31,6 @@ const Container = styled.div`
 const RootEl = styled.div`
   background-color: var(--white);
   color: var(--black-600);
-  box-shadow: var(--shadow);
 `;
 
 const HeadingEl = styled.div`
@@ -49,6 +48,7 @@ const TitleEl = styled.div`
 const GraphEl = styled.div`
   display: flex;
   align-items: stretch;
+  box-shadow: var(--shadow);
   @media (max-width: 960px) {
     display: inline;
   }  
@@ -76,6 +76,7 @@ const H2 = styled.div`
 
 const Note = styled.p`
   margin-top: 1em;
+  font-style: italic;
 `;
 
 export const GrapherComponent = (props: Props) => {
@@ -152,7 +153,7 @@ export const GrapherComponent = (props: Props) => {
         <Note>
           Note: this map presents data from PIMS+ and Transparency Portal. Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from
           {' '}
-          <a href='https://sunroof.withgoogle.com/building/37.476876/-122.253535/#?f=buy'>here</a>
+          <a target='_black' href='https://sunroof.withgoogle.com/building/37.476876/-122.253535/#?f=buy'>here</a>
           .
         </Note>
       </Container>
