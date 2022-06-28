@@ -73,6 +73,7 @@ export const UnivariateMap = (props: Props) => {
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
   const [projectHoverData, setProjectHoverData] = useState<ProjectHoverDataType | undefined>(undefined);
+  const [zoomLevel, setZoomLevel] = useState(1);
   const queryParams = new URLSearchParams(window.location.search);
   const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960 ? 1280 : 960;
   const svgHeight = 678;
@@ -90,6 +91,7 @@ export const UnivariateMap = (props: Props) => {
       .scaleExtent([1, 12])
       .translateExtent([[-20, 0], [svgWidth + 20, svgHeight]])
       .on('zoom', ({ transform }) => {
+        setZoomLevel(transform.k);
         mapGSelect.attr('transform', transform);
       });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -284,9 +286,10 @@ export const UnivariateMap = (props: Props) => {
           }
           {
             hoverData
-              ? (World as any).features.filter((d: any) => d.properties.ISO3 === data[data.findIndex((el: DataType) => el['Country or Area'] === hoverData?.country)]['Alpha-3 code-1']).map((d: any) => (
+              ? (World as any).features.filter((d: any) => d.properties.ISO3 === data[data.findIndex((el: DataType) => el['Country or Area'] === hoverData?.country)]['Alpha-3 code-1']).map((d: any, i: number) => (
                 <G
                   opacity={!selectedColor ? 1 : 0}
+                  key={i}
                 >
                   {
                     d.geometry.type === 'MultiPolygon' ? d.geometry.coordinates.map((el:any, j: any) => {
@@ -380,10 +383,10 @@ export const UnivariateMap = (props: Props) => {
                     key={i}
                     cx={point[0]}
                     cy={point[1]}
-                    r='2px'
+                    r={2 / zoomLevel < 0.25 ? 0.25 : 2 / zoomLevel}
                     fill={COLOR_SCALES.Categorical[6]}
                     stroke='#FFF'
-                    strokeWidth={0.5}
+                    strokeWidth={0.5 / zoomLevel}
                   />
                 </g>
               );
