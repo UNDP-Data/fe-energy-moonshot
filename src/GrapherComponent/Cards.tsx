@@ -114,6 +114,7 @@ export const Cards = (props: Props) => {
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
     grantAmountNonVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_nonvertical_fund')[0].value),
     numberCountries: relevantData.length,
+    numberProjects: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of projects')[0].value),
   };
 
   return (
@@ -134,6 +135,10 @@ export const Cards = (props: Props) => {
             )
           }
         </MetricLocation>
+        <Card>
+          <MetricTitle>Number of projects</MetricTitle>
+          <MetricNumber>{cardData.numberProjects === undefined ? 'N/A' : formatData(cardData.numberProjects)}</MetricNumber>
+        </Card>
         <Card>
           <MetricTitle>People directly benefiting</MetricTitle>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
