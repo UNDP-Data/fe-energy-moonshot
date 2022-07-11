@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Select, Switch } from 'antd';
-import { CtxDataType, IndicatorMetaDataType } from '../Types';
+import { CtxDataType, IndicatorMetaDataType, RegionDataType } from '../Types';
 import Context from '../Context/Context';
 import { DEFAULT_VALUES } from '../Constants';
 
 interface Props {
   indicators: IndicatorMetaDataType[];
-  regions: string[];
+  regions: RegionDataType[];
 }
 
 const El = styled.div`
@@ -92,7 +92,7 @@ export const Settings = (props: Props) => {
         >
           {
           regions.map((d) => (
-            <Select.Option key={d}>{d}</Select.Option>
+            <Select.Option key={d.value}>{d.label}</Select.Option>
           ))
         }
         </Select>

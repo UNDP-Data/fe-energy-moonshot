@@ -3,12 +3,12 @@ import { useState, useEffect, useReducer } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { json } from 'd3-request';
 // import sortBy from 'lodash.sortby';
-import uniqBy from 'lodash.uniqby';
+// import uniqBy from 'lodash.uniqby';
 import { queue } from 'd3-queue';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import {
-  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType,
+  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -185,7 +185,7 @@ const App = () => {
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [projectCoordinatesData, setProjectCoordinatesData] = useState<ProjectCoordinateDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
-  const [regionList, setRegionList] = useState<string[] | undefined>(undefined);
+  const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
 
   const initialState = {
@@ -205,6 +205,14 @@ const App = () => {
     'Tonnes of CO2 emissions reduced in agriculture and forestry',
     'Tonnes of CO2-eq emissions reduced from buildings, cities, industries and appliances',
     'MJ of energy saved through improved efficiency',
+  ];
+
+  const regions = [
+    { value: 'RBA', label: 'Regional Bureau for Africa (RBA)' },
+    { value: 'RBAP', label: 'Regional Bureau for Asia and the Pacific (RBAP)' },
+    { value: 'RBAS', label: 'Regional Bureau for Arab States (RBAS)' },
+    { value: 'RBEC', label: 'Regional Bureau for Europe and the Commonwealth of Independent States (RBEC)' },
+    { value: 'RBLAC', label: 'Regional Bureau on Latin America and the Caribbean (RBLAC)' },
   ];
 
   const updateSelectedRegions = (selectedRegions: string[]) => {
@@ -262,7 +270,8 @@ const App = () => {
         setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinates);
         setCountryList(projectData.map((d) => d['Lead Country']));
-        setRegionList(uniqBy(projectData.filter((d) => d.Region !== undefined && ['Global', 'BPPS'].indexOf(d.Region) === -1), (d) => d.Region).map((d) => d.Region).sort());
+        setRegionList(regions);
+        // setRegionList(uniqBy(projectData.filter((d) => d.Region !== undefined && ['Global', 'BPPS'].indexOf(d.Region) === -1), (d) => d.Region).map((d) => d.Region).sort());
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
   }, []);

@@ -8,6 +8,7 @@ import {
   ProjectDataType,
   IndicatorMetaDataType,
   ProjectCoordinateDataType,
+  RegionDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
@@ -19,7 +20,7 @@ interface Props {
   countryGroupData: CountryGroupDataType[];
   projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
-  regions: string[];
+  regions: RegionDataType[];
 }
 
 const Container = styled.div`

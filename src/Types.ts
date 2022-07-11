@@ -15,6 +15,11 @@ export interface CountryGroupDataType {
   'Income group': string;
 }
 
+export interface RegionDataType {
+  'value': string;
+  'label': string;
+}
+
 export interface IndicatorDataType {
   indicator: string;
   value?: number;
