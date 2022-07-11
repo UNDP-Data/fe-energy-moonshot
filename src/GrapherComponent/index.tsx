@@ -128,7 +128,7 @@ export const GrapherComponent = (props: Props) => {
           <TitleEl>
             <div>
               <H1>Energy-Related Projects</H1>
-              <H2>Explore All Data (1991 - 2022)</H2>
+              <H2>Explore Data from Active Projects (1991 - 2022)</H2>
             </div>
           </TitleEl>
           <div style={{ marginLeft: '1rem', marginTop: '1.5rem' }}>Data from Non-Vertical Funds (NVF) is currently being revised.</div>
@@ -151,7 +151,7 @@ export const GrapherComponent = (props: Props) => {
           </GraphEl>
         </RootEl>
         <Note>
-          Note: this map presents data from PIMS+ and Transparency Portal. Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from
+          Note: this map presents data on active projects from PIMS+ and Transparency Portal. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo; Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from
           {' '}
           <a target='_black' href='https://sunroof.withgoogle.com/building/37.476876/-122.253535/#?f=buy'>here</a>
           .
