@@ -128,7 +128,7 @@ export const GrapherComponent = (props: Props) => {
         <HeadingEl>
           <TitleEl>
             <div>
-              <H1>Energy-Related Projects</H1>
+              <H1>Energy-Related Portfolio</H1>
               <H2>Explore Data from Active Projects</H2>
             </div>
           </TitleEl>
