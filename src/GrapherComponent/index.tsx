@@ -128,7 +128,7 @@ export const GrapherComponent = (props: Props) => {
           <TitleEl>
             <div>
               <H1>Energy-Related Projects</H1>
-              <H2>Explore Data from Active Projects (1991 - 2022)</H2>
+              <H2>Explore Data from Active Projects</H2>
             </div>
           </TitleEl>
           <div style={{ marginLeft: '1rem', marginTop: '1.5rem' }}>Data from Non-Vertical Funds (NVF) is currently being revised.</div>
