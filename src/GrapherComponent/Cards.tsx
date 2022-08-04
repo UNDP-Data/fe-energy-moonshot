@@ -9,7 +9,6 @@ import {
   CarIcon, TreeIcon,
 } from '../Icons';
 import Context from '../Context/Context';
-import { DonutChartCard } from '../Components/DonutChart';
 
 interface Props {
   data: DataType[];
@@ -112,7 +111,6 @@ export const Cards = (props: Props) => {
     treeEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
     carsEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'car_equivalent')[0].value),
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
-    grantAmountNonVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_nonvertical_fund')[0].value),
     numberCountries: relevantData.length,
     numberProjects: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of projects')[0].value),
   };
@@ -145,20 +143,7 @@ export const Cards = (props: Props) => {
         </Card>
         <Card>
           <MetricTitle>Total grant amount (USD)</MetricTitle>
-          {
-            cardData.grantAmountVerticalFunds || cardData.grantAmountNonVerticalFunds
-              ? (
-                <DonutChartCard
-                  vertFund={cardData.grantAmountVerticalFunds}
-                  nonVertFund={cardData.grantAmountNonVerticalFunds}
-                />
-              )
-              : (
-                <div style={{ flex: 1 }}>
-                  <MetricNumber>N/A</MetricNumber>
-                </div>
-              )
-          }
+          <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
         </Card>
         <Card>
           <MetricTitle>Estimated Environmental Impact</MetricTitle>

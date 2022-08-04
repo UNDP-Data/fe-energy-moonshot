@@ -259,9 +259,9 @@ const App = () => {
 
   useEffect(() => {
     queue()
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projects.json')
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/indicatorMetaData.json')
-      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public/data/projectCoordinates.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/exclude-non-vertical-fund-projects/public/data/projects.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/exclude-non-vertical-fund-projects/public/data/indicatorMetaData.json')
+      .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/exclude-non-vertical-fund-projects/public/data/projectCoordinates.json')
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
       .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;

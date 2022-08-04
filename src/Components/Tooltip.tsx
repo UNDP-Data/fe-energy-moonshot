@@ -167,33 +167,6 @@ export const Tooltip = (props: Props) => {
           </RowEl>
         </MetricGrp>
         <MetricGrp>
-          Non-vertical Fund Projects:
-          <RowEl>
-            <RowTitleEl>
-              Grant Amount (USD):
-            </RowTitleEl>
-            <RowValue>
-              {data.grantAmountNonVerticalFund === undefined ? 'N/A' : formatData(data.grantAmountNonVerticalFund)}
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              Expenses (USD):
-            </RowTitleEl>
-            <RowValue>
-              {data.expensesNonVerticalFund === undefined ? 'N/A' : formatData(data.expensesNonVerticalFund)}
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              Co-Financing (USD):
-            </RowTitleEl>
-            <RowValue>
-              {data.coFinancingNonVerticalFund === undefined ? 'N/A' : formatData(data.coFinancingNonVerticalFund)}
-            </RowValue>
-          </RowEl>
-        </MetricGrp>
-        <MetricGrp>
           <RowEl>
             <RowTitleEl>
               Number of projects:

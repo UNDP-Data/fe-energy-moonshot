@@ -70,9 +70,6 @@ export interface ProjectDataType {
   grant_amount_vertical_fund: undefined | number,
   expenses_vertical_fund: undefined | number,
   cofinancing_vertical_fund: undefined | number,
-  grant_amount_nonvertical_fund: undefined | number,
-  expenses_nonvertical_fund: undefined | number,
-  cofinancing_nonvertical_fund: undefined | number,
 }
 
 export interface ProjectCoordinateDataType {
@@ -101,9 +98,6 @@ export interface HoverDataType {
   grantAmountVerticalFund: undefined | number;
   expensesVerticalFund: undefined | number;
   coFinancingVerticalFund: undefined | number;
-  grantAmountNonVerticalFund: undefined | number;
-  expensesNonVerticalFund: undefined | number;
-  coFinancingNonVerticalFund: undefined | number;
   numberProjects: undefined | number;
   xPosition: number;
   yPosition: number;
