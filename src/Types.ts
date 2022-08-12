@@ -92,9 +92,10 @@ export interface ProjectCoordinateDataType {
 export interface HoverDataType {
   country: string;
   continent: string;
-  peopleDirectlyBenefiting: undefined | number;
-  emissionsReduced: undefined | number;
-  treeEquivalent: undefined | number;
+  peopleDirectlyBenefitingAchieved: undefined | number;
+  emissionsReducedAchieved: undefined | number;
+  peopleDirectlyBenefitingExpected: undefined | number;
+  emissionsReducedExpected: undefined | number;
   grantAmountVerticalFund: undefined | number;
   expensesVerticalFund: undefined | number;
   coFinancingVerticalFund: undefined | number;

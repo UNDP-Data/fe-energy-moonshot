@@ -106,8 +106,8 @@ export const Cards = (props: Props) => {
   const selectedGeography = selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global';
 
   const cardData = {
-    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'people directly benefiting')[0].value),
-    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value),
+    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'people directly benefiting_achieved')[0].value),
+    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tonnes of CO2-eq emissions avoided or reduced_achieved')[0].value),
     treeEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
     carsEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'car_equivalent')[0].value),
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
@@ -138,7 +138,7 @@ export const Cards = (props: Props) => {
           <MetricNumber>{cardData.numberProjects === undefined ? 'N/A' : formatData(cardData.numberProjects)}</MetricNumber>
         </Card>
         <Card>
-          <MetricTitle>People directly benefiting</MetricTitle>
+          <MetricTitle>People directly benefiting (achieved)</MetricTitle>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
         </Card>
         <Card>
@@ -146,7 +146,7 @@ export const Cards = (props: Props) => {
           <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
         </Card>
         <Card>
-          <MetricTitle>Estimated Environmental Impact</MetricTitle>
+          <MetricTitle>Estimated Environmental Impact (achieved)</MetricTitle>
           <EmissionsWrapper>
             <MetricNumber>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}

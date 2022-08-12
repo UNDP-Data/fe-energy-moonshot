@@ -98,7 +98,6 @@ export const Tooltip = (props: Props) => {
     return format('.3s')(d).replace('G', 'B');
   };
 
-  const tooltipRow = { label: 'People directly benefiting', metricName: 'peopleDirectlyBenefiting' };
   return (
     <TooltipEl x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
       <TooltipHead>
@@ -116,26 +115,34 @@ export const Tooltip = (props: Props) => {
         <MetricGrp>
           <RowEl>
             <RowTitleEl>
-              {tooltipRow.label}
+              People directly benefiting (achieved)
             </RowTitleEl>
             <RowValue>
-              { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
+              { data.peopleDirectlyBenefitingAchieved === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefitingAchieved) }
             </RowValue>
           </RowEl>
-          {/* <RowEl>
-            <RowTitleEl>
-              People indirectly benefiting:
-            </RowTitleEl>
-            <RowValue>
-              {formatData(data.peopleIndirectlyBenefiting)}
-            </RowValue>
-          </RowEl> */}
           <RowEl>
             <RowTitleEl>
-              CO2 emissions reduced (tonnes):
+              People directly benefiting (expected)
             </RowTitleEl>
             <RowValue>
-              {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
+              { data.peopleDirectlyBenefitingExpected === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefitingExpected) }
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              CO2 emissions reduced (tonnes, achieved):
+            </RowTitleEl>
+            <RowValue>
+              {data.emissionsReducedAchieved === undefined ? 'N/A' : formatData(data.emissionsReducedAchieved)}
+            </RowValue>
+          </RowEl>
+          <RowEl>
+            <RowTitleEl>
+              CO2 emissions reduced (tonnes, expected):
+            </RowTitleEl>
+            <RowValue>
+              {data.emissionsReducedExpected === undefined ? 'N/A' : formatData(data.emissionsReducedExpected)}
             </RowValue>
           </RowEl>
         </MetricGrp>
