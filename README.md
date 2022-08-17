@@ -1,6 +1,6 @@
 # Access All Data Visualization in DFP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and uses [Craco](https://www.npmjs.com/package/@craco/craco) to add a configuration layer for CRA. For this porject, we use [Typescript](https://www.typescriptlang.org/), a strongly typed programming language that builds on JavaScript. Typescript helps in better documentation of the code and communication between developers.
+This project provides country and project-level information about the clean energy portfolio. This codebase is a fork of the [Access All Data Visualization in DFP](https://github.com/UNDP-Data/Access-All-Data-Viz) project. The associated repo for cleaning and processing the data used in this dashboard is [here](https://github.com/UNDP-Data/Energy-Hub-Dashboard-Data-Pipeline). A deployed prototype of the dashboard can be seen [here](https://comfy-creponne-9c0627.netlify.app/).
 
 ## Installation
 
