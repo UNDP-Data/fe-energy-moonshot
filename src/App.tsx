@@ -235,6 +235,10 @@ const GlobalStyle = createGlobalStyle`
   .single-select-box .ant-select-selector {
     padding-top: 1rem !important;
   }
+
+  .ant-select-single .ant-select-selector::after, .ant-select-single .ant-select-selector .ant-select-selection-item::after, .ant-select-single .ant-select-selector .ant-select-selection-placeholder::after {
+    content: none !important;
+  }
 `;
 
 const VizAreaEl = styled.div`
@@ -254,8 +258,9 @@ const App = () => {
   const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
 
+  const queryParams = new URLSearchParams(window.location.search);
   const initialState = {
-    selectedRegions: 'All',
+    selectedRegions: queryParams.get('region') || 'All',
     selectedCountries: [],
     selectedProjects: '',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,

@@ -45,17 +45,15 @@ const H1 = styled.div`
   font-size: 3rem;
   font-weight: bold;
   color: var(--primary-blue);
-  line-height: 3rem;
-  margin: 1rem 0 0.75rem 1rem;
+  margin: 0 0 0.75rem 0;
   @media (max-width: 600px) {
     font-size: 2rem;
   }
 `;
 const H2 = styled.div`
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
-  line-height: 2rem;
-  margin: 0 0 0.5rem 1rem;
+  line-height: 2.4rem;
   @media (max-width: 600px) {
     font-size: 1.6rem;
   }
@@ -69,6 +67,14 @@ const Note = styled.p`
   font-style: italic;
 `;
 
+const regionList = [
+  { value: 'RBA', label: 'Regional Bureau for Africa (RBA)' },
+  { value: 'RBAP', label: 'Regional Bureau for Asia and the Pacific (RBAP)' },
+  { value: 'RBAS', label: 'Regional Bureau for Arab States (RBAS)' },
+  { value: 'RBEC', label: 'Regional Bureau for Europe and the Commonwealth of Independent States (RBEC)' },
+  { value: 'RBLAC', label: 'Regional Bureau on Latin America and the Caribbean (RBLAC)' },
+];
+
 export const GrapherComponent = (props: Props) => {
   const {
     data,
@@ -80,6 +86,8 @@ export const GrapherComponent = (props: Props) => {
   const {
     selectedTaxonomy,
   } = useContext(Context) as CtxDataType;
+  const queryParams = new URLSearchParams(window.location.search);
+  const queryRegion = queryParams.get('region');
   const filteredProjectData = data.filter((d) => selectedTaxonomy === 'All' || d.taxonomy === selectedTaxonomy);
   function calculateCountryTotals() {
     const groupedData = nest()
@@ -118,13 +126,16 @@ export const GrapherComponent = (props: Props) => {
           <div>
             <div>
               <H1>Energy-Related Portfolio</H1>
-              <H2>Explore Data from Active Projects</H2>
+              <H2>
+                Explore Data from Active Projects
+                {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
+              </H2>
             </div>
           </div>
-          <Settings
-            regions={regions}
-          />
         </HeadingEl>
+        <Settings
+          regions={regions}
+        />
         <RootEl>
           <Cards
             data={mapData}

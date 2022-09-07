@@ -9,11 +9,10 @@ interface Props {
 }
 
 const El = styled.div`
-  padding: 0 1rem 0 1rem;
   display: flex;
   align-items: end;
   gap: 2rem;
-
+  margin-bottom: 1rem;
   @media (max-width: 960px) {
     border-right: 0px solid var(--black-400);
     padding-bottom: 0;
@@ -75,30 +74,12 @@ export const Settings = (props: Props) => {
     updateSelectedRegions,
     updateSelectedTaxonomy,
   } = useContext(Context) as CtxDataType;
+  const queryParams = new URLSearchParams(window.location.search);
+  const queryRegion = queryParams.get('region');
   return (
     <El>
       <DropdownEl
-        width='calc(25% - 1rem)'
-      >
-        <FilterTitle>
-          Select a Bureau
-        </FilterTitle>
-        <Select
-          className='select-box'
-          placeholder='Select a bureau'
-          value={selectedRegions}
-          onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'All' : d); }}
-        >
-          <Select.Option key='All'>All Regions</Select.Option>
-          {
-            regions.map((d) => (
-              <Select.Option key={d.value}>{d.label}</Select.Option>
-            ))
-          }
-        </Select>
-      </DropdownEl>
-      <DropdownEl
-        width='calc(25% - 1rem)'
+        width={!queryRegion ? 'calc(50% - 1rem)' : '100%'}
       >
         <FilterTitle>
           Select a Project Category
@@ -116,6 +97,33 @@ export const Settings = (props: Props) => {
           }
         </Select>
       </DropdownEl>
+      {
+        !queryRegion
+          ? (
+            <DropdownEl
+              width='calc(50% - 1rem)'
+            >
+              <FilterTitle>
+                Select a Bureau
+              </FilterTitle>
+              <Select
+                style={{ width: '100%' }}
+                className='select-box'
+                placeholder='Select a bureau'
+                value={selectedRegions}
+                dropdownMatchSelectWidth
+                onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'All' : d); }}
+              >
+                <Select.Option key='All'>All Regions</Select.Option>
+                {
+                  regions.map((d) => (
+                    <Select.Option key={d.value}>{d.label}</Select.Option>
+                  ))
+                }
+              </Select>
+            </DropdownEl>
+          ) : null
+      }
     </El>
   );
 };
