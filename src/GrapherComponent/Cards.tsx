@@ -5,9 +5,6 @@ import { format } from 'd3-format';
 import {
   CtxDataType, DataType,
 } from '../Types';
-import {
-  CarIcon, TreeIcon,
-} from '../Icons';
 import Context from '../Context/Context';
 
 interface Props {
@@ -15,72 +12,83 @@ interface Props {
 }
 
 const Wrapper = styled.div`
-  width: 27%;
   display: flex;
-  flex-direction: column;
-  justify-content: start;
-  border-right: 1px solid var(--black-400);
-  max-height: 74rem;
-  overflow-y: auto;
+  justify-content: space-between;
 `;
 
 const Card = styled.div`
-  border-bottom: 1px solid var(--black-400);
-  padding: 1.6rem 1rem;
+  width: calc(25% - 2rem);
+  background-color: var(--black-100);
+  padding: 4.8rem;
+  font-size: 2rem;
+  line-height: 2.4rem;
+  margin-bottom: 2rem;
+  cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
+  &:hover {
+    background-color: var(--yellow);
+    div {
+      color: var(--black-700);
+    }
+  }
 `;
 
-const CountryNoEl = styled.span`
-  font-size: 1.6rem;
+const FullWidthCard = styled.div`
+  width: 100%;
+  background-color: var(--black-100);
+  padding: 4.8rem;
+  font-size: 2rem;
   line-height: 2.4rem;
+  margin-bottom: 2rem;
+  cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
+  &:hover {
+    background-color: var(--yellow);
+    div {
+      color: var(--black-700);
+    }
+  }
+`;
+
+const MetricNumber = styled.div`
+  font-size: 6.4rem;
+  line-height: 1.09;
   margin-bottom: 1rem;
-  text-transform: uppercase;
+  -webkit-text-stroke: 2px var(--black-700);
+  text-stroke: 2px var(--black-700);
   font-weight: 700;
+  text-shadow: none;
+  color: var(--black-100);
 `;
 
 const MetricTitle = styled.h4`
   font-size: 1.4rem;
   line-height: 2.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   text-transform: uppercase;
   font-weight: 700;
 `;
 
-const MetricNumber = styled.div`
-  font-weight: bold;
-  font-size: 2.4rem;
-  line-height: 1.6rem;
-  padding: 1rem 0 0.5rem 0;
-`;
-
 const MetricAnnotation = styled.span`
-  font-size: 1.4rem;
-  font-style: italic;
-  font-weight: normal;
-`;
-
-const MetricLocation = styled.div`
-  font-size: 2.4rem;
-  line-height: 3.2rem;
-  font-weight: 700;
-  padding: 1.6rem 1rem;
-  border-bottom: 1px solid var(--black-500);
+  font-size: 2rem;
+  line-height: 2.4rem;
 `;
 
 const EmissionsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  /* justify-content: space-evenly; */
-  /* align-items: end; */
+  align-items: center;
+  justify-content: space-between;
 `;
 
-const IconWrapper = styled.div`
+const MetricDiv = styled.div`
+  width: fit-content;
+  max-width: 30%;
 `;
 
 const EqualSignDiv = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: bold;
   text-transform: uppercase;
   margin: 1rem 0 1rem 0;
+  width: fit-content;
 `;
 
 export const Cards = (props: Props) => {
@@ -91,20 +99,17 @@ export const Cards = (props: Props) => {
     selectedCountries,
     selectedRegions,
   } = useContext(Context) as CtxDataType;
-
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
-    if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
+    if (d < 10000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
 
   const relevantData = selectedCountries.length > 0
     ? data.filter((d) => d['Country or Area'] === selectedCountries)
-    : selectedRegions.length > 0
+    : selectedRegions !== 'All'
       ? data.filter((d) => d.region === selectedRegions) : data;
-  const selectedGeography = selectedCountries.length > 0 ? selectedCountries : selectedRegions.length > 0 ? selectedRegions : 'Global';
-
   const cardData = {
     peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'people directly benefiting_achieved')[0].value),
     emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tonnes of CO2-eq emissions avoided or reduced_achieved')[0].value),
@@ -117,62 +122,50 @@ export const Cards = (props: Props) => {
 
   return (
     <>
+
       <Wrapper>
-        <MetricLocation>
-          { selectedGeography }
-          {
-            (!selectedCountries || selectedCountries.length === 0)
-            && (
-            <CountryNoEl>
-              {' '}
-              (
-              {cardData.numberCountries}
-              {' '}
-              Countries)
-            </CountryNoEl>
-            )
-          }
-        </MetricLocation>
         <Card>
-          <MetricTitle>Number of projects</MetricTitle>
+          <MetricNumber>{formatData(cardData.numberCountries)}</MetricNumber>
+          <div>Number of countries</div>
+        </Card>
+        <Card>
           <MetricNumber>{cardData.numberProjects === undefined ? 'N/A' : formatData(cardData.numberProjects)}</MetricNumber>
+          <div>Number of projects</div>
         </Card>
         <Card>
-          <MetricTitle>People directly benefiting (achieved)</MetricTitle>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
+          <div>People directly benefiting (achieved)</div>
         </Card>
         <Card>
-          <MetricTitle>Total grant amount (USD)</MetricTitle>
           <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
+          <div>Total grant amount (USD)</div>
         </Card>
-        <Card>
-          <MetricTitle>Estimated Environmental Impact (achieved)</MetricTitle>
-          <EmissionsWrapper>
+      </Wrapper>
+      <FullWidthCard>
+        <MetricTitle>Estimated Environmental Impact (achieved)</MetricTitle>
+        <EmissionsWrapper>
+          <MetricDiv>
             <MetricNumber>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
             </MetricNumber>
             <MetricAnnotation>metric tons of CO2 Reduced</MetricAnnotation>
-            <EqualSignDiv>same as</EqualSignDiv>
-            <IconWrapper>
-              <TreeIcon size={25} fill='rgb(33, 33, 33)' />
-              <MetricNumber>
-                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
-                {' '}
-                <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
-              </MetricNumber>
-            </IconWrapper>
-            <EqualSignDiv>or</EqualSignDiv>
-            <IconWrapper>
-              <CarIcon size={40} fill='rgb(33, 33, 33)' />
-              <MetricNumber>
-                {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
-                {' '}
-                <MetricAnnotation>cars taken off the road for an year</MetricAnnotation>
-              </MetricNumber>
-            </IconWrapper>
-          </EmissionsWrapper>
-        </Card>
-      </Wrapper>
+          </MetricDiv>
+          <EqualSignDiv>same as</EqualSignDiv>
+          <MetricDiv>
+            <MetricNumber>
+              {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
+            </MetricNumber>
+            <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
+          </MetricDiv>
+          <EqualSignDiv>or</EqualSignDiv>
+          <MetricDiv>
+            <MetricNumber>
+              {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
+            </MetricNumber>
+            <MetricAnnotation>cars taken off the road for an year</MetricAnnotation>
+          </MetricDiv>
+        </EmissionsWrapper>
+      </FullWidthCard>
     </>
   );
 };

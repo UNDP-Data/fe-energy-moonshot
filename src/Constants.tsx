@@ -4,10 +4,6 @@ export const MAX_TEXT_LENGTH = 100;
 
 export const TRUNCATE_MAX_TEXT_LENGTH = 125;
 
-export const EMBED_LINK_ROOT = 'https://data.undp.org/access-all-data-viz-v2/';
-
-export const PARENT_LINK_ROOT = 'https://data.undp.org/explore-all-data/';
-
 export const DEFAULT_VALUES = {
   firstMetric: 'People directly benefiting (achieved)',
   secondMetric: 'Tonnes of CO2 emissions reduced',

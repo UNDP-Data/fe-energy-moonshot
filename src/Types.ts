@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface CountryGroupDataType {
   'Alpha-2 code': string;
   'Alpha-3 code-1': string;
@@ -67,26 +68,28 @@ export interface ProjectDataType {
   'Short Title': string,
   'Region': string,
   'Number of projects': number,
-  grant_amount_vertical_fund: undefined | number,
-  expenses_vertical_fund: undefined | number,
-  cofinancing_vertical_fund: undefined | number,
+  grant_amount_vertical_fund?: number,
+  expenses_vertical_fund?: number,
+  cofinancing_vertical_fund?: number,
+  taxonomy?: string;
 }
 
 export interface ProjectCoordinateDataType {
-  'project_id': number,
+  project_id: number,
   'Short Title': string,
   'Sources of Funds': string,
   'Programme Period': string,
   'Lead Country': string,
-  'Region': string,
+  Region: string,
   'Participating Countries': string,
-  'Latitude': number,
-  'Longitude': number,
-  'Scope': 'Country' | 'Region',
-  'Grant Amount': undefined | number,
-  'GL Expenses': undefined | number,
-  'Co-Financing': undefined | number,
-  'status': 'Completed' | 'Active'
+  Latitude: number,
+  Longitude: number,
+  Scope: 'Country' | 'Region',
+  'Grant Amount'?: number,
+  'GL Expenses'?: number,
+  'Co-Financing'?: number,
+  status: 'Completed' | 'Active',
+  taxonomy?: string;
 }
 
 export interface HoverDataType {
@@ -121,11 +124,11 @@ export interface CtxDataType {
   selectedProjects: string;
   xAxisIndicator: string;
   showProjectLocations: boolean;
-  selectedProjectType: string;
+  selectedTaxonomy: string;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
   updateShowProjectLocations: (_d: boolean) => void;
-  updateSelectedProjectType: (_d: string) => void;
+  updateSelectedTaxonomy: (_d: string) => void;
 }

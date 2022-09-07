@@ -35,24 +35,10 @@ const RootEl = styled.div`
 `;
 
 const HeadingEl = styled.div`
-  /* display: flex; */
-  /* justify-content: space-between; */
   padding: 2rem 0;
-  /* align-items: center; */
-`;
-
-const TitleEl = styled.div`
-  /* display: flex; */
-  /* align-items: center; */
-`;
-
-const GraphEl = styled.div`
   display: flex;
-  align-items: stretch;
-  box-shadow: var(--shadow);
-  @media (max-width: 960px) {
-    display: inline;
-  }  
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const H1 = styled.div`
@@ -76,7 +62,10 @@ const H2 = styled.div`
 `;
 
 const Note = styled.p`
-  margin-top: 1em;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  color: var(--black-500);
   font-style: italic;
 `;
 
@@ -89,9 +78,9 @@ export const GrapherComponent = (props: Props) => {
     regions,
   } = props;
   const {
-    selectedProjectType,
+    selectedTaxonomy,
   } = useContext(Context) as CtxDataType;
-  const filteredProjectData = data.filter((d) => selectedProjectType === 'All' || d.status === selectedProjectType);
+  const filteredProjectData = data.filter((d) => selectedTaxonomy === 'All' || d.taxonomy === selectedTaxonomy);
   function calculateCountryTotals() {
     const groupedData = nest()
       .key((d: any) => d['Lead Country'])
@@ -126,29 +115,25 @@ export const GrapherComponent = (props: Props) => {
     <>
       <Container>
         <HeadingEl>
-          <TitleEl>
+          <div>
             <div>
               <H1>Energy-Related Portfolio</H1>
               <H2>Explore Data from Active Projects</H2>
             </div>
-          </TitleEl>
-        </HeadingEl>
-        <RootEl>
+          </div>
           <Settings
-            indicators={indicators}
             regions={regions}
           />
-          <GraphEl>
-            <Cards
-              data={mapData}
-            />
-            <Graph
-              data={mapData}
-              projectCoordinatesData={projectCoordinatesData}
-              indicators={indicators}
-              fullWidth
-            />
-          </GraphEl>
+        </HeadingEl>
+        <RootEl>
+          <Cards
+            data={mapData}
+          />
+          <Graph
+            data={mapData}
+            projectCoordinatesData={projectCoordinatesData}
+            indicators={indicators}
+          />
         </RootEl>
         <Note>
           Note: this map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo; Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from

@@ -25,15 +25,15 @@ interface Props {
 const El = styled.div`
   height: 100%;
   overflow-y: hidden;
-  background-color: #fff;
+  background-color: var(--black-100);
 `;
 
 const LegendEl = styled.div`
   padding: 1rem 1rem 0 1rem;
-  background-color:rgba(255,255,255,0.1);
+  background-color:rgba(255,255,255,0.5);
   box-shadow: var(--shadow);
   width: 44rem;
-  margin-left: 1rem;
+  margin-left: 2rem;
   margin-top: -2rem;
   position: relative;
   z-index: 1000;
@@ -67,8 +67,7 @@ export const UnivariateMap = (props: Props) => {
     selectedRegions,
     selectedProjects,
     showProjectLocations,
-    selectedProjectType,
-    updateSelectedCountries,
+    selectedTaxonomy,
     updateSelectedProjects,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
@@ -105,16 +104,13 @@ export const UnivariateMap = (props: Props) => {
         height='100%'
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         ref={mapSvg}
-        onClick={() => {
-          updateSelectedCountries('');
-        }}
       >
-        <rect y='-20' width={svgWidth} height={svgHeight + 40} fill='#fff' />
+        <rect y='-20' width={svgWidth} height={svgHeight + 40} fill='#f7f7f7' />
         <g ref={mapG}>
           {
             (World as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code-1'] === d.properties.ISO3);
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions.indexOf(d.region) !== -1;
+              const regionOpacity = selectedRegions === 'All' || selectedRegions.indexOf(d.region) !== -1;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
               if ((index !== -1) || d.properties.NAME === 'Antarctica') return null;
@@ -122,9 +118,6 @@ export const UnivariateMap = (props: Props) => {
                 <g
                   key={i}
                   opacity={regionOpacity && countryOpacity && !selectedColor ? 1 : 0.2}
-                  onClick={() => {
-                    updateSelectedCountries('');
-                  }}
                 >
                   {
                   d.geometry.type === 'MultiPolygon' ? d.geometry.coordinates.map((el:any, j: any) => {
@@ -177,7 +170,7 @@ export const UnivariateMap = (props: Props) => {
               // const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
               const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : '#f5f9fe';
 
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.region;
+              const regionOpacity = selectedRegions === 'All' || selectedRegions === d.region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
 
               return (
@@ -228,13 +221,6 @@ export const UnivariateMap = (props: Props) => {
                   }}
                   onMouseLeave={() => {
                     setHoverData(undefined);
-                  }}
-                  onClick={(e) => {
-                    if (regionOpacity) {
-                      updateSelectedCountries(d['Country or Area']);
-                      e.stopPropagation();
-                      e.nativeEvent.stopImmediatePropagation();
-                    }
                   }}
                 >
                   {
@@ -336,8 +322,8 @@ export const UnivariateMap = (props: Props) => {
           }
           {
             showProjectLocations
-            && projectCoordinatesData.filter((d) => selectedProjectType === 'All' || d.status === selectedProjectType).map((d, i: number) => {
-              const regionOpacity = selectedRegions.length === 0 || selectedRegions === d.Region;
+            && projectCoordinatesData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy === selectedTaxonomy).map((d, i: number) => {
+              const regionOpacity = selectedRegions === 'All' || selectedRegions === d.Region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
               const projectOpacity = selectedProjects === '' || selectedProjects === d.project_id.toString();
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
@@ -380,7 +366,7 @@ export const UnivariateMap = (props: Props) => {
                     key={i}
                     cx={point[0]}
                     cy={point[1]}
-                    r={2 / zoomLevel < 0.25 ? 0.25 : 2 / zoomLevel}
+                    r={2.5 / zoomLevel < 1 ? 1 : 2.5 / zoomLevel}
                     fill={COLOR_SCALES.Categorical[6]}
                     stroke='#FFF'
                     strokeWidth={0.5 / zoomLevel}

@@ -1,20 +1,18 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import styled from 'styled-components';
-import { Select, Switch } from 'antd';
-import { CtxDataType, IndicatorMetaDataType, RegionDataType } from '../Types';
+import { Select } from 'antd';
+import { CtxDataType, RegionDataType } from '../Types';
 import Context from '../Context/Context';
-import { DEFAULT_VALUES } from '../Constants';
 
 interface Props {
-  indicators: IndicatorMetaDataType[];
   regions: RegionDataType[];
 }
 
 const El = styled.div`
-  padding: 0 1rem 2rem 1rem;
+  padding: 0 1rem 0 1rem;
   display: flex;
   align-items: end;
-  gap: 3em;
+  gap: 2rem;
 
   @media (max-width: 960px) {
     border-right: 0px solid var(--black-400);
@@ -22,86 +20,101 @@ const El = styled.div`
   }  
 `;
 
-const DropdownEl = styled.div`
-  margin-right: 2rem;
-  min-width: 20%;
+interface DropdownUnitProps {
+  width?: string;
+}
+
+const DropdownEl = styled.div<DropdownUnitProps>`
+  width: ${(props) => props.width || '100%'};
+  margin-bottom: 2rem;
+  min-width: 30rem;
 `;
 
-const DropdownTitle = styled.div`
-  font-size: 1.4rem;
-  color: var(--black-700);
-  margin-bottom: 1rem;
-  line-height: 1.8rem;
+const FilterTitle = styled.div`
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0rem;
 `;
+
+const TaxonomyList = [
+  {
+    value: 'All',
+    label: 'All Categories',
+  },
+  {
+    value: 'Energy Efficiency',
+    label: 'Energy Efficiency',
+  },
+  {
+    value: 'Energy Access',
+    label: 'Energy Access',
+  },
+  {
+    value: 'Renewable Energy',
+    label: 'Renewable Energy',
+  },
+  {
+    value: 'Transport',
+    label: 'Transport',
+  },
+  {
+    value: 'Others',
+    label: 'Others',
+  },
+];
 
 export const Settings = (props: Props) => {
   const {
-    indicators,
     regions,
   } = props;
   const {
-    xAxisIndicator,
     selectedRegions,
-    updateXAxisIndicator,
+    selectedTaxonomy,
     updateSelectedRegions,
-    updateShowProjectLocations,
+    updateSelectedTaxonomy,
   } = useContext(Context) as CtxDataType;
-
-  const options = indicators.filter((d) => d.Map).map((d) => d.Indicator);
-  useEffect(() => {
-    if (options.findIndex((d) => d === xAxisIndicator) === -1) {
-      updateXAxisIndicator(options[0]);
-    }
-  }, [options]);
   return (
     <El>
-      <DropdownEl>
-        <DropdownTitle>
-          Select Indicator
-        </DropdownTitle>
+      <DropdownEl
+        width='calc(25% - 1rem)'
+      >
+        <FilterTitle>
+          Select a Bureau
+        </FilterTitle>
         <Select
-          showSearch
-          style={
-            {
-              width: '100%',
-              borderRadius: '1rem',
-            }
-          }
-          placeholder='Please select'
-          value={xAxisIndicator}
-          onChange={(d) => { updateXAxisIndicator(d); }}
-          defaultValue={DEFAULT_VALUES.firstMetric}
+          className='select-box'
+          placeholder='Select a bureau'
+          value={selectedRegions}
+          onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'All' : d); }}
         >
+          <Select.Option key='All'>All Regions</Select.Option>
           {
-            options.map((d) => (
-              <Select.Option key={d}>{d}</Select.Option>
+            regions.map((d) => (
+              <Select.Option key={d.value}>{d.label}</Select.Option>
             ))
           }
         </Select>
       </DropdownEl>
-      <DropdownEl>
-        <DropdownTitle>
-          Select a Bureau
-        </DropdownTitle>
+      <DropdownEl
+        width='calc(25% - 1rem)'
+      >
+        <FilterTitle>
+          Select a Project Category
+        </FilterTitle>
         <Select
-          allowClear
-          style={{ width: '100%' }}
-          placeholder='Select a bureau'
-          value={selectedRegions}
-          onChange={(d: string) => { updateSelectedRegions(d === undefined ? '' : d); }}
+          className='select-box'
+          placeholder='Select a project category'
+          value={selectedTaxonomy}
+          onChange={(d: string) => { updateSelectedTaxonomy(d === undefined ? 'All' : d); }}
         >
           {
-          regions.map((d) => (
-            <Select.Option key={d.value}>{d.label}</Select.Option>
-          ))
-        }
+            TaxonomyList.map((d) => (
+              <Select.Option key={d.value}>{d.label}</Select.Option>
+            ))
+          }
         </Select>
-      </DropdownEl>
-      <DropdownEl>
-        <DropdownTitle>
-          Show project locations
-        </DropdownTitle>
-        <Switch style={{ margin: '0.5rem 0' }} onChange={(e) => { updateShowProjectLocations(e); }} />
       </DropdownEl>
     </El>
   );

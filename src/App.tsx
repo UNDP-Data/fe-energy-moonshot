@@ -14,6 +14,7 @@ import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
+import TaxonomyData from './Data/taxonomyData.json';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -22,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
     --blue-medium: #4F95DD;
     --blue-bg: #94C4F5;
     --navy: #082753;
-    --black-100: #FAFAFA;
+    --black-100: #f7f7f7;
     --black-200: #f5f9fe;
     --black-300: #EDEFF0;
     --black-400: #E9ECF6;
@@ -32,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     --black-600: #212121;
     --black-700: #000000;
     --blue-very-light: #F2F7FF;
-    --yellow: #FBC412;
+    --yellow: #ffeb00;
     --yellow-bg: #FFE17E;
     --red: #D12800;
     --red-bg: #FFBCB7;
@@ -136,10 +137,6 @@ const GlobalStyle = createGlobalStyle`
     font-style: italic;
   }
 
-  .ant-modal-close {
-    display: none !important;
-  }
-
   .ant-select-item-option-content {
     white-space: normal;
   }
@@ -169,6 +166,75 @@ const GlobalStyle = createGlobalStyle`
   .ant-tooltip-arrow-content{
     background-color: var(--black-550) !important;
   }
+  .ant-checkbox-wrapper{
+    width: 100%;
+  }
+
+  
+  .select-box {
+    width: 100%;
+    border: 2px solid #000;
+    min-height: 5.2rem;
+  }
+
+  .ant-select-selector{
+    min-height: 4.8rem !important;
+    border: 0 !important;
+  }
+
+  .select-box .ant-select-selection-placeholder {
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    color: black;
+  }
+
+  .select-box::after {
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transition: translateY(-50%);
+    -webkit-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+    background: url(https://design.undp.org/static/media/chevron-down.16c97a3f.svg) no-repeat center center;
+    content: "";
+    float: right;
+    height: 13px;
+    position: absolute;
+    pointer-events: none;
+    right: 14px;
+    top: 50%;
+    width: 20px;
+  }
+
+  .select-box .ant-select-selection-item {
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: black;
+    padding: 0.9rem 3rem 0 0 !important;
+  }
+
+  .select-box .ant-select-selection-search-input {
+    padding: 1.4rem 3rem 0 0 !important;
+  }
+
+  .ant-select-arrow {
+    opacity: 0;
+  }
+
+  .ant-select-item-option {
+    font-size: 1.6rem;
+    border-top: 1px solid #d4d6d8;
+    line-height: 4.4rem;
+  }
+
+  .single-select-box .ant-select-selector {
+    padding-top: 1rem !important;
+  }
 `;
 
 const VizAreaEl = styled.div`
@@ -189,12 +255,13 @@ const App = () => {
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
 
   const initialState = {
-    selectedRegions: [],
+    selectedRegions: 'All',
     selectedCountries: [],
     selectedProjects: '',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
     showProjectLocations: false,
     selectedProjectType: 'All',
+    selectedTaxonomy: 'All',
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -250,10 +317,10 @@ const App = () => {
     });
   };
 
-  const updateSelectedProjectType = (selectedProjectType: string) => {
+  const updateSelectedTaxonomy = (selectedTaxonomy: string) => {
     dispatch({
-      type: 'UPDATE_SELECTED_PROJECT_TYPE',
-      payload: selectedProjectType,
+      type: 'UPDATE_SELECTED_TAXONOMY',
+      payload: selectedTaxonomy,
     });
   };
 
@@ -265,13 +332,21 @@ const App = () => {
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
       .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
-
-        setFinalData(projectData);
+        const projectDataWithTaxonomy = projectData.map((d) => {
+          const indx = TaxonomyData.findIndex((el) => el['Project ID'] === d.project_id);
+          const taxonomy = indx !== -1 ? TaxonomyData[indx]['Primary Tag (Level 2)'] : undefined;
+          return ({ ...d, taxonomy });
+        });
+        const projectCoordinateDataWithTaxonomy = projectCoordinates.map((d) => {
+          const indx = TaxonomyData.findIndex((el) => el['Project ID'] === d.project_id);
+          const taxonomy = indx !== -1 ? TaxonomyData[indx]['Primary Tag (Level 2)'] : undefined;
+          return ({ ...d, taxonomy });
+        });
+        setFinalData(projectDataWithTaxonomy);
         setCountryGroupData(countryGroupDataRaw);
-        setProjectCoordinatesData(projectCoordinates);
+        setProjectCoordinatesData(projectCoordinateDataWithTaxonomy);
         setCountryList(projectData.map((d) => d['Lead Country']));
         setRegionList(regions);
-        // setRegionList(uniqBy(projectData.filter((d) => d.Region !== undefined && ['Global', 'BPPS'].indexOf(d.Region) === -1), (d) => d.Region).map((d) => d.Region).sort());
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
   }, []);
@@ -290,7 +365,7 @@ const App = () => {
                   updateSelectedProjects,
                   updateXAxisIndicator,
                   updateShowProjectLocations,
-                  updateSelectedProjectType,
+                  updateSelectedTaxonomy,
                 }}
               >
                 <GrapherComponent

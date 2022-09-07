@@ -12,6 +12,8 @@ export default (state: any, action: any) => {
       return { ...state, showProjectLocations: action.payload };
     case 'UPDATE_SELECTED_PROJECT_TYPE':
       return { ...state, selectedProjectType: action.payload };
+    case 'UPDATE_SELECTED_TAXONOMY':
+      return { ...state, selectedTaxonomy: action.payload };
     default:
       return { ...state };
   }
