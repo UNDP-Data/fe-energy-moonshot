@@ -147,9 +147,17 @@ export const GrapherComponent = (props: Props) => {
           />
         </RootEl>
         <Note>
-          Note: this map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo; Calculations of equivalent tree seedlings grown and passenger cars taken off the road are from
+          Note: this map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo; For calculations of equivalent tree seedlings grown, we assume the average tree absorbs an average of 10 KGs of C02 per year for the first 20 years
           {' '}
-          <a target='_black' href='https://sunroof.withgoogle.com/building/37.476876/-122.253535/#?f=buy'>here</a>
+          (
+          <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb'>source here</a>
+          )
+          {' '}
+          and cars taken off the road we assume a typical passenger vehicle emits about 4.6 metric tons of CO2 per year
+          {' '}
+          (
+          <a target='_black' href='https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle'>source here</a>
+          )
           .
         </Note>
       </Container>

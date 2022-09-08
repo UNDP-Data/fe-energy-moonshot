@@ -33,28 +33,11 @@ export interface DataType extends CountryGroupDataType {
 }
 
 export interface IndicatorMetaDataType {
-  Pillar: string[];
-  Goal: string[];
   Indicator: string;
   IndicatorLabelTable: string;
   IndicatorDescription: string;
   DataKey: string;
-  DataSourceName: string;
-  DataSourceLink: string;
-  LabelSuffix?: string;
-  LabelPrefix?: string;
-  LabelFormat?: string;
-  BinningRange5: number[];
   BinningRangeLarge: number[];
-  Categories: number[];
-  CategorizeByRanking?: boolean;
-  IsCategorical?: boolean;
-  IsDivergent?: boolean;
-  ScatterPlot?: boolean;
-  Map?: boolean;
-  BarGraph?: boolean;
-  Sizing?: boolean;
-  Color?: boolean;
 }
 
 export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
@@ -95,14 +78,12 @@ export interface ProjectCoordinateDataType {
 export interface HoverDataType {
   country: string;
   continent: string;
-  peopleDirectlyBenefitingAchieved: undefined | number;
-  emissionsReducedAchieved: undefined | number;
-  peopleDirectlyBenefitingExpected: undefined | number;
-  emissionsReducedExpected: undefined | number;
-  grantAmountVerticalFund: undefined | number;
-  expensesVerticalFund: undefined | number;
-  coFinancingVerticalFund: undefined | number;
-  numberProjects: undefined | number;
+  peopleDirectlyBenefiting?: number;
+  emissionsReduced?: number;
+  grantAmountVerticalFund?: number;
+  expensesVerticalFund?: number;
+  coFinancingVerticalFund?: number;
+  numberProjects?: number;
   xPosition: number;
   yPosition: number;
 }

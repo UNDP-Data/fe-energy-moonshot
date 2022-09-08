@@ -6,7 +6,7 @@ import { geoMercator } from 'd3-geo';
 import { zoom } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
-import { scaleThreshold, scaleOrdinal } from 'd3-scale';
+import { scaleThreshold } from 'd3-scale';
 import {
   CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectCoordinateDataType, ProjectHoverDataType,
 } from '../Types';
@@ -81,9 +81,9 @@ export const UnivariateMap = (props: Props) => {
   const mapG = useRef<SVGGElement>(null);
   const projection = geoMercator().rotate([0, 0]).scale(135).translate([470, 410]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
-  const valueArray = xIndicatorMetaData.IsCategorical ? xIndicatorMetaData.Categories : xIndicatorMetaData.BinningRangeLarge.length === 0 ? xIndicatorMetaData.BinningRange5 : xIndicatorMetaData.BinningRangeLarge;
-  const colorArray = xIndicatorMetaData.IsDivergent ? COLOR_SCALES.Divergent[`Color${(valueArray.length + 1) as 4 | 5 | 7 | 9 | 11}`] : COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
-  const colorScale = xIndicatorMetaData.IsCategorical ? scaleOrdinal<number, string>().domain(valueArray).range(colorArray) : scaleThreshold<number, string>().domain(valueArray).range(colorArray);
+  const valueArray = xIndicatorMetaData.BinningRangeLarge;
+  const colorArray = COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
+  const colorScale = scaleThreshold<number, string>().domain(valueArray).range(colorArray);
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -167,8 +167,7 @@ export const UnivariateMap = (props: Props) => {
               const index = (World as any).features.findIndex((el: any) => d['Alpha-3 code-1'] === el.properties.ISO3);
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
               const val = indicatorIndex === -1 ? undefined : d.indicators[indicatorIndex].value;
-              // const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : COLOR_SCALES.Null;
-              const color = val !== undefined ? colorScale(xIndicatorMetaData.IsCategorical ? Math.floor(val) : val) : '#f5f9fe';
+              const color = val !== undefined ? colorScale(val) : '#f5f9fe';
 
               const regionOpacity = selectedRegions === 'All' || selectedRegions === d.region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
@@ -186,11 +185,8 @@ export const UnivariateMap = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d['Group 1'],
-                        peopleDirectlyBenefitingAchieved: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting_achieved')[0].value,
-                        // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                        emissionsReducedAchieved: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced_achieved')[0].value,
-                        peopleDirectlyBenefitingExpected: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting_expected')[0].value,
-                        emissionsReducedExpected: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced_expected')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting')[0].value,
+                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
                         grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
                         expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
                         coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
@@ -205,11 +201,8 @@ export const UnivariateMap = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d['Group 1'],
-                        peopleDirectlyBenefitingAchieved: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting_achieved')[0].value,
-                        // peopleIndirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'People indirectly benefiting')[0].value,
-                        emissionsReducedAchieved: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced_achieved')[0].value,
-                        peopleDirectlyBenefitingExpected: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting_expected')[0].value,
-                        emissionsReducedExpected: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced_expected')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting')[0].value,
+                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
                         grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
                         expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
                         coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
@@ -330,7 +323,7 @@ export const UnivariateMap = (props: Props) => {
               return (
                 <g
                   key={i}
-                  opacity={projectOpacity && countryOpacity && regionOpacity ? 0.8 : 0.01}
+                  opacity={projectOpacity && countryOpacity && regionOpacity ? 0.9 : 0.01}
                   onMouseEnter={(event) => {
                     updateSelectedProjects(d.project_id.toString());
                     setProjectHoverData({
@@ -366,10 +359,10 @@ export const UnivariateMap = (props: Props) => {
                     key={i}
                     cx={point[0]}
                     cy={point[1]}
-                    r={2.5 / zoomLevel < 1 ? 1 : 2.5 / zoomLevel}
-                    fill={COLOR_SCALES.Categorical[6]}
-                    stroke='#FFF'
-                    strokeWidth={0.5 / zoomLevel}
+                    r={4 / zoomLevel < 1 ? 1 : 4 / zoomLevel}
+                    fill='#FFF'
+                    stroke='#006EB5'
+                    strokeWidth={0.7 / zoomLevel}
                   />
                 </g>
               );
@@ -390,15 +383,15 @@ export const UnivariateMap = (props: Props) => {
                   style={{ cursor: 'pointer' }}
                 >
                   <rect
-                    x={xIndicatorMetaData.IsCategorical ? (i * 320) / valueArray.length + 1 : (i * 320) / colorArray.length + 1}
+                    x={(i * 320) / colorArray.length + 1}
                     y={1}
-                    width={xIndicatorMetaData.IsCategorical ? (320 / valueArray.length) - 2 : (320 / colorArray.length) - 2}
+                    width={(320 / colorArray.length) - 2}
                     height={8}
                     fill={colorArray[i]}
                     stroke={selectedColor === colorArray[i] ? '#212121' : colorArray[i]}
                   />
                   <text
-                    x={xIndicatorMetaData.IsCategorical ? ((i * 320) / valueArray.length) + (160 / valueArray.length) : ((i + 1) * 320) / colorArray.length}
+                    x={((i + 1) * 320) / colorArray.length}
                     y={25}
                     textAnchor='middle'
                     fontSize={12}
@@ -409,25 +402,20 @@ export const UnivariateMap = (props: Props) => {
                 </g>
               ))
             }
-            {
-              xIndicatorMetaData.IsCategorical ? null
-                : (
-                  <g>
-                    <rect
-                      onMouseOver={() => { setSelectedColor(colorArray[valueArray.length]); }}
-                      onMouseLeave={() => { setSelectedColor(undefined); }}
-                      x={((valueArray.length * 320) / colorArray.length) + 1}
-                      y={1}
-                      width={(320 / colorArray.length) - 2}
-                      height={8}
-                      fill={colorArray[valueArray.length]}
-                      stroke={selectedColor === colorArray[valueArray.length] ? '#212121' : colorArray[valueArray.length]}
-                      strokeWidth={1}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  </g>
-                )
-            }
+            <g>
+              <rect
+                onMouseOver={() => { setSelectedColor(colorArray[valueArray.length]); }}
+                onMouseLeave={() => { setSelectedColor(undefined); }}
+                x={((valueArray.length * 320) / colorArray.length) + 1}
+                y={1}
+                width={(320 / colorArray.length) - 2}
+                height={8}
+                fill={colorArray[valueArray.length]}
+                stroke={selectedColor === colorArray[valueArray.length] ? '#212121' : colorArray[valueArray.length]}
+                strokeWidth={1}
+                style={{ cursor: 'pointer' }}
+              />
+            </g>
             <g>
               <g
                 key='null'

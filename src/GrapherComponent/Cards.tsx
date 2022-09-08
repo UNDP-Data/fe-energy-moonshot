@@ -111,8 +111,8 @@ export const Cards = (props: Props) => {
     : selectedRegions !== 'All'
       ? data.filter((d) => d.region === selectedRegions) : data;
   const cardData = {
-    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'people directly benefiting_achieved')[0].value),
-    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tonnes of CO2-eq emissions avoided or reduced_achieved')[0].value),
+    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'people directly benefiting')[0].value),
+    emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value),
     treeEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
     carsEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'car_equivalent')[0].value),
     grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'grant_amount_vertical_fund')[0].value),
@@ -134,7 +134,7 @@ export const Cards = (props: Props) => {
         </Card>
         <Card>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
-          <div>People directly benefiting (achieved)</div>
+          <div>People directly benefiting</div>
         </Card>
         <Card>
           <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
@@ -142,7 +142,7 @@ export const Cards = (props: Props) => {
         </Card>
       </Wrapper>
       <FullWidthCard>
-        <MetricTitle>Estimated Environmental Impact (achieved)</MetricTitle>
+        <MetricTitle>Estimated Environmental Impact</MetricTitle>
         <EmissionsWrapper>
           <MetricDiv>
             <MetricNumber>
@@ -153,16 +153,16 @@ export const Cards = (props: Props) => {
           <EqualSignDiv>same as</EqualSignDiv>
           <MetricDiv>
             <MetricNumber>
-              {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.treeEquivalent)}
+              {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 0.21739)}
             </MetricNumber>
-            <MetricAnnotation>tree seedlings grown for 10 years</MetricAnnotation>
+            <MetricAnnotation>cars taken off the road for an year</MetricAnnotation>
           </MetricDiv>
           <EqualSignDiv>or</EqualSignDiv>
           <MetricDiv>
             <MetricNumber>
-              {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.carsEquivalent)}
+              {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 5.0105)}
             </MetricNumber>
-            <MetricAnnotation>cars taken off the road for an year</MetricAnnotation>
+            <MetricAnnotation>tree seedling grown for 20 years</MetricAnnotation>
           </MetricDiv>
         </EmissionsWrapper>
       </FullWidthCard>

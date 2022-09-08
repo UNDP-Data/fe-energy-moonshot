@@ -115,34 +115,18 @@ export const Tooltip = (props: Props) => {
         <MetricGrp>
           <RowEl>
             <RowTitleEl>
-              People directly benefiting (achieved)
+              People directly benefiting
             </RowTitleEl>
             <RowValue>
-              { data.peopleDirectlyBenefitingAchieved === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefitingAchieved) }
+              { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
             </RowValue>
           </RowEl>
           <RowEl>
             <RowTitleEl>
-              People directly benefiting (expected)
+              CO2 emissions reduced (tonnes):
             </RowTitleEl>
             <RowValue>
-              { data.peopleDirectlyBenefitingExpected === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefitingExpected) }
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              CO2 emissions reduced (tonnes, achieved):
-            </RowTitleEl>
-            <RowValue>
-              {data.emissionsReducedAchieved === undefined ? 'N/A' : formatData(data.emissionsReducedAchieved)}
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              CO2 emissions reduced (tonnes, expected):
-            </RowTitleEl>
-            <RowValue>
-              {data.emissionsReducedExpected === undefined ? 'N/A' : formatData(data.emissionsReducedExpected)}
+              {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
             </RowValue>
           </RowEl>
         </MetricGrp>

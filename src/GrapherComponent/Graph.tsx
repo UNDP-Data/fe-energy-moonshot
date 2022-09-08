@@ -72,7 +72,7 @@ export const Graph = (props: Props) => {
     updateShowProjectLocations,
   } = useContext(Context) as CtxDataType;
 
-  const options = indicators.filter((d) => d.Map).map((d) => d.Indicator);
+  const options = indicators.map((d) => d.Indicator);
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
