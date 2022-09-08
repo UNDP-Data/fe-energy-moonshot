@@ -54,7 +54,7 @@ export interface ProjectDataType {
   grant_amount_vertical_fund?: number,
   expenses_vertical_fund?: number,
   cofinancing_vertical_fund?: number,
-  taxonomy?: string;
+  taxonomy_level3?: string;
 }
 
 export interface ProjectCoordinateDataType {

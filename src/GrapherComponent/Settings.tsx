@@ -43,24 +43,16 @@ const TaxonomyList = [
     label: 'All Categories',
   },
   {
-    value: 'Energy Efficiency',
-    label: 'Energy Efficiency',
+    value: 'Cross-cutting',
+    label: 'Cross-cutting',
   },
   {
     value: 'Energy Access',
     label: 'Energy Access',
   },
   {
-    value: 'Renewable Energy',
-    label: 'Renewable Energy',
-  },
-  {
-    value: 'Transport',
-    label: 'Transport',
-  },
-  {
-    value: 'Others',
-    label: 'Others',
+    value: 'Energy Transition',
+    label: 'Energy Transition',
   },
 ];
 
@@ -82,17 +74,17 @@ export const Settings = (props: Props) => {
         width={!queryRegion ? 'calc(50% - 1rem)' : '100%'}
       >
         <FilterTitle>
-          Select a Project Category
+          Select a Project Taxonomy*
         </FilterTitle>
         <Select
           className='select-box'
-          placeholder='Select a project category'
+          placeholder='Select a project taxonomy'
           value={selectedTaxonomy}
           onChange={(d: string) => { updateSelectedTaxonomy(d === undefined ? 'All' : d); }}
         >
           {
             TaxonomyList.map((d) => (
-              <Select.Option key={d.value}>{d.label}</Select.Option>
+              <Select.Option className='select-box-option' key={d.value}>{d.label}</Select.Option>
             ))
           }
         </Select>
@@ -114,10 +106,10 @@ export const Settings = (props: Props) => {
                 dropdownMatchSelectWidth
                 onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'All' : d); }}
               >
-                <Select.Option key='All'>All Regions</Select.Option>
+                <Select.Option className='select-box-option' key='All'>All Regions</Select.Option>
                 {
                   regions.map((d) => (
-                    <Select.Option key={d.value}>{d.label}</Select.Option>
+                    <Select.Option className='select-box-option' key={d.value}>{d.label}</Select.Option>
                   ))
                 }
               </Select>

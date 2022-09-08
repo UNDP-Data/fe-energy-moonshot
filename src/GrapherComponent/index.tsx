@@ -88,7 +88,7 @@ export const GrapherComponent = (props: Props) => {
   } = useContext(Context) as CtxDataType;
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
-  const filteredProjectData = data.filter((d) => selectedTaxonomy === 'All' || d.taxonomy === selectedTaxonomy);
+  const filteredProjectData = data.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
   function calculateCountryTotals() {
     const groupedData = nest()
       .key((d: any) => d['Lead Country'])
@@ -147,18 +147,21 @@ export const GrapherComponent = (props: Props) => {
           />
         </RootEl>
         <Note>
-          Note: this map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo; For calculations of equivalent tree seedlings grown, we assume the average tree absorbs an average of 10 KGs of C02 per year for the first 20 years
-          {' '}
-          (
-          <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb'>source here</a>
-          )
-          {' '}
-          and cars taken off the road we assume a typical passenger vehicle emits about 4.6 metric tons of CO2 per year
+          Note: this map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo;
+          <br />
+          * Tagging of energy resilience projects is currently being revised and it will soon be added to the taxonomy
+          <br />
+          ** For calculations of  cars taken off the road we assume a typical passenger vehicle emits about 4.6 metric tons of CO2 per year
           {' '}
           (
           <a target='_black' href='https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle'>source here</a>
           )
-          .
+          <br />
+          *** For calculations of equivalent tree seedlings grown, we assume the average tree absorbs an average of 10 KGs of C02 per year for the first 20 years
+          {' '}
+          (
+          <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb'>source here</a>
+          )
         </Note>
       </Container>
     </>

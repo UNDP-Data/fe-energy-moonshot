@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Select, Switch } from 'antd';
+import { Select } from 'antd';
 import Context from '../Context/Context';
 import {
   CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordinateDataType,
@@ -46,7 +48,7 @@ const FilterTitle = styled.div`
 `;
 
 const SettingEl = styled.div`
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 2rem;
   background-color:rgba(255,255,255,0.6);
   box-shadow: var(--shadow);
   min-width: 32rem;
@@ -70,6 +72,7 @@ export const Graph = (props: Props) => {
     xAxisIndicator,
     updateXAxisIndicator,
     updateShowProjectLocations,
+    showProjectLocations,
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.map((d) => d.Indicator);
@@ -96,17 +99,15 @@ export const Graph = (props: Props) => {
           >
             {
               options.map((d) => (
-                <Select.Option key={d}>{d}</Select.Option>
+                <Select.Option className='select-box-option' key={d}>{d}</Select.Option>
               ))
             }
           </Select>
         </DropdownEl>
-        <DropdownEl>
-          <FilterTitle>
-            Show project locations
-          </FilterTitle>
-          <Switch style={{ margin: '0.5rem 0' }} onChange={(e) => { updateShowProjectLocations(e); }} />
-        </DropdownEl>
+        <div className='undp-checkbox-el' onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>
+          <div className={`undp-checkbox ${showProjectLocations ? 'undp-checkbox-checked' : 'undp-checkbox-unchecked'}`} />
+          <div className='undp-checkbox-label'>Show project locations</div>
+        </div>
       </SettingEl>
       <UnivariateMap
         data={data}

@@ -155,14 +155,14 @@ export const Cards = (props: Props) => {
             <MetricNumber>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 0.21739)}
             </MetricNumber>
-            <MetricAnnotation>cars taken off the road for an year</MetricAnnotation>
+            <MetricAnnotation>cars taken off the road for an year**</MetricAnnotation>
           </MetricDiv>
           <EqualSignDiv>or</EqualSignDiv>
           <MetricDiv>
             <MetricNumber>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 5.0105)}
             </MetricNumber>
-            <MetricAnnotation>tree seedling grown for 20 years</MetricAnnotation>
+            <MetricAnnotation>tree seedling grown for 20 years***</MetricAnnotation>
           </MetricDiv>
         </EmissionsWrapper>
       </FullWidthCard>

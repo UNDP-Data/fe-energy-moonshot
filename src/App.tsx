@@ -14,7 +14,6 @@ import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
-import TaxonomyData from './Data/taxonomyData.json';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -137,39 +136,12 @@ const GlobalStyle = createGlobalStyle`
     font-style: italic;
   }
 
-  .ant-select-item-option-content {
-    white-space: normal;
+  .select-box-option .ant-select-item-option-content {
+    white-space: normal !important;
+    font-size: 1.6rem !important;
+    line-height: 2.24rem !important;
+    padding: 1.6rem 0 !important;
   }
-
-  .ant-select-selector {
-    border-radius: 0.5rem !important;
-    background-color: var(--black-200) !important;
-  }
-  .ant-slider-mark-text {
-    font-size: 1rem !important;
-    display: none;
-    &:first-of-type {
-      display: inline;
-    }
-    &:last-of-type {
-      display: inline;
-    }
-  }
-  .ant-slider-tooltip{
-    padding: 0 !important;
-  }
-  .ant-tooltip-inner{
-    font-size: 1.4rem !important;
-    background-color: var(--black-550) !important;
-    border-radius: 0.4rem;
-  }
-  .ant-tooltip-arrow-content{
-    background-color: var(--black-550) !important;
-  }
-  .ant-checkbox-wrapper{
-    width: 100%;
-  }
-
   
   .select-box {
     width: 100%;
@@ -239,6 +211,39 @@ const GlobalStyle = createGlobalStyle`
   .ant-select-single .ant-select-selector::after, .ant-select-single .ant-select-selector .ant-select-selection-item::after, .ant-select-single .ant-select-selector .ant-select-selection-placeholder::after {
     content: none !important;
   }
+
+  .undp-checkbox-el {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover{
+      .undp-checkbox{
+        border: 2px solid #FFBCB7 !important;
+      }
+    }
+  }
+
+  .undp-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid #d12800;
+    cursor: pointer;
+    height: 16px;
+    margin: 0;
+    width: 16px;
+  }
+
+  .undp-checkbox-checked {
+    background: url(https://design.undp.org/static/media/icon-check.b332b98d.svg) 1px 0 no-repeat;
+  }
+
+  .undp-checkbox-label {
+    font-size: 1.6rem;
+    margin: 0 0.7rem;
+    line-height: 1.6rem;
+  }
+
+
 `;
 
 const VizAreaEl = styled.div`
@@ -337,17 +342,12 @@ const App = () => {
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
       .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
-        const projectDataWithTaxonomy = projectData.map((d) => {
-          const indx = TaxonomyData.findIndex((el) => el['Project ID'] === d.project_id);
-          const taxonomy = indx !== -1 ? TaxonomyData[indx]['Primary Tag (Level 2)'] : undefined;
-          return ({ ...d, taxonomy });
-        });
         const projectCoordinateDataWithTaxonomy = projectCoordinates.map((d) => {
-          const indx = TaxonomyData.findIndex((el) => el['Project ID'] === d.project_id);
-          const taxonomy = indx !== -1 ? TaxonomyData[indx]['Primary Tag (Level 2)'] : undefined;
+          const indx = projectData.findIndex((el) => el.project_id === d.project_id);
+          const taxonomy = indx !== -1 ? projectData[indx].taxonomy_level3 : undefined;
           return ({ ...d, taxonomy });
         });
-        setFinalData(projectDataWithTaxonomy);
+        setFinalData(projectData);
         setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinateDataWithTaxonomy);
         setCountryList(projectData.map((d) => d['Lead Country']));
