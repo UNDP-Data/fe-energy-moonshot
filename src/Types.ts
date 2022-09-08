@@ -113,3 +113,5 @@ export interface CtxDataType {
   updateShowProjectLocations: (_d: boolean) => void;
   updateSelectedTaxonomy: (_d: string) => void;
 }
+
+export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';

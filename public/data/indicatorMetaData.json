@@ -1,7 +1,7 @@
 [
     {
-      "Indicator": "People directly benefiting",
-      "IndicatorLabelTable": "People directly benefiting",
+      "Indicator": "People directly benefiting (achieved + expected)",
+      "IndicatorLabelTable": "People directly benefiting (achieved + expected)",
       "IndicatorDescription": "The total number of people directly benefiting from these projects",
       "DataKey": "people directly benefiting",
       "BinningRangeLarge": [
@@ -15,8 +15,8 @@
       ]
     },
     {
-      "Indicator": "Tonnes of CO2 emissions reduced",
-      "IndicatorLabelTable": "Tonnes of CO2 emissions reduced",
+      "Indicator": "Tonnes of CO2 emissions reduced (achieved + expected)",
+      "IndicatorLabelTable": "Tonnes of CO2 emissions reduced (achieved + expected)",
       "IndicatorDescription": "The total amount of CO2 emissions (in tonnes) reduced from these projects",
       "DataKey": "tonnes of CO2-eq emissions avoided or reduced",
       "BinningRangeLarge": [
@@ -30,9 +30,9 @@
       ]
     },
     {
-      "Indicator": "Renewable energy capacity installed",
-      "IndicatorLabelTable": "Renewable energy capacity installed (MW)",
-      "IndicatorDescription": "MW of renewable energy capacity installed",
+      "Indicator": "Renewable energy capacity installed (achieved + expected)",
+      "IndicatorLabelTable": "Renewable energy capacity installed (MW) (achieved + expected)",
+      "IndicatorDescription": "MW of renewable energy capacity installed (achieved + expected)",
       "DataKey": "MW of renewable or low-emission energy capacity installed or rehabilitated",
       "BinningRangeLarge": [
         1,

@@ -20,7 +20,7 @@ const Card = styled.div`
   width: calc(25% - 2rem);
   background-color: var(--black-100);
   padding: 4.8rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 2.4rem;
   margin-bottom: 2rem;
   cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
@@ -68,7 +68,7 @@ const MetricTitle = styled.h4`
 `;
 
 const MetricAnnotation = styled.span`
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 2.4rem;
 `;
 
@@ -134,7 +134,7 @@ export const Cards = (props: Props) => {
         </Card>
         <Card>
           <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
-          <div>People directly benefiting</div>
+          <div>People directly benefiting (achieved + expected)</div>
         </Card>
         <Card>
           <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
@@ -142,7 +142,7 @@ export const Cards = (props: Props) => {
         </Card>
       </Wrapper>
       <FullWidthCard>
-        <MetricTitle>Estimated Environmental Impact</MetricTitle>
+        <MetricTitle>Estimated Environmental Impact (achieved + expected)</MetricTitle>
         <EmissionsWrapper>
           <MetricDiv>
             <MetricNumber>

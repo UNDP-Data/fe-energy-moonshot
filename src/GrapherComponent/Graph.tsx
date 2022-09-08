@@ -89,7 +89,6 @@ export const Graph = (props: Props) => {
           <Select
             className='select-box'
             showSearch
-            allowClear
             placeholder='Please select'
             value={xAxisIndicator}
             onChange={(d) => { updateXAxisIndicator(d); }}

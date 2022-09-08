@@ -5,7 +5,7 @@ export const MAX_TEXT_LENGTH = 100;
 export const TRUNCATE_MAX_TEXT_LENGTH = 125;
 
 export const DEFAULT_VALUES = {
-  firstMetric: 'People directly benefiting',
+  firstMetric: 'People directly benefiting (achieved + expected)',
   secondMetric: 'Tonnes of CO2 emissions reduced',
   colorMetric: 'Continents',
 };

@@ -8,7 +8,7 @@ import { queue } from 'd3-queue';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import {
-  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType,
+  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, ROOT_DIR,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -331,9 +331,9 @@ const App = () => {
 
   useEffect(() => {
     queue()
-      .defer(json, './data/projects.json')
-      .defer(json, './data/indicatorMetaData.json')
-      .defer(json, './data/projectCoordinates.json')
+      .defer(json, `${ROOT_DIR}/data/projects.json`)
+      .defer(json, `${ROOT_DIR}/data/indicatorMetaData.json`)
+      .defer(json, `${ROOT_DIR}/data/projectCoordinates.json`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/Country-Taxonomy/main/country-territory-groups.json')
       .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
