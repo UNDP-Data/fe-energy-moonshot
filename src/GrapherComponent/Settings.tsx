@@ -10,6 +10,7 @@ interface Props {
 
 const El = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: end;
   gap: 2rem;
   margin-bottom: 1rem;
@@ -27,6 +28,13 @@ const DropdownEl = styled.div<DropdownUnitProps>`
   width: ${(props) => props.width || '100%'};
   margin-bottom: 2rem;
   min-width: 30rem;
+  @media (max-width: 660px) {
+    width: 100%;
+    margin-bottom: 0;
+    &:last-of-type {
+      margin-bottom: 2rem;
+    }
+  }  
 `;
 
 const FilterTitle = styled.div`

@@ -13,6 +13,7 @@ interface Props {
 
 const Wrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 `;
 
@@ -30,6 +31,12 @@ const Card = styled.div`
       color: var(--black-700);
     }
   }
+  @media (max-width: 1280px) {
+    width: calc(50% - 1rem);
+  } 
+  @media (max-width: 620px) {
+    width: 100%;
+  }  
 `;
 
 const FullWidthCard = styled.div`
@@ -39,6 +46,7 @@ const FullWidthCard = styled.div`
   font-size: 2rem;
   line-height: 2.4rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
   cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
   &:hover {
     background-color: var(--yellow);
@@ -57,6 +65,23 @@ const MetricNumber = styled.div`
   font-weight: 700;
   text-shadow: none;
   color: var(--black-100);
+  @media (max-width: 1024px) {
+    text-align: center;
+  }  
+`;
+
+const MetricNumberLong = styled.div`
+  font-size: 6.4rem;
+  line-height: 1.09;
+  margin-bottom: 1rem;
+  -webkit-text-stroke: 2px var(--black-700);
+  text-stroke: 2px var(--black-700);
+  font-weight: 700;
+  text-shadow: none;
+  color: var(--black-100);
+  @media (max-width: 1024px) {
+    text-align: center;
+  }  
 `;
 
 const MetricTitle = styled.h4`
@@ -76,19 +101,28 @@ const EmissionsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }  
 `;
 
 const MetricDiv = styled.div`
   width: fit-content;
   max-width: 30%;
+  @media (max-width: 1024px) {
+    max-width: 100%;
+  }  
 `;
 
 const EqualSignDiv = styled.div`
   font-size: 1.4rem;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 1rem 0 1rem 0;
+  margin: 1rem 0;
   width: fit-content;
+  @media (max-width: 1024px) {
+    margin: 4rem 0;
+  }
 `;
 
 export const Cards = (props: Props) => {
@@ -145,23 +179,23 @@ export const Cards = (props: Props) => {
         <MetricTitle>Estimated Environmental Impact (achieved + expected)</MetricTitle>
         <EmissionsWrapper>
           <MetricDiv>
-            <MetricNumber>
+            <MetricNumberLong>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
-            </MetricNumber>
+            </MetricNumberLong>
             <MetricAnnotation>metric tons of CO2 Reduced</MetricAnnotation>
           </MetricDiv>
           <EqualSignDiv>same as</EqualSignDiv>
           <MetricDiv>
-            <MetricNumber>
+            <MetricNumberLong>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 0.21739)}
-            </MetricNumber>
+            </MetricNumberLong>
             <MetricAnnotation>cars taken off the road for an year**</MetricAnnotation>
           </MetricDiv>
           <EqualSignDiv>or</EqualSignDiv>
           <MetricDiv>
-            <MetricNumber>
+            <MetricNumberLong>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 5.0105)}
-            </MetricNumber>
+            </MetricNumberLong>
             <MetricAnnotation>tree seedling grown for 20 years***</MetricAnnotation>
           </MetricDiv>
         </EmissionsWrapper>

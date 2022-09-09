@@ -48,17 +48,24 @@ const FilterTitle = styled.div`
 `;
 
 const SettingEl = styled.div`
+  width: calc(100% - 4rem);
   padding: 2rem;
+  margin-top:2rem;
+  margin-left: 2rem;
   background-color:rgba(255,255,255,0.6);
-  box-shadow: var(--shadow);
-  min-width: 32rem;
-  width: calc(25% + 4rem);
-  margin-top: 2rem;
-  position: absolute;
-  top: 4rem;
-  left: 2rem;
-  top: 0;
-  z-index: 2;
+  @media (min-width: 820px) {
+    background-color:rgba(255,255,255,0.6);
+    box-shadow: var(--shadow);
+    min-width: 34rem;
+    width: calc(25% + 4rem);
+    margin-top: 2rem;
+    margin-left: 0;
+    position: absolute;
+    top: 4rem;
+    left: 2rem;
+    top: 0;
+    z-index: 2;
+  }
 `;
 
 export const Graph = (props: Props) => {

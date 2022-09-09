@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import { useState, useEffect, useReducer } from 'react';
+import {
+  useState, useEffect, useReducer, useRef,
+} from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { json } from 'd3-request';
 // import sortBy from 'lodash.sortby';
@@ -257,6 +259,7 @@ const VizAreaEl = styled.div`
 
 const App = () => {
   const [finalData, setFinalData] = useState<ProjectDataType[] | undefined>(undefined);
+  const containerEl = useRef(null);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [projectCoordinatesData, setProjectCoordinatesData] = useState<ProjectCoordinateDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
@@ -333,6 +336,12 @@ const App = () => {
       payload: selectedTaxonomy,
     });
   };
+  useEffect(() => {
+    if (containerEl.current && window.top) {
+      const message = { height: document.body.scrollHeight, width: document.body.scrollWidth };
+      window.top.postMessage(message, '*');
+    }
+  }, [containerEl.current, window.top]);
 
   useEffect(() => {
     queue()
@@ -373,13 +382,17 @@ const App = () => {
                   updateSelectedTaxonomy,
                 }}
               >
-                <GrapherComponent
-                  data={finalData}
-                  countryGroupData={countryGroupData}
-                  projectCoordinatesData={projectCoordinatesData}
-                  indicators={indicatorsList}
-                  regions={regionList}
-                />
+                <div
+                  ref={containerEl}
+                >
+                  <GrapherComponent
+                    data={finalData}
+                    countryGroupData={countryGroupData}
+                    projectCoordinatesData={projectCoordinatesData}
+                    indicators={indicatorsList}
+                    regions={regionList}
+                  />
+                </div>
               </Context.Provider>
             </>
           )
