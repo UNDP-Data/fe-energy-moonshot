@@ -10,8 +10,8 @@ const IconEl = styled.div<IconElProps>`
 `;
 
 const IconElNoMargin = styled.div<IconElProps>`
-  margin-top: -0.5rem;
-  margin-left: 0.1rem;
+  margin-top: -5px;
+  margin-left: 1px;
   height: ${(props) => (props.height ? `${props.height}px` : 'auto')};
 `;
 

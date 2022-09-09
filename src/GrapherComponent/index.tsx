@@ -24,9 +24,9 @@ interface Props {
 }
 
 const Container = styled.div`
-  max-width: 132rem;
-  margin: 2rem auto;
-  padding: 0 2rem;
+  max-width: 1320px;
+  margin: 1.25rem auto;
+  padding: 0 1.25rem;
 `;
 
 const RootEl = styled.div`
@@ -35,34 +35,34 @@ const RootEl = styled.div`
 `;
 
 const HeadingEl = styled.div`
-  padding: 2rem 0;
+  padding: 1.25rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 const H1 = styled.div`
-  font-size: 3rem;
+  font-size: 1.875rem;
   font-weight: bold;
   color: var(--primary-blue);
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 7.5px 0;
   @media (max-width: 600px) {
-    font-size: 2rem;
+    font-size: 1.25rem;
   }
 `;
 const H2 = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.125rem;
   font-weight: bold;
-  line-height: 2.4rem;
+  line-height: 1.5rem;
   @media (max-width: 600px) {
-    font-size: 1.6rem;
+    font-size: 1rem;
   }
 `;
 
 const Note = styled.p`
   margin-top: 2rem;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
   color: var(--black-500);
   font-style: italic;
 `;

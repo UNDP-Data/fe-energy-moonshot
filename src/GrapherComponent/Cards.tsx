@@ -18,12 +18,12 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  width: calc(25% - 2rem);
+  width: calc(25% - 1.25rem);
   background-color: var(--black-100);
-  padding: 4.8rem;
-  font-size: 1.8rem;
-  line-height: 2.4rem;
-  margin-bottom: 2rem;
+  padding: 1.875rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  margin-bottom: 1.25rem;
   cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
   &:hover {
     background-color: var(--yellow);
@@ -32,7 +32,7 @@ const Card = styled.div`
     }
   }
   @media (max-width: 1280px) {
-    width: calc(50% - 1rem);
+    width: calc(50% - 0.625rem);
   } 
   @media (max-width: 620px) {
     width: 100%;
@@ -42,10 +42,10 @@ const Card = styled.div`
 const FullWidthCard = styled.div`
   width: 100%;
   background-color: var(--black-100);
-  padding: 4.8rem;
-  font-size: 2rem;
-  line-height: 2.4rem;
-  margin-bottom: 2rem;
+  padding: 1.875rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  margin-bottom: 1.25rem;
   flex-wrap: wrap;
   cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
   &:hover {
@@ -57,23 +57,20 @@ const FullWidthCard = styled.div`
 `;
 
 const MetricNumber = styled.div`
-  font-size: 6.4rem;
+  font-size: 4rem;
   line-height: 1.09;
-  margin-bottom: 1rem;
+  margin-bottom: 0.625rem;
   -webkit-text-stroke: 2px var(--black-700);
   text-stroke: 2px var(--black-700);
   font-weight: 700;
   text-shadow: none;
   color: var(--black-100);
-  @media (max-width: 1024px) {
-    text-align: center;
-  }  
 `;
 
 const MetricNumberLong = styled.div`
-  font-size: 6.4rem;
+  font-size: 4rem;
   line-height: 1.09;
-  margin-bottom: 1rem;
+  margin-bottom: 0.625rem;
   -webkit-text-stroke: 2px var(--black-700);
   text-stroke: 2px var(--black-700);
   font-weight: 700;
@@ -85,16 +82,16 @@ const MetricNumberLong = styled.div`
 `;
 
 const MetricTitle = styled.h4`
-  font-size: 1.4rem;
-  line-height: 2.4rem;
-  margin-bottom: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  margin-bottom: 1.875rem;
   text-transform: uppercase;
   font-weight: 700;
 `;
 
 const MetricAnnotation = styled.span`
-  font-size: 1.8rem;
-  line-height: 2.4rem;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
 `;
 
 const EmissionsWrapper = styled.div`
@@ -115,13 +112,13 @@ const MetricDiv = styled.div`
 `;
 
 const EqualSignDiv = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 1rem 0;
+  margin: 0.625rem 0;
   width: fit-content;
   @media (max-width: 1024px) {
-    margin: 4rem 0;
+    margin: 2.5rem 0;
   }
 `;
 
@@ -156,7 +153,6 @@ export const Cards = (props: Props) => {
 
   return (
     <>
-
       <Wrapper>
         <Card>
           <MetricNumber>{formatData(cardData.numberCountries)}</MetricNumber>

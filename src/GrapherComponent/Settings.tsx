@@ -12,8 +12,8 @@ const El = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: end;
-  gap: 2rem;
-  margin-bottom: 1rem;
+  gap: 1.25rem;
+  margin-bottom: 0.625rem;
   @media (max-width: 960px) {
     border-right: 0px solid var(--black-400);
     padding-bottom: 0;
@@ -26,23 +26,23 @@ interface DropdownUnitProps {
 
 const DropdownEl = styled.div<DropdownUnitProps>`
   width: ${(props) => props.width || '100%'};
-  margin-bottom: 2rem;
-  min-width: 30rem;
+  margin-bottom: 1.25rem;
+  min-width: 18.75rem;
   @media (max-width: 660px) {
     width: 100%;
     margin-bottom: 0;
     &:last-of-type {
-      margin-bottom: 2rem;
+      margin-bottom: 1.25rem;
     }
   }  
 `;
 
 const FilterTitle = styled.div`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
-  margin-bottom: 0rem;
+  margin-bottom: 0;
 `;
 
 const TaxonomyList = [
@@ -79,7 +79,7 @@ export const Settings = (props: Props) => {
   return (
     <El>
       <DropdownEl
-        width={!queryRegion ? 'calc(50% - 1rem)' : '100%'}
+        width={!queryRegion ? 'calc(50% - 0.625rem)' : '100%'}
       >
         <FilterTitle>
           Select a Project Taxonomy*
@@ -101,7 +101,7 @@ export const Settings = (props: Props) => {
         !queryRegion
           ? (
             <DropdownEl
-              width='calc(50% - 1rem)'
+              width='calc(50% - 0.625rem)'
             >
               <FilterTitle>
                 Select a Bureau

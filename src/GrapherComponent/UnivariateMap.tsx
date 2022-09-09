@@ -29,12 +29,12 @@ const El = styled.div`
 `;
 
 const LegendEl = styled.div`
-  padding: 1rem 1rem 0 1rem;
+  padding: 0.625rem 0.625rem 0 0.625rem;
   background-color:rgba(255,255,255,0.5);
   box-shadow: var(--shadow);
-  width: 44rem;
-  margin-left: 2rem;
-  margin-top: -2rem;
+  width: 440px;
+  margin-left: 1.25rem;
+  margin-top: -1.25rem;
   position: relative;
   z-index: 1000;
   @media (min-width: 961px) {
@@ -43,7 +43,7 @@ const LegendEl = styled.div`
 `;
 
 const TitleEl = styled.div`
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   font-weight: bold;
   width: 100%;
   white-space: nowrap;

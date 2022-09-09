@@ -17,10 +17,10 @@ const TooltipEl = styled.div<TooltipElProps>`
   display: block;
   position: fixed;
   z-index: 10;
-  border-radius: 1rem;
-  font-size: 1.4rem;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
   background-color: var(--white);
-  box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
+  box-shadow: 0 0 0.625rem rgb(0 0 0 / 15%);
   word-wrap: break-word;
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
@@ -29,55 +29,55 @@ const TooltipEl = styled.div<TooltipElProps>`
 `;
 
 const TooltipTitle = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--navy);  
-  background: var(--yellow);
+  background: var(--blue-bg);
   width: 100%;
   box-sizing: border-box;
-  border-radius: 1rem 1rem 0 0;
-  padding: 1.6rem 4rem 1.6rem 2rem;
+  border-radius: 0.625rem 0.625rem 0 0;
+  padding: 1rem 2.5rem 1rem 1.25rem;
   position: relative;
   font-weight: 700;
-  font-size: 1.8rem;
-  line-height: 1.8rem;
+  font-size: 1.125rem;
+  line-height: 1.125rem;
 `;
 
 const SubNote = styled.span`
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   color: var(--navy);
 `;
 
 const TooltipBody = styled.div`
   width: 100%;
   box-sizing: border-box;
-  padding: 2rem;
+  padding: 1.25rem;
 `;
 
 const MetricGrp = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 `;
 
 const RowEl = styled.div`
-  font-size: 1.3rem;
+  font-size: 0.8125rem;
   color: var(--dark-grey);
-  margin-bottom: 0.5rem;
+  margin-bottom: 5px;
   display: flex;
   align-items: flex-start; 
 `;
 
 const RowTitleEl = styled.div`
   font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   margin-right: 5px;
   color: var(--navy);
 `;
 
 const RowValue = styled.div`
   font-weight: 700;
-  font-size: 1.4rem;
-  line-height: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--navy);
 `;
 

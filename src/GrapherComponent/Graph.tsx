@@ -22,7 +22,7 @@ const El = styled.div`
   position: relative;
   background-color: var(--black-100);
   @media (min-width: 961px) {
-    height: 74rem;
+    height: 740px;
   }
   @media (max-width: 960px) {
     width: 100%;
@@ -35,34 +35,34 @@ interface DropdownUnitProps {
 
 const DropdownEl = styled.div<DropdownUnitProps>`
   width: ${(props) => props.width || '100%'};
-  margin-bottom: 2rem;
-  min-width: 30rem;
+  margin-bottom: 1.25rem;
+  min-width: 300px;
 `;
 
 const FilterTitle = styled.div`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
-  margin-bottom: 0rem;
+  margin-bottom: 0;
 `;
 
 const SettingEl = styled.div`
-  width: calc(100% - 4rem);
-  padding: 2rem;
-  margin-top:2rem;
-  margin-left: 2rem;
+  width: calc(100% - 2.5rem);
+  padding:1.25rem;
+  margin-top:1.25rem;
+  margin-left:1.25rem;
   background-color:rgba(255,255,255,0.6);
   @media (min-width: 820px) {
     background-color:rgba(255,255,255,0.6);
     box-shadow: var(--shadow);
-    min-width: 34rem;
-    width: calc(25% + 4rem);
-    margin-top: 2rem;
+    min-width: 340px;
+    width: calc(25% + 2.5rem);
+    margin-top: 1.25rem;
     margin-left: 0;
     position: absolute;
-    top: 4rem;
-    left: 2rem;
+    top: 2.5rem;
+    left: 1.25rem;
     top: 0;
     z-index: 2;
   }

@@ -44,90 +44,16 @@ const GlobalStyle = createGlobalStyle`
     --shadow-right: 10px 0px 13px -3px rgb(9 105 250 / 5%);
     --shadow-left: -10px 0px 13px -3px rgb(9 105 250 / 15%);
   }
-  
-  html { 
-    font-size: 62.5%; 
-  }
 
-  .react-dropdown-select-option{
-    color:var(--black) !important;
-    background-color:var(--primary-color-light) !important;
-  }
-  .react-dropdown-select-option-label, .react-dropdown-select-option-remove{
-    font-weight: 400;
-    background-color:var(--primary-color-light);
-    padding: 0.5rem;
-  }
-
-  body {
+  .bodyEl {
     font-family: "proxima-nova", "Helvetica Neue", "sans-serif";
     color: var(--black-600);
     background-color: var(--white);
     margin: 0;
-    padding: 1rem 0;
-    font-size: 1.6rem;
+    padding: 0.625rem 0;
+    font-size: 1rem;
     font-weight: normal;
-    line-height: 2.56rem;
-  }
-
-  a {
-    text-decoration: none;
-    color: var(--primary-blue);
-  }
-
-  h1 {
-    color: var(--primary-blue);
-    font-size: 3.2rem;
-    font-weight: 700;
-    
-    @media (max-width: 760px) {
-      font-size: 2.4rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 1.8rem;
-    }
-  }
-  
-  button.primary {
-    border-radius: 0.2rem !important;
-    font-size: 1.4rem !important;
-    font-weight: normal !important;
-    color: var(--white) !important;
-    background-color: var(--primary-blue) !important;
-    border: 1px solid var(--primary-blue) !important;
-    cursor: pointer !important;
-    padding: 0.4rem 1rem !important;
-    &:hover {
-      border: 1px solid var(--blue-medium) !important;
-      background-color: var(--blue-medium) !important;
-    }
-    &:active{
-      border: 1px solid var(--blue-medium) !important;
-      background-color: var(--blue-medium) !important;
-    }
-  }
-
-  button.secondary {
-    border-radius: 0.2rem !important;
-    font-size: 1.4rem !important;
-    font-weight: normal !important;
-    color: var(--black-600) !important;
-    border: 1px solid var(--black-450) !important;
-    cursor: pointer !important;
-    padding: 0.4rem 1rem !important;
-    background-color: var(--white) !important;
-    &:hover {
-      border: 1px solid var(--primary-blue) !important;
-      color: var(--primary-blue) !important;
-    }
-    &:active{
-      border: 1px solid var(--primary-blue) !important;
-      color: var(--primary-blue) !important;
-    }
-  }
-
-  a:hover {
-    font-weight: bold;
+    line-height: 1.625rem;
   }
 
   .bold{
@@ -140,24 +66,24 @@ const GlobalStyle = createGlobalStyle`
 
   .select-box-option .ant-select-item-option-content {
     white-space: normal !important;
-    font-size: 1.6rem !important;
-    line-height: 2.24rem !important;
-    padding: 1.6rem 0 !important;
+    font-size: 1rem !important;
+    line-height: 1.375rem !important;
+    padding: 1rem 0 !important;
   }
   
   .select-box {
     width: 100%;
     border: 2px solid #000;
-    min-height: 5.2rem;
+    min-height: 3.25rem;
   }
 
   .ant-select-selector{
-    min-height: 4.8rem !important;
+    min-height: 3rem !important;
     border: 0 !important;
   }
 
   .select-box .ant-select-selection-placeholder {
-    font-size: 1.6rem;
+    font-size: 1rem;
     text-transform: uppercase;
     color: black;
   }
@@ -185,15 +111,15 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .select-box .ant-select-selection-item {
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
     color: black;
-    padding: 0.9rem 3rem 0 0 !important;
+    padding: 9px 3rem 0 0 !important;
   }
 
   .select-box .ant-select-selection-search-input {
-    padding: 1.4rem 3rem 0 0 !important;
+    padding: 0.875rem 1.875rem 0 0 !important;
   }
 
   .ant-select-arrow {
@@ -201,13 +127,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .ant-select-item-option {
-    font-size: 1.6rem;
+    font-size: 1rem;
     border-top: 1px solid #d4d6d8;
-    line-height: 4.4rem;
+    line-height: 2.75rem;
   }
 
   .single-select-box .ant-select-selector {
-    padding-top: 1rem !important;
+    padding-top: 0.625rem !important;
   }
 
   .ant-select-single .ant-select-selector::after, .ant-select-single .ant-select-selector .ant-select-selection-item::after, .ant-select-single .ant-select-selector .ant-select-selection-placeholder::after {
@@ -240,9 +166,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .undp-checkbox-label {
-    font-size: 1.6rem;
-    margin: 0 0.7rem;
-    line-height: 1.6rem;
+    font-size: 1rem;
+    margin: 0 7px;
+    line-height: 1rem;
   }
 
 
@@ -254,7 +180,7 @@ const VizAreaEl = styled.div`
   margin: auto;
   align-items: center;
   justify-content: center;
-  height: 10rem;
+  height: 6.25rem;
 `;
 
 const App = () => {
@@ -336,12 +262,6 @@ const App = () => {
       payload: selectedTaxonomy,
     });
   };
-  useEffect(() => {
-    if (containerEl.current && window.top) {
-      const message = { height: document.body.scrollHeight, width: document.body.scrollWidth };
-      window.top.postMessage(message, '*');
-    }
-  }, [containerEl.current, window.top]);
 
   useEffect(() => {
     queue()
@@ -384,6 +304,7 @@ const App = () => {
               >
                 <div
                   ref={containerEl}
+                  className='bodyEl'
                 >
                   <GrapherComponent
                     data={finalData}

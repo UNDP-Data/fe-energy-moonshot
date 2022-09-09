@@ -37,10 +37,10 @@ export const describeArc = (x: number, y: number, radius: number, startAngle: nu
 
 const KeyEl = styled.div`
   display: flex;
-  margin: 0.5rem 0; 
+  margin: 5px 0; 
   align-items: center;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
 `;
 
 interface ColorElProps {
@@ -48,9 +48,9 @@ interface ColorElProps {
 }
 
 const ColorEl = styled.div<ColorElProps>`
-  width: 1.6rem;
-  height: 1.6rem;
-  margin-right: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 5px;
   background-color: ${(props) => props.color};
 `;
 
