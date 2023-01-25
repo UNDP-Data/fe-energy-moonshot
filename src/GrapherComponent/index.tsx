@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { useContext } from 'react';
 import { nest } from 'd3-collection';
 import sumBy from 'lodash.sumby';
@@ -22,50 +21,6 @@ interface Props {
   indicators: IndicatorMetaDataType[];
   regions: RegionDataType[];
 }
-
-const Container = styled.div`
-  max-width: 1320px;
-  margin: 1.25rem auto;
-  padding: 0 1.25rem;
-`;
-
-const RootEl = styled.div`
-  background-color: var(--white);
-  color: var(--black-600);
-`;
-
-const HeadingEl = styled.div`
-  padding: 1.25rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const H1 = styled.div`
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: var(--primary-blue);
-  margin: 0 0 7.5px 0;
-  @media (max-width: 600px) {
-    font-size: 1.25rem;
-  }
-`;
-const H2 = styled.div`
-  font-size: 1.125rem;
-  font-weight: bold;
-  line-height: 1.5rem;
-  @media (max-width: 600px) {
-    font-size: 1rem;
-  }
-`;
-
-const Note = styled.p`
-  margin-top: 2rem;
-  font-size: 0.875rem;
-  line-height: 1.125rem;
-  color: var(--black-500);
-  font-style: italic;
-`;
 
 const regionList = [
   { value: 'RBA', label: 'Regional Bureau for Africa (RBA)' },
@@ -121,49 +76,41 @@ export const GrapherComponent = (props: Props) => {
   const mapData = calculateCountryTotals();
   return (
     <>
-      <Container>
-        <HeadingEl>
-          <div>
-            <div>
-              <H1>Energy-Related Portfolio</H1>
-              <H2>
-                Explore Data from Active Projects
-                {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
-              </H2>
-            </div>
-          </div>
-        </HeadingEl>
-        <Settings
-          regions={regions}
+      <h3 className='undp-typography bold margin-bottom-02' style={{ color: 'var(--blue-600)' }}>Energy-Related Portfolio</h3>
+      <h5 className='undp-typography margin-bottom-05'>
+        Explore Data from Active Projects
+        {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
+      </h5>
+      <Settings
+        regions={regions}
+      />
+      <Cards
+        data={mapData}
+      />
+      <div style={{ backgroundColor: 'var(--gray-200)' }}>
+        <Graph
+          data={mapData}
+          projectCoordinatesData={projectCoordinatesData}
+          indicators={indicators}
         />
-        <RootEl>
-          <Cards
-            data={mapData}
-          />
-          <Graph
-            data={mapData}
-            projectCoordinatesData={projectCoordinatesData}
-            indicators={indicators}
-          />
-        </RootEl>
-        <Note>
-          Note: this map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo;
-          <br />
-          * Tagging of energy resilience projects is currently being revised and it will soon be added to the taxonomy
-          <br />
-          ** For calculations of  cars taken off the road we assume a typical passenger vehicle emits about 4.6 metric tons of CO2 per year
-          {' '}
-          (
-          <a target='_black' href='https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle'>source here</a>
-          )
-          <br />
-          *** For calculations of equivalent tree seedlings grown, we assume the average tree absorbs an average of 10 KGs of C02 per year for the first 20 years
-          {' '}
-          (
-          <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb'>source here</a>
-          )
-        </Note>
-      </Container>
+      </div>
+      <p className='italics' style={{ color: 'var(--gray-500)', fontSize: '0.875rem' }}>
+        Note: This map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo;
+        <br />
+        * Tagging of energy resilience projects is currently being revised and it will soon be added to the taxonomy
+        <br />
+        ** For calculations of  cars taken off the road we assume a typical passenger vehicle emits about 4.6 metric tons of CO2 per year
+        {' '}
+        (
+        <a target='_black' href='https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle' className='undp-style'>source here</a>
+        )
+        <br />
+        *** For calculations of equivalent tree seedlings grown, we assume the average tree absorbs an average of 10 KGs of C02 per year for the first 20 years
+        {' '}
+        (
+        <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb' className='undp-style'>source here</a>
+        )
+      </p>
     </>
   );
 };

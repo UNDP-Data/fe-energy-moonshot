@@ -16,75 +16,13 @@ interface TooltipElProps {
 const TooltipEl = styled.div<TooltipElProps>`
   display: block;
   position: fixed;
-  z-index: 10;
-  border-radius: 0.625rem;
-  font-size: 0.875rem;
-  background-color: var(--white);
-  box-shadow: 0 0 0.625rem rgb(0 0 0 / 15%);
+  z-index: 8;
+  background-color: var(--gray-300);
+  padding: var(--spacing-05);
   word-wrap: break-word;
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
-  /* max-width: 24rem; */
   transform: ${(props) => `translate(${props.horizontalAlignment === 'left' ? '-100%' : '0%'},${props.verticalAlignment === 'top' ? '-100%' : '0%'})`};
-`;
-
-const TooltipTitle = styled.div`
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--navy);  
-  background: var(--blue-bg);
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 0.625rem 0.625rem 0 0;
-  padding: 1rem 2.5rem 1rem 1.25rem;
-  position: relative;
-  font-weight: 700;
-  font-size: 1.125rem;
-  line-height: 1.125rem;
-`;
-
-const SubNote = styled.span`
-  font-size: 0.75rem;
-  color: var(--navy);
-`;
-
-const TooltipBody = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 1.25rem;
-`;
-
-const MetricGrp = styled.div`
-  margin-bottom: 1.25rem;
-`;
-
-const RowEl = styled.div`
-  font-size: 0.8125rem;
-  color: var(--dark-grey);
-  margin-bottom: 5px;
-  display: flex;
-  align-items: flex-start; 
-`;
-
-const RowTitleEl = styled.div`
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  margin-right: 5px;
-  color: var(--navy);
-`;
-
-const RowValue = styled.div`
-  font-weight: 700;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: var(--navy);
-`;
-
-const TooltipHead = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 export const Tooltip = (props: Props) => {
@@ -100,74 +38,71 @@ export const Tooltip = (props: Props) => {
 
   return (
     <TooltipEl x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
-      <TooltipHead>
-        <TooltipTitle>
+      <div className='flex-div flex-wrap' style={{ alignItems: 'baseline' }}>
+        <h5 className='undp-typography bold margin-bottom-05 bold'>
           {data.country}
           {' '}
-          <SubNote>
+          <span
+            className='undp-typography'
+            style={{
+              color: 'var(--gray-600)', fontWeight: 'normal', fontSize: '0.875rem', textTransform: 'none',
+            }}
+          >
             (
             {data.continent}
             )
-          </SubNote>
-        </TooltipTitle>
-      </TooltipHead>
-      <TooltipBody>
-        <MetricGrp>
-          <RowEl>
-            <RowTitleEl>
-              People directly benefiting (achieved + expected)
-            </RowTitleEl>
-            <RowValue>
-              { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              CO2 emissions reduced (tonnes) (achieved + expected):
-            </RowTitleEl>
-            <RowValue>
-              {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
-            </RowValue>
-          </RowEl>
-        </MetricGrp>
-        <MetricGrp>
-          Vertical Fund Projects:
-          <RowEl>
-            <RowTitleEl>
-              Grant Amount (USD):
-            </RowTitleEl>
-            <RowValue>
-              {data.grantAmountVerticalFund === undefined ? 'N/A' : formatData(data.grantAmountVerticalFund)}
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              Expenses (USD):
-            </RowTitleEl>
-            <RowValue>
-              {data.expensesVerticalFund === undefined ? 'N/A' : formatData(data.expensesVerticalFund)}
-            </RowValue>
-          </RowEl>
-          <RowEl>
-            <RowTitleEl>
-              Co-Financing (USD):
-            </RowTitleEl>
-            <RowValue>
-              {data.coFinancingVerticalFund === undefined ? 'N/A' : formatData(data.coFinancingVerticalFund)}
-            </RowValue>
-          </RowEl>
-        </MetricGrp>
-        <MetricGrp>
-          <RowEl>
-            <RowTitleEl>
-              Number of projects:
-            </RowTitleEl>
-            <RowValue>
-              {data.numberProjects === undefined ? 'N/A' : formatData(data.numberProjects)}
-            </RowValue>
-          </RowEl>
-        </MetricGrp>
-      </TooltipBody>
+          </span>
+        </h5>
+      </div>
+      <div className='margin-bottom-07'>
+        <p className='undp-typography margin-bottom-01'>
+          People directly benefiting (achieved + expected)
+          {' '}
+          <span className='bold'>
+            { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
+          </span>
+        </p>
+        <p className='undp-typography margin-bottom-01'>
+          CO2 emissions reduced (tonnes) (achieved + expected):
+          {' '}
+          <span className='bold'>
+            {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
+          </span>
+        </p>
+      </div>
+      <div className='margin-bottom-05'>
+        <h6 className='undp-typography margin-bottom-01'>Vertical Fund Projects:</h6>
+        <p className='undp-typography margin-bottom-01'>
+          Grant Amount (USD):
+          {' '}
+          <span className='bold'>
+            {data.grantAmountVerticalFund === undefined ? 'N/A' : formatData(data.grantAmountVerticalFund)}
+          </span>
+        </p>
+        <p className='undp-typography margin-bottom-01'>
+          Expenses (USD):
+          {' '}
+          <span className='bold'>
+            {data.expensesVerticalFund === undefined ? 'N/A' : formatData(data.expensesVerticalFund)}
+          </span>
+        </p>
+        <p className='undp-typography margin-bottom-01'>
+          Co-Financing (USD):
+          {' '}
+          <span className='bold'>
+            {data.coFinancingVerticalFund === undefined ? 'N/A' : formatData(data.coFinancingVerticalFund)}
+          </span>
+        </p>
+      </div>
+      <div>
+        <p className='undp-typography margin-bottom-01'>
+          Number of projects:
+          {' '}
+          <span className='bold'>
+            {data.numberProjects === undefined ? 'N/A' : formatData(data.numberProjects)}
+          </span>
+        </p>
+      </div>
     </TooltipEl>
   );
 };

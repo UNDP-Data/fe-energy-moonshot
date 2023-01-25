@@ -6,15 +6,6 @@ interface Props {
   nonVertFund?: number;
 }
 
-const ContentEl = styled.div`
-  display: flex;
-  align-items: flex-end;
-`;
-
-const RootEl = styled.div`
-  padding: 0;
-`;
-
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
   const radian = Math.PI / 180.0;
   const angleInRadians = (angleInDegrees - 90) * radian;
@@ -34,23 +25,13 @@ export const describeArc = (x: number, y: number, radius: number, startAngle: nu
   ].join(' ');
   return d;
 };
-
-const KeyEl = styled.div`
-  display: flex;
-  margin: 5px 0; 
-  align-items: center;
-  font-size: 0.875rem;
-  line-height: 1.125rem;
-`;
-
 interface ColorElProps {
   color: string;
 }
 
 const ColorEl = styled.div<ColorElProps>`
-  width: 1rem;
-  height: 1rem;
-  margin-right: 5px;
+  width: 0.675rem;
+  height: 0.675rem;
   background-color: ${(props) => props.color};
 `;
 
@@ -69,24 +50,24 @@ export const DonutChartCard = (props: Props) => {
   const vertFundFormated = vertFund === undefined ? 0 : vertFund;
   const nonVertFundFormated = nonVertFund === undefined ? 0 : nonVertFund;
   return (
-    <RootEl>
-      <KeyEl>
+    <div>
+      <div className='flex-div flex-vert-align-center gap-02'>
         <ColorEl color='var(--primary-blue)' />
         <div>
           Vertical Fund:
           {' '}
           <span className='bold'>{vertFundFormated === undefined ? 'N/A' : `USD ${formatData(vertFundFormated)}`}</span>
         </div>
-      </KeyEl>
-      <KeyEl>
+      </div>
+      <div className='flex-div flex-vert-align-center gap-02'>
         <ColorEl color='var(--yellow)' />
         <div>
           Non Vertical Fund:
           {' '}
           <span className='bold'>{nonVertFundFormated === undefined ? 'N/A' : `USD ${formatData(nonVertFundFormated)}`}</span>
         </div>
-      </KeyEl>
-      <ContentEl>
+      </div>
+      <div className='flex-div' style={{ alignItems: 'flex-end' }}>
         <svg width='180px' viewBox='0 0 360 360' style={{ margin: 'auto' }}>
           <path
             d={describeArc(180, 180, 140, 0, 360 * (vertFundFormated / (vertFundFormated + nonVertFundFormated)))}
@@ -123,7 +104,7 @@ export const DonutChartCard = (props: Props) => {
             Total Grant Amount
           </text>
         </svg>
-      </ContentEl>
-    </RootEl>
+      </div>
+    </div>
   );
 };

@@ -11,89 +11,6 @@ interface Props {
   data: DataType[];
 }
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
-const Card = styled.div`
-  width: calc(25% - 1.25rem);
-  background-color: var(--black-100);
-  padding: 1.875rem;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-  margin-bottom: 1.25rem;
-  cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
-  &:hover {
-    background-color: var(--yellow);
-    div {
-      color: var(--black-700);
-    }
-  }
-  @media (max-width: 1280px) {
-    width: calc(50% - 0.625rem);
-  } 
-  @media (max-width: 620px) {
-    width: 100%;
-  }  
-`;
-
-const FullWidthCard = styled.div`
-  width: 100%;
-  background-color: var(--black-100);
-  padding: 1.875rem;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-  cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMiAxTDIgOS45OTc4MU0yIDkuOTk3ODFMMTIgMTlNMiA5Ljk5NzgxTDgxLjUgOS45OTc4MSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+DQo8L3N2Zz4NCg==), auto;
-  &:hover {
-    background-color: var(--yellow);
-    div {
-      color: var(--black-700);
-    }
-  }
-`;
-
-const MetricNumber = styled.div`
-  font-size: 4rem;
-  line-height: 1.09;
-  margin-bottom: 0.625rem;
-  -webkit-text-stroke: 2px var(--black-700);
-  text-stroke: 2px var(--black-700);
-  font-weight: 700;
-  text-shadow: none;
-  color: var(--black-100);
-`;
-
-const MetricNumberLong = styled.div`
-  font-size: 4rem;
-  line-height: 1.09;
-  margin-bottom: 0.625rem;
-  -webkit-text-stroke: 2px var(--black-700);
-  text-stroke: 2px var(--black-700);
-  font-weight: 700;
-  text-shadow: none;
-  color: var(--black-100);
-  @media (max-width: 1024px) {
-    text-align: center;
-  }  
-`;
-
-const MetricTitle = styled.h4`
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  margin-bottom: 1.875rem;
-  text-transform: uppercase;
-  font-weight: 700;
-`;
-
-const MetricAnnotation = styled.span`
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-`;
-
 const EmissionsWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -153,49 +70,49 @@ export const Cards = (props: Props) => {
 
   return (
     <>
-      <Wrapper>
-        <Card>
-          <MetricNumber>{formatData(cardData.numberCountries)}</MetricNumber>
-          <div>Number of countries</div>
-        </Card>
-        <Card>
-          <MetricNumber>{cardData.numberProjects === undefined ? 'N/A' : formatData(cardData.numberProjects)}</MetricNumber>
-          <div>Number of projects</div>
-        </Card>
-        <Card>
-          <MetricNumber>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</MetricNumber>
-          <div>People directly benefiting (achieved + expected)</div>
-        </Card>
-        <Card>
-          <MetricNumber>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</MetricNumber>
-          <div>Total grant amount (USD)</div>
-        </Card>
-      </Wrapper>
-      <FullWidthCard>
-        <MetricTitle>Estimated Environmental Impact (achieved + expected)</MetricTitle>
+      <div className='stat-container flex-div margin-bottom-05'>
+        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+          <h3>{formatData(cardData.numberCountries)}</h3>
+          <p>Number of countries</p>
+        </div>
+        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+          <h3>{cardData.numberProjects === undefined ? 'N/A' : formatData(cardData.numberProjects)}</h3>
+          <p>Number of projects</p>
+        </div>
+        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+          <h3>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
+          <p>People directly benefiting (achieved + expected)</p>
+        </div>
+        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+          <h3>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</h3>
+          <p>Total grant amount (USD)</p>
+        </div>
+      </div>
+      <div className='stat-card margin-bottom-07' style={{ width: 'calc(100% - 4rem)' }}>
+        <h6 className='undp-typography'>Estimated Environmental Impact (achieved + expected)</h6>
         <EmissionsWrapper>
           <MetricDiv>
-            <MetricNumberLong>
+            <h3>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced)}
-            </MetricNumberLong>
-            <MetricAnnotation>metric tons of CO2 Reduced</MetricAnnotation>
+            </h3>
+            <p>metric tons of CO2 Reduced</p>
           </MetricDiv>
           <EqualSignDiv>same as</EqualSignDiv>
           <MetricDiv>
-            <MetricNumberLong>
+            <h3>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 0.21739)}
-            </MetricNumberLong>
-            <MetricAnnotation>cars taken off the road for an year**</MetricAnnotation>
+            </h3>
+            <p>cars taken off the road for an year**</p>
           </MetricDiv>
           <EqualSignDiv>or</EqualSignDiv>
           <MetricDiv>
-            <MetricNumberLong>
+            <h3>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 5.0105)}
-            </MetricNumberLong>
-            <MetricAnnotation>tree seedling grown for 20 years***</MetricAnnotation>
+            </h3>
+            <p>tree seedling grown for 20 years***</p>
           </MetricDiv>
         </EmissionsWrapper>
-      </FullWidthCard>
+      </div>
     </>
   );
 };

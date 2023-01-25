@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import styled from 'styled-components';
 import { Select } from 'antd';
 import { CtxDataType, RegionDataType } from '../Types';
 import Context from '../Context/Context';
@@ -7,43 +6,6 @@ import Context from '../Context/Context';
 interface Props {
   regions: RegionDataType[];
 }
-
-const El = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: 1.25rem;
-  margin-bottom: 0.625rem;
-  @media (max-width: 960px) {
-    border-right: 0px solid var(--black-400);
-    padding-bottom: 0;
-  }  
-`;
-
-interface DropdownUnitProps {
-  width?: string;
-}
-
-const DropdownEl = styled.div<DropdownUnitProps>`
-  width: ${(props) => props.width || '100%'};
-  margin-bottom: 1.25rem;
-  min-width: 18.75rem;
-  @media (max-width: 660px) {
-    width: 100%;
-    margin-bottom: 0;
-    &:last-of-type {
-      margin-bottom: 1.25rem;
-    }
-  }  
-`;
-
-const FilterTitle = styled.div`
-  font-size: 1rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0;
-`;
 
 const TaxonomyList = [
   {
@@ -77,53 +39,43 @@ export const Settings = (props: Props) => {
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
   return (
-    <El>
-      <DropdownEl
-        width={!queryRegion ? 'calc(50% - 0.625rem)' : '100%'}
-      >
-        <FilterTitle>
-          Select a Project Taxonomy*
-        </FilterTitle>
+    <div className='flex-div flex-space-between margin-bottom-07'>
+      <div style={{ width: `${!queryRegion ? 'calc(50% - 0.5rem)' : '100%'}` }}>
+        <p className='label'>Select a Project Taxonomy*</p>
         <Select
-          className='select-box'
+          className='undp-select'
           placeholder='Select a project taxonomy'
           value={selectedTaxonomy}
           onChange={(d: string) => { updateSelectedTaxonomy(d === undefined ? 'All' : d); }}
         >
           {
             TaxonomyList.map((d) => (
-              <Select.Option className='select-box-option' key={d.value}>{d.label}</Select.Option>
+              <Select.Option className='undp-select-option' key={d.value}>{d.label}</Select.Option>
             ))
           }
         </Select>
-      </DropdownEl>
+      </div>
       {
         !queryRegion
           ? (
-            <DropdownEl
-              width='calc(50% - 0.625rem)'
-            >
-              <FilterTitle>
-                Select a Bureau
-              </FilterTitle>
+            <div style={{ width: 'calc(50% - 0.5rem)' }}>
+              <p className='label'>Select a Bureau</p>
               <Select
-                style={{ width: '100%' }}
-                className='select-box'
-                placeholder='Select a bureau'
+                className='undp-select'
+                placeholder='Select a region'
                 value={selectedRegions}
-                dropdownMatchSelectWidth
                 onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'All' : d); }}
               >
-                <Select.Option className='select-box-option' key='All'>All Regions</Select.Option>
+                <Select.Option className='undp-select-option' key='All'>All Regions</Select.Option>
                 {
                   regions.map((d) => (
-                    <Select.Option className='select-box-option' key={d.value}>{d.label}</Select.Option>
+                    <Select.Option className='undp-select-option' key={d.value}>{d.label}</Select.Option>
                   ))
                 }
               </Select>
-            </DropdownEl>
+            </div>
           ) : null
       }
-    </El>
+    </div>
   );
 };

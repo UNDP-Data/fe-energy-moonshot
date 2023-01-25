@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Select } from 'antd';
+import { Checkbox, Select } from 'antd';
 import Context from '../Context/Context';
 import {
   CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordinateDataType,
@@ -27,24 +27,6 @@ const El = styled.div`
   @media (max-width: 960px) {
     width: 100%;
   }
-`;
-
-interface DropdownUnitProps {
-  width?: string;
-}
-
-const DropdownEl = styled.div<DropdownUnitProps>`
-  width: ${(props) => props.width || '100%'};
-  margin-bottom: 1.25rem;
-  min-width: 300px;
-`;
-
-const FilterTitle = styled.div`
-  font-size: 1rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0;
 `;
 
 const SettingEl = styled.div`
@@ -92,13 +74,10 @@ export const Graph = (props: Props) => {
   return (
     <El id='graph-node'>
       <SettingEl>
-        <DropdownEl>
-          <FilterTitle>
-            Select Indicator
-          </FilterTitle>
+        <div className='margin-bottom-05' style={{ width: '100%', minWidth: '19rem' }}>
+          <p className='label'>Select Indicator</p>
           <Select
-            className='select-box'
-            showSearch
+            className='undp-select'
             placeholder='Please select'
             value={xAxisIndicator}
             onChange={(d) => { updateXAxisIndicator(d); }}
@@ -106,15 +85,12 @@ export const Graph = (props: Props) => {
           >
             {
               options.map((d) => (
-                <Select.Option className='select-box-option' key={d}>{d}</Select.Option>
+                <Select.Option className='undp-select-option' key={d}>{d}</Select.Option>
               ))
             }
           </Select>
-        </DropdownEl>
-        <div className='undp-checkbox-el' onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>
-          <div className={`undp-checkbox ${showProjectLocations ? 'undp-checkbox-checked' : 'undp-checkbox-unchecked'}`} />
-          <div className='undp-checkbox-label'>Show project locations</div>
         </div>
+        <Checkbox className='undp-checkbox' checked={showProjectLocations} onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>Show project locations</Checkbox>
       </SettingEl>
       <UnivariateMap
         data={data}

@@ -22,33 +22,18 @@ interface Props {
   indicators: IndicatorMetaDataType[];
 }
 
-const El = styled.div`
-  height: 100%;
-  overflow-y: hidden;
-  background-color: var(--black-100);
-`;
-
 const LegendEl = styled.div`
-  padding: 0.625rem 0.625rem 0 0.625rem;
+  padding: 0.5rem 0.5rem 0 0.5rem;
   background-color:rgba(255,255,255,0.5);
   box-shadow: var(--shadow);
   width: 440px;
-  margin-left: 1.25rem;
-  margin-top: -1.25rem;
+  margin-left: 1rem;
+  margin-top: -1rem;
   position: relative;
-  z-index: 1000;
+  z-index: 5;
   @media (min-width: 961px) {
     transform: translateY(-100%);
   }
-`;
-
-const TitleEl = styled.div`
-  font-size: 0.75rem;
-  font-weight: bold;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const G = styled.g`
@@ -98,7 +83,7 @@ export const UnivariateMap = (props: Props) => {
     mapSvgSelect.call(zoomBehaviour as any);
   }, [svgHeight, svgWidth]);
   return (
-    <El>
+    <div style={{ height: '100%', overflow: 'hidden', backgroundColor: 'var(--black-100),' }}>
       <svg
         width='100%'
         height='100%'
@@ -371,7 +356,7 @@ export const UnivariateMap = (props: Props) => {
         </g>
       </svg>
       <LegendEl>
-        <TitleEl>{xIndicatorMetaData.IndicatorLabelTable}</TitleEl>
+        <h6 className='undp-typography'>{xIndicatorMetaData.IndicatorLabelTable}</h6>
         <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {
@@ -451,6 +436,6 @@ export const UnivariateMap = (props: Props) => {
       {
         projectHoverData ? <ProjectTooltip data={projectHoverData} /> : null
       }
-    </El>
+    </div>
   );
 };
