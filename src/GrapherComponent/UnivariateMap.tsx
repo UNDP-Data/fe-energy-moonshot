@@ -61,10 +61,10 @@ export const UnivariateMap = (props: Props) => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const queryParams = new URLSearchParams(window.location.search);
   const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960 ? 1280 : 960;
-  const svgHeight = 678;
+  const svgHeight = queryParams.get('showSettings') === 'false' && window.innerWidth > 960 ? 640 : 530;
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
-  const projection = geoMercator().rotate([0, 0]).scale(135).translate([470, 410]);
+  const projection = geoMercator().rotate([0, 0]).scale(154).translate([475, 300]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
   const valueArray = xIndicatorMetaData.BinningRangeLarge;
   const colorArray = COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
@@ -121,7 +121,7 @@ export const UnivariateMap = (props: Props) => {
                         key={j}
                         d={masterPath}
                         stroke='#999'
-                        strokeWidth={0.25}
+                        strokeWidth={1 / zoomLevel}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -137,7 +137,7 @@ export const UnivariateMap = (props: Props) => {
                         key={j}
                         d={path}
                         stroke='#999'
-                        strokeWidth={0.25}
+                        strokeWidth={1 / zoomLevel}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -219,7 +219,7 @@ export const UnivariateMap = (props: Props) => {
                             key={j}
                             d={masterPath}
                             stroke='#999'
-                            strokeWidth={0.25}
+                            strokeWidth={1 / zoomLevel}
                             fill={color}
                           />
                         );
@@ -235,7 +235,7 @@ export const UnivariateMap = (props: Props) => {
                             key={j}
                             d={path}
                             stroke='#999'
-                            strokeWidth={0.25}
+                            strokeWidth={1 / zoomLevel}
                             fill={color}
                           />
                         );
@@ -270,7 +270,7 @@ export const UnivariateMap = (props: Props) => {
                           d={masterPath}
                           stroke='#212121'
                           opacity={1}
-                          strokeWidth={1}
+                          strokeWidth={1.5 / zoomLevel}
                           fillOpacity={0}
                           fill={COLOR_SCALES.Null}
                         />
@@ -288,7 +288,7 @@ export const UnivariateMap = (props: Props) => {
                           d={path}
                           stroke='#212121'
                           opacity={1}
-                          strokeWidth={1}
+                          strokeWidth={1.5 / zoomLevel}
                           fillOpacity={0}
                           fill='none'
                         />
@@ -344,7 +344,7 @@ export const UnivariateMap = (props: Props) => {
                     key={i}
                     cx={point[0]}
                     cy={point[1]}
-                    r={4 / zoomLevel < 1 ? 1 : 4 / zoomLevel}
+                    r={5 / zoomLevel}
                     fill='#FFF'
                     stroke='#006EB5'
                     strokeWidth={0.7 / zoomLevel}

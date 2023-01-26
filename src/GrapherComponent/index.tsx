@@ -76,11 +76,7 @@ export const GrapherComponent = (props: Props) => {
   const mapData = calculateCountryTotals();
   return (
     <>
-      <h3 className='undp-typography bold margin-bottom-02' style={{ color: 'var(--blue-600)' }}>Energy-Related Portfolio</h3>
-      <h5 className='undp-typography margin-bottom-05'>
-        Explore Data from Active Projects
-        {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
-      </h5>
+      {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
       <Settings
         regions={regions}
       />

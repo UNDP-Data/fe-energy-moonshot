@@ -102,7 +102,7 @@ export const Cards = (props: Props) => {
             <h3>
               {cardData.emissionsReduced === undefined ? 'N/A' : formatData(cardData.emissionsReduced * 0.21739)}
             </h3>
-            <p>cars taken off the road for an year**</p>
+            <p>cars taken off the road for a year**</p>
           </MetricDiv>
           <EqualSignDiv>or</EqualSignDiv>
           <MetricDiv>
