@@ -20,9 +20,9 @@ const TooltipEl = styled.div<TooltipElProps>`
   background-color: var(--gray-300);
   padding: var(--spacing-05);
   word-wrap: break-word;
+  width:${(props) => (props.horizontalAlignment === 'right' ? 'auto' : (props.x < 200 ? `${props.x - 60}px` : '200px'))};
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
-  max-width: 15rem;
   transform: ${(props) => `translate(${props.horizontalAlignment === 'left' ? '-100%' : '0%'},${props.verticalAlignment === 'top' ? '-100%' : '0%'})`};
 `;
 

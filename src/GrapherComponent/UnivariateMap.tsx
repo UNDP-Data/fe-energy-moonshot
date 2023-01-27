@@ -121,7 +121,7 @@ export const UnivariateMap = (props: Props) => {
                         key={j}
                         d={masterPath}
                         stroke='#999'
-                        strokeWidth={1 / zoomLevel}
+                        strokeWidth={0.2 / zoomLevel}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -137,7 +137,7 @@ export const UnivariateMap = (props: Props) => {
                         key={j}
                         d={path}
                         stroke='#999'
-                        strokeWidth={1 / zoomLevel}
+                        strokeWidth={0.2 / zoomLevel}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -219,7 +219,7 @@ export const UnivariateMap = (props: Props) => {
                             key={j}
                             d={masterPath}
                             stroke='#999'
-                            strokeWidth={1 / zoomLevel}
+                            strokeWidth={0.2 / zoomLevel}
                             fill={color}
                           />
                         );
@@ -235,7 +235,7 @@ export const UnivariateMap = (props: Props) => {
                             key={j}
                             d={path}
                             stroke='#999'
-                            strokeWidth={1 / zoomLevel}
+                            strokeWidth={0.2 / zoomLevel}
                             fill={color}
                           />
                         );
@@ -344,7 +344,7 @@ export const UnivariateMap = (props: Props) => {
                     key={i}
                     cx={point[0]}
                     cy={point[1]}
-                    r={5 / zoomLevel}
+                    r={(zoomLevel < 3) ? 3 / zoomLevel : 4 / zoomLevel}
                     fill='#FFF'
                     stroke='#006EB5'
                     strokeWidth={0.7 / zoomLevel}
