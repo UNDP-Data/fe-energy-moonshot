@@ -13,6 +13,7 @@ import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
+import { ProjectsTable } from './ProjectsTable';
 
 interface Props {
   data: ProjectDataType[];
@@ -44,6 +45,7 @@ export const GrapherComponent = (props: Props) => {
   } = useContext(Context) as CtxDataType;
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
+  // const queryCountry = queryParams.get('country');
   const filteredProjectData = data.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
   function calculateCountryTotals() {
     const groupedData = nest()
@@ -118,6 +120,9 @@ export const GrapherComponent = (props: Props) => {
         <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb' className='undp-style'>source here</a>
         )
       </p>
+      <ProjectsTable
+        data={projectCoordinatesData}
+      />
     </>
   );
 };

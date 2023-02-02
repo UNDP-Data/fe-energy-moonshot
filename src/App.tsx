@@ -110,6 +110,8 @@ const App = () => {
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
       .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
+        // eslint-disable-next-line no-console
+        // console.log(indicatorMetaData);
         const projectCoordinateDataWithTaxonomy = projectCoordinates.map((d) => {
           const indx = projectData.findIndex((el) => el.project_id === d.project_id);
           const taxonomy = indx !== -1 ? projectData[indx].taxonomy_level3 : undefined;
