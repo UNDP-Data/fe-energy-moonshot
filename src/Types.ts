@@ -114,4 +114,21 @@ export interface CtxDataType {
   updateSelectedTaxonomy: (_d: string) => void;
 }
 
+export interface CountryIndicatorMetaDataType {
+  Indicator: string;
+  IndicatorLabelTable: string;
+  IndicatorDescription: string;
+  Unit: string;
+  FileNumber: number;
+}
+export interface CountryIndicatorDataType {
+  indicator: string;
+  value?: number;
+  year: number;
+}
+export interface CountryData{
+  country: string;
+  values: object[];
+}
+
 export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';

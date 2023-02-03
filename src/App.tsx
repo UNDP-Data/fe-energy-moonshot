@@ -3,10 +3,10 @@ import {
   useState, useEffect, useReducer, useRef,
 } from 'react';
 import styled from 'styled-components';
-import { json } from 'd3-request';
+import { json, csv } from 'd3-request';
 import { queue } from 'd3-queue';
 import {
-  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, ROOT_DIR,
+  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ROOT_DIR,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -30,6 +30,7 @@ const App = () => {
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
+  const [allCountriesData, setAllCountriesData] = useState<CountryData[] | undefined>(undefined);
 
   const queryParams = new URLSearchParams(window.location.search);
   const initialState = {
@@ -101,17 +102,23 @@ const App = () => {
       payload: selectedTaxonomy,
     });
   };
-
+  function removeDuplicates(arr: any) {
+    return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
+  }
   useEffect(() => {
     queue()
       .defer(json, `${ROOT_DIR}/data/projects.json`)
       .defer(json, `${ROOT_DIR}/data/indicatorMetaData.json`)
       .defer(json, `${ROOT_DIR}/data/projectCoordinates.json`)
+      .defer(csv, `${ROOT_DIR}/data/countryIndicatorMetadata.csv`)
+      .defer(csv, `${ROOT_DIR}/data/country_level_data1.csv`)
+      .defer(csv, `${ROOT_DIR}/data/country_level_data2.csv`)
+      .defer(csv, `${ROOT_DIR}/data/country_level_data3.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
-      .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
+      .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
         // eslint-disable-next-line no-console
-        // console.log(indicatorMetaData);
+        const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3];
         const projectCoordinateDataWithTaxonomy = projectCoordinates.map((d) => {
           const indx = projectData.findIndex((el) => el.project_id === d.project_id);
           const taxonomy = indx !== -1 ? projectData[indx].taxonomy_level3 : undefined;
@@ -120,7 +127,32 @@ const App = () => {
         setFinalData(projectData);
         setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinateDataWithTaxonomy);
-        setCountryList(projectData.map((d) => d['Lead Country']));
+        // setCountryList(projectData.map((d) => d['Lead Country']));
+        setCountryList(removeDuplicates(countryLevelData1.map((d) => d.country)));
+
+        const countriesData : CountryData[] = [];
+        countryLevelData1.map((d) => d.country).forEach((country) => {
+          const values : CountryIndicatorDataType[] = [];
+          // looping through the 3 datasets
+          countryIndicatorsData.forEach((dataSet, i) => {
+            // filtering indicators related to the dataset
+            const ind = countryIndicatorMetadata.filter((d) => Number(d.FileNumber) === i + 1);
+            const data = dataSet.filter((d) => d.country === country); // filtering data for the country
+            data.forEach((countryData) => {
+              ind.forEach((indRow) => {
+                const value: CountryIndicatorDataType = { value: Number(countryData[indRow.IndicatorLabelTable].replace(',', '')), year: countryData.year, indicator: indRow.Indicator };
+                values.push(value); // adding the values to the array
+              });
+            });
+          });
+          const countryData: CountryData = { country, values };
+          countriesData.push(countryData);
+        });
+
+        // eslint-disable-next-line no-console
+        console.log('data', countriesData);
+
+        setAllCountriesData(countriesData);
         setRegionList(regions);
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
       });
@@ -128,7 +160,7 @@ const App = () => {
   return (
     <div className='undp-container'>
       {
-        indicatorsList && finalData && regionList && countryList && projectCoordinatesData && countryGroupData
+        indicatorsList && finalData && regionList && countryList && projectCoordinatesData && countryGroupData && allCountriesData
           ? (
             <>
               <Context.Provider
@@ -152,6 +184,8 @@ const App = () => {
                     projectCoordinatesData={projectCoordinatesData}
                     indicators={indicatorsList}
                     regions={regionList}
+                    countries={countryList}
+                    countriesData={allCountriesData}
                   />
                 </div>
               </Context.Provider>

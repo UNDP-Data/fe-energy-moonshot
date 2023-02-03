@@ -1,0 +1,11 @@
+Indicator,IndicatorLabelTable,IndicatorDescription,Unit,FileNumber
+electricityAccess_sharet,ElectricityAccess_sharet,Share of total population with access to electricity (%),%,1
+electricityAccess_popt,ElectricityAccess_popt,Population without access to electricity (#),,1
+electricityAccess_shareu,ElectricityAccess_shareu,Share of urban population with access to electricity (%),%,1
+electricityAccess_popu,ElectricityAccess_popu,Urban Population without access to electricity (#),,1
+electricityAccess_sharer,ElectricityAccess_sharer,Share of rural population with access to electricity (%),%,1
+electricityAccess_popr,ElectricityAccess_popr,Rural Population without access to electricity (#),,1
+cleancooking_sharet,Cleancooking_sharet,Total clean cooking access rate (%),%,2
+cleancooking_sharer,Cleancooking_sharer,Rural clean cooking access rate (%),%,2
+cleancooking_shareu,Cleancooking_shareu,Urban clean cooking access rate (%),%,2
+poverty_headcount,poverty_headcount,Poverty headcount ratio at $2.15 a day (2017 PPP) (% of population). Source: WB,%,3

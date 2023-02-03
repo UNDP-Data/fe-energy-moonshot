@@ -8,6 +8,7 @@ import {
   IndicatorMetaDataType,
   ProjectCoordinateDataType,
   RegionDataType,
+  CountryData,
 } from '../Types';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
@@ -21,6 +22,8 @@ interface Props {
   projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
   regions: RegionDataType[];
+  countries: string[],
+  countriesData: CountryData[],
 }
 
 const regionList = [
@@ -38,6 +41,8 @@ export const GrapherComponent = (props: Props) => {
     projectCoordinatesData,
     indicators,
     regions,
+    countries,
+    countriesData,
   } = props;
   const {
     selectedTaxonomy,
@@ -122,6 +127,8 @@ export const GrapherComponent = (props: Props) => {
       </p>
       <ProjectsTable
         data={projectCoordinatesData}
+        countries={countries}
+        countriesData={countriesData}
       />
     </>
   );
