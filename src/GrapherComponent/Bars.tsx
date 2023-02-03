@@ -12,7 +12,7 @@ export const Bars = (props:Props) => {
     indicator,
   } = props;
 
-  function filterIndicator(ind, location, unit) {
+  function filterIndicator(ind:string, location:string, unit:string) {
     return values.filter((d) => d.indicator === `${ind}_${unit}${location}`)[0];
   }
 

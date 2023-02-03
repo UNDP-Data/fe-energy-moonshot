@@ -123,12 +123,34 @@ export interface CountryIndicatorMetaDataType {
 }
 export interface CountryIndicatorDataType {
   indicator: string;
-  value?: number;
+  value: number;
   year: number;
 }
 export interface CountryData{
   country: string;
-  values: object[];
+  values: CountryIndicatorDataType[];
+}
+export interface ProjectLevelDataType{
+  'projectID_PIMS+': number,
+  'projectID_Atlas': number,
+  'Short Title': string,
+  'Project Description'?: string,
+  'Lead Country': string,
+  'Regional Bureau': string,
+  'Source of Funds': string,
+  VF: string,
+  taxonomy_level2?: string,
+  'Grant amount': number,
+  'target_Electricity access'?: number,
+  'target_Clean cooking'?: number,
+  'target_Energy services'?: number,
+  'target_total'?: number,
+  'results_Electricity access'?: number,
+  'results_Clean cooking'?: number,
+  'results_Energy services'?: number,
+  'results_total'?: number,
+  'investment gap'?: number,
+  'Partners': string,
 }
 
 export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';

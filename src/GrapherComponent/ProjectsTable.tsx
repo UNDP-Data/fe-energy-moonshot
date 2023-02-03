@@ -2,11 +2,12 @@ import sortBy from 'lodash.sortby';
 import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ProjectCoordinateDataType, CountryData } from '../Types';
-import { Bars } from './Bars';
+// import { ProjectLevelDataType, CountryData, CountryIndicatorDataType } from '../Types';
+import { ProjectLevelDataType, CountryData } from '../Types';
+// import { Bars } from './Bars';
 
 interface Props {
-  data: ProjectCoordinateDataType[];
+  data: ProjectLevelDataType[];
   countries: string[];
   countriesData: CountryData[];
 }
@@ -30,20 +31,23 @@ export const ProjectsTable = (props: Props) => {
   const queryParams = new URLSearchParams(window.location.search);
   const queryCountry = queryParams.get('country');
   const [selectedCountry, setSelectedCountry] = useState<string>();
-  const [tableData, setTableData] = useState<ProjectCoordinateDataType[] | undefined>(undefined);
-  const [countryDataValues, setCountryDataValues] = useState<object[]>([]);
-  const dataSorted = sortBy(data, 'country');
+  const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
+  const [countryDataValues, setCountryDataValues] = useState<object[] | undefined>(undefined);
+  //  const [countryDataValues, setCountryDataValues] = useState<object[]>([]);
+  const dataSorted = sortBy(data, 'Lead Country');
   useEffect(() => {
-    if (queryCountry)setSelectedCountry(queryCountry);
+    // if (queryCountry)setSelectedCountry(queryCountry);
+    // eslint-disable-next-line no-console
+    // console.log('selectedCountry country ', selectedCountry);
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? dataSorted : dataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
     setCountryDataValues(indicatorsByCountry);
+    setTableData(dataByCountry);
     // eslint-disable-next-line no-console
     console.log('data by country', countriesData, indicatorsByCountry);
-    setTableData(dataByCountry);
   }, [selectedCountry]);
   // eslint-disable-next-line no-console
-  console.log('selectedCountry country ', selectedCountry, countryDataValues);
+  console.log('countryDataValues', countryDataValues);
   return (
     <>
       {queryCountry ? ` for ${countries.filter((d) => d === queryCountry)[0]}` : null}
@@ -70,33 +74,7 @@ export const ProjectsTable = (props: Props) => {
           </div>
         ) : null
       }
-      {
-      selectedCountry !== undefined
-        ? (
-          <div className='stat-container flex-div margin-bottom-05'>
-            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
-              <h6 className='undp-typography'>Population with access to electricity</h6>
-              <Bars
-                values={countryDataValues}
-                indicator='electricityAccess'
-              />
-            </div>
-            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
-              <h6 className='undp-typography'>Population with access to clean cooking</h6>
-              <Bars
-                values={countryDataValues}
-                indicator='cleancooking'
-              />
-            </div>
-            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
-              <h6 className='undp-typography'>Poverty headcount ratio</h6>
-              <h2>{`${countryDataValues.filter((d) => d.indicator === 'poverty_headcount')[0].value}%`}</h2>
-              <p>{`(Year: ${countryDataValues.filter((d) => d.indicator === 'poverty_headcount')[0].year})`}</p>
-              <p>living at $2.15 a day</p>
-            </div>
-          </div>
-        ) : null
-      }
+
       {
         tableData
           ? (
@@ -107,9 +85,15 @@ export const ProjectsTable = (props: Props) => {
                     Country
                   </CellEl>
                   <CellEl width='20%' className='undp-table-head-cell'>
-                    Project short title
+                    Project title
                   </CellEl>
-                  <CellEl width='65%' className='undp-table-head-cell'>
+                  <CellEl width='35%' className='undp-table-head-cell'>
+                    Project description
+                  </CellEl>
+                  <CellEl width='20%' className='undp-table-head-cell'>
+                    Source of Funds
+                  </CellEl>
+                  <CellEl width='10%' className='undp-table-head-cell'>
                     Amount
                   </CellEl>
                 </div>
@@ -119,11 +103,17 @@ export const ProjectsTable = (props: Props) => {
                       <CellEl width='15%' className='undp-table-row-cell-small'>
                         {d['Lead Country']}
                       </CellEl>
-                      <CellEl width='60%' className='undp-table-row-cell-small'>
+                      <CellEl width='20%' className='undp-table-row-cell-small'>
                         {d['Short Title']}
                       </CellEl>
-                      <CellEl width='25%' className='undp-table-row-cell-small'>
-                        {d['Grant Amount']}
+                      <CellEl width='35%' className='undp-table-row-cell-small'>
+                        {d['Project Description']}
+                      </CellEl>
+                      <CellEl width='20%' className='undp-table-row-cell-small'>
+                        {d['Source of Funds']}
+                      </CellEl>
+                      <CellEl width='10%' className='undp-table-row-cell-small'>
+                        0
                       </CellEl>
                     </div>
                   ))

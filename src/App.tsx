@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { json, csv } from 'd3-request';
 import { queue } from 'd3-queue';
 import {
-  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ROOT_DIR,
+  ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ROOT_DIR,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -31,6 +31,7 @@ const App = () => {
   const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
   const [allCountriesData, setAllCountriesData] = useState<CountryData[] | undefined>(undefined);
+  const [projectLevelData, setProjectLevelData] = useState<ProjectLevelDataType[] | undefined>(undefined);
 
   const queryParams = new URLSearchParams(window.location.search);
   const initialState = {
@@ -114,21 +115,39 @@ const App = () => {
       .defer(csv, `${ROOT_DIR}/data/country_level_data1.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data2.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data3.csv`)
+      .defer(csv, `${ROOT_DIR}/data/project_level_data1.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
-      .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryGroupDataRaw: CountryGroupDataType[]) => {
+      .await((err: any, projectData: any[], indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], projectLevelData1: any[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
-        // eslint-disable-next-line no-console
         const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3];
         const projectCoordinateDataWithTaxonomy = projectCoordinates.map((d) => {
           const indx = projectData.findIndex((el) => el.project_id === d.project_id);
           const taxonomy = indx !== -1 ? projectData[indx].taxonomy_level3 : undefined;
           return ({ ...d, taxonomy });
         });
+        const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
+          ...d,
+          'projectID_PIMS+': +d['projectID_PIMS+'],
+          projectID_Atlas: +d.projectID_Atlas,
+          'Grant amount': Number(d['Grant amount']),
+          'target_Electricity access': +d['target_Electricity access'].replace(',', ''),
+          'target_Clean cooking': +d['target_Clean cooking'].replace(',', ''),
+          'target_Energy services': +d['target_Energy services'].replace(',', ''),
+          target_total: +d.target_total.replace(',', ''),
+          'results_Electricity access': +d['results_Electricity access'].replace(',', ''),
+          'results_Clean cooking': +d['results_Clean cooking'].replace(',', ''),
+          'results_Energy services': +d['results_Energy services'].replace(',', ''),
+          results_total: Number(d.results_total.replace(',', '')),
+          'investment gap': Number(d['investment gap'].replace(',', '')),
+        }));
         setFinalData(projectData);
         setCountryGroupData(countryGroupDataRaw);
         setProjectCoordinatesData(projectCoordinateDataWithTaxonomy);
         // setCountryList(projectData.map((d) => d['Lead Country']));
         setCountryList(removeDuplicates(countryLevelData1.map((d) => d.country)));
+        setProjectLevelData(projectLevelDataWithNumbers);
+        // eslint-disable-next-line no-console
+        console.log('projectLevelDataWithNumbers', projectLevelDataWithNumbers);
 
         const countriesData : CountryData[] = [];
         countryLevelData1.map((d) => d.country).forEach((country) => {
@@ -160,7 +179,7 @@ const App = () => {
   return (
     <div className='undp-container'>
       {
-        indicatorsList && finalData && regionList && countryList && projectCoordinatesData && countryGroupData && allCountriesData
+        indicatorsList && finalData && regionList && countryList && projectCoordinatesData && countryGroupData && allCountriesData && projectLevelData
           ? (
             <>
               <Context.Provider
@@ -186,6 +205,7 @@ const App = () => {
                     regions={regionList}
                     countries={countryList}
                     countriesData={allCountriesData}
+                    projectLevelData={projectLevelData}
                   />
                 </div>
               </Context.Provider>
