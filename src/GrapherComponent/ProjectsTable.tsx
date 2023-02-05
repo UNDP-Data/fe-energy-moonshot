@@ -2,9 +2,9 @@ import sortBy from 'lodash.sortby';
 import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import { ProjectLevelDataType, CountryData, CountryIndicatorDataType } from '../Types';
-import { ProjectLevelDataType, CountryData } from '../Types';
-// import { Bars } from './Bars';
+import { ProjectLevelDataType, CountryData, CountryIndicatorDataType } from '../Types';
+// import { ProjectLevelDataType, CountryData } from '../Types';
+import { Bars } from './Bars';
 
 interface Props {
   data: ProjectLevelDataType[];
@@ -32,7 +32,7 @@ export const ProjectsTable = (props: Props) => {
   const queryCountry = queryParams.get('country');
   const [selectedCountry, setSelectedCountry] = useState<string>();
   const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
-  const [countryDataValues, setCountryDataValues] = useState<object[] | undefined>(undefined);
+  const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
   //  const [countryDataValues, setCountryDataValues] = useState<object[]>([]);
   const dataSorted = sortBy(data, 'Lead Country');
   useEffect(() => {
@@ -74,7 +74,32 @@ export const ProjectsTable = (props: Props) => {
           </div>
         ) : null
       }
-
+      {
+      selectedCountry !== undefined && countryDataValues
+        ? (
+          <div className='stat-container flex-div margin-bottom-05'>
+            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+              <h6 className='undp-typography'>Population with access to electricity</h6>
+              <Bars
+                values={countryDataValues}
+                indicator='electricityAccess'
+              />
+            </div>
+            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+              <h6 className='undp-typography'>Population with access to clean cooking</h6>
+              <Bars
+                values={countryDataValues}
+                indicator='cleancooking'
+              />
+            </div>
+            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+              <h6 className='undp-typography'>Poverty headcount ratio</h6>
+              <h2>10%</h2>
+              <p>living at $2.15 a day</p>
+            </div>
+          </div>
+        ) : null
+      }
       {
         tableData
           ? (
