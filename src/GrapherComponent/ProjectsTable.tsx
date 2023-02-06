@@ -75,7 +75,7 @@ export const ProjectsTable = (props: Props) => {
         ) : null
       }
       {
-      selectedCountry !== undefined && countryDataValues
+      selectedCountry !== undefined && countryDataValues.length > 0
         ? (
           <div className='stat-container flex-div margin-bottom-05'>
             <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>

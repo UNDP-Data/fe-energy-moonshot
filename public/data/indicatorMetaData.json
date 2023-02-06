@@ -1,9 +1,9 @@
 [
     {
-      "Indicator": "People directly benefiting (achieved + expected)",
-      "IndicatorLabelTable": "People directly benefiting (achieved + expected)",
+      "Indicator": "People directly benefiting",
+      "IndicatorLabelTable": "target_total",
       "IndicatorDescription": "The total number of people directly benefiting from these projects",
-      "DataKey": "people directly benefiting",
+      "DataKey": "target_total",
       "BinningRangeLarge": [
         100,
         500,
@@ -15,86 +15,16 @@
       ]
     },
     {
-      "Indicator": "Tonnes of CO2 emissions reduced (achieved + expected)",
-      "IndicatorLabelTable": "Tonnes of CO2 emissions reduced (achieved + expected)",
-      "IndicatorDescription": "The total amount of CO2 emissions (in tonnes) reduced from these projects",
-      "DataKey": "tonnes of CO2-eq emissions avoided or reduced",
-      "BinningRangeLarge": [
-        10000,
-        50000,
-        100000,
-        500000,
-        1000000,
-        5000000,
-        10000000
-      ]
-    },
-    {
-      "Indicator": "Renewable energy capacity installed (achieved + expected)",
-      "IndicatorLabelTable": "Renewable energy capacity installed (MW) (achieved + expected)",
-      "IndicatorDescription": "MW of renewable energy capacity installed (achieved + expected)",
-      "DataKey": "MW of renewable or low-emission energy capacity installed or rehabilitated",
-      "BinningRangeLarge": [
-        1,
-        10,
-        100,
-        1000,
-        10000,
-        100000
-      ]
-    },
-    {
-      "Indicator": "Grant Amount (Vertical Fund)",
-      "IndicatorLabelTable": "Grant Amount, Vertical Fund (USD)",
-      "IndicatorDescription": "Grant Amount for vertical fund projects only",
-      "DataKey": "grant_amount_vertical_fund",
+      "Indicator": "Grant Amount",
+      "IndicatorLabelTable": "Grant amount",
+      "IndicatorDescription": "Grant amount",
+      "DataKey": "Grant amount",
       "BinningRangeLarge": [
         1000000,
         10000000,
         20000000,
         30000000,
         40000000
-      ]
-    },
-    {
-      "Indicator": "Expenses (Vertical Fund)",
-      "IndicatorLabelTable": "Expenses, Vertical Fund (USD)",
-      "IndicatorDescription": "Expenses from vertical fund projects only",
-      "DataKey": "expenses_vertical_fund",
-      "BinningRangeLarge": [
-        1000000,
-        5000000,
-        10000000,
-        15000000,
-        20000000,
-        250000000
-      ]
-    },
-    {
-      "Indicator": "Co-Financing (Vertical Fund)",
-      "IndicatorLabelTable": "Co-Financing, Vertical Fund (USD)",
-      "IndicatorDescription": "Co-Financing for vertical fund projects only",
-      "DataKey": "cofinancing_vertical_fund",
-      "BinningRangeLarge": [
-        10000000,
-        50000000,
-        100000000,
-        200000000,
-        300000000,
-        400000000,
-        500000000
-      ]
-    },
-    {
-      "Indicator": "Number of projects",
-      "IndicatorLabelTable": "Number of projects",
-      "IndicatorDescription": "Number of projects",
-      "DataKey": "Number of projects",
-      "BinningRangeLarge": [
-        1,
-        2,
-        3,
-        4
       ]
     }
 ]

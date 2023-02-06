@@ -4,12 +4,13 @@ import sumBy from 'lodash.sumby';
 import {
   CountryGroupDataType,
   CtxDataType,
-  ProjectDataType,
+  // ProjectDataType,
   IndicatorMetaDataType,
   ProjectCoordinateDataType,
   RegionDataType,
   CountryData,
   ProjectLevelDataType,
+  ProjectCoordsDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
@@ -18,7 +19,7 @@ import { Graph } from './Graph';
 import { ProjectsTable } from './ProjectsTable';
 
 interface Props {
-  data: ProjectDataType[];
+  // data: ProjectDataType[];
   countryGroupData: CountryGroupDataType[];
   projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
@@ -26,6 +27,7 @@ interface Props {
   countries: string[],
   countriesData: CountryData[],
   projectLevelData: ProjectLevelDataType[],
+  projectCoordsData: ProjectCoordsDataType[],
 }
 
 const regionList = [
@@ -38,7 +40,7 @@ const regionList = [
 
 export const GrapherComponent = (props: Props) => {
   const {
-    data,
+    // data,
     countryGroupData,
     projectCoordinatesData,
     indicators,
@@ -46,6 +48,7 @@ export const GrapherComponent = (props: Props) => {
     countries,
     countriesData,
     projectLevelData,
+    projectCoordsData,
   } = props;
   const {
     selectedTaxonomy,
@@ -54,7 +57,7 @@ export const GrapherComponent = (props: Props) => {
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
   // const queryCountry = queryParams.get('country');
-  const filteredProjectData = data.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
+  const filteredProjectData = projectLevelData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
   function calculateCountryTotals() {
     const groupedData = nest()
       .key((d: any) => d['Lead Country'])
@@ -73,8 +76,8 @@ export const GrapherComponent = (props: Props) => {
           }
         );
       });
-      indTemp.push({ indicator: 'tree_equivalent', value: sumBy(country.values, (project: any) => project.tree_equivalent) });
-      indTemp.push({ indicator: 'car_equivalent', value: sumBy(country.values, (project: any) => project.car_equivalent) });
+      // indTemp.push({ indicator: 'tree_equivalent', value: sumBy(country.values, (project: any) => project.tree_equivalent) });
+      // indTemp.push({ indicator: 'car_equivalent', value: sumBy(country.values, (project: any) => project.car_equivalent) });
       return ({
         ...countryGroup,
         region,
@@ -82,6 +85,8 @@ export const GrapherComponent = (props: Props) => {
         indicators: indTemp,
       });
     });
+    // eslint-disable-next-line no-console
+    console.log('countryData', countryData);
     return (countryData);
   }
   const mapData = calculateCountryTotals();
@@ -109,6 +114,7 @@ export const GrapherComponent = (props: Props) => {
           data={mapData}
           projectCoordinatesData={projectCoordinatesData}
           indicators={indicators}
+          projectCoordsData={projectCoordsData}
         />
       </div>
       <p className='italics' style={{ color: 'var(--gray-500)', fontSize: '0.875rem' }}>

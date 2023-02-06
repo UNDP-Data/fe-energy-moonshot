@@ -91,10 +91,7 @@ export interface HoverDataType {
 export interface ProjectHoverDataType {
   name: string,
   donor: string,
-  timeframe: string,
-  status: string,
   grantAmount: undefined | number;
-  expenses: undefined | number;
   xPosition: number;
   yPosition: number;
 }
@@ -139,7 +136,7 @@ export interface ProjectLevelDataType{
   'Regional Bureau': string,
   'Source of Funds': string,
   VF: string,
-  taxonomy_level2?: string,
+  taxonomy_level3?: string,
   'Grant amount': number,
   'target_Electricity access'?: number,
   'target_Clean cooking'?: number,
@@ -152,5 +149,13 @@ export interface ProjectLevelDataType{
   'investment gap'?: number,
   'Partners': string,
 }
-
+export interface ProjectCoordsDataType{
+  'projectID_PIMS+': number,
+  'projectID_Atlas': number,
+  'Regional Bureau': string,
+  'Lead Country': string,
+  taxonomy_level3: string,
+  Latitude: number,
+  Longitude: number,
+}
 export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';

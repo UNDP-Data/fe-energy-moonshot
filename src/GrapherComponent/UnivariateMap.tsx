@@ -8,7 +8,7 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { scaleThreshold } from 'd3-scale';
 import {
-  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectCoordinateDataType, ProjectHoverDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectCoordinateDataType, ProjectHoverDataType, ProjectCoordsDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import World from '../Data/worldMap.json';
@@ -20,6 +20,7 @@ interface Props {
   data: DataType[];
   projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
+  projectCoordsData: ProjectCoordsDataType[];
 }
 
 const LegendEl = styled.div`
@@ -45,6 +46,7 @@ export const UnivariateMap = (props: Props) => {
     data,
     projectCoordinatesData,
     indicators,
+    projectCoordsData,
   } = props;
   const {
     xAxisIndicator,
@@ -65,6 +67,10 @@ export const UnivariateMap = (props: Props) => {
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
   const projection = geoMercator().rotate([0, 0]).scale(154).translate([475, 300]);
+  // eslint-disable-next-line no-console
+  console.log('indicators', indicators, xAxisIndicator);
+  // eslint-disable-next-line no-console
+  console.log('projectLevelDataWithNumbers', projectCoordinatesData);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
   const valueArray = xIndicatorMetaData.BinningRangeLarge;
   const colorArray = COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
@@ -170,12 +176,12 @@ export const UnivariateMap = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d['Group 1'],
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting')[0].value,
-                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
-                        grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
-                        expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
-                        coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
-                        numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
+                        // emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
+                        grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
+                        // expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
+                        // coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
+                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
@@ -186,12 +192,12 @@ export const UnivariateMap = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d['Group 1'],
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'people directly benefiting')[0].value,
-                        emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
-                        grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'grant_amount_vertical_fund')[0].value,
-                        expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
-                        coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
-                        numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
+                        // emissionsReduced: d.indicators.filter((ind) => ind.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value,
+                        grantAmountVerticalFund: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
+                        // expensesVerticalFund: d.indicators.filter((ind) => ind.indicator === 'expenses_vertical_fund')[0].value,
+                        // coFinancingVerticalFund: d.indicators.filter((ind) => ind.indicator === 'cofinancing_vertical_fund')[0].value,
+                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
@@ -300,37 +306,31 @@ export const UnivariateMap = (props: Props) => {
           }
           {
             showProjectLocations
-            && projectCoordinatesData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy === selectedTaxonomy).map((d, i: number) => {
-              const regionOpacity = selectedRegions === 'All' || selectedRegions === d.Region;
+            && projectCoordsData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy).map((d, i: number) => {
+              const regionOpacity = selectedRegions === 'All' || selectedRegions === d['Regional Bureau'];
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Lead Country'];
-              const projectOpacity = selectedProjects === '' || selectedProjects === d.project_id.toString();
+              const projectOpacity = selectedProjects === '' || selectedProjects === d['projectID_PIMS+'].toString();
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
                   opacity={projectOpacity && countryOpacity && regionOpacity ? 0.9 : 0.01}
                   onMouseEnter={(event) => {
-                    updateSelectedProjects(d.project_id.toString());
+                    updateSelectedProjects(d['projectID_PIMS+'].toString());
                     setProjectHoverData({
                       name: d['Short Title'],
-                      donor: d['Sources of Funds'],
-                      timeframe: d['Programme Period'],
-                      status: d.status,
-                      grantAmount: d['Grant Amount'],
-                      expenses: d['GL Expenses'],
+                      donor: d['Source of Funds'],
+                      grantAmount: d['Grant amount'],
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });
                   }}
                   onMouseMove={(event) => {
-                    updateSelectedProjects(d.project_id.toString());
+                    updateSelectedProjects(d['projectID_PIMS+'].toString());
                     setProjectHoverData({
                       name: d['Short Title'],
                       donor: d['Sources of Funds'],
-                      timeframe: d['Programme Period'],
-                      status: d.status,
-                      grantAmount: d['Grant Amount'],
-                      expenses: d['GL Expenses'],
+                      grantAmount: d['Grant amount'],
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });
