@@ -63,13 +63,6 @@ export const Tooltip = (props: Props) => {
             { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
           </span>
         </p>
-        <p className='undp-typography margin-bottom-01'>
-          CO2 emissions reduced (tonnes) (achieved + expected):
-          {' '}
-          <span className='bold'>
-            {data.emissionsReduced === undefined ? 'N/A' : formatData(data.emissionsReduced)}
-          </span>
-        </p>
       </div>
       <div className='margin-bottom-05'>
         <h6 className='undp-typography margin-bottom-01'>Vertical Fund Projects:</h6>
@@ -77,21 +70,7 @@ export const Tooltip = (props: Props) => {
           Grant Amount (USD):
           {' '}
           <span className='bold'>
-            {data.grantAmountVerticalFund === undefined ? 'N/A' : formatData(data.grantAmountVerticalFund)}
-          </span>
-        </p>
-        <p className='undp-typography margin-bottom-01'>
-          Expenses (USD):
-          {' '}
-          <span className='bold'>
-            {data.expensesVerticalFund === undefined ? 'N/A' : formatData(data.expensesVerticalFund)}
-          </span>
-        </p>
-        <p className='undp-typography margin-bottom-01'>
-          Co-Financing (USD):
-          {' '}
-          <span className='bold'>
-            {data.coFinancingVerticalFund === undefined ? 'N/A' : formatData(data.coFinancingVerticalFund)}
+            {data.grantAmount === undefined ? 'N/A' : formatData(data.grantAmount)}
           </span>
         </p>
       </div>

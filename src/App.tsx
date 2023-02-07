@@ -7,8 +7,7 @@ import { json, csv } from 'd3-request';
 import { queue } from 'd3-queue';
 import { Tabs } from 'antd';
 import {
-  CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
-  // ProjectDataType, CountryGroupDataType, IndicatorMetaDataType, ProjectCoordinateDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ROOT_DIR,
+  CountryGroupDataType, IndicatorMetaDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
 import Reducer from './Context/Reducer';
@@ -25,10 +24,8 @@ const VizAreaEl = styled.div`
 `;
 
 const App = () => {
-  // const [finalData, setFinalData] = useState<ProjectDataType[] | undefined>(undefined);
   const containerEl = useRef(null);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
-  const [projectCoordinatesData, setProjectCoordinatesData] = useState<ProjectCoordinateDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
@@ -111,9 +108,7 @@ const App = () => {
   }
   useEffect(() => {
     queue()
-      // .defer(json, `${ROOT_DIR}/data/projects.json`)
       .defer(json, `${ROOT_DIR}/data/indicatorMetaData.json`)
-      .defer(json, `${ROOT_DIR}/data/projectCoordinates.json`)
       .defer(csv, `${ROOT_DIR}/data/countryIndicatorMetadata.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data1.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data2.csv`)
@@ -121,47 +116,43 @@ const App = () => {
       .defer(csv, `${ROOT_DIR}/data/project_level_data1.csv`)
       .defer(csv, `${ROOT_DIR}/data/project_level_data2.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
-      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], projectCoordinates: ProjectCoordinateDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
+      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
         const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3];
-        /* const projectCoordinateDataWithTaxonomy = projectCoordinates.map((d) => {
-          const indx = projectData.findIndex((el) => el.project_id === d.project_id);
-          const taxonomy = indx !== -1 ? projectData[indx].taxonomy_level3 : undefined;
-          return ({ ...d, taxonomy });
-        }); */
         const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
           ...d,
-          'projectID_PIMS+': +d['projectID_PIMS+'],
-          projectID_Atlas: +d.projectID_Atlas,
-          'Grant amount': Number(d['Grant amount']), // .replace(',', ''),
-          'target_Electricity access': +d['target_Electricity access'].replace(',', ''),
-          'target_Clean cooking': +d['target_Clean cooking'].replace(',', ''),
-          'target_Energy services': +d['target_Energy services'].replace(',', ''),
-          target_total: +d.target_total.replace(',', ''),
-          'results_Electricity access': +d['results_Electricity access'].replace(',', ''),
-          'results_Clean cooking': +d['results_Clean cooking'].replace(',', ''),
-          'results_Energy services': +d['results_Energy services'].replace(',', ''),
-          results_total: Number(d.results_total.replace(',', '')),
-          'investment gap': Number(d['investment gap'].replace(',', '')),
+          'Grant amount': Number(d.Grant_amount.replaceAll(',', '')),
+          'target_Electricity access': +d['target_Electricity access'].replaceAll(',', ''),
+          'target_Clean cooking': +d['target_Clean cooking'].replaceAll(',', ''),
+          'target_Energy services': +d['target_Energy services'].replaceAll(',', ''),
+          target_total: +d.target_total.replaceAll(',', ''),
+          'results_Electricity access': +d['results_Electricity access'].replaceAll(',', ''),
+          'results_Clean cooking': +d['results_Clean cooking'].replaceAll(',', ''),
+          'results_Energy services': +d['results_Energy services'].replaceAll(',', ''),
+          results_total: Number(d.results_total.replaceAll(',', '')),
         }));
-        const projectCoordsWithData = projectCoordsData.map((d) => ({
-          ...d,
-          'Regional Bureau': projectLevelData1.filter((g) => g['projectID_PIMS+'])[0]['Regional Bureau'],
-          'Lead Country': projectLevelData1.filter((g) => g['projectID_PIMS+'])[0]['Lead Country'],
-          taxonomy_level3: projectLevelData1.filter((g) => g['projectID_PIMS+'])[0].taxonomy_level3,
-        }));
-        // eslint-disable-next-line no-console
-        console.log('projectCoordsWithData+++++++++', projectCoordsWithData);
-        // setFinalData(projectData);
-        setCountryGroupData(countryGroupDataRaw);
-        setProjectCoordinatesData(projectCoordinates);
-        // setCountryList(projectData.map((d) => d['Lead Country']));
-        setCountryList(removeDuplicates(countryLevelData1.map((d) => d.country)));
         setProjectLevelData(projectLevelDataWithNumbers);
-        setProjectCoordsData(projectCoordsData);
+        // here we need to have only the projects which are in the projectLevelData
+        const projectCoordsWithData: ProjectCoordsDataType[] = [];
+        projectCoordsData.forEach((d: any) => {
+          const index = projectLevelDataWithNumbers.findIndex((el: ProjectLevelDataType) => el['projectID_PIMS+'] === d['projectID_PIMS+']);
+          if (index > 0) {
+            projectCoordsWithData.push({
+              ...d,
+              projectData: projectLevelDataWithNumbers[index],
+            });
+          }
+        });
         // eslint-disable-next-line no-console
-        console.log('projectLevelDataWithNumbers', projectLevelDataWithNumbers);
-
+        // console.log('projectCoordsWithDAta', projectCoordsWithData);
+        // this can be used later probably
+        /* const projectCoordsWithData = projectCoordsData.map((d) => ({
+          ...d,
+          projectData: projectLevelDataWithNumbers.filter((g) => g['projectID_PIMS+'] === d['projectID_PIMS+'])[0],
+        })); */
+        setProjectCoordsData(projectCoordsWithData);
+        setCountryGroupData(countryGroupDataRaw);
+        setCountryList(removeDuplicates(projectLevelDataWithNumbers.map((d) => d['Lead Country'])));
         const countriesData : CountryData[] = [];
         countryLevelData1.map((d) => d.country).forEach((country) => {
           const values : CountryIndicatorDataType[] = [];
@@ -180,9 +171,6 @@ const App = () => {
           const countryData: CountryData = { country, values };
           countriesData.push(countryData);
         });
-        // eslint-disable-next-line no-console
-        console.log('data', countriesData);
-
         setAllCountriesData(countriesData);
         setRegionList(regions);
         setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
@@ -191,7 +179,7 @@ const App = () => {
   return (
     <div className='undp-container'>
       {
-        indicatorsList && regionList && countryList && projectCoordinatesData && countryGroupData && allCountriesData && projectLevelData && projectCoords
+        indicatorsList && regionList && countryList && countryGroupData && allCountriesData && projectLevelData && projectCoords
           ? (
             <>
               <Context.Provider
@@ -209,43 +197,40 @@ const App = () => {
                   ref={containerEl}
                   className='bodyEl'
                 >
-                  <GrapherComponent
-                    // data={finalData}
-                    countryGroupData={countryGroupData}
-                    projectCoordinatesData={projectCoordinatesData}
-                    indicators={indicatorsList}
-                    regions={regionList}
-                    countries={countryList}
-                    countriesData={allCountriesData}
-                    projectLevelData={projectLevelData}
-                    projectCoordsData={projectCoords}
-                  />
+                  <div className='margin-bottom07'>
+                    <Tabs
+                      defaultActiveKey='1'
+                      className='undp-tabs'
+                      items={[
+                        {
+                          label: 'World Overview',
+                          key: '1',
+                          children: <GrapherComponent
+                            countryGroupData={countryGroupData}
+                            indicators={indicatorsList}
+                            regions={regionList}
+                            countries={countryList}
+                            countriesData={allCountriesData}
+                            projectLevelData={projectLevelData}
+                            projectCoordsData={projectCoords}
+                          />,
+                        },
+                        {
+                          label: 'Country Profiles',
+                          key: '2',
+                          children: <p>Content for Tab 2</p>,
+                        },
+                      ]}
+                    />
+                  </div>
                 </div>
               </Context.Provider>
             </>
           )
           : (
-            <div className='margin-bottom07'>
-              <Tabs
-                defaultActiveKey='1'
-                className='undp-tabs'
-                items={[
-                  {
-                    label: 'World Map',
-                    key: '1',
-                    children:
-              <VizAreaEl>
-                <div className='undp-loader' />
-              </VizAreaEl>,
-                  },
-                  {
-                    label: 'Country Profiles',
-                    key: '2',
-                    children: <p>Content for Tab 2</p>,
-                  },
-                ]}
-              />
-            </div>
+            <VizAreaEl>
+              <div className='undp-loader' />
+            </VizAreaEl>
           )
       }
     </div>

@@ -5,14 +5,13 @@ import styled from 'styled-components';
 import { Checkbox, Select } from 'antd';
 import Context from '../Context/Context';
 import {
-  CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordinateDataType, ProjectCoordsDataType,
+  CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordsDataType,
 } from '../Types';
 import { UnivariateMap } from './UnivariateMap';
 import { DEFAULT_VALUES } from '../Constants';
 
 interface Props {
   data: DataType[];
-  projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
   projectCoordsData: ProjectCoordsDataType[];
 }
@@ -54,7 +53,6 @@ const SettingEl = styled.div`
 export const Graph = (props: Props) => {
   const {
     data,
-    projectCoordinatesData,
     indicators,
     projectCoordsData,
   } = props;
@@ -96,7 +94,6 @@ export const Graph = (props: Props) => {
       </SettingEl>
       <UnivariateMap
         data={data}
-        projectCoordinatesData={projectCoordinatesData}
         indicators={indicators}
         projectCoordsData={projectCoordsData}
       />

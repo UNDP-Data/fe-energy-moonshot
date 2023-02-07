@@ -44,45 +44,11 @@ export interface IndicatorMetaDataWithYear extends IndicatorMetaDataType {
   years: number[];
 }
 
-export interface ProjectDataType {
-  'Lead Country': string,
-  'project_id': number,
-  'status': 'Completed' | 'Active'
-  'Short Title': string,
-  'Region': string,
-  'Number of projects': number,
-  grant_amount_vertical_fund?: number,
-  expenses_vertical_fund?: number,
-  cofinancing_vertical_fund?: number,
-  taxonomy_level3?: string;
-}
-
-export interface ProjectCoordinateDataType {
-  project_id: number,
-  'Short Title': string,
-  'Sources of Funds': string,
-  'Programme Period': string,
-  'Lead Country': string,
-  Region: string,
-  'Participating Countries': string,
-  Latitude: number,
-  Longitude: number,
-  Scope: 'Country' | 'Region',
-  'Grant Amount'?: number,
-  'GL Expenses'?: number,
-  'Co-Financing'?: number,
-  status: 'Completed' | 'Active',
-  taxonomy?: string;
-}
-
 export interface HoverDataType {
   country: string;
   continent: string;
   peopleDirectlyBenefiting?: number;
-  emissionsReduced?: number;
-  grantAmountVerticalFund?: number;
-  expensesVerticalFund?: number;
-  coFinancingVerticalFund?: number;
+  grantAmount?: number;
   numberProjects?: number;
   xPosition: number;
   yPosition: number;
@@ -148,14 +114,14 @@ export interface ProjectLevelDataType{
   'results_total'?: number,
   'investment gap'?: number,
   'Partners': string,
+  Source_documentation: string,
 }
 export interface ProjectCoordsDataType{
   'projectID_PIMS+': number,
   'projectID_Atlas': number,
-  'Regional Bureau': string,
-  'Lead Country': string,
-  taxonomy_level3: string,
+  projectData: ProjectLevelDataType,
   Latitude: number,
   Longitude: number,
 }
-export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
+// export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
+export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '.';

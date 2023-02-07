@@ -33,12 +33,9 @@ export const ProjectsTable = (props: Props) => {
   const [selectedCountry, setSelectedCountry] = useState<string>();
   const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
   const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
-  //  const [countryDataValues, setCountryDataValues] = useState<object[]>([]);
   const dataSorted = sortBy(data, 'Lead Country');
   useEffect(() => {
     // if (queryCountry)setSelectedCountry(queryCountry);
-    // eslint-disable-next-line no-console
-    // console.log('selectedCountry country ', selectedCountry);
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? dataSorted : dataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
     setCountryDataValues(indicatorsByCountry);
@@ -46,8 +43,6 @@ export const ProjectsTable = (props: Props) => {
     // eslint-disable-next-line no-console
     console.log('data by country', countriesData, indicatorsByCountry);
   }, [selectedCountry]);
-  // eslint-disable-next-line no-console
-  console.log('countryDataValues', countryDataValues);
   return (
     <>
       {queryCountry ? ` for ${countries.filter((d) => d === queryCountry)[0]}` : null}
@@ -106,10 +101,10 @@ export const ProjectsTable = (props: Props) => {
             <div style={{ maxHeight: '40rem', borderBottom: '1px solid var(--gray-400)' }} className='undp-scrollbar'>
               <div style={{ width: '100%' }}>
                 <div className='undp-table-head-small undp-table-head-sticky' style={{ minWidth: '67.5rem' }}>
-                  <CellEl width='15%' className='undp-table-head-cell undp-sticky-head-column'>
+                  <CellEl width='10%' className='undp-table-head-cell undp-sticky-head-column'>
                     Country
                   </CellEl>
-                  <CellEl width='20%' className='undp-table-head-cell'>
+                  <CellEl width='15%' className='undp-table-head-cell'>
                     Project title
                   </CellEl>
                   <CellEl width='35%' className='undp-table-head-cell'>
@@ -121,14 +116,17 @@ export const ProjectsTable = (props: Props) => {
                   <CellEl width='10%' className='undp-table-head-cell'>
                     Amount
                   </CellEl>
+                  <CellEl width='10%' className='undp-table-head-cell'>
+                    Source
+                  </CellEl>
                 </div>
                 {
                   tableData.map((d, i) => (
                     <div key={i} className='undp-table-row' style={{ minWidth: '67.5rem' }}>
-                      <CellEl width='15%' className='undp-table-row-cell-small'>
+                      <CellEl width='10%' className='undp-table-row-cell-small'>
                         {d['Lead Country']}
                       </CellEl>
-                      <CellEl width='20%' className='undp-table-row-cell-small'>
+                      <CellEl width='15%' className='undp-table-row-cell-small'>
                         {d['Short Title']}
                       </CellEl>
                       <CellEl width='35%' className='undp-table-row-cell-small'>
@@ -138,7 +136,10 @@ export const ProjectsTable = (props: Props) => {
                         {d['Source of Funds']}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small'>
-                        0
+                        {d['Grant amount']}
+                      </CellEl>
+                      <CellEl width='10%' className='undp-table-row-cell-small'>
+                        <a href={d.Source_documentation} target='_blank' rel='noreferrer'>{d.Source_documentation}</a>
                       </CellEl>
                     </div>
                   ))

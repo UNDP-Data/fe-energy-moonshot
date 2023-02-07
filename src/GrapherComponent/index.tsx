@@ -4,9 +4,7 @@ import sumBy from 'lodash.sumby';
 import {
   CountryGroupDataType,
   CtxDataType,
-  // ProjectDataType,
   IndicatorMetaDataType,
-  ProjectCoordinateDataType,
   RegionDataType,
   CountryData,
   ProjectLevelDataType,
@@ -19,9 +17,7 @@ import { Graph } from './Graph';
 import { ProjectsTable } from './ProjectsTable';
 
 interface Props {
-  // data: ProjectDataType[];
   countryGroupData: CountryGroupDataType[];
-  projectCoordinatesData: ProjectCoordinateDataType[];
   indicators: IndicatorMetaDataType[];
   regions: RegionDataType[];
   countries: string[],
@@ -40,9 +36,7 @@ const regionList = [
 
 export const GrapherComponent = (props: Props) => {
   const {
-    // data,
     countryGroupData,
-    projectCoordinatesData,
     indicators,
     regions,
     countries,
@@ -65,7 +59,7 @@ export const GrapherComponent = (props: Props) => {
 
     const countryData = groupedData.map((country) => {
       const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
-      const region = country.values[0].Region;
+      const region = country.values[0]['Regional Bureau'];
       const indTemp = indicators.map((indicator) => {
         const indicatorName = indicator.DataKey;
         const value = sumBy(country.values, (project:any) => project[indicatorName]);
@@ -76,8 +70,6 @@ export const GrapherComponent = (props: Props) => {
           }
         );
       });
-      // indTemp.push({ indicator: 'tree_equivalent', value: sumBy(country.values, (project: any) => project.tree_equivalent) });
-      // indTemp.push({ indicator: 'car_equivalent', value: sumBy(country.values, (project: any) => project.car_equivalent) });
       return ({
         ...countryGroup,
         region,
@@ -85,8 +77,6 @@ export const GrapherComponent = (props: Props) => {
         indicators: indTemp,
       });
     });
-    // eslint-disable-next-line no-console
-    console.log('countryData', countryData);
     return (countryData);
   }
   const mapData = calculateCountryTotals();
@@ -112,7 +102,6 @@ export const GrapherComponent = (props: Props) => {
       <div style={{ backgroundColor: 'var(--gray-200)' }}>
         <Graph
           data={mapData}
-          projectCoordinatesData={projectCoordinatesData}
           indicators={indicators}
           projectCoordsData={projectCoordsData}
         />
