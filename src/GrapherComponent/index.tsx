@@ -89,16 +89,6 @@ export const GrapherComponent = (props: Props) => {
       <Cards
         data={mapData}
       />
-      <div className='flex-div margin-bottom-03'>
-        <div className='flex-div'>
-          <p className='label'>Selected Project Taxonomy</p>
-          <div className='undp-chip undp-chip-large'>{selectedTaxonomy}</div>
-        </div>
-        <div className='flex-div'>
-          <p className='label'>Selected Bureau</p>
-          <div className='undp-chip undp-chip-large'>{selectedRegions}</div>
-        </div>
-      </div>
       <div style={{ backgroundColor: 'var(--gray-200)' }}>
         <Graph
           data={mapData}
