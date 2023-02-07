@@ -68,7 +68,7 @@ export const UnivariateMap = (props: Props) => {
   const mapG = useRef<SVGGElement>(null);
   const projection = geoMercator().rotate([0, 0]).scale(154).translate([475, 300]);
   // eslint-disable-next-line no-console
-  console.log('indicators', indicators, xAxisIndicator);
+  console.log('data', indicators, xAxisIndicator);
   // eslint-disable-next-line no-console
   console.log('projectLevelDataWithNumbers', projectCoordinatesData);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];

@@ -50,20 +50,6 @@ export const ProjectTooltip = (props: Props) => {
             {data.donor === undefined ? 'N/A' : data.donor}
           </span>
         </p>
-        <p className='undp-typography margin-bottom-01'>
-          Timeframe:
-          {' '}
-          <span className='bold'>
-            {data.timeframe === undefined ? 'N/A' : data.timeframe}
-          </span>
-        </p>
-        <p className='undp-typography margin-bottom-01'>
-          Status:
-          {' '}
-          <span className='bold'>
-            {data.status === undefined ? 'N/A' : data.status}
-          </span>
-        </p>
       </div>
       <div className='margin-bottom-05'>
         <p className='undp-typography margin-bottom-01'>
@@ -71,13 +57,6 @@ export const ProjectTooltip = (props: Props) => {
           {' '}
           <span className='bold'>
             {data.grantAmount === undefined ? 'N/A' : formatData(data.grantAmount)}
-          </span>
-        </p>
-        <p className='undp-typography margin-bottom-01'>
-          Expenses (USD):
-          {' '}
-          <span className='bold'>
-            {data.expenses === undefined ? 'N/A' : formatData(data.expenses)}
           </span>
         </p>
       </div>

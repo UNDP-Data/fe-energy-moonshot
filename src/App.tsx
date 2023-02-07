@@ -133,7 +133,7 @@ const App = () => {
           ...d,
           'projectID_PIMS+': +d['projectID_PIMS+'],
           projectID_Atlas: +d.projectID_Atlas,
-          'Grant amount': Number(d['Grant amount']), // .replace(',', '')),
+          'Grant amount': Number(d['Grant amount']), // .replace(',', ''),
           'target_Electricity access': +d['target_Electricity access'].replace(',', ''),
           'target_Clean cooking': +d['target_Clean cooking'].replace(',', ''),
           'target_Energy services': +d['target_Energy services'].replace(',', ''),
@@ -150,9 +150,11 @@ const App = () => {
           'Lead Country': projectLevelData1.filter((g) => g['projectID_PIMS+'])[0]['Lead Country'],
           taxonomy_level3: projectLevelData1.filter((g) => g['projectID_PIMS+'])[0].taxonomy_level3,
         }));
+        // eslint-disable-next-line no-console
+        console.log('projectCoordsWithData+++++++++', projectCoordsWithData);
         // setFinalData(projectData);
         setCountryGroupData(countryGroupDataRaw);
-        setProjectCoordinatesData(projectCoordsWithData);
+        setProjectCoordinatesData(projectCoordinates);
         // setCountryList(projectData.map((d) => d['Lead Country']));
         setCountryList(removeDuplicates(countryLevelData1.map((d) => d.country)));
         setProjectLevelData(projectLevelDataWithNumbers);
@@ -189,7 +191,7 @@ const App = () => {
   return (
     <div className='undp-container'>
       {
-        indicatorsList && regionList && countryList && projectCoordinatesData && countryGroupData && allCountriesData && projectLevelData
+        indicatorsList && regionList && countryList && projectCoordinatesData && countryGroupData && allCountriesData && projectLevelData && projectCoords
           ? (
             <>
               <Context.Provider
