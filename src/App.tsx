@@ -10,6 +10,7 @@ import {
   CountryGroupDataType, IndicatorMetaDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
+import { ProjectsTable } from './GrapherComponent/ProjectsTable';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
@@ -218,7 +219,11 @@ const App = () => {
                         {
                           label: 'Country Profiles',
                           key: '2',
-                          children: <p>Content for Tab 2</p>,
+                          children: <ProjectsTable
+                            data={projectLevelData}
+                            countries={countryList}
+                            countriesData={allCountriesData}
+                          />,
                         },
                       ]}
                     />

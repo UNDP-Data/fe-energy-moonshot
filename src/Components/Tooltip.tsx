@@ -55,9 +55,9 @@ export const Tooltip = (props: Props) => {
           </span>
         </h5>
       </div>
-      <div className='margin-bottom-07'>
+      <div className='margin-bottom-05'>
         <p className='undp-typography margin-bottom-01'>
-          People directly benefiting (achieved + expected)
+          People directly benefiting:
           {' '}
           <span className='bold'>
             { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
@@ -65,7 +65,6 @@ export const Tooltip = (props: Props) => {
         </p>
       </div>
       <div className='margin-bottom-05'>
-        <h6 className='undp-typography margin-bottom-01'>Vertical Fund Projects:</h6>
         <p className='undp-typography margin-bottom-01'>
           Grant Amount (USD):
           {' '}

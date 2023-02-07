@@ -2,6 +2,7 @@ import sortBy from 'lodash.sortby';
 import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { format } from 'd3-format';
 import { ProjectLevelDataType, CountryData, CountryIndicatorDataType } from '../Types';
 // import { ProjectLevelDataType, CountryData } from '../Types';
 import { Bars } from './Bars';
@@ -51,6 +52,7 @@ export const ProjectsTable = (props: Props) => {
         ? (
           <div className='flex-div flex-space-between margin-bottom-07'>
             <div style={{ width: `${!queryCountry ? 'calc(50% - 0.5rem)' : '100%'}` }}>
+              <h2>This section is being designed (see Figma page)</h2>
               <p className='label'>Select a Country </p>
               <Select
                 className='undp-select'
@@ -101,20 +103,20 @@ export const ProjectsTable = (props: Props) => {
             <div style={{ maxHeight: '40rem', borderBottom: '1px solid var(--gray-400)' }} className='undp-scrollbar'>
               <div style={{ width: '100%' }}>
                 <div className='undp-table-head-small undp-table-head-sticky' style={{ minWidth: '67.5rem' }}>
-                  <CellEl width='10%' className='undp-table-head-cell undp-sticky-head-column'>
+                  <CellEl width='8%' className='undp-table-head-cell undp-sticky-head-column'>
                     Country
                   </CellEl>
-                  <CellEl width='15%' className='undp-table-head-cell'>
+                  <CellEl width='12%' className='undp-table-head-cell'>
                     Project title
                   </CellEl>
-                  <CellEl width='35%' className='undp-table-head-cell'>
+                  <CellEl width='40%' className='undp-table-head-cell'>
                     Project description
                   </CellEl>
                   <CellEl width='20%' className='undp-table-head-cell'>
                     Source of Funds
                   </CellEl>
                   <CellEl width='10%' className='undp-table-head-cell'>
-                    Amount
+                    Grant amount (USD)
                   </CellEl>
                   <CellEl width='10%' className='undp-table-head-cell'>
                     Source
@@ -123,20 +125,20 @@ export const ProjectsTable = (props: Props) => {
                 {
                   tableData.map((d, i) => (
                     <div key={i} className='undp-table-row' style={{ minWidth: '67.5rem' }}>
-                      <CellEl width='10%' className='undp-table-row-cell-small'>
+                      <CellEl width='8%' className='undp-table-row-cell-small'>
                         {d['Lead Country']}
                       </CellEl>
-                      <CellEl width='15%' className='undp-table-row-cell-small'>
+                      <CellEl width='12%' className='undp-table-row-cell-small'>
                         {d['Short Title']}
                       </CellEl>
-                      <CellEl width='35%' className='undp-table-row-cell-small'>
+                      <CellEl width='40%' className='undp-table-row-cell-small'>
                         {d['Project Description']}
                       </CellEl>
                       <CellEl width='20%' className='undp-table-row-cell-small'>
                         {d['Source of Funds']}
                       </CellEl>
-                      <CellEl width='10%' className='undp-table-row-cell-small'>
-                        {d['Grant amount']}
+                      <CellEl width='10%' className='undp-table-row-cell-small' style={{ whiteSpace: 'nowrap' }}>
+                        {format(',')(parseFloat(d['Grant amount'].toFixed(0))).replaceAll(',', ' ')}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small'>
                         <a href={d.Source_documentation} target='_blank' rel='noreferrer'>{d.Source_documentation}</a>

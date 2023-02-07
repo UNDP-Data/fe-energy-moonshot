@@ -103,7 +103,7 @@ export interface ProjectLevelDataType{
   'Source of Funds': string,
   VF: string,
   taxonomy_level3?: string,
-  'Grant amount'?: number,
+  'Grant amount': number,
   'target_Electricity access'?: number,
   'target_Clean cooking'?: number,
   'target_Energy services'?: number,

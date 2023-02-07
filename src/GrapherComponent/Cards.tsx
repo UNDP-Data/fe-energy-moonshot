@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-// import styled from 'styled-components';
 import sumBy from 'lodash.sumby';
 import { format } from 'd3-format';
 import {
@@ -49,7 +48,7 @@ export const Cards = (props: Props) => {
         </div>
         <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
           <h3>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
-          <p>People directly benefiting (achieved + expected)</p>
+          <p>People directly benefiting</p>
         </div>
         <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
           <h3>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</h3>

@@ -6,7 +6,6 @@ import {
   CtxDataType,
   IndicatorMetaDataType,
   RegionDataType,
-  CountryData,
   ProjectLevelDataType,
   ProjectCoordsDataType,
 } from '../Types';
@@ -14,14 +13,12 @@ import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
-import { ProjectsTable } from './ProjectsTable';
+// import { ProjectsTable } from './ProjectsTable';
 
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
   regions: RegionDataType[];
-  countries: string[],
-  countriesData: CountryData[],
   projectLevelData: ProjectLevelDataType[],
   projectCoordsData: ProjectCoordsDataType[],
 }
@@ -39,8 +36,6 @@ export const GrapherComponent = (props: Props) => {
     countryGroupData,
     indicators,
     regions,
-    countries,
-    countriesData,
     projectLevelData,
     projectCoordsData,
   } = props;
@@ -95,28 +90,6 @@ export const GrapherComponent = (props: Props) => {
           projectCoordsData={projectCoordsData}
         />
       </div>
-      <p className='italics' style={{ color: 'var(--gray-500)', fontSize: '0.875rem' }}>
-        Note: This map presents data on active projects from PIMS+. Active projects are defined as being in the approved/endorsed, hard pipeline, or under implementation stages or have a status of &lsquo;implementation.&rsquo;
-        <br />
-        * Tagging of energy resilience projects is currently being revised and it will soon be added to the taxonomy
-        <br />
-        ** For calculations of  cars taken off the road we assume a typical passenger vehicle emits about 4.6 metric tons of CO2 per year
-        {' '}
-        (
-        <a target='_black' href='https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle' className='undp-style'>source here</a>
-        )
-        <br />
-        *** For calculations of equivalent tree seedlings grown, we assume the average tree absorbs an average of 10 KGs of C02 per year for the first 20 years
-        {' '}
-        (
-        <a target='_black' href='https://onetreeplanted.org/blogs/stories/how-much-co2-does-tree-absorb' className='undp-style'>source here</a>
-        )
-      </p>
-      <ProjectsTable
-        data={projectLevelData}
-        countries={countries}
-        countriesData={countriesData}
-      />
     </>
   );
 };
