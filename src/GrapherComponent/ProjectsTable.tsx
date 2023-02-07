@@ -141,7 +141,7 @@ export const ProjectsTable = (props: Props) => {
                         {format(',')(parseFloat(d['Grant amount'].toFixed(0))).replaceAll(',', ' ')}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small'>
-                        <a href={d.Source_documentation} target='_blank' rel='noreferrer'>{d.Source_documentation}</a>
+                        <a href={d.Source_documentation} className='undp-style' target='_blank' rel='noreferrer'>{d.Source_documentation}</a>
                       </CellEl>
                     </div>
                   ))

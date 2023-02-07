@@ -210,8 +210,6 @@ const App = () => {
                             countryGroupData={countryGroupData}
                             indicators={indicatorsList}
                             regions={regionList}
-                            countries={countryList}
-                            countriesData={allCountriesData}
                             projectLevelData={projectLevelData}
                             projectCoordsData={projectCoords}
                           />,
