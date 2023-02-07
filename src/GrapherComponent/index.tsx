@@ -46,7 +46,6 @@ export const GrapherComponent = (props: Props) => {
   } = props;
   const {
     selectedTaxonomy,
-    selectedRegions,
   } = useContext(Context) as CtxDataType;
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
