@@ -171,10 +171,10 @@ export const UnivariateMap = (props: Props) => {
                     if (regionOpacity) {
                       setHoverData({
                         country: d['Country or Area'],
-                        continent: d['Group 1'],
+                        continent: d.region,
                         peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
                         grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
-                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                        numberProjects: d.numberProjects,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });
@@ -184,10 +184,10 @@ export const UnivariateMap = (props: Props) => {
                     if (regionOpacity) {
                       setHoverData({
                         country: d['Country or Area'],
-                        continent: d['Group 1'],
+                        continent: d.region,
                         peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
                         grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
-                        // numberProjects: d.indicators.filter((ind) => ind.indicator === 'Number of projects')[0].value,
+                        numberProjects: d.numberProjects,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
                       });

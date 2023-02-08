@@ -41,7 +41,7 @@ export const Settings = (props: Props) => {
   return (
     <div className='flex-div flex-space-between margin-bottom-07'>
       <div style={{ width: `${!queryRegion ? 'calc(50% - 0.5rem)' : '100%'}` }}>
-        <p className='label'>Select a Project Taxonomy*</p>
+        <p className='label'>Select a Project Taxonomy</p>
         <Select
           className='undp-select'
           placeholder='Select a project taxonomy'

@@ -30,6 +30,7 @@ export interface DataType extends CountryGroupDataType {
   indicators: IndicatorDataType[];
   indicatorsAvailable: string[];
   region: string;
+  numberProjects: number;
 }
 
 export interface IndicatorMetaDataType {

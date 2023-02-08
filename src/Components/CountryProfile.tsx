@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'd3-format';
 import { ProjectLevelDataType, CountryData, CountryIndicatorDataType } from '../Types';
-// import { ProjectLevelDataType, CountryData } from '../Types';
-import { Bars } from './Bars';
+import { Bars } from '../GrapherComponent/Bars';
 
 interface Props {
-  data: ProjectLevelDataType[];
+  projectsData: ProjectLevelDataType[];
   countries: string[];
   countriesData: CountryData[];
 }
@@ -23,9 +22,9 @@ const CellEl = styled.div<CellProps>`
   cursor: ${(props) => (props.cursor ? props.cursor : 'auto')};
 `;
 
-export const ProjectsTable = (props: Props) => {
+export const CountryProfile = (props: Props) => {
   const {
-    data,
+    projectsData,
     countries,
     countriesData,
   } = props;
@@ -34,10 +33,10 @@ export const ProjectsTable = (props: Props) => {
   const [selectedCountry, setSelectedCountry] = useState<string>();
   const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
   const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
-  const dataSorted = sortBy(data, 'Lead Country');
+  const projectsDataSorted = sortBy(projectsData, 'Lead Country');
   useEffect(() => {
-    // if (queryCountry)setSelectedCountry(queryCountry);
-    const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? dataSorted : dataSorted.filter((d) => d['Lead Country'] === selectedCountry);
+    if (queryCountry)setSelectedCountry(queryCountry);
+    const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
     setCountryDataValues(indicatorsByCountry);
     setTableData(dataByCountry);
@@ -46,12 +45,12 @@ export const ProjectsTable = (props: Props) => {
   }, [selectedCountry]);
   return (
     <>
-      {queryCountry ? ` for ${countries.filter((d) => d === queryCountry)[0]}` : null}
+      {queryCountry ? <h2>{queryCountry}</h2> : null}
       {
       !queryCountry
         ? (
           <div className='flex-div flex-space-between margin-bottom-07'>
-            <div style={{ width: `${!queryCountry ? 'calc(50% - 0.5rem)' : '100%'}` }}>
+            <div>
               <h2>This section is being designed (see Figma page)</h2>
               <p className='label'>Select a Country </p>
               <Select
@@ -75,6 +74,18 @@ export const ProjectsTable = (props: Props) => {
       selectedCountry !== undefined && countryDataValues.length > 0
         ? (
           <div className='stat-container flex-div margin-bottom-05'>
+            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+              <h3 className='undp-typography'>xxx</h3>
+              <p>Total grant amount (Grant Amount)</p>
+              <p>(USD)</p>
+            </div>
+            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+              <h3 className='undp-typography'>xxx</h3>
+              <p>Target number of beneficiaries (target_total)</p>
+            </div>
+            <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+              xxx
+            </div>
             <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
               <h6 className='undp-typography'>Population with access to electricity</h6>
               <Bars

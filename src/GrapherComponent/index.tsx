@@ -13,7 +13,6 @@ import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
-// import { ProjectsTable } from './ProjectsTable';
 
 interface Props {
   countryGroupData: CountryGroupDataType[];
@@ -44,7 +43,6 @@ export const GrapherComponent = (props: Props) => {
   } = useContext(Context) as CtxDataType;
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
-  // const queryCountry = queryParams.get('country');
   const filteredProjectData = projectLevelData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
   function calculateCountryTotals() {
     const groupedData = nest()
@@ -54,6 +52,7 @@ export const GrapherComponent = (props: Props) => {
     const countryData = groupedData.map((country) => {
       const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
       const region = country.values[0]['Regional Bureau'];
+      const numberOfProjects = country.values.length;
       const indTemp = indicators.map((indicator) => {
         const indicatorName = indicator.DataKey;
         const value = sumBy(country.values, (project:any) => project[indicatorName]);
@@ -69,8 +68,11 @@ export const GrapherComponent = (props: Props) => {
         region,
         indicatorsAvailable: indTemp.map((ind) => ind.indicator),
         indicators: indTemp,
+        numberProjects: numberOfProjects,
       });
     });
+    // eslint-disable-next-line no-console
+    console.log('in groupedData', countryData);
     return (countryData);
   }
   const mapData = calculateCountryTotals();

@@ -9,3 +9,6 @@ cleancooking_sharet,Cleancooking_sharet,Total clean cooking access rate (%),%,2
 cleancooking_sharer,Cleancooking_sharer,Rural clean cooking access rate (%),%,2
 cleancooking_shareu,Cleancooking_shareu,Urban clean cooking access rate (%),%,2
 poverty_headcount,poverty_headcount,Poverty headcount ratio at $2.15 a day (2017 PPP) (% of population). Source: WB,%,3
+investment_gap_total,investment_gap_total,Investment gap total,Bi USD,5
+investment_gap_rural,investment_gap_rural,Investment gap rural,Bi USD,5
+investment_gap_urban,investment_gap_urban,Investment gap urban,Bi USD,5

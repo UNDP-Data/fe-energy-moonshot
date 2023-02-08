@@ -31,27 +31,23 @@ export const Cards = (props: Props) => {
       ? data.filter((d) => d.region === selectedRegions) : data;
   const cardData = {
     peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'target_total')[0].value),
-    // emissionsReduced: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tonnes of CO2-eq emissions avoided or reduced')[0].value),
-    // treeEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'tree_equivalent')[0].value),
-    // carsEquivalent: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'car_equivalent')[0].value),
-    grantAmountVerticalFunds: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant amount')[0].value),
+    grantAmount: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant amount')[0].value),
     numberCountries: relevantData.length,
-    // numberProjects: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Number of projects')[0].value),
   };
 
   return (
     <>
       <div className='stat-container flex-div margin-bottom-05'>
         <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
-          <h3>{formatData(cardData.numberCountries)}</h3>
+          <h3 className='undp-typography'>{formatData(cardData.numberCountries)}</h3>
           <p>Number of countries</p>
         </div>
         <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
-          <h3>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
+          <h3 className='undp-typography'>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
           <p>People directly benefiting</p>
         </div>
         <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
-          <h3>{cardData.grantAmountVerticalFunds === undefined ? 'N/A' : formatData(cardData.grantAmountVerticalFunds)}</h3>
+          <h3 className='undp-typography'>{cardData.grantAmount === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
           <p>Total grant amount (USD)</p>
         </div>
       </div>

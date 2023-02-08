@@ -20,7 +20,7 @@ const TooltipEl = styled.div<TooltipElProps>`
   background-color: var(--gray-300);
   padding: var(--spacing-05);
   word-wrap: break-word;
-  width:${(props) => (props.horizontalAlignment === 'right' ? 'auto' : (props.x < 470 ? `${props.x - 60}px` : '470px'))};
+  width:${(props) => (props.horizontalAlignment === 'right' ? 'auto' : (props.x < 280 ? `${props.x - 60}px` : '280px'))};
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
   transform: ${(props) => `translate(${props.horizontalAlignment === 'left' ? '-100%' : '0%'},${props.verticalAlignment === 'top' ? '-100%' : '0%'})`};

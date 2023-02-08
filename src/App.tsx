@@ -10,7 +10,7 @@ import {
   CountryGroupDataType, IndicatorMetaDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
 } from './Types';
 import { GrapherComponent } from './GrapherComponent';
-import { ProjectsTable } from './GrapherComponent/ProjectsTable';
+import { CountryProfile } from './Components/CountryProfile';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
@@ -35,6 +35,8 @@ const App = () => {
   const [projectCoords, setProjectCoordsData] = useState<ProjectCoordsDataType[] | undefined>(undefined);
 
   const queryParams = new URLSearchParams(window.location.search);
+  const queryCountry = queryParams.get('country');
+
   const initialState = {
     selectedRegions: queryParams.get('region') || 'All',
     selectedCountries: [],
@@ -46,14 +48,6 @@ const App = () => {
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
-
-  const indicatorsToExclude = [
-    'HA directly impacted',
-    'People indirectly benefiting',
-    'Tonnes of CO2 emissions reduced in agriculture and forestry',
-    'Tonnes of CO2-eq emissions reduced from buildings, cities, industries and appliances',
-    'MJ of energy saved through improved efficiency',
-  ];
 
   const regions = [
     { value: 'RBA', label: 'Regional Bureau for Africa (RBA)' },
@@ -133,7 +127,7 @@ const App = () => {
           results_total: Number(d.results_total.replaceAll(',', '')),
         }));
         setProjectLevelData(projectLevelDataWithNumbers);
-        // here we need to have only the projects which are in the projectLevelData
+        // here we need to have only the projects which are at projectLevelData
         const projectCoordsWithData: ProjectCoordsDataType[] = [];
         projectCoordsData.forEach((d: any) => {
           const index = projectLevelDataWithNumbers.findIndex((el: ProjectLevelDataType) => el['projectID_PIMS+'] === d['projectID_PIMS+']);
@@ -153,9 +147,10 @@ const App = () => {
         })); */
         setProjectCoordsData(projectCoordsWithData);
         setCountryGroupData(countryGroupDataRaw);
-        setCountryList(removeDuplicates(projectLevelDataWithNumbers.map((d) => d['Lead Country'])));
+        const countries = removeDuplicates(projectLevelDataWithNumbers.map((d) => d['Lead Country']));
+        setCountryList(countries);
         const countriesData : CountryData[] = [];
-        countryLevelData1.map((d) => d.country).forEach((country) => {
+        countries.forEach((country:string) => {
           const values : CountryIndicatorDataType[] = [];
           // looping through the 3 datasets
           countryIndicatorsData.forEach((dataSet, i) => {
@@ -174,8 +169,17 @@ const App = () => {
         });
         setAllCountriesData(countriesData);
         setRegionList(regions);
-        setIndicatorsList(indicatorMetaData.filter((d) => indicatorsToExclude.indexOf(d.Indicator) === -1));
+        setIndicatorsList(indicatorMetaData);
       });
+    if (countryList && countryGroupData) {
+      countryList.forEach((country) => {
+        const index = countryGroupData.findIndex((d:any) => d['Country or Area'] === country);
+        if (index < 0) {
+          // eslint-disable-next-line no-console
+          console.log('-------- country not found ------', country);
+        }
+      });
+    }
   }, []);
   return (
     <div className='undp-container'>
@@ -199,32 +203,43 @@ const App = () => {
                   className='bodyEl'
                 >
                   <div className='margin-bottom07'>
-                    <Tabs
-                      defaultActiveKey='1'
-                      className='undp-tabs'
-                      items={[
-                        {
-                          label: 'World Overview',
-                          key: '1',
-                          children: <GrapherComponent
-                            countryGroupData={countryGroupData}
-                            indicators={indicatorsList}
-                            regions={regionList}
-                            projectLevelData={projectLevelData}
-                            projectCoordsData={projectCoords}
-                          />,
-                        },
-                        {
-                          label: 'Country Profiles',
-                          key: '2',
-                          children: <ProjectsTable
-                            data={projectLevelData}
-                            countries={countryList}
-                            countriesData={allCountriesData}
-                          />,
-                        },
-                      ]}
-                    />
+                    {
+                    !queryCountry
+                      ? (
+                        <Tabs
+                          defaultActiveKey='1'
+                          className='undp-tabs'
+                          items={[
+                            {
+                              label: 'World Overview',
+                              key: '1',
+                              children: <GrapherComponent
+                                countryGroupData={countryGroupData}
+                                indicators={indicatorsList}
+                                regions={regionList}
+                                projectLevelData={projectLevelData}
+                                projectCoordsData={projectCoords}
+                              />,
+                            },
+                            {
+                              label: 'Country Profiles',
+                              key: '2',
+                              children: <CountryProfile
+                                projectsData={projectLevelData}
+                                countries={countryList}
+                                countriesData={allCountriesData}
+                              />,
+                            },
+                          ]}
+                        />
+                      ) : (
+                        <CountryProfile
+                          projectsData={projectLevelData}
+                          countries={countryList}
+                          countriesData={allCountriesData}
+                        />
+                      )
+                    }
                   </div>
                 </div>
               </Context.Provider>
