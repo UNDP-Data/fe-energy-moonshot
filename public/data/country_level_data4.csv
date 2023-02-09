@@ -1,0 +1,217 @@
+country,year,data_source,multidimensional_poverty
+Afghanistan,2020,n/a,49.4
+Albania,2018,HBS,0.3
+Algeria,n/a,n/a,n/a
+Andorra,n/a,n/a,n/a
+Angola,2018,IDREA,47.2
+Anguilla,n/a,n/a,n/a
+Antigua and Barbuda,n/a,n/a,n/a
+Argentina,2020,EPHC-S2,1.1
+Armenia,2020,ILCS,0.4
+Aruba,n/a,n/a,n/a
+Australia,2018,SIH-LIS,2.2
+Austria,2019,EU-SILC,0.7
+Azerbaijan,n/a,n/a,n/a
+Bahamas,n/a,n/a,n/a
+Bahrain,n/a,n/a,n/a
+Bangladesh,2016,HIES,20.5
+Barbados,n/a,n/a,n/a
+Belarus,2019,HHS,3.2
+Belgium,2019,EU-SILC,0.8
+Belize,n/a,n/a,n/a
+Benin,2018,EHCVM,53.3
+Bermuda,n/a,n/a,n/a
+Bhutan,2017,BLSS,3.3
+Bolivia,2020,EH,6.6
+Bosnia and Herzegovina,n/a,n/a,n/a
+Botswana,2015,BMTHS,20.8
+Brazil,2019,PNADC-E1,6.1
+British Virgin Islands,n/a,n/a,n/a
+Brunei Darussalam,n/a,n/a,n/a
+Bulgaria,2019,EU-SILC,1.4
+Burkina Faso,2018,EHCVM,60.4
+Burundi,2013,ECVMB,85.2
+Cabo Verde,2015,IDRF,7.6
+Cambodia,n/a,n/a,n/a
+Cameroon,2014,ECAM-IV,37.5
+Canada,n/a,n/a,n/a
+Cayman Islands,n/a,n/a,n/a
+Central African Republic,n/a,n/a,n/a
+Chad,2018,EHCVM,79.3
+Chile,2020,CASEN,1
+China,n/a,n/a,n/a
+Colombia,2019,GEIH,5.9
+Comoros,2014,EESIC,26.3
+Congo,2011,ECOM,41.6
+Cook Islands,n/a,n/a,n/a
+Costa Rica,2020,ENAHO,2.3
+Côte d’Ivoire,2018,EHCVM,37.3
+Croatia,2019,EU-SILC,0.6
+Cuba,n/a,n/a,n/a
+Curaçao,n/a,n/a,n/a
+Cyprus,2019,EU-SILC,1.2
+Czechia,2019,EU-SILC,0
+Democratic People's Republic of Korea,2016,HIES-FHES-LIS,0.1
+Democratic Republic of the Congo,2012,E123,78.3
+Denmark,2019,EU-SILC,0.9
+Djibouti,2017,EDAM,29.3
+Dominica,n/a,n/a,n/a
+Dominican Republic,2020,ECNFT-Q03,2.9
+Ecuador,2020,ENEMDU,6.9
+Egypt,2017,HIECS,3.5
+El Salvador,2019,EHPM,4.4
+Equatorial Guinea,n/a,n/a,n/a
+Eritrea,n/a,n/a,n/a
+Estonia,2019,EU-SILC,0.8
+Eswatini,2016,HIES,40.8
+Ethiopia,2015,HICES,72.7
+Faroe Islands,n/a,n/a,n/a
+Fiji,2019,HIES,1.6
+Finland,2019,EU-SILC,1
+France,2018,EU-SILC,1.7
+French Polynesia,n/a,n/a,n/a
+Gabon,2017,EGEP,8.4
+Gambia,2015,IHS,18.3
+Georgia,2020,HIS,5.8
+Germany,2018,GSOEP-LIS,0.2
+Ghana,2016,GLSS-VII,32.9
+Gibraltar,n/a,n/a,n/a
+Greece,2019,EU-SILC,3
+Greenland,,,
+Grenada,,,
+Guam,,,
+Guatemala,2014,ENCOVI,22.2
+Guinea,2018,EHCVM,51.7
+Guinea-Bissau,2018,EHCVM,46.1
+Guyana,,,
+Haiti,2012,ECVMAS,46.8
+Honduras,2019,EPHPM,14.8
+Hungary,2019,EU-SILC,0.4
+Iceland,2017,EU-SILC,0.2
+India,,,
+Indonesia,2021,SUSENAS,4.1
+Iran (Islamic Republic of),2019,HEIS,1.2
+Iraq,2012,IHSES,5.5
+Ireland,2018,EU-SILC,0.7
+Isle of Man,,,
+Israel,2018,HES-LIS,1.1
+Italy,2018,EU-SILC,2.9
+Jamaica,,,
+Japan,2013,JHPS-LIS,0.8
+Jordan,2010,HEIS,0.3
+Kazakhstan,2018,HBS,0
+Kenya,2015,IHBS,45.4
+Kiribati,2019,HIES,21
+Kosovo,2017,HBS,0.8
+Kuwait,,,
+Kyrgyzstan,2020,KIHS,1.3
+Lao People's Democratic Republic,2018,LECS,10.3
+Latvia,2019,EU-SILC,0.6
+Lebanon,2011,HBS,0.7
+Lesotho,2017,CMSHBS,40.7
+Liberia,2016,HIES,56.6
+Libya,,,
+Liechtenstein,,,
+Lithuania,2019,EU-SILC,1
+Luxembourg,2019,EU-SILC,0.9
+Madagascar,2012,ENSOMD,82.9
+Malawi,2019,IHS-V,78.3
+Malaysia,2015,HIS,0.2
+Maldives,2019,HIES,0
+Mali,2018,EHCVM,43.7
+Malta,2019,EU-SILC,0.4
+Marshall Islands,2019,HIES,1.1
+Mauritania,2014,EPCV,45.7
+Mauritius,2017,HBS,0.4
+Mexico,2020,ENIGHNS,3.4
+Micronesia (Federated States of),2013,HIES,22.7
+Monaco,,,
+Mongolia,2018,HSES,2
+Montenegro,2014,HBS,1.2
+Morocco,2013,ENCDM,5.8
+Mozambique,2014,IOF,73.7
+Myanmar,2017,MLCS,15.4
+Namibia,2015,NHIES,27.5
+Nauru,2012,HIES,1.8
+Nepal,2010,LSS-III,26.5
+Netherlands,2019,EU-SILC,1.8
+New Caledonia,,,
+New Zealand,,,
+Nicaragua,2014,EMNV,15.6
+Niger,2018,EHCVM,80
+Nigeria,2018,LSS,41.8
+Niue,,,
+North Macedonia,2018,SILC-C,3.7
+Northern Mariana Islands,,,
+Norway,2019,EU-SILC,2
+Oman,,,
+Pakistan,2018,HIES,16.7
+Palau,,,
+Panama,,,
+Papua New Guinea,2009,HIES,74.7
+Paraguay,2020,EPH,1.3
+Peru,2020,ENAHO,7
+Philippines,2015,FIES,8.2
+Poland,2019,HBS,0
+Portugal,2019,EU-SILC,1.7
+Puerto Rico,,,
+Qatar,,,
+Republic of Korea,,,
+Republic of Moldova,2019,HBS,0.8
+Romania,2018,HBS,0.1
+Russian Federation,2020,HBS,5
+Rwanda,2016,EICV-V,57.4
+Saint Kitts and Nevis,,,
+Saint Lucia,,,
+Saint Vincent and the Grenadines,,,
+Samoa,,,
+San Marino,,,
+Sao Tome and Principe,2017,IOF,24.9
+Saudi Arabia,,,
+Senegal,2018,EHCVM,32.3
+Serbia,2019,HBS,0.2
+Seychelles,2018,HBS,0.9
+Sierra Leone,2018,SLIHS,54
+Singapore,,,
+Sint Maarten (Dutch part),,,
+Slovakia,2019,EU-SILC,0.1
+Slovenia,2019,EU-SILC,0
+Solomon Islands,2012,HIES,38.7
+Somalia,2017,SHFS-W2,83.8
+South Africa,2014,LCS,21.7
+South Sudan,2016,HFS-W3,84.9
+Spain,2019,EU-SILC,3.6
+Sri Lanka,2016,HIES,1.7
+State of Palestine,,,
+Sudan,2014,NBHS,52.5
+Suriname,,,
+Sweden,2019,EU-SILC,2.5
+Switzerland,2018,EU-SILC,0.2
+Syrian Arab Republic,,,
+Tajikistan,2015,HSITAFIEN,7
+Tanzania,2018,HBS,54.6
+Thailand,2020,SES,0.2
+Timor-Leste,2014,TLSLS,23.5
+Togo,2018,EHCVM,46.4
+Tonga,2015,HIES,1.1
+Trinidad and Tobago,,,
+Tunisia,2015,NSHBCSL,1.5
+Turkey,2019,HICES,0.6
+Turkmenistan,,,
+Turks and Caicos Islands,,,
+Tuvalu,2010,HIES,4.3
+Uganda,2019,UNHS,52.3
+Ukraine,2020,HLCS,1.7
+United Arab Emirates,,,
+United Kingdom of Great Britain and Northern Ireland,2015,EU-SILC,1.2
+United Republic of Tanzania,,,
+United States of America,2019,CPS-ASEC-LIS,1.1
+United States Virgin Islands,,,
+Uruguay,2019,ECH,0.1
+Uzbekistan,,,
+Vanuatu,2019,NSDP,15.4
+Venezuela (Bolivarian Republic of),,,
+Viet Nam,2018,VHLSS,2.5
+Yemen,2014,HBS,35.4
+Zambia,2015,LCMS-VII,66.5
+Zimbabwe,2019,PICES,42.4

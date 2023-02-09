@@ -124,5 +124,10 @@ export interface ProjectCoordsDataType{
   Latitude: number,
   Longitude: number,
 }
+export interface DashboardDataType{
+  peopleBenefiting: number;
+  grantAmount: number;
+  numberProjects: number;
+}
 // export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
 export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '.';
