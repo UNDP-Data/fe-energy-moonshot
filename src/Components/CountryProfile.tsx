@@ -4,6 +4,7 @@ import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'd3-format';
+import parse from 'html-react-parser';
 import {
   ProjectLevelDataType,
   CountryData,
@@ -11,6 +12,8 @@ import {
   DashboardDataType,
 } from '../Types';
 import { Bars } from '../GrapherComponent/Bars';
+
+// import { DonutChartCard } from './DonutChart';
 
 interface Props {
   projectsData: ProjectLevelDataType[];
@@ -33,6 +36,14 @@ const StatCardSource = styled.div`
 const CellEl = styled.div<CellProps>`
   width: ${(props) => props.width};
   cursor: ${(props) => (props.cursor ? props.cursor : 'auto')};
+`;
+
+interface WidthProps {
+  width: string;
+}
+
+const StatCardsDiv = styled.div<WidthProps>`
+  width: ${(props) => props.width};
 `;
 
 export const CountryProfile = (props: Props) => {
@@ -64,12 +75,17 @@ export const CountryProfile = (props: Props) => {
     };
     setCardData(cardDataValues);
     // eslint-disable-next-line no-console
-    console.log('data by country', relevantData);
+    console.log('data by country', relevantData, countryDataValues);
   }, [selectedCountry]);
+  const formatPercent = (d: any) => {
+    // eslint-disable-next-line no-console
+    if (d === 'n/a') return d;
+    return `${d}%`;
+  };
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
-    if (d < 10000) return format(',')(parseFloat(d.toFixed(0))).replaceAll(',', ' ');
+    if (d < 100000) return format(',')(parseFloat(d.toFixed(0))).replaceAll(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
   return (
@@ -86,6 +102,7 @@ export const CountryProfile = (props: Props) => {
                 className='undp-select'
                 placeholder='Select a country'
                 value={selectedCountry}
+                showSearch
                 onChange={(d) => { setSelectedCountry(d); }}
               >
                 <Select.Option className='undp-select-option' key='All'>All Countries</Select.Option>
@@ -104,43 +121,43 @@ export const CountryProfile = (props: Props) => {
         ? (
           <div className='margin-top-1'>
             <div className='flex-div margin-bottom-05 flex-space-between flex-wrap'>
-              <div className='stat-card' style={{ width: 'calc(33.33% - 1.334rem)' }}>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h3 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
                 <p>Total grant amount (USD)</p>
                 <StatCardSource>Source: UNDP data (active projects)</StatCardSource>
-              </div>
-              <div className='stat-card' style={{ width: 'calc(33.33% - 1.334rem)' }}>
+              </StatCardsDiv>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h3 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
                 <p>Target number of beneficiaries</p>
                 <StatCardSource>Source: UNDP data (active projects)</StatCardSource>
-              </div>
-              <div className='stat-card' style={{ width: 'calc(33.33% - 1.334rem)' }}>
-                <p>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_total')[0].value * 1000}M (USD)`}</p>
-                <p>{countryDataValues.filter((d:any) => d.indicator === 'investment_gap_urban')[0].value}</p>
-                <p>{countryDataValues.filter((d:any) => d.indicator === 'investment_gap_rural')[0].value}</p>
+              </StatCardsDiv>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+                <p>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_total')[0].value}M (USD)`}</p>
+                <p>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_urban')[0].value}M (USD)`}</p>
+                <p>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_rural')[0].value}M (USD)`}</p>
                 <StatCardSource>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSource>
-              </div>
+              </StatCardsDiv>
             </div>
             <div className='flex-div margin-bottom-05 flex-space-between flex-wrap'>
-              <div className='stat-card' style={{ width: 'calc(33.33% - 1.334rem)' }}>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography'>Poverty headcount ratio</h6>
-                <h2>{countryDataValues.filter((d:any) => d.indicator === 'poverty_headcount')[0].value}</h2>
+                <h2>{`${formatPercent(countryDataValues.filter((d:any) => d.indicator === 'poverty_headcount')[0].value)}`}</h2>
                 <p>living at $2.15 a day</p>
-              </div>
-              <div className='stat-card' style={{ width: 'calc(33.33% - 1.334rem)' }}>
+              </StatCardsDiv>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography'>Population with access to electricity</h6>
                 <Bars
                   values={countryDataValues}
                   indicator='electricityAccess'
                 />
-              </div>
-              <div className='stat-card' style={{ width: 'calc(33.33% - 1.334rem)' }}>
+              </StatCardsDiv>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography'>Population with access to clean cooking</h6>
                 <Bars
                   values={countryDataValues}
                   indicator='cleancooking'
                 />
-              </div>
+              </StatCardsDiv>
             </div>
           </div>
         ) : null
@@ -180,7 +197,8 @@ export const CountryProfile = (props: Props) => {
                         {d['Short Title']}
                       </CellEl>
                       <CellEl width='40%' className='undp-table-row-cell-small'>
-                        {d['Project Description']}
+                        {d['Project Description'] !== undefined
+                          ? parse(d['Project Description'].replaceAll('\n', '<br>')) : null}
                       </CellEl>
                       <CellEl width='20%' className='undp-table-row-cell-small'>
                         {d['Source of Funds']}

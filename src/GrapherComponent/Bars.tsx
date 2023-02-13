@@ -31,13 +31,13 @@ export const Bars = (props:Props) => {
       <g transform='translate(60,30)'>
         <g transform='translate(0,50)'>
           <rect height='30' width={scale(100)} style={{ fill: '#FFF', stroke: '#D4D6D8', strokeWidth: 0.5 }} />
-          <rect height='30' width={scale(urbanPercent.value)} style={{ fill: '#55606E' }} />
+          <rect height='30' width={scale(Number(urbanPercent.value))} style={{ fill: '#55606E' }} />
           <text x='-5' y='20' textAnchor='end'>Urban</text>
           <text x={barWidth + 5} y='22'>{`${urbanPercent.value}%`}</text>
         </g>
         <g transform='translate(0,85)'>
           <rect height='30' width={scale(100)} style={{ fill: '#FFF', stroke: '#D4D6D8', strokeWidth: 0.5 }} />
-          <rect height='30' width={scale(ruralPercent.value)} style={{ fill: '#55606E' }} />
+          <rect height='30' width={scale(Number(ruralPercent.value))} style={{ fill: '#55606E' }} />
           <text x='-5' y='20' textAnchor='end'>Rural</text>
           <text x={barWidth + 5} y='22'>{`${ruralPercent.value}%`}</text>
         </g>

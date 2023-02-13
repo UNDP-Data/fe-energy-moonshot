@@ -1,10 +1,19 @@
 import { useContext } from 'react';
 import sumBy from 'lodash.sumby';
+import styled from 'styled-components';
 import { format } from 'd3-format';
 import {
   CtxDataType, DataType,
 } from '../Types';
 import Context from '../Context/Context';
+
+interface WidthProps {
+  width: string;
+}
+
+const StatCardsDiv = styled.div<WidthProps>`
+  width: ${(props) => props.width};
+`;
 
 interface Props {
   data: DataType[];
@@ -38,18 +47,18 @@ export const Cards = (props: Props) => {
   return (
     <>
       <div className='stat-container flex-div margin-bottom-05'>
-        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+        <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
           <h3 className='undp-typography'>{formatData(cardData.numberCountries)}</h3>
           <p>Number of countries</p>
-        </div>
-        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+        </StatCardsDiv>
+        <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
           <h3 className='undp-typography'>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
           <p>People directly benefiting</p>
-        </div>
-        <div className='stat-card' style={{ width: 'calc(25% - 4.75rem)' }}>
+        </StatCardsDiv>
+        <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
           <h3 className='undp-typography'>{cardData.grantAmount === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
           <p>Total grant amount (USD)</p>
-        </div>
+        </StatCardsDiv>
       </div>
     </>
   );

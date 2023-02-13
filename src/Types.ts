@@ -87,8 +87,8 @@ export interface CountryIndicatorMetaDataType {
 }
 export interface CountryIndicatorDataType {
   indicator: string;
-  value: number;
-  year: number;
+  value: any;
+  year: any;
 }
 export interface CountryData{
   country: string;

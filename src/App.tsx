@@ -158,16 +158,12 @@ const App = () => {
           countryIndicatorsData.forEach((dataSet, i) => {
             // filtering indicators related to the dataset
             const ind = countryIndicatorMetadata.filter((d) => Number(d.FileNumber) === i + 1);
-            const data = dataSet.filter((d) => d.country === country); // filtering data for the country
-            data.forEach((countryData) => {
-              ind.forEach((indRow) => {
-                // eslint-disable-next-line no-console
-                console.log('indRow.IndicatorLabelTable', indRow.IndicatorLabelTable);
-                const value: CountryIndicatorDataType = { value: Number(countryData[indRow.IndicatorLabelTable].replace(',', '')), year: countryData.year, indicator: indRow.Indicator };
-                values.push(value); // adding the values to the array
-              });
-            });
+            const countryData = dataSet.filter((d) => d.country === country)[0]; // filtering data for the country
+            if (countryData !== undefined) ind.forEach((indRow) => values.push({ value: countryData[indRow.IndicatorLabelTable].replace(',', ''), year: countryData.year, indicator: indRow.Indicator })); // adding the values to the array
+            else ind.forEach((indRow) => values.push({ value: 'n/a', year: 'n/a', indicator: indRow.Indicator }));
           });
+          // eslint-disable-next-line no-console
+          // console.log('country', country, values);
           const countryData: CountryData = { country, values };
           countriesData.push(countryData);
         });
