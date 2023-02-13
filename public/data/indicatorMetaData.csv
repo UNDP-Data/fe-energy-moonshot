@@ -1,8 +1,0 @@
-﻿"Indicator","IndicatorLabelTable","IndicatorDescription","DataKey","BinningRangeLarge"
-"People directly benefiting (achieved + expected)","People directly benefiting (achieved + expected)","The total number of people directly benefiting from these projects","people directly benefiting","[100,500,1000,10000,50000,100000,1000000]"
-"Tonnes of CO2 emissions reduced (achieved + expected)","Tonnes of CO2 emissions reduced (achieved + expected)","The total amount of CO2 emissions (in tonnes) reduced from these projects","tonnes of CO2-eq emissions avoided or reduced","[10000,50000,100000,500000,1000000,5000000,10000000]"
-"Renewable energy capacity installed (achieved + expected)","Renewable energy capacity installed (MW) (achieved + expected)","MW of renewable energy capacity installed (achieved + expected)","MW of renewable or low-emission energy capacity installed or rehabilitated","[1,10,100,1000,10000,100000]"
-"Grant Amount (Vertical Fund)","Grant Amount, Vertical Fund (USD)","Grant Amount for vertical fund projects only","grant_amount_vertical_fund","[1000000,10000000,20000000,30000000,40000000]"
-"Expenses (Vertical Fund)","Expenses, Vertical Fund (USD)","Expenses from vertical fund projects only","expenses_vertical_fund","[1000000,5000000,10000000,15000000,20000000,250000000]"
-"Co-Financing (Vertical Fund)","Co-Financing, Vertical Fund (USD)","Co-Financing for vertical fund projects only","cofinancing_vertical_fund","[10000000,50000000,100000000,200000000,300000000,400000000,500000000]"
-"Number of projects","Number of projects","Number of projects","Number of projects","[1,2,3,4]"

@@ -69,8 +69,6 @@ export const UnivariateMap = (props: Props) => {
   const valueArray = xIndicatorMetaData.BinningRangeLarge;
   const colorArray = COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
   const colorScale = scaleThreshold<number, string>().domain(valueArray).range(colorArray);
-  // eslint-disable-next-line no-console
-  console.log('selectedProjects', selectedProjects);
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -104,7 +102,7 @@ export const UnivariateMap = (props: Props) => {
               return (
                 <g
                   key={i}
-                  opacity={regionOpacity && countryOpacity && !selectedColor ? 1 : 0.2}
+                  opacity={regionOpacity && countryOpacity && !selectedColor ? 1 : 0.5}
                 >
                   {
                   d.geometry.type === 'MultiPolygon' ? d.geometry.coordinates.map((el:any, j: any) => {
@@ -122,7 +120,7 @@ export const UnivariateMap = (props: Props) => {
                       <path
                         key={j}
                         d={masterPath}
-                        stroke='#999'
+                        stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
                         fill={COLOR_SCALES.Null}
                       />
@@ -138,7 +136,7 @@ export const UnivariateMap = (props: Props) => {
                       <path
                         key={j}
                         d={path}
-                        stroke='#999'
+                        stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
                         fill={COLOR_SCALES.Null}
                       />
@@ -214,7 +212,7 @@ export const UnivariateMap = (props: Props) => {
                           <path
                             key={j}
                             d={masterPath}
-                            stroke='#999'
+                            stroke='#fff'
                             strokeWidth={0.2 / zoomLevel}
                             fill={color}
                           />
@@ -230,7 +228,7 @@ export const UnivariateMap = (props: Props) => {
                           <path
                             key={j}
                             d={path}
-                            stroke='#999'
+                            stroke='#fff'
                             strokeWidth={0.2 / zoomLevel}
                             fill={color}
                           />
@@ -299,12 +297,13 @@ export const UnivariateMap = (props: Props) => {
             && projectCoordsData.filter((d) => selectedTaxonomy === 'All' || d.projectData.taxonomy_level3 === selectedTaxonomy).map((d, i: number) => {
               const regionOpacity = selectedRegions === 'All' || selectedRegions === d.projectData['Regional Bureau'];
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d.projectData['Lead Country'];
-              // const projectOpacity = selectedProjects === '' || selectedProjects === d.projectData['projectID_PIMS+'].toString();
+              const projectOpacity = selectedProjects === '' || selectedProjects === d.projectData['projectID_PIMS+'].toString();
+
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
               return (
                 <g
                   key={i}
-                  opacity={countryOpacity && regionOpacity ? 0.9 : 0.01}
+                  opacity={projectOpacity && countryOpacity && regionOpacity ? 0.9 : 0.01}
                   onMouseEnter={(event) => {
                     updateSelectedProjects(d['projectID_PIMS+'].toString());
                     setProjectHoverData({
@@ -337,7 +336,7 @@ export const UnivariateMap = (props: Props) => {
                     r={(zoomLevel < 3) ? 3 / zoomLevel : 4 / zoomLevel}
                     fill='#FFF'
                     stroke='#006EB5'
-                    strokeWidth={0.7 / zoomLevel}
+                    strokeWidth={1 / zoomLevel}
                   />
                 </g>
               );
@@ -346,7 +345,7 @@ export const UnivariateMap = (props: Props) => {
         </g>
       </svg>
       <LegendEl>
-        <h6 className='undp-typography'>{xIndicatorMetaData.IndicatorLabelTable}</h6>
+        <h6 className='undp-typography'>{xIndicatorMetaData.Indicator}</h6>
         <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {
@@ -390,32 +389,6 @@ export const UnivariateMap = (props: Props) => {
                 strokeWidth={1}
                 style={{ cursor: 'pointer' }}
               />
-            </g>
-            <g>
-              <g
-                key='null'
-                onMouseOver={() => { setSelectedColor('#f5f9fe'); }}
-                onMouseLeave={() => { setSelectedColor(undefined); }}
-                style={{ cursor: 'pointer' }}
-              >
-                <rect
-                  x={340}
-                  y={1}
-                  width={38}
-                  height={8}
-                  fill='#f5f9fe'
-                  stroke={selectedColor === '#f5f9fe' ? '#212121' : '#f5f9fe'}
-                />
-                <text
-                  x={360}
-                  y={25}
-                  textAnchor='middle'
-                  fontSize={12}
-                  fill='#212121'
-                >
-                  Missing
-                </text>
-              </g>
             </g>
           </g>
         </svg>

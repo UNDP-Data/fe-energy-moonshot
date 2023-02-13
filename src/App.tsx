@@ -228,6 +228,7 @@ const App = () => {
                                 projectsData={projectLevelData}
                                 countries={countryList}
                                 countriesData={allCountriesData}
+                                data={countryGroupData}
                               />,
                             },
                           ]}
@@ -237,6 +238,7 @@ const App = () => {
                           projectsData={projectLevelData}
                           countries={countryList}
                           countriesData={allCountriesData}
+                          data={countryGroupData}
                         />
                       )
                     }

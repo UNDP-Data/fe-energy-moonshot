@@ -50,8 +50,6 @@ export const ProjectTooltip = (props: Props) => {
             {data.donor === undefined ? 'N/A' : data.donor}
           </span>
         </p>
-      </div>
-      <div className='margin-bottom-05'>
         <p className='undp-typography margin-bottom-01'>
           Budget (USD):
           {' '}

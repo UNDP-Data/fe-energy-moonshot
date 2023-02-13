@@ -10,8 +10,10 @@ import {
   CountryData,
   CountryIndicatorDataType,
   DashboardDataType,
+  CountryGroupDataType,
 } from '../Types';
 import { Bars } from '../GrapherComponent/Bars';
+import { CountryMap } from '../GrapherComponent/CountryMap';
 
 // import { DonutChartCard } from './DonutChart';
 
@@ -19,6 +21,7 @@ interface Props {
   projectsData: ProjectLevelDataType[];
   countries: string[];
   countriesData: CountryData[];
+  data: CountryGroupDataType[];
 }
 
 interface CellProps {
@@ -51,6 +54,7 @@ export const CountryProfile = (props: Props) => {
     projectsData,
     countries,
     countriesData,
+    data,
   } = props;
   const queryParams = new URLSearchParams(window.location.search);
   const queryCountry = queryParams.get('country');
@@ -159,6 +163,9 @@ export const CountryProfile = (props: Props) => {
                 />
               </StatCardsDiv>
             </div>
+            <CountryMap
+              selectedCountry={data.filter((d) => d['Country or Area'] === selectedCountry)[0]}
+            />
           </div>
         ) : null
       }
