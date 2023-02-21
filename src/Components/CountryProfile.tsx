@@ -28,7 +28,7 @@ interface CellProps {
   cursor?: string;
 }
 
-const StatCardSmall = styled.div`
+const StatCardSmallFont = styled.div`
   color: var(--gray-500);
   font-size: 1rem;
   line-height: 1.4rem;
@@ -78,7 +78,7 @@ export const CountryProfile = (props: Props) => {
     };
     setCardData(cardDataValues);
     // eslint-disable-next-line no-console
-    console.log('data', data);
+    console.log('data', data, 'indicatorsByCountry', indicatorsByCountry);
   }, [selectedCountry]);
   // <CountryMap
   // selectedCountry={data.filter((d) => d['Country or Area'] === selectedCountry)[0]}
@@ -130,12 +130,12 @@ export const CountryProfile = (props: Props) => {
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
                 <p className='undp-typography margin-bottom-10 margin-top-00'>Total grant amount (USD)</p>
-                <StatCardSmall style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmall>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h2>
                 <p className='undp-typography margin-bottom-10 margin-top-00'>Target number of beneficiaries</p>
-                <StatCardSmall style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmall>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography margin-bottom-03'>Investment Gap for Universal Access*, Million USD</h6>
@@ -143,34 +143,43 @@ export const CountryProfile = (props: Props) => {
                 <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_total')[0].value}M (USD)`}</p>
                 <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_urban')[0].value}M (USD)`}</p>
                 <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_rural')[0].value}M (USD)`}</p>
-                <StatCardSmall style={{ position: 'absolute', bottom: '2rem' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmall>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
+              </StatCardsDiv>
+              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+                <h6 className='undp-typography margin-bottom-03'>Human Development Index</h6>
+                <p className='undp-typography'>2021</p>
+                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'hdi')[0].value}`}</p>
+                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'life_exp')[0].value} years`}</p>
+                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'schooling')[0].value} years`}</p>
+                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'income')[0].value} (2017 PPP USD)`}</p>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: </StatCardSmallFont>
               </StatCardsDiv>
             </div>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography margin-bottom-00'>Poverty headcount ratio</h6>
-                <StatCardSmall>{countryDataValues.filter((d) => d.indicator === 'poverty_headcount')[0].year}</StatCardSmall>
+                <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'poverty_headcount')[0].year}</StatCardSmallFont>
                 <h2>{`${formatPercent(countryDataValues.filter((d:any) => d.indicator === 'poverty_headcount')[0].value)}`}</h2>
                 <p className='undp-typography'>living at $2.15 a day</p>
-                <StatCardSmall style={{ position: 'absolute', bottom: '2rem' }}>Source: World Bank</StatCardSmall>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: World Bank</StatCardSmallFont>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography margin-bottom-00'>Population with access to electricity</h6>
-                <StatCardSmall>{countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].year}</StatCardSmall>
+                <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].year}</StatCardSmallFont>
                 <Bars
                   values={countryDataValues}
                   indicator='electricityAccess'
                 />
-                <StatCardSmall style={{ position: 'absolute', bottom: '2rem' }}>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmall>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmallFont>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h6 className='undp-typography margin-bottom-00'>Population with access to clean cooking</h6>
-                <StatCardSmall>{countryDataValues.filter((d) => d.indicator === 'cleancooking_sharet')[0].year}</StatCardSmall>
+                <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'cleancooking_sharet')[0].year}</StatCardSmallFont>
                 <Bars
                   values={countryDataValues}
                   indicator='cleancooking'
                 />
-                <StatCardSmall style={{ position: 'absolute', bottom: '2rem' }}>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmall>
+                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmallFont>
               </StatCardsDiv>
             </div>
           </div>

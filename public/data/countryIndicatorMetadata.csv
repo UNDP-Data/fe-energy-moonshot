@@ -13,3 +13,7 @@ multidimensional_poverty,multidimensional_poverty,Multidimensional poverty,%,4
 investment_gap_total,investment_gap_total,Investment gap total,Bi USD,5
 investment_gap_rural,investment_gap_rural,Investment gap rural,Bi USD,5
 investment_gap_urban,investment_gap_urban,Investment gap urban,Bi USD,5
+hdi,hdi,Human Development Index,,6
+life_exp,life_exp,Life Expectancy,years,6
+schooling,schooling,Mean years of schooling,years,6
+income,income,Gross national income (GNI) per capita,2017 PPP USD,6

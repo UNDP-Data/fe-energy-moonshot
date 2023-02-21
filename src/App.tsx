@@ -15,6 +15,8 @@ import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
 
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
+
 const VizAreaEl = styled.div`
   display: flex;
   max-width: 1220px;
@@ -110,12 +112,13 @@ const App = () => {
       .defer(csv, `${ROOT_DIR}/data/country_level_data3.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data4.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data5.csv`)
+      .defer(csv, `${ROOT_DIR}/data/country_level_data6.csv`)
       .defer(csv, `${ROOT_DIR}/data/project_level_data1.csv`)
       .defer(csv, `${ROOT_DIR}/data/project_level_data2.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
-      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
+      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData7: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
         if (err) throw err;
-        const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3, countryLevelData4, countryLevelData5];
+        const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3, countryLevelData4, countryLevelData5, countryLevelData7];
         const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
           ...d,
           'Grant amount': Number(d.Grant_amount.replaceAll(',', '')),
