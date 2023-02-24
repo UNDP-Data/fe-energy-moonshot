@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'd3-format';
 import parse from 'html-react-parser';
+import { CountryMap } from './CountryMap';
 import {
   ProjectLevelDataType,
   CountryData,
@@ -13,6 +14,7 @@ import {
   CountryGroupDataType,
 } from '../Types';
 import { Bars } from '../GrapherComponent/Bars';
+
 // import { CountryMap } from '../GrapherComponent/CountryMap';
 // import { DonutChartCard } from './DonutChart';
 
@@ -61,6 +63,7 @@ export const CountryProfile = (props: Props) => {
   const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
   const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
+  const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>();
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
   useEffect(() => {
     if (queryCountry)setSelectedCountry(queryCountry);
@@ -77,8 +80,10 @@ export const CountryProfile = (props: Props) => {
       numberProjects: relevantData.length,
     };
     setCardData(cardDataValues);
+    const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
+    setCountryGroupData(countryData);
     // eslint-disable-next-line no-console
-    console.log('data', data, 'indicatorsByCountry', indicatorsByCountry);
+    console.log('data', data);
   }, [selectedCountry]);
   // <CountryMap
   // selectedCountry={data.filter((d) => d['Country or Area'] === selectedCountry)[0]}
@@ -126,6 +131,7 @@ export const CountryProfile = (props: Props) => {
       selectedCountry !== undefined && countryDataValues.length > 0
         ? (
           <div className='margin-top-1'>
+            <CountryMap country={countryGroupData} />
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
