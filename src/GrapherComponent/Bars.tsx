@@ -1,5 +1,4 @@
 import { scaleLinear } from 'd3-scale';
-// import { useEffect } from 'react';
 import { CountryIndicatorDataType } from '../Types';
 
 interface Props{

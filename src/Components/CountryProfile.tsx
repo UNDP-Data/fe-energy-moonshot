@@ -1,6 +1,6 @@
 import sortBy from 'lodash.sortby';
 import sumBy from 'lodash.sumby';
-import { Select } from 'antd';
+import { Select, Radio } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'd3-format';
@@ -13,10 +13,8 @@ import {
   DashboardDataType,
   CountryGroupDataType,
 } from '../Types';
-import { Bars } from '../GrapherComponent/Bars';
-
-// import { CountryMap } from '../GrapherComponent/CountryMap';
-// import { DonutChartCard } from './DonutChart';
+import { ScaledSquare } from '../GrapherComponent/ScaledSquare';
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
 interface Props {
   projectsData: ProjectLevelDataType[];
@@ -50,6 +48,18 @@ const StatCardsDiv = styled.div<WidthProps>`
   position: relative;
 `;
 
+const maxValue = (countryValues:any) => {
+  let max = 0;
+  const ind = ['InvTotal_cum_', 'GDPgains_cum'];
+  ['2030', '2050'].forEach((year) => {
+    ind.forEach((indicator) => {
+      const value:number = Number(countryValues.filter((d:any) => d.indicator === `${indicator}${year}_bi`)[0].value);
+      if (value > max) max = value;
+    });
+  });
+  return max;
+};
+
 export const CountryProfile = (props: Props) => {
   const {
     projectsData,
@@ -63,9 +73,11 @@ export const CountryProfile = (props: Props) => {
   const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
   const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
-  const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>();
+  const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
+  const [activeYear, setSelectedYear] = useState<string>('2030');
   useEffect(() => {
+    setSelectedYear('2030');
     if (queryCountry)setSelectedCountry(queryCountry);
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
@@ -82,17 +94,14 @@ export const CountryProfile = (props: Props) => {
     setCardData(cardDataValues);
     const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
     setCountryGroupData(countryData);
-    // eslint-disable-next-line no-console
-    console.log('data', data);
+    console.log('indicators by country', indicatorsByCountry);
   }, [selectedCountry]);
-  // <CountryMap
-  // selectedCountry={data.filter((d) => d['Country or Area'] === selectedCountry)[0]}
-  // />
-  const formatPercent = (d: any) => {
+
+  /* const formatPercent = (d: any) => {
     // eslint-disable-next-line no-console
     if (d === 'n/a') return d;
     return `${d}%`;
-  };
+  }; */
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
@@ -107,7 +116,6 @@ export const CountryProfile = (props: Props) => {
         ? (
           <div className='flex-div flex-space-between margin-bottom-07'>
             <div>
-              <h2>This section is being designed (see Figma page)</h2>
               <p className='label'>Select a Country </p>
               <Select
                 className='undp-select'
@@ -133,59 +141,79 @@ export const CountryProfile = (props: Props) => {
           <div className='margin-top-1'>
             <CountryMap country={countryGroupData} />
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+              <StatCardsDiv className='stat-card' width='100%'>
+                <h4 className='undp-typography'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
+                <div className='flex-wrap margin-bottom-07'>
+                  <p className='label'>Radio Group Label</p>
+                  <Radio.Group defaultValue={activeYear}>
+                    <Radio
+                      className='undp-radio'
+                      value={2030}
+                      onChange={(e) => { console.log('e', e.target.value); setSelectedYear(e.target.value); }}
+                    >
+                      2030
+                    </Radio>
+                    <Radio
+                      className='undp-radio'
+                      value={2050}
+                      onChange={(e) => { console.log('e', e.target.value); setSelectedYear(e.target.value); }}
+                    >
+                      2050
+                    </Radio>
+                  </Radio.Group>
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ flex: '2', borderRight: '2px dotted #888' }}>
+                    <h6 className='undp-typography'>Investments necessary</h6>
+                    <ScaledSquare
+                      values={countryDataValues}
+                      year={activeYear}
+                      indicator='InvTotal_cum_'
+                      maxValue={maxValue(countryDataValues)}
+                    />
+                    <p className='undp-typography margin-bottom-03'>Investment Gap for Universal Access*, Million USD</p>
+                    <p className='undp-typography'>Cumulative 2022-2030</p>
+                  </div>
+                  <div style={{ flex: '3', paddingLeft: '20px' }}>
+                    <h6 className='undp-typography'>Benefits</h6>
+                    <div style={{ display: 'flex' }}>
+                      <div style={{ flex: 'auto' }}>
+                        <ScaledSquare
+                          values={countryDataValues}
+                          year={activeYear}
+                          indicator='GDPgains_cum'
+                          maxValue={maxValue(countryDataValues)}
+                        />
+                        <p className='undp-typography margin-bottom-03'>Gain GDP, Million USD</p>
+                        <p className='undp-typography'>Cumulative 2022-2030</p>
+                      </div>
+                      <div style={{ flex: 'auto' }}>
+                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_%`)[0].value}</h3>
+                        <p>less poverty</p>
+                        <p className='undp-typography'>2022-2030</p>
+                      </div>
+                      <div style={{ flex: 'auto' }}>
+                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `averted_deaths_${activeYear}`)[0].value}</h3>
+                        <p className='undp-typography'>less deaths</p>
+                        <p className='undp-typography'>2022-2030</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
+              </StatCardsDiv>
+            </div>
+            <div className='stat-card-container margin-bottom-05 flex-space-between'>
+              <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
                 <p className='undp-typography margin-bottom-10 margin-top-00'>Total grant amount (USD)</p>
                 <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
               </StatCardsDiv>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+              <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h2>
                 <p className='undp-typography margin-bottom-10 margin-top-00'>Target number of beneficiaries</p>
                 <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
-              </StatCardsDiv>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
-                <h6 className='undp-typography margin-bottom-03'>Investment Gap for Universal Access*, Million USD</h6>
-                <p className='undp-typography'>Cumulative 2022-2030</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_total')[0].value}M (USD)`}</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_urban')[0].value}M (USD)`}</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'investment_gap_rural')[0].value}M (USD)`}</p>
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
-              </StatCardsDiv>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
-                <h6 className='undp-typography margin-bottom-03'>Human Development Index</h6>
-                <p className='undp-typography'>2021</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'hdi')[0].value}`}</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'life_exp')[0].value} years`}</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'schooling')[0].value} years`}</p>
-                <p className='undp-typography'>{`${countryDataValues.filter((d:any) => d.indicator === 'income')[0].value} (2017 PPP USD)`}</p>
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: </StatCardSmallFont>
-              </StatCardsDiv>
-            </div>
-            <div className='stat-card-container margin-bottom-05 flex-space-between'>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
-                <h6 className='undp-typography margin-bottom-00'>Poverty headcount ratio</h6>
-                <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'poverty_headcount')[0].year}</StatCardSmallFont>
-                <h2>{`${formatPercent(countryDataValues.filter((d:any) => d.indicator === 'poverty_headcount')[0].value)}`}</h2>
-                <p className='undp-typography'>living at $2.15 a day</p>
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: World Bank</StatCardSmallFont>
-              </StatCardsDiv>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
-                <h6 className='undp-typography margin-bottom-00'>Population with access to electricity</h6>
-                <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].year}</StatCardSmallFont>
-                <Bars
-                  values={countryDataValues}
-                  indicator='electricityAccess'
-                />
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmallFont>
-              </StatCardsDiv>
-              <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
-                <h6 className='undp-typography margin-bottom-00'>Population with access to clean cooking</h6>
-                <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'cleancooking_sharet')[0].year}</StatCardSmallFont>
-                <Bars
-                  values={countryDataValues}
-                  indicator='cleancooking'
-                />
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmallFont>
               </StatCardsDiv>
             </div>
           </div>

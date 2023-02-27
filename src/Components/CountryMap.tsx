@@ -7,7 +7,19 @@ import { CountryGroupDataType } from '../Types';
 interface Props {
   country: CountryGroupDataType;
 }
-
+/*
+          {
+            id: 'overlay',
+            type: 'heatmap',
+            source: 'overlay',
+            'source-layer': 'poverty_points',
+            paint: {
+              'heatmap-weight': ['interpolate', ['exponential', 2], ['get', 'poverty'], 0, 0, 2.022, 1],
+              'heatmap-intensity': ['interpolate', ['exponential', 2], ['zoom'], 0, 0, 10, 5],
+              'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 0, 10, 30],
+            },
+          },
+*/
 export const CountryMap = (props: Props) => {
   const {
     country,
@@ -64,16 +76,11 @@ export const CountryMap = (props: Props) => {
                   'interpolate',
                   ['linear'],
                   ['get', `hrea_${year}`],
-                  0,
-                  ['to-color', '#d7191c'],
-                  0.25,
-                  ['to-color', '#fdae61'],
-                  0.5,
-                  ['to-color', '#ffffbf'],
-                  0.75,
-                  ['to-color', '#abd9e9'],
-                  1,
-                  ['to-color', '#2c7bb6'],
+                  0, '#d7191c',
+                  0.25, '#fdae61',
+                  0.5, '#ffffbf',
+                  0.75, '#abd9e9',
+                  1, '#2c7bb6',
                 ],
               ],
               'fill-opacity': 0.5,
@@ -87,17 +94,6 @@ export const CountryMap = (props: Props) => {
             filter: ['==', 'adm0_name', country['Country or Area']],
             minzoom: 0,
             maxzoom: 22,
-          },
-          {
-            id: 'overlay',
-            type: 'heatmap',
-            source: 'overlay',
-            'source-layer': 'poverty_points',
-            paint: {
-              'heatmap-weight': ['interpolate', ['exponential', 2], ['get', 'poverty'], 0, 0, 2.022, 1],
-              'heatmap-intensity': ['interpolate', ['exponential', 2], ['zoom'], 0, 0, 10, 5],
-              'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 0, 10, 30],
-            },
           },
         ],
       },
