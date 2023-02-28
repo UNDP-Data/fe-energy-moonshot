@@ -97,11 +97,11 @@ export const CountryProfile = (props: Props) => {
     console.log('indicators by country', indicatorsByCountry);
   }, [selectedCountry]);
 
-  /* const formatPercent = (d: any) => {
+  const formatPercent = (d: any) => {
     // eslint-disable-next-line no-console
     if (d === 'n/a') return d;
     return `${d}%`;
-  }; */
+  };
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
@@ -122,6 +122,7 @@ export const CountryProfile = (props: Props) => {
                 placeholder='Select a country'
                 value={selectedCountry}
                 showSearch
+                style={{ width: '400px' }}
                 onChange={(d) => { setSelectedCountry(d); }}
               >
                 <Select.Option className='undp-select-option' key='All'>All Countries</Select.Option>
@@ -139,63 +140,76 @@ export const CountryProfile = (props: Props) => {
       selectedCountry !== undefined && countryDataValues.length > 0
         ? (
           <div className='margin-top-1'>
-            <CountryMap country={countryGroupData} />
+            <div className='flex-div'>
+              <div style={{ flex: '2', border: '1px dotted black' }}>
+                <CountryMap country={countryGroupData} />
+              </div>
+              <div style={{ flex: '1' }}>
+                <StatCardsDiv className='stat-card' width='96%'>
+                  <h6 className='undp-typography margin-bottom-05'>Population with access to electricity</h6>
+                  <h3 className='undp-typography'>{formatPercent(countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].value)}</h3>
+                  <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].year}</StatCardSmallFont>
+                  <StatCardSmallFont>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmallFont>
+                </StatCardsDiv>
+              </div>
+            </div>
+            <h4 className='undp-typography margin-top-05'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='100%'>
-                <h4 className='undp-typography'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
                 <div className='flex-wrap margin-bottom-07'>
-                  <p className='label'>Radio Group Label</p>
                   <Radio.Group defaultValue={activeYear}>
                     <Radio
                       className='undp-radio'
-                      value={2030}
-                      onChange={(e) => { console.log('e', e.target.value); setSelectedYear(e.target.value); }}
+                      value='2030'
+                      onChange={(e) => { setSelectedYear(e.target.value); }}
                     >
                       2030
                     </Radio>
                     <Radio
                       className='undp-radio'
-                      value={2050}
-                      onChange={(e) => { console.log('e', e.target.value); setSelectedYear(e.target.value); }}
+                      value='2050'
+                      onChange={(e) => { setSelectedYear(e.target.value); }}
                     >
                       2050
                     </Radio>
                   </Radio.Group>
                 </div>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ flex: '2', borderRight: '2px dotted #888' }}>
-                    <h6 className='undp-typography'>Investments necessary</h6>
+                <div className='flex-div'>
+                  <div style={{ flex: '1', borderRight: '2px dotted #888' }}>
+                    <h5 className='undp-typography margin-bottom-08'>Investments necessary</h5>
                     <ScaledSquare
                       values={countryDataValues}
                       year={activeYear}
                       indicator='InvTotal_cum_'
                       maxValue={maxValue(countryDataValues)}
                     />
-                    <p className='undp-typography margin-bottom-03'>Investment Gap for Universal Access*, Million USD</p>
-                    <p className='undp-typography'>Cumulative 2022-2030</p>
+                    <p className='undp-typography'>{`Cumulative 2022-${activeYear}`}</p>
                   </div>
                   <div style={{ flex: '3', paddingLeft: '20px' }}>
-                    <h6 className='undp-typography'>Benefits</h6>
-                    <div style={{ display: 'flex' }}>
-                      <div style={{ flex: 'auto' }}>
+                    <h5 className='undp-typography'>Benefits</h5>
+                    <div className='flex-div'>
+                      <div style={{ flex: '1' }}>
+                        <h6 className='undp-typography'>GDP growth</h6>
                         <ScaledSquare
                           values={countryDataValues}
                           year={activeYear}
                           indicator='GDPgains_cum'
                           maxValue={maxValue(countryDataValues)}
                         />
-                        <p className='undp-typography margin-bottom-03'>Gain GDP, Million USD</p>
-                        <p className='undp-typography'>Cumulative 2022-2030</p>
+                        <p className='undp-typography margin-bottom-03'>GDP gain ...</p>
+                        <p className='undp-typography'>{`Cumulative 2022-${activeYear}`}</p>
                       </div>
-                      <div style={{ flex: 'auto' }}>
-                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_%`)[0].value}</h3>
-                        <p>less poverty</p>
-                        <p className='undp-typography'>2022-2030</p>
+                      <div style={{ flex: '1', paddingRight: '20px' }}>
+                        <h6 className='undp-typography'>Less poverty</h6>
+                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value * 1000000}</h3>
+                        <p>{`fewer people living in extreme poverty (${countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_%`)[0].value} less)`}</p>
+                        <p className='undp-typography'>{`by ${activeYear}`}</p>
                       </div>
-                      <div style={{ flex: 'auto' }}>
+                      <div style={{ flex: '1' }}>
+                        <h6 className='undp-typography'>Less deaths</h6>
                         <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `averted_deaths_${activeYear}`)[0].value}</h3>
-                        <p className='undp-typography'>less deaths</p>
-                        <p className='undp-typography'>2022-2030</p>
+                        <p className='undp-typography'>averted deaths due to the reduction of the use of traditional cookstoves</p>
+                        <p className='undp-typography'>{`by ${activeYear}`}</p>
                       </div>
                     </div>
                   </div>
@@ -204,6 +218,7 @@ export const CountryProfile = (props: Props) => {
                 <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
               </StatCardsDiv>
             </div>
+            <h4 className='undp-typography'>{`Work of UNDP in ${selectedCountry}`}</h4>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>

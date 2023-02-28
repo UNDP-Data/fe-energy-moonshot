@@ -31,19 +31,19 @@ export const ScaledSquare = (props:Props) => {
   useEffect(() => {
     select(`#${indicator}${year}_bi`)
       .transition()
-      .duration(3000)
+      .duration(2000)
       .attr('width', scale(Number(item.value)))
       .attr('height', scale(Number(item.value)));
   });
   return (
     <div>
-      <p className='undp-typography'>{`${item.value}M (USD)`}</p>
       <svg width={width} height={width}>
         <g transform='translate(00)'>
-          <rect id={`${indicator}${year}_bi`} height='0' width='0' style={{ fill: '#55606E' }} />
-          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: 'none', stroke: '#FFF' }} />
+          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: '#FFF' }} />
+          <rect id={`${indicator}${year}_bi`} height='0' width='0' style={{ fill: 'var(--dark-azure' }} />
         </g>
       </svg>
+      <h6 className='undp-typography'>{`${item.value}M (USD)`}</h6>
     </div>
   );
 };
