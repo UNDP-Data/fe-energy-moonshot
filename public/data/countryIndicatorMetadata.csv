@@ -36,4 +36,4 @@ InvRural_2050_bi,InvRural_2050_bi,Total spending for rural electricity infrastru
 InvUrban_2030_bi,InvUrban_2030_bi,Total spending for urban electricity infrastructure in 2030 (in billion USD) -  difference of UA and CP,Bi USD,7
 InvUrban_2050_bi,InvUrban_2050_bi,Total spending for urban electricity infrastructure in 2050 (in billion USD) - difference of UA and CP,Bi USD,7
 InvTotal_cum_2030_bi,InvTotal_cum_2030_bi,Cumulative (2022-2030) difference between Total spending for rural and urbanl electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
-InvTotal_cum_2050_bi,InvTotal_cum_2030_bi,Cumulative (2022-2050) difference between Total spending for rural and urbanl electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+InvTotal_cum_2050_bi,InvTotal_cum_2050_bi,Cumulative (2022-2050) difference between Total spending for rural and urbanl electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
