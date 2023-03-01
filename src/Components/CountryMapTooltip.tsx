@@ -67,7 +67,7 @@ export function CountryMapTooltip(props: Props) {
       <div style={{ padding: 'var(--spacing-03) var(--spacing-05) var(--spacing-05) var(--spacing-05)' }}>
         <div className='flex-div margin-bottom-00 flex-space-between' style={{ alignItems: 'flex-start' }}>
           <p className='small-font margin-bottom-00'>
-            Percent Access to Reliable Energy Services
+            Access to Reliable Energy Services
           </p>
           <p className='small-font bold margin-bottom-00'>
             {

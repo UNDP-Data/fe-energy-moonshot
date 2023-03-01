@@ -140,16 +140,20 @@ export const CountryProfile = (props: Props) => {
       selectedCountry !== undefined && countryDataValues.length > 0
         ? (
           <div className='margin-top-1'>
+            <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
             <div className='flex-div'>
-              <div style={{ flex: '2', border: '1px dotted black' }}>
+              <div style={{ flex: '2' }}>
                 <CountryMap country={countryGroupData} />
+                <i>legend map to be added!, the map will be scaled according to the size + other fixes necessary</i>
+                <StatCardSmallFont>HREA data source:... (2020), Poverty data source: ... (2015)</StatCardSmallFont>
               </div>
               <div style={{ flex: '1' }}>
-                <StatCardsDiv className='stat-card' width='96%'>
-                  <h6 className='undp-typography margin-bottom-05'>Population with access to electricity</h6>
-                  <h3 className='undp-typography'>{formatPercent(countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].value)}</h3>
-                  <StatCardSmallFont>{countryDataValues.filter((d) => d.indicator === 'electricityAccess_sharet')[0].year}</StatCardSmallFont>
-                  <StatCardSmallFont>Source: Tracking SDG 7: The Energy Progress Report</StatCardSmallFont>
+                <StatCardsDiv className='stat-card margin-top-07' width='96%'>
+                  <h6 className='undp-typography margin-bottom-06'>Population with access to reliable energy services</h6>
+                  <h3 className='undp-typography'>{formatPercent(Math.round(countryDataValues.filter((d) => d.indicator === 'hrea_2020')[0].value * 100))}</h3>
+                  <p className='undp-typography'>{`${format(',')(countryDataValues.filter((d) => d.indicator === 'pop_hrea_2020')[0].value)} people`}</p>
+                  <StatCardSmallFont>2020</StatCardSmallFont>
+                  <StatCardSmallFont>Source: </StatCardSmallFont>
                 </StatCardsDiv>
               </div>
             </div>
@@ -176,7 +180,7 @@ export const CountryProfile = (props: Props) => {
                 </div>
                 <div className='flex-div'>
                   <div style={{ flex: '1', borderRight: '2px dotted #888' }}>
-                    <h5 className='undp-typography margin-bottom-08'>Investments necessary</h5>
+                    <h5 className='undp-typography margin-bottom-08'>Investment gap</h5>
                     <ScaledSquare
                       values={countryDataValues}
                       year={activeYear}
@@ -189,24 +193,23 @@ export const CountryProfile = (props: Props) => {
                     <h5 className='undp-typography'>Benefits</h5>
                     <div className='flex-div'>
                       <div style={{ flex: '1' }}>
-                        <h6 className='undp-typography'>GDP growth</h6>
+                        <h6 className='undp-typography'>GDP gains</h6>
                         <ScaledSquare
                           values={countryDataValues}
                           year={activeYear}
                           indicator='GDPgains_cum'
                           maxValue={maxValue(countryDataValues)}
                         />
-                        <p className='undp-typography margin-bottom-03'>GDP gain ...</p>
                         <p className='undp-typography'>{`Cumulative 2022-${activeYear}`}</p>
                       </div>
                       <div style={{ flex: '1', paddingRight: '20px' }}>
-                        <h6 className='undp-typography'>Less poverty</h6>
-                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value * 1000000}</h3>
-                        <p>{`fewer people living in extreme poverty (${countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_%`)[0].value} less)`}</p>
+                        <h6 className='undp-typography'>Poverty</h6>
+                        <h3 className='undp-typography'>{format(',')(Math.abs(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value * 1000000))}</h3>
+                        <p>{`${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value < 0) ? 'fewer' : 'more'} people living in extreme poverty (${countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_%`)[0].value} ${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value < 0) ? 'less' : 'more'})`}</p>
                         <p className='undp-typography'>{`by ${activeYear}`}</p>
                       </div>
                       <div style={{ flex: '1' }}>
-                        <h6 className='undp-typography'>Less deaths</h6>
+                        <h6 className='undp-typography'>Deaths</h6>
                         <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `averted_deaths_${activeYear}`)[0].value}</h3>
                         <p className='undp-typography'>averted deaths due to the reduction of the use of traditional cookstoves</p>
                         <p className='undp-typography'>{`by ${activeYear}`}</p>

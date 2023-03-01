@@ -243,7 +243,15 @@ export const CountryMap = (props: Props) => {
           Poverty heatmap
         </Radio>
       </Radio.Group>
-      <div id='map' style={{ height: '400px', width: '100%', backgroundColor: '#F7F7F7' }} />
+      <div
+        id='map'
+        style={{
+          height: '400px',
+          width: '100%',
+          backgroundColor: '#F7F7F7',
+          border: '2px solid #F7F7F7',
+        }}
+      />
       {
         hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
       }

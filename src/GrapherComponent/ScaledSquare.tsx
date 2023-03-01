@@ -39,8 +39,8 @@ export const ScaledSquare = (props:Props) => {
     <div>
       <svg width={width} height={width}>
         <g transform='translate(00)'>
-          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: '#FFF' }} />
-          <rect id={`${indicator}${year}_bi`} height='0' width='0' style={{ fill: 'var(--dark-azure' }} />
+          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: '#D4D6D8', opacity: 0.6 }} />
+          <rect id={`${indicator}${year}_bi`} height='0' width='0' style={{ fill: 'var(--blue-600)' }} />
         </g>
       </svg>
       <h6 className='undp-typography'>{`${item.value}M (USD)`}</h6>
