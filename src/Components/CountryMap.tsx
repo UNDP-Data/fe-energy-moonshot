@@ -1,6 +1,7 @@
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Radio } from 'antd';
+import UNDPColorModule from 'undp-viz-colors';
 import { useEffect, useRef, useState } from 'react';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
@@ -10,14 +11,14 @@ interface Props {
   country: CountryGroupDataType;
 }
 interface HoverDataProps {
-  district?: string;
+  district: string;
   country: string;
   pctValue?: number;
   popValue?: number;
   xPosition: number;
   yPosition: number;
 }
-
+const colorScale = UNDPColorModule.divergentColors.colorsx11;
 export const CountryMap = (props: Props) => {
   const {
     country,
@@ -30,7 +31,6 @@ export const CountryMap = (props: Props) => {
     let districtHoveredStateId: string | null = null;
     if (map.current) return;
     // initiate map and add base layer
-    // map.on('mousemove', 'admin2a', (d:any) => console.log('mousemove', d.features[0].properties.adm0_name, d.features[0].properties.adm2_name, d.features[0].properties.hrea_2020, d.features[0].properties.pop_hrea_2020));
     (map as any).current = new maplibreGl.Map({
       container: 'map',
       style: {
@@ -53,39 +53,6 @@ export const CountryMap = (props: Props) => {
             minzoom: 0,
             maxzoom: 22,
           },
-          {
-            id: 'admin2a',
-            type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
-            paint: {
-              'fill-color': [
-                'case',
-                ['==', ['get', `hrea_${year}`], ''],
-                'hsla(0, 0%, 0%, 0)',
-                [
-                  'interpolate',
-                  ['linear'],
-                  ['get', `hrea_${year}`],
-                  0, '#d7191c',
-                  0.25, '#fdae61',
-                  0.5, '#ffffbf',
-                  0.75, '#abd9e9',
-                  1, '#2c7bb6',
-                ],
-              ],
-              'fill-opacity': 1,
-              'fill-outline-color': [
-                'case',
-                ['boolean', ['feature-state', 'hover'], false],
-                'hsla(0, 0%, 0%, 1)',
-                'hsla(0, 0%, 100%, 0.5)',
-              ],
-            },
-            filter: ['==', 'adm0_name', country['Country or Area']],
-            minzoom: 0,
-            maxzoom: 22,
-          },
         ],
       },
       center: [country['Longitude (average)'], country['Latitude (average)']],
@@ -93,34 +60,39 @@ export const CountryMap = (props: Props) => {
     });
     (map as any).current.on('load', () => {
       // mouse over effect on district layer
-      (map as any).current.on('mousemove', 'district-layer-overlay', (e:any) => {
+      (map as any).current.on('mousemove', 'admin2a', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
         if (e.features.length > 0) {
-          setHoverData({
-            district: e.features[0].properties.adm2_name !== ' ' && e.features[0].properties.adm2_name !== '' && e.features[0].properties.adm2_name ? e.features[0].properties.adm2_name : e.features[0].properties.adm1_name,
-            country: country['Country or Area'],
-            pctValue: e.features[0].properties.hrea_2020,
-            popValue: Math.round(e.features[0].properties.pop_hrea_2020),
-            xPosition: e.originalEvent.clientX,
-            yPosition: e.originalEvent.clientY,
-          });
+          districtHoveredStateId = e.features[0].layer.id;
           if (districtHoveredStateId) {
+            setHoverData({
+              district: e.features[0].properties.adm2_name !== ' ' && e.features[0].properties.adm2_name !== '' && e.features[0].properties.adm2_name ? e.features[0].properties.adm2_name : e.features[0].properties.adm1_name,
+              country: country['Country or Area'],
+              pctValue: e.features[0].properties.hrea_2020 * 100,
+              popValue: e.features[0].properties.pop_no_hrea_2020,
+              xPosition: e.originalEvent.clientX,
+              yPosition: e.originalEvent.clientY,
+            });
             (map as any).current.setFeatureState(
-              { source: 'district-layer-data', id: districtHoveredStateId },
-              { hover: false },
+              { source: 'admin2', id: districtHoveredStateId, sourceLayer: 'adm2_polygons' },
+              { hover: true },
             );
           }
-          districtHoveredStateId = e.features[0].id;
+        }
+      });
+      (map as any).current.on('mouseleave', 'admin2a', () => {
+        if (districtHoveredStateId) {
+          setHoverData(null);
           (map as any).current.setFeatureState(
-            { source: 'district-layer-data', id: districtHoveredStateId },
-            { hover: true },
+            { source: 'admin2', id: districtHoveredStateId, sourceLayer: 'adm2_polygons' },
+            { hover: false },
           );
         }
+        districtHoveredStateId = null;
       });
     });
   });
   useEffect(() => {
-    console.log('country changed +++++', country);
     if (map.current) {
       (map as any).current.flyTo({
         center: [country['Longitude (average)'], country['Latitude (average)']],
@@ -135,6 +107,20 @@ export const CountryMap = (props: Props) => {
             },
           },
           layers: [
+            {
+              id: 'admin2b',
+              type: 'fill',
+              source: 'admin2',
+              'source-layer': 'adm2_polygons',
+              paint: {
+                'fill-color': '#FFFFFF',
+                'fill-opacity': 1,
+                'fill-outline-color': 'hsla(0, 0%, 50%, 0.9)',
+              },
+              filter: ['!=', 'adm0_name', country['Country or Area']],
+              minzoom: 0,
+              maxzoom: 22,
+            },
             {
               id: 'admin2',
               type: 'line',
@@ -160,11 +146,27 @@ export const CountryMap = (props: Props) => {
                     'interpolate',
                     ['linear'],
                     ['get', `hrea_${year}`],
-                    0, '#d7191c',
-                    0.25, '#fdae61',
-                    0.5, '#ffffbf',
-                    0.75, '#abd9e9',
-                    1, '#2c7bb6',
+                    0, colorScale[10],
+                    0.0999, colorScale[10],
+                    0.1, colorScale[9],
+                    0.1999, colorScale[9],
+                    0.2, colorScale[8],
+                    0.2999, colorScale[8],
+                    0.3, colorScale[7],
+                    0.3999, colorScale[7],
+                    0.4, colorScale[6],
+                    0.4999, colorScale[6],
+                    0.5, colorScale[5],
+                    0.5999, colorScale[5],
+                    0.6, colorScale[4],
+                    0.6999, colorScale[4],
+                    0.7, colorScale[3],
+                    0.7999, colorScale[3],
+                    0.8, colorScale[2],
+                    0.8999, colorScale[2],
+                    0.9, colorScale[1],
+                    0.9999, colorScale[1],
+                    1, colorScale[0],
                   ],
                 ],
                 'fill-opacity': 1,
@@ -206,7 +208,6 @@ export const CountryMap = (props: Props) => {
                 'heatmap-intensity': ['interpolate', ['exponential', 2], ['zoom'], 0, 0, 10, 5],
                 'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 0, 10, 30],
               },
-              // filter: ['==', 'adm0_name', country['Country or Area']],
             },
             {
               id: 'admin2',
@@ -219,18 +220,6 @@ export const CountryMap = (props: Props) => {
               minzoom: 0,
               maxzoom: 22,
             },
-            /* {
-              id: 'admin2a',
-              type: 'fill',
-              source: 'admin2',
-              'source-layer': 'adm2_polygons',
-              paint: {
-                'fill-color': '#FF0000',
-              },
-              filter: ['!=', 'adm0_name', country['Country or Area']],
-              minzoom: 0,
-              maxzoom: 22,
-            }, */
           ],
         });
       }
@@ -242,7 +231,7 @@ export const CountryMap = (props: Props) => {
         <Radio
           className='undp-radio'
           value='hrea'
-          onChange={(e) => { console.log(e.target.value); setSelectedLayer(e.target.value); }}
+          onChange={(e) => { setSelectedLayer(e.target.value); }}
         >
           High resolution electricity access
         </Radio>
@@ -254,7 +243,7 @@ export const CountryMap = (props: Props) => {
           Poverty heatmap
         </Radio>
       </Radio.Group>
-      <div id='map' style={{ height: '400px', width: '100%' }} />
+      <div id='map' style={{ height: '400px', width: '100%', backgroundColor: '#F7F7F7' }} />
       {
         hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
       }

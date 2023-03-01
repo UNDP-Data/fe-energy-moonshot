@@ -69,7 +69,7 @@ export function CountryMapTooltip(props: Props) {
           <p className='small-font margin-bottom-00'>
             Percent Access to Reliable Energy Services
           </p>
-          <p className='small-font bold margin-bottom-00' style={{ flexShrink: '0' }}>
+          <p className='small-font bold margin-bottom-00'>
             {
                 pctValue !== undefined ? `${pctValue.toFixed(1)} %` : 'NA'
               }
@@ -79,7 +79,7 @@ export function CountryMapTooltip(props: Props) {
           <p className='small-font margin-bottom-00'>
             Number of people without Access to Reliable Energy Services
           </p>
-          <p className='small-font bold margin-bottom-00' style={{ flexShrink: '0' }}>
+          <p className='small-font bold margin-bottom-00'>
             {
               popValue
                 ? format('.3s')(popValue).replace('G', 'B')
