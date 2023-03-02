@@ -76,6 +76,7 @@ export const CountryProfile = (props: Props) => {
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
   const [selectedYear, setSelectedYear] = useState<string>('2030');
+  const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
   useEffect(() => {
     setSelectedYear('2030');
     if (queryCountry)setSelectedCountry(queryCountry);
@@ -141,23 +142,39 @@ export const CountryProfile = (props: Props) => {
         ? (
           <div className='margin-top-1'>
             <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
+            <p className='undp-typography'>
+              {`The latest estimates of access to reliable electricity based on satellite data indicates that ${formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${format(',')(indValue('pop_no_hrea_2020'))} people) in ${selectedCountry} does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
+            </p>
             <div className='flex-div'>
               <div style={{ flex: '2' }}>
                 <CountryMap country={countryGroupData} />
                 <i>legend poverty map to be added!, the map will be scaled according to the size + other fixes necessary</i>
-                <StatCardSmallFont>HREA data source:... (2020), Poverty data source: ... (2015)</StatCardSmallFont>
+                <StatCardSmallFont>
+                  <ol>
+                    <li>Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:</li>
+                    <li>
+                      Relative wealth index from Facebook (2015) For more details, check:
+                      <a href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'>https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
+                    </li>
+                  </ol>
+                </StatCardSmallFont>
               </div>
               <div style={{ flex: '1' }}>
                 <StatCardsDiv className='stat-card margin-top-07' width='96%'>
-                  <h6 className='undp-typography margin-bottom-06'>Population with access to reliable energy services</h6>
-                  <h3 className='undp-typography'>{formatPercent(Math.round(countryDataValues.filter((d) => d.indicator === 'hrea_2020')[0].value * 100))}</h3>
-                  <p className='undp-typography'>{`${format(',')(countryDataValues.filter((d) => d.indicator === 'pop_hrea_2020')[0].value)} people`}</p>
+                  <h6 className='undp-typography margin-bottom-06'>Population without access to reliable energy services</h6>
+                  <h3 className='undp-typography'>{formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
+                  <p className='undp-typography'>{`${format(',')(indValue('pop_no_hrea_2020'))} people`}</p>
                   <StatCardSmallFont>2020</StatCardSmallFont>
-                  <StatCardSmallFont>Source: </StatCardSmallFont>
+                  <StatCardSmallFont>Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check</StatCardSmallFont>
                 </StatCardsDiv>
               </div>
             </div>
             <h4 className='undp-typography margin-top-05'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
+            <div>
+              <p className='undp-typography'>
+                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than ${indValue('InvTotal_cum_2030_bi') * 1000} between now and 2030, including more than USD ${indValue('InvRural_cum2030_bi') * 1000} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching ${indValue('GDPgains_cum2050_bi') * 1000} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${indValue('poverty_reduction_2050_million') * 1000000} out of extreme poverty by mid-century and avoiding [insert here the number of avoided deaths] deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+              </p>
+            </div>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='100%'>
                 <div className='flex-wrap margin-bottom-07'>

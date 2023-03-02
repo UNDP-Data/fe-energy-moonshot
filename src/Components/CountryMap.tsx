@@ -1,9 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styled from 'styled-components';
 import { Radio } from 'antd';
 import UNDPColorModule from 'undp-viz-colors';
-import { useEffect, useRef, useState } from 'react';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
@@ -39,6 +39,7 @@ export const CountryMap = (props: Props) => {
     country,
   } = props;
   const year = 2020;
+  const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
   const [selectedLayer, setSelectedLayer] = useState<string>('hrea');
   const [hoverData, setHoverData] = useState<null | HoverDataProps>(null);
@@ -49,13 +50,14 @@ export const CountryMap = (props: Props) => {
     if (map.current) return;
     // initiate map and add base layer
     (map as any).current = new maplibreGl.Map({
-      container: 'map',
+      container: mapContainer.current as any,
       style: {
         version: 8,
         sources: {
           admin2: {
             type: 'vector',
             tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
+            attribution: 'UNDP GeoHub',
           },
         },
         layers: [
@@ -249,18 +251,19 @@ export const CountryMap = (props: Props) => {
           value='hrea'
           onChange={(e) => { setSelectedLayer(e.target.value); }}
         >
-          High resolution electricity access
+          Map of reliable electricity access
         </Radio>
         <Radio
           className='undp-radio'
           value='poverty'
           onChange={(e) => { setSelectedLayer(e.target.value); }}
         >
-          Poverty heatmap
+          Relative wealth heatmap
         </Radio>
       </Radio.Group>
       <div
-        id='map'
+        ref={mapContainer}
+        className='map'
         style={{
           height: '400px',
           width: '100%',

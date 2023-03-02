@@ -79,6 +79,7 @@ export const GrapherComponent = (props: Props) => {
   return (
     <>
       {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
+      <div className='margin-bottom-05'><p className='undp-typography'>UNDP and partners are currently supporting energy projects in XX countries, which translates into approximately USD XXX  million in financial resources mobilized from the development community and national governments. These interventions can provide clean and affordable energy to more than XX million people worldwide. More than XXXX of the XXXX active energy-related projects supported by UNDP and partners are implemented in Sub-Saharan Africa, which amounts to more than USD XX million and can help 13.2 million people in the region to gain access to electricity and clean cooking solutions. Through the promotion of renewable energy, these interventions are showcasing alternative development pathways away from traditional fossil-fuel based solutions and are thus contributing to the energy transition.</p></div>
       <Settings
         regions={regions}
       />

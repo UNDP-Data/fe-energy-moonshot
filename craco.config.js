@@ -24,4 +24,9 @@ module.exports = {
       return webpackConfig;
     },
   },
+  babel:{
+  	loaderOptions: {
+  		ignore: ['./node_modules/maplibre-gl/dist/maplibre-gl.js']
+  	}
+  }
 };

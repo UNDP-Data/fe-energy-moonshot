@@ -68,7 +68,7 @@
     "lodash.sortby": "^4.7.0",
     "lodash.sumby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
-    "maplibre-gl": "^2.4.0",
+    "maplibre-gl": "^2.1.9",
     "react": "^18.2.0",
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
@@ -83,7 +83,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer '/build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": [
