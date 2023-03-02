@@ -26,8 +26,6 @@ export const ScaledSquare = (props:Props) => {
   const item = filterIndicator(`${indicator}${year}_bi`);
   const item2050 = filterIndicator(`${indicator}2050_bi`);
 
-  // eslint-disable-next-line no-console
-  console.log('year, item', year, item);
   useEffect(() => {
     select(`#${indicator}${year}_bi`)
       .transition()

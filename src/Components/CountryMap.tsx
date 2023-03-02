@@ -1,11 +1,26 @@
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import styled from 'styled-components';
 import { Radio } from 'antd';
 import UNDPColorModule from 'undp-viz-colors';
 import { useEffect, useRef, useState } from 'react';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
+
+const KeyEl = styled.div`
+  padding: 0;
+  position: relative;
+  z-index: 5;
+  bottom: 0;
+  right: 0;
+  margin: 0 1rem 1rem 0;
+  background-color: rgba(255,255,255,0.75);
+  div {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+`;
 
 interface Props {
   country: CountryGroupDataType;
@@ -18,7 +33,7 @@ interface HoverDataProps {
   xPosition: number;
   yPosition: number;
 }
-const colorScale = UNDPColorModule.divergentColors.colorsx11;
+const colorScale = [...UNDPColorModule.divergentColors.colorsx10].reverse();
 export const CountryMap = (props: Props) => {
   const {
     country,
@@ -27,6 +42,8 @@ export const CountryMap = (props: Props) => {
   const map = useRef<HTMLDivElement>(null);
   const [selectedLayer, setSelectedLayer] = useState<string>('hrea');
   const [hoverData, setHoverData] = useState<null | HoverDataProps>(null);
+  const keyBarWid = 40;
+  const pctRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   useEffect(() => {
     let districtHoveredStateId: string | null = null;
     if (map.current) return;
@@ -146,27 +163,26 @@ export const CountryMap = (props: Props) => {
                     'interpolate',
                     ['linear'],
                     ['get', `hrea_${year}`],
-                    0, colorScale[10],
-                    0.0999, colorScale[10],
-                    0.1, colorScale[9],
-                    0.1999, colorScale[9],
-                    0.2, colorScale[8],
-                    0.2999, colorScale[8],
-                    0.3, colorScale[7],
-                    0.3999, colorScale[7],
-                    0.4, colorScale[6],
-                    0.4999, colorScale[6],
+                    0, colorScale[0],
+                    0.0999, colorScale[0],
+                    0.1, colorScale[1],
+                    0.1999, colorScale[1],
+                    0.2, colorScale[2],
+                    0.2999, colorScale[2],
+                    0.3, colorScale[3],
+                    0.3999, colorScale[3],
+                    0.4, colorScale[4],
+                    0.4999, colorScale[4],
                     0.5, colorScale[5],
                     0.5999, colorScale[5],
-                    0.6, colorScale[4],
-                    0.6999, colorScale[4],
-                    0.7, colorScale[3],
-                    0.7999, colorScale[3],
-                    0.8, colorScale[2],
-                    0.8999, colorScale[2],
-                    0.9, colorScale[1],
-                    0.9999, colorScale[1],
-                    1, colorScale[0],
+                    0.6, colorScale[6],
+                    0.6999, colorScale[6],
+                    0.7, colorScale[7],
+                    0.7999, colorScale[7],
+                    0.8, colorScale[8],
+                    0.8999, colorScale[8],
+                    0.9, colorScale[9],
+                    1, colorScale[9],
                   ],
                 ],
                 'fill-opacity': 1,
@@ -252,6 +268,45 @@ export const CountryMap = (props: Props) => {
           border: '2px solid #F7F7F7',
         }}
       />
+      <KeyEl>
+        <div>{ selectedLayer === 'hrea' ? 'Percentage Access to Reliable Electricity Services' : 'Relative poverty'}</div>
+        {
+        selectedLayer === 'hrea'
+          ? (
+            <svg height={25} width={colorScale.length * keyBarWid + 30}>
+              <g transform='translate(10,0)'>
+                {
+                  colorScale.map((d: string, i: number) => (
+                    <rect
+                      key={i}
+                      x={i * keyBarWid}
+                      height={10}
+                      y={0}
+                      width={keyBarWid}
+                      fill={d}
+                    />
+                  ))
+                }
+                {
+                  pctRange.map((d: number, i: number) => (
+                    <text
+                      key={i}
+                      x={(i) * keyBarWid}
+                      y={23}
+                      textAnchor='middle'
+                      fontSize={10}
+                    >
+                      {d}
+                      %
+                    </text>
+                  ))
+                }
+              </g>
+            </svg>
+          )
+          : null
+        }
+      </KeyEl>
       {
         hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
       }

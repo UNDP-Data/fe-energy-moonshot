@@ -75,7 +75,7 @@ export const CountryProfile = (props: Props) => {
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
-  const [activeYear, setSelectedYear] = useState<string>('2030');
+  const [selectedYear, setSelectedYear] = useState<string>('2030');
   useEffect(() => {
     setSelectedYear('2030');
     if (queryCountry)setSelectedCountry(queryCountry);
@@ -94,7 +94,7 @@ export const CountryProfile = (props: Props) => {
     setCardData(cardDataValues);
     const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
     setCountryGroupData(countryData);
-    console.log('indicators by country', indicatorsByCountry);
+    console.log('selectedYear', selectedYear);
   }, [selectedCountry]);
 
   const formatPercent = (d: any) => {
@@ -144,7 +144,7 @@ export const CountryProfile = (props: Props) => {
             <div className='flex-div'>
               <div style={{ flex: '2' }}>
                 <CountryMap country={countryGroupData} />
-                <i>legend map to be added!, the map will be scaled according to the size + other fixes necessary</i>
+                <i>legend poverty map to be added!, the map will be scaled according to the size + other fixes necessary</i>
                 <StatCardSmallFont>HREA data source:... (2020), Poverty data source: ... (2015)</StatCardSmallFont>
               </div>
               <div style={{ flex: '1' }}>
@@ -161,18 +161,16 @@ export const CountryProfile = (props: Props) => {
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='100%'>
                 <div className='flex-wrap margin-bottom-07'>
-                  <Radio.Group defaultValue={activeYear}>
+                  <Radio.Group onChange={(e) => { setSelectedYear(e.target.value); }} value={selectedYear}>
                     <Radio
                       className='undp-radio'
                       value='2030'
-                      onChange={(e) => { setSelectedYear(e.target.value); }}
                     >
                       2030
                     </Radio>
                     <Radio
                       className='undp-radio'
                       value='2050'
-                      onChange={(e) => { setSelectedYear(e.target.value); }}
                     >
                       2050
                     </Radio>
@@ -183,11 +181,11 @@ export const CountryProfile = (props: Props) => {
                     <h5 className='undp-typography margin-bottom-08'>Investment gap</h5>
                     <ScaledSquare
                       values={countryDataValues}
-                      year={activeYear}
+                      year={selectedYear}
                       indicator='InvTotal_cum_'
                       maxValue={maxValue(countryDataValues)}
                     />
-                    <p className='undp-typography'>{`Cumulative 2022-${activeYear}`}</p>
+                    <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
                   </div>
                   <div style={{ flex: '3', paddingLeft: '20px' }}>
                     <h5 className='undp-typography'>Benefits</h5>
@@ -196,23 +194,23 @@ export const CountryProfile = (props: Props) => {
                         <h6 className='undp-typography'>GDP gains</h6>
                         <ScaledSquare
                           values={countryDataValues}
-                          year={activeYear}
+                          year={selectedYear}
                           indicator='GDPgains_cum'
                           maxValue={maxValue(countryDataValues)}
                         />
-                        <p className='undp-typography'>{`Cumulative 2022-${activeYear}`}</p>
+                        <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
                       </div>
                       <div style={{ flex: '1', paddingRight: '20px' }}>
                         <h6 className='undp-typography'>Poverty</h6>
-                        <h3 className='undp-typography'>{format(',')(Math.abs(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value * 1000000))}</h3>
-                        <p>{`${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value < 0) ? 'fewer' : 'more'} people living in extreme poverty (${countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_%`)[0].value} ${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${activeYear}_million`)[0].value < 0) ? 'less' : 'more'})`}</p>
-                        <p className='undp-typography'>{`by ${activeYear}`}</p>
+                        <h3 className='undp-typography'>{format(',')(Math.abs(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_million`)[0].value * 1000000))}</h3>
+                        <p>{`${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_million`)[0].value < 0) ? 'fewer' : 'more'} people living in extreme poverty (${countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_%`)[0].value} ${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_million`)[0].value < 0) ? 'less' : 'more'})`}</p>
+                        <p className='undp-typography'>{`by ${selectedYear}`}</p>
                       </div>
                       <div style={{ flex: '1' }}>
                         <h6 className='undp-typography'>Deaths</h6>
-                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `averted_deaths_${activeYear}`)[0].value}</h3>
+                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `averted_deaths_${selectedYear}`)[0].value}</h3>
                         <p className='undp-typography'>averted deaths due to the reduction of the use of traditional cookstoves</p>
-                        <p className='undp-typography'>{`by ${activeYear}`}</p>
+                        <p className='undp-typography'>{`by ${selectedYear}`}</p>
                       </div>
                     </div>
                   </div>

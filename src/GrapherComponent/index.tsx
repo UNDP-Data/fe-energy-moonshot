@@ -72,7 +72,7 @@ export const GrapherComponent = (props: Props) => {
       });
     });
     // eslint-disable-next-line no-console
-    console.log('in groupedData', countryData);
+    // console.log('in groupedData', countryData);
     return (countryData);
   }
   const mapData = calculateCountryTotals();
