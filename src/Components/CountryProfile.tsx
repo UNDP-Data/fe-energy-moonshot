@@ -148,16 +148,19 @@ export const CountryProfile = (props: Props) => {
             <div className='flex-div'>
               <div style={{ flex: '2' }}>
                 <CountryMap country={countryGroupData} />
-                <i>legend poverty map to be added!, the map will be scaled according to the size + other fixes necessary</i>
-                <StatCardSmallFont>
+                <i className='small-font' style={{ color: 'var(--red)' }}>legend poverty map to be added!, the map will be scaled according to the size + other fixes necessary</i>
+                <div className='small-font'>
                   <ol>
-                    <li>Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:</li>
+                    <li>
+                      Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:
+                      <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
+                    </li>
                     <li>
                       Relative wealth index from Facebook (2015) For more details, check:
-                      <a href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'>https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
+                      <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
                     </li>
                   </ol>
-                </StatCardSmallFont>
+                </div>
               </div>
               <div style={{ flex: '1' }}>
                 <StatCardsDiv className='stat-card margin-top-07' width='96%'>
@@ -172,7 +175,7 @@ export const CountryProfile = (props: Props) => {
             <h4 className='undp-typography margin-top-05'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
             <div>
               <p className='undp-typography'>
-                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than ${indValue('InvTotal_cum_2030_bi') * 1000} between now and 2030, including more than USD ${indValue('InvRural_cum2030_bi') * 1000} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching ${indValue('GDPgains_cum2050_bi') * 1000} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${indValue('poverty_reduction_2050_million') * 1000000} out of extreme poverty by mid-century and avoiding [insert here the number of avoided deaths] deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M USD between now and 2030, including more than ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M USD on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M USD by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding [insert here the number of avoided deaths] deaths by 2050 due to the reduction of use of traditional cookstoves.`}
               </p>
             </div>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>

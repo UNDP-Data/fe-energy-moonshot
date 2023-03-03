@@ -13,13 +13,14 @@ import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { Graph } from './Graph';
-
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
   regions: RegionDataType[];
-  projectLevelData: ProjectLevelDataType[],
-  projectCoordsData: ProjectCoordsDataType[],
+  countries: string[];
+  projectLevelData: ProjectLevelDataType[];
+  projectCoordsData: ProjectCoordsDataType[];
 }
 
 const regionList = [
@@ -35,6 +36,7 @@ export const GrapherComponent = (props: Props) => {
     countryGroupData,
     indicators,
     regions,
+    countries,
     projectLevelData,
     projectCoordsData,
   } = props;
@@ -71,15 +73,20 @@ export const GrapherComponent = (props: Props) => {
         numberProjects: numberOfProjects,
       });
     });
-    // eslint-disable-next-line no-console
-    // console.log('in groupedData', countryData);
     return (countryData);
   }
   const mapData = calculateCountryTotals();
+  const rbaPercentProjects = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.numberProjects) / projectLevelData.length;
+  const rbaTotalGrant = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'Grant amount')[0].value);
+  const rbaTargetTotal = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'target_total')[0].value);
+  console.log('mapData', mapData);
   return (
     <>
       {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
-      <div className='margin-bottom-05'><p className='undp-typography'>UNDP and partners are currently supporting energy projects in XX countries, which translates into approximately USD XXX  million in financial resources mobilized from the development community and national governments. These interventions can provide clean and affordable energy to more than XX million people worldwide. More than XXXX of the XXXX active energy-related projects supported by UNDP and partners are implemented in Sub-Saharan Africa, which amounts to more than USD XX million and can help 13.2 million people in the region to gain access to electricity and clean cooking solutions. Through the promotion of renewable energy, these interventions are showcasing alternative development pathways away from traditional fossil-fuel based solutions and are thus contributing to the energy transition.</p></div>
+      <div className='margin-bottom-05'>
+        <p className='undp-typography'>{`UNDP and partners are currently supporting energy projects in ${countries.length} countries, which translates into approximately USD ${Math.round(sumBy(projectLevelData, (project:any) => project['Grant amount']) / 1000000)} million in financial resources mobilized from the development community and national governments. These interventions can provide clean and affordable energy to more than ${Math.round(sumBy(projectLevelData, (project:any) => project.target_total) / 1000000)} million people worldwide. More than ${Math.round(rbaPercentProjects * 100)}% of the ${projectLevelData.length} active energy-related projects supported by UNDP and partners are implemented in Sub-Saharan Africa, which amounts to more than USD ${Math.round(rbaTotalGrant / 1000000)} million and can help ${Math.round(rbaTargetTotal / 1000000)} million people in the region to gain access to electricity and clean cooking solutions. Through the promotion of renewable energy, these interventions are showcasing alternative development pathways away from traditional fossil-fuel based solutions and are thus contributing to the energy transition.`}</p>
+        <i className='small-font'>Note: The values within the text are dynamically calculated according to the data available at the moment. New values will appear once the SEH team data is being used.</i>
+      </div>
       <Settings
         regions={regions}
       />

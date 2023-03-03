@@ -1,5 +1,6 @@
 import { scaleSqrt } from 'd3-scale';
 import { select } from 'd3-selection';
+import { format } from 'd3-format';
 import { useEffect } from 'react';
 import { CountryIndicatorDataType } from '../Types';
 
@@ -41,7 +42,7 @@ export const ScaledSquare = (props:Props) => {
           <rect id={`${indicator}${year}_bi`} height='0' width='0' style={{ fill: 'var(--blue-600)' }} />
         </g>
       </svg>
-      <h6 className='undp-typography'>{`${item.value}M (USD)`}</h6>
+      <h6 className='undp-typography'>{`${format(',')(item.value * 1000)}M (USD)`}</h6>
     </div>
   );
 };

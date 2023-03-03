@@ -59,10 +59,15 @@ export const CountryMap = (props: Props) => {
             tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
             attribution: 'UNDP GeoHub',
           },
+          overlay: {
+            type: 'vector',
+            tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/poverty_points/{z}/{x}/{y}.pbf'],
+            maxzoom: 10,
+          },
         },
         layers: [
           {
-            id: 'admin2',
+            id: 'admin2line',
             type: 'line',
             source: 'admin2',
             'source-layer': 'adm2_polygons',
@@ -72,14 +77,98 @@ export const CountryMap = (props: Props) => {
             minzoom: 0,
             maxzoom: 22,
           },
+          {
+            id: 'admin2fill',
+            type: 'fill',
+            source: 'admin2',
+            'source-layer': 'adm2_polygons',
+            paint: {
+              'fill-color': '#FFFFFF',
+              'fill-opacity': 1,
+              'fill-outline-color': 'hsla(0, 0%, 50%, 0.9)',
+            },
+            filter: ['!=', 'adm0_name', country['Country or Area']],
+            minzoom: 0,
+            maxzoom: 22,
+          },
         ],
       },
       center: [country['Longitude (average)'], country['Latitude (average)']],
       zoom: 4, // starting zoom
     });
     (map as any).current.on('load', () => {
+      (map as any).current.addLayer(
+        {
+          id: 'admin2choropleth',
+          type: 'fill',
+          source: 'admin2',
+          'source-layer': 'adm2_polygons',
+          paint: {
+            'fill-color': [
+              'case',
+              ['==', ['get', `hrea_${year}`], ''],
+              'hsla(0, 0%, 0%, 0)',
+              [
+                'interpolate',
+                ['linear'],
+                ['get', `hrea_${year}`],
+                0, colorScale[0],
+                0.0999, colorScale[0],
+                0.1, colorScale[1],
+                0.1999, colorScale[1],
+                0.2, colorScale[2],
+                0.2999, colorScale[2],
+                0.3, colorScale[3],
+                0.3999, colorScale[3],
+                0.4, colorScale[4],
+                0.4999, colorScale[4],
+                0.5, colorScale[5],
+                0.5999, colorScale[5],
+                0.6, colorScale[6],
+                0.6999, colorScale[6],
+                0.7, colorScale[7],
+                0.7999, colorScale[7],
+                0.8, colorScale[8],
+                0.8999, colorScale[8],
+                0.9, colorScale[9],
+                1, colorScale[9],
+              ],
+            ],
+            'fill-opacity': 1,
+            'fill-outline-color': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], false],
+              'hsla(0, 0%, 0%, 1)',
+              'hsla(0, 0%, 100%, 0.5)',
+            ],
+          },
+          filter: ['==', 'adm0_name', country['Country or Area']],
+          minzoom: 0,
+          maxzoom: 22,
+        },
+        'admin2line',
+      );
+      (map as any).current.addLayer(
+        {
+          id: 'overlay',
+          type: 'heatmap',
+          source: 'overlay',
+          'source-layer': 'poverty_points',
+          paint: {
+            'heatmap-weight': ['interpolate', ['exponential', 2], ['get', 'poverty'], 0, 0, 2.022, 1],
+            'heatmap-intensity': ['interpolate', ['exponential', 2], ['zoom'], 0, 0, 10, 5],
+            'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 0, 10, 30],
+          },
+        },
+        'admin2fill',
+      );
+      (map as any).current.setLayoutProperty(
+        'overlay',
+        'visibility',
+        'none',
+      );
       // mouse over effect on district layer
-      (map as any).current.on('mousemove', 'admin2a', (e:any) => {
+      (map as any).current.on('mousemove', 'admin2choropleth', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
         if (e.features.length > 0) {
           districtHoveredStateId = e.features[0].layer.id;
@@ -99,7 +188,7 @@ export const CountryMap = (props: Props) => {
           }
         }
       });
-      (map as any).current.on('mouseleave', 'admin2a', () => {
+      (map as any).current.on('mouseleave', 'admin2choropleth', () => {
         if (districtHoveredStateId) {
           setHoverData(null);
           (map as any).current.setFeatureState(
@@ -116,133 +205,38 @@ export const CountryMap = (props: Props) => {
       (map as any).current.flyTo({
         center: [country['Longitude (average)'], country['Latitude (average)']],
       }); // starting position [lng, lat]
-      if (selectedLayer === 'hrea') {
-        (map as any).current.setStyle({
-          version: 8,
-          sources: {
-            admin2: {
-              type: 'vector',
-              tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
-            },
-          },
-          layers: [
-            {
-              id: 'admin2b',
-              type: 'fill',
-              source: 'admin2',
-              'source-layer': 'adm2_polygons',
-              paint: {
-                'fill-color': '#FFFFFF',
-                'fill-opacity': 1,
-                'fill-outline-color': 'hsla(0, 0%, 50%, 0.9)',
-              },
-              filter: ['!=', 'adm0_name', country['Country or Area']],
-              minzoom: 0,
-              maxzoom: 22,
-            },
-            {
-              id: 'admin2',
-              type: 'line',
-              source: 'admin2',
-              'source-layer': 'adm2_polygons',
-              paint: {
-                'line-color': 'hsla(0, 0%, 50%, 0.9)',
-              },
-              minzoom: 0,
-              maxzoom: 22,
-            },
-            {
-              id: 'admin2a',
-              type: 'fill',
-              source: 'admin2',
-              'source-layer': 'adm2_polygons',
-              paint: {
-                'fill-color': [
-                  'case',
-                  ['==', ['get', `hrea_${year}`], ''],
-                  'hsla(0, 0%, 0%, 0)',
-                  [
-                    'interpolate',
-                    ['linear'],
-                    ['get', `hrea_${year}`],
-                    0, colorScale[0],
-                    0.0999, colorScale[0],
-                    0.1, colorScale[1],
-                    0.1999, colorScale[1],
-                    0.2, colorScale[2],
-                    0.2999, colorScale[2],
-                    0.3, colorScale[3],
-                    0.3999, colorScale[3],
-                    0.4, colorScale[4],
-                    0.4999, colorScale[4],
-                    0.5, colorScale[5],
-                    0.5999, colorScale[5],
-                    0.6, colorScale[6],
-                    0.6999, colorScale[6],
-                    0.7, colorScale[7],
-                    0.7999, colorScale[7],
-                    0.8, colorScale[8],
-                    0.8999, colorScale[8],
-                    0.9, colorScale[9],
-                    1, colorScale[9],
-                  ],
-                ],
-                'fill-opacity': 1,
-                'fill-outline-color': [
-                  'case',
-                  ['boolean', ['feature-state', 'hover'], false],
-                  'hsla(0, 0%, 0%, 1)',
-                  'hsla(0, 0%, 100%, 0.5)',
-                ],
-              },
-              filter: ['==', 'adm0_name', country['Country or Area']],
-              minzoom: 0,
-              maxzoom: 22,
-            },
-          ],
-        });
-      } else {
-        (map as any).current.setStyle({
-          version: 8,
-          sources: {
-            overlay: {
-              type: 'vector',
-              tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/poverty_points/{z}/{x}/{y}.pbf'],
-              maxzoom: 10,
-            },
-            admin2: {
-              type: 'vector',
-              tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
-            },
-          },
-          layers: [
-            {
-              id: 'overlay',
-              type: 'heatmap',
-              source: 'overlay',
-              'source-layer': 'poverty_points',
-              paint: {
-                'heatmap-weight': ['interpolate', ['exponential', 2], ['get', 'poverty'], 0, 0, 2.022, 1],
-                'heatmap-intensity': ['interpolate', ['exponential', 2], ['zoom'], 0, 0, 10, 5],
-                'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 0, 10, 30],
-              },
-            },
-            {
-              id: 'admin2',
-              type: 'line',
-              source: 'admin2',
-              'source-layer': 'adm2_polygons',
-              paint: {
-                'line-color': 'hsla(0, 0%, 50%, 0.9)',
-              },
-              minzoom: 0,
-              maxzoom: 22,
-            },
-          ],
-        });
-      }
     }
-  }, [country, selectedLayer]);
+  }, [country]);
+  useEffect(() => {
+    if (map.current) {
+      (map as any).current.on('idle', () => {
+        if (selectedLayer === 'hrea') {
+          (map as any).current.setLayoutProperty(
+            'admin2choropleth',
+            'visibility',
+            'visible',
+          );
+          (map as any).current.setLayoutProperty(
+            'overlay',
+            'visibility',
+            'none',
+          );
+        } else {
+          (map as any).current.setLayoutProperty(
+            'overlay',
+            'visibility',
+            'visible',
+          );
+          (map as any).current.setLayoutProperty(
+            'admin2choropleth',
+            'visibility',
+            'none',
+          );
+        }
+        (map as any).current.moveLayer('admin2choropleth', 'admin2fill');
+      }); // starting position [lng, lat]
+    }
+  }, [selectedLayer]);
   return (
     <div>
       <Radio.Group defaultValue={selectedLayer}>
