@@ -6,15 +6,13 @@ import { CountryIndicatorDataType } from '../Types';
 
 interface Props{
   values: CountryIndicatorDataType[];
-  year: string,
-  indicator: string,
+  indicators: string[],
   maxValue: number,
 }
 export const ScaledSquare = (props:Props) => {
   const {
     values,
-    year,
-    indicator,
+    indicators,
     maxValue,
   } = props;
 
@@ -24,25 +22,30 @@ export const ScaledSquare = (props:Props) => {
   const width = 250;
   const squareWidth = 240;
   const scale = scaleSqrt<number>().range([0, squareWidth]).domain([0, maxValue]);
-  const item = filterIndicator(`${indicator}${year}_bi`);
-  const item2050 = filterIndicator(`${indicator}2050_bi`);
+  const item2030 = filterIndicator(indicators[0]);
+  const item2050 = filterIndicator(indicators[1]);
 
   useEffect(() => {
-    select(`#${indicator}${year}_bi`)
+    select(`#${indicators[0]}`)
       .transition()
       .duration(2000)
-      .attr('width', scale(Number(item.value)))
-      .attr('height', scale(Number(item.value)));
+      .attr('width', scale(Number(item2030.value)))
+      .attr('height', scale(Number(item2030.value)));
   });
   return (
     <div>
-      <svg width={width} height={width}>
-        <g transform='translate(00)'>
-          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: '#D4D6D8', opacity: 0.6 }} />
-          <rect id={`${indicator}${year}_bi`} height='0' width='0' style={{ fill: 'var(--blue-600)' }} />
+      <svg width={width + scale(Number(item2030.value)) + 20} height={width}>
+        <g transform='translate(0)'>
+          <rect id={indicators[0]} height='0' width='0' style={{ fill: 'var(--blue-300)', opacity: 0.6 }} />
+          <text x={scale(Number(item2030.value)) + 3} y='20'>{`${format(',')(item2030.value * 1000)}M (USD)`}</text>
         </g>
+
+        <g transform={`translate(0,${scale(Number(item2030.value)) + 5})`}>
+          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: 'var(--blue-600)' }} />
+          <text x={scale(Number(item2050.value)) > 200 ? 3 : scale(Number(item2050.value)) + 3} y='20'>{`${format(',')(item2050.value * 1000)}M (USD)`}</text>
+        </g>
+
       </svg>
-      <h6 className='undp-typography'>{`${format(',')(item.value * 1000)}M (USD)`}</h6>
     </div>
   );
 };

@@ -202,8 +202,7 @@ export const CountryProfile = (props: Props) => {
                     <h5 className='undp-typography margin-bottom-08'>Investment gap</h5>
                     <ScaledSquare
                       values={countryDataValues}
-                      year={selectedYear}
-                      indicator='InvTotal_cum_'
+                      indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
                       maxValue={maxValue(countryDataValues)}
                     />
                     <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
@@ -215,8 +214,7 @@ export const CountryProfile = (props: Props) => {
                         <h6 className='undp-typography'>GDP gains</h6>
                         <ScaledSquare
                           values={countryDataValues}
-                          year={selectedYear}
-                          indicator='GDPgains_cum'
+                          indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
                           maxValue={maxValue(countryDataValues)}
                         />
                         <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
