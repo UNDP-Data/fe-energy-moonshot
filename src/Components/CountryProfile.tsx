@@ -69,7 +69,7 @@ export const CountryProfile = (props: Props) => {
   } = props;
   const queryParams = new URLSearchParams(window.location.search);
   const queryCountry = queryParams.get('country');
-  const [selectedCountry, setSelectedCountry] = useState<string>();
+  const [selectedCountry, setSelectedCountry] = useState<string>(countries[0]);
   const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
   const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
@@ -83,6 +83,7 @@ export const CountryProfile = (props: Props) => {
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
     setCountryDataValues(indicatorsByCountry);
+    console.log('indicatorBycountry', indicatorsByCountry);
     setTableData(dataByCountry);
     const relevantData = selectedCountry !== undefined || selectedCountry === 'All'
       ? projectsData.filter((d) => d['Lead Country'] === selectedCountry)
@@ -143,7 +144,7 @@ export const CountryProfile = (props: Props) => {
           <div className='margin-top-1'>
             <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
             <p className='undp-typography'>
-              {`The latest estimates of access to reliable electricity based on satellite data indicates that ${formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${format(',')(indValue('pop_no_hrea_2020'))} people) in ${selectedCountry} does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
+              {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${format(',')(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
             </p>
             <div className='flex-div'>
               <div style={{ flex: '2' }}>
@@ -175,7 +176,7 @@ export const CountryProfile = (props: Props) => {
             <h4 className='undp-typography margin-top-05'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
             <div>
               <p className='undp-typography'>
-                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M USD between now and 2030, including more than ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M USD on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M USD by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding [insert here the number of avoided deaths] deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M between now and 2030, including more than USD ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding ${format(',')(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
               </p>
             </div>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
@@ -222,15 +223,15 @@ export const CountryProfile = (props: Props) => {
                       </div>
                       <div style={{ flex: '1', paddingRight: '20px' }}>
                         <h6 className='undp-typography'>Poverty</h6>
-                        <h3 className='undp-typography'>{format(',')(Math.abs(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_million`)[0].value * 1000000))}</h3>
-                        <p>{`${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_million`)[0].value < 0) ? 'fewer' : 'more'} people living in extreme poverty (${countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_%`)[0].value} ${(countryDataValues.filter((d:any) => d.indicator === `poverty_reduction_${selectedYear}_million`)[0].value < 0) ? 'less' : 'more'})`}</p>
+                        <h3 className='undp-typography'>{format(',')(Math.abs(indValue(`poverty_reduction_${selectedYear}_million`) * 1000000))}</h3>
+                        <p>{`${(indValue(`poverty_reduction_${selectedYear}_million`) < 0) ? 'fewer' : 'more'} people living in extreme poverty (${indValue(`poverty_reduction_${selectedYear}_%`)} ${(indValue(`poverty_reduction_${selectedYear}_million`) < 0) ? 'less' : 'more'})`}</p>
                         <p className='undp-typography'>{`by ${selectedYear}`}</p>
                       </div>
                       <div style={{ flex: '1' }}>
                         <h6 className='undp-typography'>Deaths</h6>
-                        <h3 className='undp-typography'>{countryDataValues.filter((d:any) => d.indicator === `averted_deaths_${selectedYear}`)[0].value}</h3>
+                        <h3 className='undp-typography'>{indValue(`cum_averteddeaths_${selectedYear}`)}</h3>
                         <p className='undp-typography'>averted deaths due to the reduction of the use of traditional cookstoves</p>
-                        <p className='undp-typography'>{`by ${selectedYear}`}</p>
+                        <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
                       </div>
                     </div>
                   </div>
@@ -239,7 +240,7 @@ export const CountryProfile = (props: Props) => {
                 <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
               </StatCardsDiv>
             </div>
-            <h4 className='undp-typography'>{`Work of UNDP in ${selectedCountry}`}</h4>
+            <h4 className='undp-typography'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>

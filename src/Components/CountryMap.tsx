@@ -77,20 +77,49 @@ export const CountryMap = (props: Props) => {
             minzoom: 0,
             maxzoom: 22,
           },
-          {
-            id: 'admin2fill',
-            type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
+          /* {
+            id: 'overlay0',
+            type: 'circle',
+            source: 'overlay',
+            'source-layer': 'poverty_points',
             paint: {
-              'fill-color': '#FFFFFF',
-              'fill-opacity': 1,
-              'fill-outline-color': 'hsla(0, 0%, 50%, 0.9)',
+              'circle-radius': 10,
+              'circle-opacity': 0,
+              'circle-color': '#FF0000',
+              'circle-stroke-color': '#FFFFFF',
+              'circle-stroke-opacity': 0.7,
+              'circle-stroke-width': 1,
             },
-            filter: ['!=', 'adm0_name', country['Country or Area']],
-            minzoom: 0,
-            maxzoom: 22,
+            filter: ['<', 'poverty', 0],
           },
+          {
+            id: 'overlay1',
+            type: 'circle',
+            source: 'overlay',
+            'source-layer': 'poverty_points',
+            paint: {
+              'circle-radius': 1.5,
+              'circle-opacity': 0,
+              'circle-stroke-color': '#FFFFFF',
+              'circle-stroke-opacity': 0.7,
+              'circle-stroke-width': 0.5,
+            },
+            filter: ['>', 'poverty', 0.5],
+          },
+          {
+            id: 'overlay2',
+            type: 'circle',
+            source: 'overlay',
+            'source-layer': 'poverty_points',
+            paint: {
+              'circle-radius': 2,
+              'circle-opacity': 0,
+              'circle-stroke-color': '#333333',
+              'circle-stroke-opacity': 0.5,
+              'circle-stroke-width': 1,
+            },
+            filter: ['>', 'poverty', 1],
+          }, */
         ],
       },
       center: [country['Longitude (average)'], country['Latitude (average)']],
@@ -148,7 +177,7 @@ export const CountryMap = (props: Props) => {
         },
         'admin2line',
       );
-      (map as any).current.addLayer(
+      /* (map as any).current.addLayer(
         {
           id: 'overlay',
           type: 'heatmap',
@@ -161,12 +190,12 @@ export const CountryMap = (props: Props) => {
           },
         },
         'admin2fill',
-      );
-      (map as any).current.setLayoutProperty(
+      ); */
+      /* (map as any).current.setLayoutProperty(
         'overlay',
         'visibility',
         'none',
-      );
+      ); */
       // mouse over effect on district layer
       (map as any).current.on('mousemove', 'admin2choropleth', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
@@ -202,12 +231,67 @@ export const CountryMap = (props: Props) => {
   });
   useEffect(() => {
     if (map.current) {
+      (map as any).current.on('idle', () => {
+        (map as any).current.removeLayer('admin2choropleth');
+        (map as any).current.addLayer(
+          {
+            id: 'admin2choropleth',
+            type: 'fill',
+            source: 'admin2',
+            'source-layer': 'adm2_polygons',
+            paint: {
+              'fill-color': [
+                'case',
+                ['==', ['get', `hrea_${year}`], ''],
+                'hsla(0, 0%, 0%, 0)',
+                [
+                  'interpolate',
+                  ['linear'],
+                  ['get', `hrea_${year}`],
+                  0, colorScale[0],
+                  0.0999, colorScale[0],
+                  0.1, colorScale[1],
+                  0.1999, colorScale[1],
+                  0.2, colorScale[2],
+                  0.2999, colorScale[2],
+                  0.3, colorScale[3],
+                  0.3999, colorScale[3],
+                  0.4, colorScale[4],
+                  0.4999, colorScale[4],
+                  0.5, colorScale[5],
+                  0.5999, colorScale[5],
+                  0.6, colorScale[6],
+                  0.6999, colorScale[6],
+                  0.7, colorScale[7],
+                  0.7999, colorScale[7],
+                  0.8, colorScale[8],
+                  0.8999, colorScale[8],
+                  0.9, colorScale[9],
+                  1, colorScale[9],
+                ],
+              ],
+              'fill-opacity': 1,
+              'fill-outline-color': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false],
+                'hsla(0, 0%, 0%, 1)',
+                'hsla(0, 0%, 100%, 0.5)',
+              ],
+            },
+            filter: ['==', 'adm0_name', country['Country or Area']],
+            minzoom: 0,
+            maxzoom: 22,
+          },
+          'admin2line',
+        );
+      });
+
       (map as any).current.flyTo({
         center: [country['Longitude (average)'], country['Latitude (average)']],
       }); // starting position [lng, lat]
     }
   }, [country]);
-  useEffect(() => {
+  /* useEffect(() => {
     if (map.current) {
       (map as any).current.on('idle', () => {
         if (selectedLayer === 'hrea') {
@@ -233,10 +317,10 @@ export const CountryMap = (props: Props) => {
             'none',
           );
         }
-        (map as any).current.moveLayer('admin2choropleth', 'admin2fill');
+        (map as any).current.moveLayer('admin2choropleth');
       }); // starting position [lng, lat]
     }
-  }, [selectedLayer]);
+  }, [selectedLayer]); */
   return (
     <div>
       <Radio.Group defaultValue={selectedLayer}>
