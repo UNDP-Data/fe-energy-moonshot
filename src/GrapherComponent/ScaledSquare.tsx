@@ -1,50 +1,56 @@
 import { scaleSqrt } from 'd3-scale';
-import { select } from 'd3-selection';
 import { format } from 'd3-format';
-import { useEffect } from 'react';
 import { CountryIndicatorDataType } from '../Types';
 
 interface Props{
   values: CountryIndicatorDataType[];
   indicators: string[],
   maxValue: number,
+  unit: string,
+  scaleChart: boolean,
+  factor: number,
 }
+const formatData = (d: undefined | number) => {
+  if (d === undefined) return d;
+
+  if (d < 1000000) return format(',')(d);
+  return `${format(',')(Math.round(d / 1000000))}M`;
+};
 export const ScaledSquare = (props:Props) => {
   const {
     values,
     indicators,
     maxValue,
+    unit,
+    scaleChart,
+    factor,
   } = props;
 
   function filterIndicator(ind:string) {
     return values.filter((d) => d.indicator === ind)[0];
   }
+
   const width = 250;
   const squareWidth = 240;
   const scale = scaleSqrt<number>().range([0, squareWidth]).domain([0, maxValue]);
-  const item2030 = filterIndicator(indicators[0]);
-  const item2050 = filterIndicator(indicators[1]);
+  const value2030 = Number(filterIndicator(indicators[0]).value);
+  const value2050 = Number(filterIndicator(indicators[1]).value);
+  const vScale = scaleChart ? 275 / (scale(value2030) + scale(value2050)) : 1;
 
-  useEffect(() => {
-    select(`#${indicators[0]}`)
-      .transition()
-      .duration(2000)
-      .attr('width', scale(Number(item2030.value)))
-      .attr('height', scale(Number(item2030.value)));
-  });
   return (
     <div>
-      <svg width={width + scale(Number(item2030.value)) + 20} height={width}>
-        <g transform='translate(0)'>
-          <rect id={indicators[0]} height='0' width='0' style={{ fill: 'var(--blue-300)', opacity: 0.6 }} />
-          <text x={scale(Number(item2030.value)) + 3} y='20'>{`${format(',')(item2030.value * 1000)}M (USD)`}</text>
-        </g>
+      <svg width={width + 20} height={278}>
+        <g transform={`translate(0) scale(${1})`}>
+          <g transform='translate(0)'>
+            <rect id={indicators[0]} height={scale(value2030) * vScale} width={scale(value2030) * vScale} style={{ fill: 'var(--blue-300)', opacity: 0.6 }} />
+            <text x={scale(value2030) * vScale > 100 ? 3 : scale(value2030) * vScale + 3} y='20'>{`${formatData(Math.abs(value2030 * factor))}${unit}`}</text>
+          </g>
 
-        <g transform={`translate(0,${scale(Number(item2030.value)) + 5})`}>
-          <rect height={scale(Number(item2050.value))} width={scale(Number(item2050.value))} style={{ fill: 'var(--blue-600)' }} />
-          <text x={scale(Number(item2050.value)) > 200 ? 3 : scale(Number(item2050.value)) + 3} y='20'>{`${format(',')(item2050.value * 1000)}M (USD)`}</text>
+          <g transform={`translate(0,${scale(value2030) * vScale + 5})`}>
+            <rect height={scale(value2050) * vScale} width={scale(value2050) * vScale} style={{ fill: 'var(--blue-600)' }} />
+            <text x={scale(value2050) * vScale > 100 ? 3 : scale(value2050) * vScale + 3} y='20'>{`${formatData(Math.abs(value2050 * factor))}${unit}`}</text>
+          </g>
         </g>
-
       </svg>
     </div>
   );

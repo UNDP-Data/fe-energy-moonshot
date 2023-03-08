@@ -1,6 +1,6 @@
 import sortBy from 'lodash.sortby';
 import sumBy from 'lodash.sumby';
-import { Select, Radio } from 'antd';
+import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'd3-format';
@@ -48,7 +48,7 @@ const StatCardsDiv = styled.div<WidthProps>`
   position: relative;
 `;
 
-const maxValue = (countryValues:any) => {
+const maxValueInvGdp = (countryValues:any) => {
   let max = 0;
   const ind = ['InvTotal_cum_', 'GDPgains_cum'];
   ['2030', '2050'].forEach((year) => {
@@ -59,7 +59,6 @@ const maxValue = (countryValues:any) => {
   });
   return max;
 };
-
 export const CountryProfile = (props: Props) => {
   const {
     projectsData,
@@ -75,10 +74,14 @@ export const CountryProfile = (props: Props) => {
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
-  const [selectedYear, setSelectedYear] = useState<string>('2030');
   const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
+  const maxValue = (ind1:string, ind2:string) => {
+    const value1 = indValue(ind1);
+    const value2 = indValue(ind2);
+    if (value1 > value2) return value1;
+    return value2;
+  };
   useEffect(() => {
-    setSelectedYear('2030');
     if (queryCountry)setSelectedCountry(queryCountry);
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
@@ -96,7 +99,6 @@ export const CountryProfile = (props: Props) => {
     setCardData(cardDataValues);
     const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
     setCountryGroupData(countryData);
-    console.log('selectedYear', selectedYear);
   }, [selectedCountry]);
 
   const formatPercent = (d: any) => {
@@ -179,64 +181,68 @@ export const CountryProfile = (props: Props) => {
                 {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M between now and 2030, including more than USD ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding ${format(',')(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
               </p>
             </div>
-            <div className='stat-card-container margin-bottom-05 flex-space-between'>
-              <StatCardsDiv className='stat-card' width='100%'>
-                <div className='flex-wrap margin-bottom-07'>
-                  <Radio.Group onChange={(e) => { setSelectedYear(e.target.value); }} value={selectedYear}>
-                    <Radio
-                      className='undp-radio'
-                      value='2030'
-                    >
-                      2030
-                    </Radio>
-                    <Radio
-                      className='undp-radio'
-                      value='2050'
-                    >
-                      2050
-                    </Radio>
-                  </Radio.Group>
-                </div>
+            <div className='margin-bottom-05 flex-space-between'>
+              <div style={{ backgroundColor: 'var(--gray-200)', padding: '24px' }}>
                 <div className='flex-div'>
                   <div style={{ flex: '1', borderRight: '2px dotted #888' }}>
                     <h5 className='undp-typography margin-bottom-08'>Investment gap</h5>
+                    <p className='undp-typography small-font'>Cumulative from 2022</p>
                     <ScaledSquare
                       values={countryDataValues}
                       indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
-                      maxValue={maxValue(countryDataValues)}
+                      maxValue={maxValueInvGdp(countryDataValues)}
+                      unit='(USD)'
+                      scaleChart={false}
+                      factor={1000000000}
                     />
-                    <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
                   </div>
                   <div style={{ flex: '3', paddingLeft: '20px' }}>
                     <h5 className='undp-typography'>Benefits</h5>
                     <div className='flex-div'>
                       <div style={{ flex: '1' }}>
-                        <h6 className='undp-typography'>GDP gains</h6>
+                        <h6 className='undp-typography margin-bottom-02'>GDP gains</h6>
+                        <p className='undp-typography small-font'>Cumulative from 2022</p>
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
-                          maxValue={maxValue(countryDataValues)}
+                          maxValue={maxValueInvGdp(countryDataValues)}
+                          unit='(USD)'
+                          scaleChart={false}
+                          factor={1000000000}
                         />
-                        <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
                       </div>
                       <div style={{ flex: '1', paddingRight: '20px' }}>
-                        <h6 className='undp-typography'>Poverty</h6>
-                        <h3 className='undp-typography'>{format(',')(Math.abs(indValue(`poverty_reduction_${selectedYear}_million`) * 1000000))}</h3>
-                        <p>{`${(indValue(`poverty_reduction_${selectedYear}_million`) < 0) ? 'fewer' : 'more'} people living in extreme poverty (${indValue(`poverty_reduction_${selectedYear}_%`)} ${(indValue(`poverty_reduction_${selectedYear}_million`) < 0) ? 'less' : 'more'})`}</p>
-                        <p className='undp-typography'>{`by ${selectedYear}`}</p>
+                        <h6 className='undp-typography margin-bottom-02'>Poverty</h6>
+                        <p className='undp-typography small-font'>By 2030/2050</p>
+                        <ScaledSquare
+                          values={countryDataValues}
+                          indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
+                          maxValue={maxValue('poverty_reduction_2030_million', 'poverty_reduction_2050_million')}
+                          unit=''
+                          scaleChart
+                          factor={1000000}
+                        />
+                        <p className='undp-typography small-font'>{`${(indValue('poverty_reduction_2030_million') < 0) ? 'fewer' : 'more'} people living in extreme poverty (${indValue('poverty_reduction_2030_million')} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'})`}</p>
                       </div>
                       <div style={{ flex: '1' }}>
-                        <h6 className='undp-typography'>Deaths</h6>
-                        <h3 className='undp-typography'>{indValue(`cum_averteddeaths_${selectedYear}`)}</h3>
-                        <p className='undp-typography'>averted deaths due to the reduction of the use of traditional cookstoves</p>
-                        <p className='undp-typography'>{`Cumulative 2022-${selectedYear}`}</p>
+                        <h6 className='undp-typography margin-bottom-02'>Deaths</h6>
+                        <p className='undp-typography small-font'>Cumulative from 2022</p>
+                        <ScaledSquare
+                          values={countryDataValues}
+                          indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
+                          maxValue={maxValue('cum_averteddeaths_2030', 'cum_averteddeaths_2050')}
+                          unit=''
+                          scaleChart
+                          factor={1}
+                        />
+                        <p className='undp-typography small-font'>averted deaths due to the reduction of the use of traditional cookstoves</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
-              </StatCardsDiv>
+              </div>
             </div>
             <h4 className='undp-typography'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
