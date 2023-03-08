@@ -1,8 +1,14 @@
 /* eslint-disable camelcase */
-export interface BboxDataType {
-  sw: object;
-  ne: object;
+export interface BboxCoords {
+  lat: number;
+  lon: number;
 }
+
+export interface BboxDataType {
+  sw: BboxCoords;
+  ne: BboxCoords;
+}
+
 export interface CountryGroupDataType {
   'Alpha-2 code': string;
   'Alpha-3 code-1': string;

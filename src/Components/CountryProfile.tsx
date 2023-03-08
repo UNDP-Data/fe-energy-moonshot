@@ -148,10 +148,10 @@ export const CountryProfile = (props: Props) => {
             <p className='undp-typography'>
               {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${format(',')(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
             </p>
-            <div className='flex-div'>
-              <div style={{ flex: '2' }}>
+            <div className='flex-div flex-wrap'>
+              <div style={{ width: 'calc(70% - 1.334rem)', position: 'relative', minWidth: '800px' }}>
                 <CountryMap country={countryGroupData} />
-                <i className='small-font' style={{ color: 'var(--red)' }}>legend poverty map to be added!, the map will be scaled according to the size + other fixes necessary</i>
+                <i className='small-font' style={{ color: 'var(--red)' }}>poverty map to be added!</i>
                 <div className='small-font'>
                   <ol>
                     <li>
@@ -165,14 +165,16 @@ export const CountryProfile = (props: Props) => {
                   </ol>
                 </div>
               </div>
-              <div style={{ flex: '1' }}>
-                <StatCardsDiv className='stat-card margin-top-07' width='96%'>
+              <div style={{ width: 'calc(30% - 1.334rem)', position: 'relative' }}>
+                <div className='stat-card margin-top-07'>
                   <h6 className='undp-typography margin-bottom-06' style={{ color: 'var(--gray-700)' }}>Population without access to reliable energy services</h6>
                   <h3 className='undp-typography'>{formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
                   <p className='undp-typography'>{`${format(',')(indValue('pop_no_hrea_2020'))} people`}</p>
                   <StatCardSmallFont>2020</StatCardSmallFont>
-                  <StatCardSmallFont>Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check</StatCardSmallFont>
-                </StatCardsDiv>
+                  <StatCardSmallFont>
+                    Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
+                  </StatCardSmallFont>
+                </div>
               </div>
             </div>
             <h4 className='undp-typography margin-top-05'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
@@ -181,9 +183,16 @@ export const CountryProfile = (props: Props) => {
                 {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M between now and 2030, including more than USD ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding ${format(',')(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
               </p>
             </div>
-            <div className='margin-bottom-05 flex-space-between'>
+            <div className='margin-bottom-05'>
               <div style={{ backgroundColor: 'var(--gray-200)', padding: '24px 32px' }}>
-                <div className='flex-wrap margin-bottom-06' style={{ display: 'flex', height: '12px', padding: '0px' }}>
+                <div
+                  className='flex-wrap margin-bottom-06'
+                  style={{
+                    display: 'flex',
+                    height: '12px',
+                    padding: '0px',
+                  }}
+                >
                   <div style={{
                     width: '12px',
                     height: '12px',
@@ -205,8 +214,8 @@ export const CountryProfile = (props: Props) => {
                   </div>
                   <div className='small-font' style={{ padding: '0px 16px 0 8px' }}>2050</div>
                 </div>
-                <div className='flex-div'>
-                  <div style={{ flex: '1', borderRight: '1px solid var(--gray-400)' }}>
+                <div className='flex-div flex-space-between'>
+                  <div style={{ borderRight: '1px solid var(--gray-400)' }}>
                     <h5 className='undp-typography margin-bottom-08'>Investment gap</h5>
                     <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
                     <ScaledSquare
@@ -218,10 +227,10 @@ export const CountryProfile = (props: Props) => {
                       factor={1000000000}
                     />
                   </div>
-                  <div style={{ flex: '3', paddingLeft: '20px' }}>
+                  <div style={{ paddingLeft: '20px' }}>
                     <h5 className='undp-typography'>Benefits</h5>
                     <div className='flex-div'>
-                      <div style={{ flex: '1' }}>
+                      <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>GDP gains</h6>
                         <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
                         <ScaledSquare
@@ -233,7 +242,7 @@ export const CountryProfile = (props: Props) => {
                           factor={1000000000}
                         />
                       </div>
-                      <div style={{ flex: '1', paddingRight: '20px' }}>
+                      <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Poverty</h6>
                         <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>By 2030/2050</p>
                         <ScaledSquare
@@ -244,9 +253,9 @@ export const CountryProfile = (props: Props) => {
                           scaleChart
                           factor={1000000}
                         />
-                        <p className='undp-typography small-font margin-top-05'>{`${(indValue('poverty_reduction_2030_million') < 0) ? 'fewer' : 'more'} people living in extreme poverty (${formatPercent(Math.abs(indValue('poverty_reduction_2030_million')) * 100)} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'} in 2030, ${formatPercent(Math.abs(indValue('poverty_reduction_2050_million')) * 100)} ${(indValue('poverty_reduction_2050_million') < 0) ? 'less' : 'more'} in 2050) when comparing with the current path`}</p>
+                        <p className='undp-typography small-font margin-top-05'>{`${(indValue('poverty_reduction_2030_million') < 0) ? 'fewer' : 'more'} people living in extreme poverty (${formatPercent(Math.abs(indValue('poverty_reduction_2030_million') * 100))} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'} in 2030, ${formatPercent(Math.abs(indValue('poverty_reduction_2050_million')) * 100)} ${(indValue('poverty_reduction_2050_million') < 0) ? 'less' : 'more'} in 2050) when comparing with the current path`}</p>
                       </div>
-                      <div style={{ flex: '1' }}>
+                      <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Deaths</h6>
                         <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
                         <ScaledSquare
@@ -262,7 +271,6 @@ export const CountryProfile = (props: Props) => {
                     </div>
                   </div>
                 </div>
-
                 <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
               </div>
             </div>
