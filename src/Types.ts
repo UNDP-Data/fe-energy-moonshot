@@ -1,4 +1,8 @@
 /* eslint-disable camelcase */
+export interface BboxDataType {
+  sw: object;
+  ne: object;
+}
 export interface CountryGroupDataType {
   'Alpha-2 code': string;
   'Alpha-3 code-1': string;
@@ -14,6 +18,7 @@ export interface CountryGroupDataType {
   'Numeric code': number;
   'SIDS': boolean;
   'Income group': string;
+  bbox: BboxDataType;
 }
 
 export interface RegionDataType {

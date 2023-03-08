@@ -33,11 +33,13 @@ interface HoverDataProps {
   xPosition: number;
   yPosition: number;
 }
+
 const colorScale = [...UNDPColorModule.divergentColors.colorsx10].reverse();
 export const CountryMap = (props: Props) => {
   const {
     country,
   } = props;
+  // console.log('countryData', country);
   const year = 2020;
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
@@ -54,25 +56,40 @@ export const CountryMap = (props: Props) => {
       style: {
         version: 8,
         sources: {
+          admin0: {
+            type: 'vector',
+            tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm0_polygons/{z}/{x}/{y}.pbf'],
+          },
           admin2: {
             type: 'vector',
             tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
-            attribution: 'UNDP GeoHub',
           },
-          overlay: {
+          /* overlay: {
             type: 'vector',
             tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/poverty_points/{z}/{x}/{y}.pbf'],
             maxzoom: 10,
-          },
+          }, */
         },
         layers: [
           {
-            id: 'admin2line',
-            type: 'line',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
+            id: 'admin0fill',
+            type: 'fill',
+            source: 'admin0',
+            'source-layer': 'adm0_polygons',
             paint: {
-              'line-color': 'hsla(0, 0%, 50%, 0.9)',
+              'fill-color': '#FFFFFF',
+            },
+            minzoom: 0,
+            maxzoom: 22,
+          },
+          {
+            id: 'admin0line',
+            type: 'line',
+            source: 'admin0',
+            'source-layer': 'adm0_polygons',
+            paint: {
+              'line-color': '#A9B1B7',
+              'line-width': 0.5,
             },
             minzoom: 0,
             maxzoom: 22,
@@ -175,7 +192,6 @@ export const CountryMap = (props: Props) => {
           minzoom: 0,
           maxzoom: 22,
         },
-        'admin2line',
       );
       /* (map as any).current.addLayer(
         {
@@ -282,13 +298,16 @@ export const CountryMap = (props: Props) => {
             minzoom: 0,
             maxzoom: 22,
           },
-          'admin2line',
         );
       });
 
       (map as any).current.flyTo({
         center: [country['Longitude (average)'], country['Latitude (average)']],
       }); // starting position [lng, lat]
+      (map as any).current.fitBounds([
+        [country.bbox.sw.lon, country.bbox.sw.lat],
+        [country.bbox.ne.lon, country.bbox.ne.lat],
+      ]);
     }
   }, [country]);
   /* useEffect(() => {
@@ -336,7 +355,7 @@ export const CountryMap = (props: Props) => {
           value='poverty'
           onChange={(e) => { setSelectedLayer(e.target.value); }}
         >
-          Relative wealth heatmap
+          Relative wealth (coming soon)
         </Radio>
       </Radio.Group>
       <div

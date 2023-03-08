@@ -118,7 +118,8 @@ const App = () => {
       .defer(csv, `${ROOT_DIR}/data/project_level_data1.csv`)
       .defer(csv, `${ROOT_DIR}/data/project_level_data2.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
-      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: CountryGroupDataType[]) => {
+      .defer(json, 'https://gist.githubusercontent.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee/raw/b36904c0c8ea72fdb82f68eb33f29891095deab3/country_codes')
+      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: any[], countryBoundingBoxData: any) => {
         if (err) throw err;
         const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3, countryLevelData4, countryLevelData5, countryLevelData6, countryLevelData7, countryLevelData8];
         const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
@@ -152,8 +153,13 @@ const App = () => {
           ...d,
           projectData: projectLevelDataWithNumbers.filter((g) => g['projectID_PIMS+'] === d['projectID_PIMS+'])[0],
         })); */
+
+        const countryGroupDataBbox = countryGroupDataRaw.map((d) => ({
+          ...d,
+          bbox: (countryBoundingBoxData[d['Alpha-2 code'].toLowerCase()] !== undefined) ? countryBoundingBoxData[d['Alpha-2 code'].toLowerCase()].boundingBox : {},
+        }));
         setProjectCoordsData(projectCoordsWithData);
-        setCountryGroupData(countryGroupDataRaw);
+        setCountryGroupData(countryGroupDataBbox);
         const countries = removeDuplicates(projectLevelDataWithNumbers.map((d) => d['Lead Country']));
         setCountryList(countries);
         const countriesData : CountryData[] = [];
@@ -167,8 +173,6 @@ const App = () => {
             if (countryData !== undefined) ind.forEach((indRow) => values.push({ value: countryData[indRow.IndicatorLabelTable].replace(',', ''), year: countryData.year, indicator: indRow.Indicator })); // adding the values to the array
             else ind.forEach((indRow) => values.push({ value: 'n/a', year: 'n/a', indicator: indRow.Indicator }));
           });
-          // eslint-disable-next-line no-console
-          // console.log('country', country, values);
           const countryData: CountryData = { country, values };
           countriesData.push(countryData);
         });
