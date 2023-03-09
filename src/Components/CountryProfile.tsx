@@ -16,6 +16,8 @@ import {
 import { ScaledSquare } from '../GrapherComponent/ScaledSquare';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
+import '../styles/style.css';
+
 interface Props {
   projectsData: ProjectLevelDataType[];
   countries: string[];
@@ -30,7 +32,7 @@ interface CellProps {
 
 const StatCardSmallFont = styled.div`
   color: var(--gray-500);
-  font-size: 1rem;
+  font-size: .9rem;
   line-height: 1.4rem;
 `;
 
@@ -102,7 +104,6 @@ export const CountryProfile = (props: Props) => {
   }, [selectedCountry]);
 
   const formatPercent = (d: any) => {
-    // eslint-disable-next-line no-console
     if (d === 'n/a') return d;
     return `${d}%`;
   };
@@ -151,7 +152,6 @@ export const CountryProfile = (props: Props) => {
             <div className='flex-div flex-wrap'>
               <div style={{ width: 'calc(70% - 1.334rem)', position: 'relative', minWidth: '800px' }}>
                 <CountryMap country={countryGroupData} />
-                <i className='small-font' style={{ color: 'var(--red)' }}>poverty map to be added!</i>
                 <div className='small-font'>
                   <ol>
                     <li>
@@ -177,58 +177,49 @@ export const CountryProfile = (props: Props) => {
                 </div>
               </div>
             </div>
-            <h4 className='undp-typography margin-top-05'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
+            <h4 className='undp-typography margin-top-07'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
             <div>
               <p className='undp-typography'>
                 {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M between now and 2030, including more than USD ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding ${format(',')(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
               </p>
             </div>
             <div className='margin-bottom-05'>
-              <div style={{ backgroundColor: 'var(--gray-200)', padding: '24px 32px' }}>
-                <div
-                  className='flex-wrap margin-bottom-06'
-                  style={{
-                    display: 'flex',
-                    height: '12px',
-                    padding: '0px',
-                  }}
-                >
-                  <div style={{
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: 'var(--blue-300)',
-                    marginTop: '4px',
-                  }}
-                  >
-                    &nbsp;
-                  </div>
-                  <div className='small-font' style={{ padding: '0px 16px 0 8px' }}>2030</div>
-                  <div style={{
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: 'var(--blue-600)',
-                    marginTop: '4px',
-                  }}
-                  >
-                    &nbsp;
-                  </div>
-                  <div className='small-font' style={{ padding: '0px 16px 0 8px' }}>2050</div>
-                </div>
+              <div>
                 <div className='flex-div flex-space-between'>
-                  <div style={{ borderRight: '1px solid var(--gray-400)' }}>
-                    <h5 className='undp-typography margin-bottom-08'>Investment gap</h5>
+                  <div className='vis-div'>
+                    <h5 className='undp-typography'>Investment gap</h5>
+                    <div className='flex-wrap margin-bottom-09 legend-container'>
+                      <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                        &nbsp;
+                      </div>
+                      <div className='legend-label'>2030</div>
+                      <div style={{ backgroundColor: 'var(--blue-600)' }} className='legend-square'>
+                        &nbsp;
+                      </div>
+                      <div className='legend-label'>2050</div>
+                    </div>
                     <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
                     <ScaledSquare
                       values={countryDataValues}
                       indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
                       maxValue={maxValueInvGdp(countryDataValues)}
-                      unit='(USD)'
+                      unit='USD '
                       scaleChart={false}
                       factor={1000000000}
                     />
                   </div>
-                  <div style={{ paddingLeft: '20px' }}>
+                  <div className='vis-div'>
                     <h5 className='undp-typography'>Benefits</h5>
+                    <div className='flex-wrap margin-bottom-06 legend-container'>
+                      <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                        &nbsp;
+                      </div>
+                      <div className='legend-label'>2030</div>
+                      <div style={{ backgroundColor: 'var(--blue-600)' }} className='legend-square'>
+                        &nbsp;
+                      </div>
+                      <div className='legend-label'>2050</div>
+                    </div>
                     <div className='flex-div'>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>GDP gains</h6>
@@ -237,13 +228,13 @@ export const CountryProfile = (props: Props) => {
                           values={countryDataValues}
                           indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
                           maxValue={maxValueInvGdp(countryDataValues)}
-                          unit='(USD)'
+                          unit='USD '
                           scaleChart={false}
                           factor={1000000000}
                         />
                       </div>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
-                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Poverty</h6>
+                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Poverty reduction</h6>
                         <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>By 2030/2050</p>
                         <ScaledSquare
                           values={countryDataValues}
@@ -256,7 +247,7 @@ export const CountryProfile = (props: Props) => {
                         <p className='undp-typography small-font margin-top-05'>{`${(indValue('poverty_reduction_2030_million') < 0) ? 'fewer' : 'more'} people living in extreme poverty (${formatPercent(Math.abs(indValue('poverty_reduction_2030_million') * 100))} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'} in 2030, ${formatPercent(Math.abs(indValue('poverty_reduction_2050_million')) * 100)} ${(indValue('poverty_reduction_2050_million') < 0) ? 'less' : 'more'} in 2050) when comparing with the current path`}</p>
                       </div>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
-                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Deaths</h6>
+                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Averted deaths</h6>
                         <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
                         <ScaledSquare
                           values={countryDataValues}
@@ -274,11 +265,11 @@ export const CountryProfile = (props: Props) => {
                 <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
               </div>
             </div>
-            <h4 className='undp-typography'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
+            <h4 className='undp-typography margin-top-07'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
-                <p className='undp-typography margin-bottom-10 margin-top-00'>Total grant amount (USD)</p>
+                <p className='undp-typography margin-bottom-10 margin-top-00'>Total grant amount USD</p>
                 <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
@@ -309,7 +300,7 @@ export const CountryProfile = (props: Props) => {
                     Source of Funds
                   </CellEl>
                   <CellEl width='10%' className='undp-table-head-cell'>
-                    Grant amount (USD)
+                    Grant amount USD
                   </CellEl>
                   <CellEl width='10%' className='undp-table-head-cell'>
                     Source

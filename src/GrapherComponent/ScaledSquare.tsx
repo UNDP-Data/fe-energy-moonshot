@@ -18,7 +18,6 @@ const formatData = (d: undefined | number) => {
   return `${format(',')(Math.round(d / 1000000))}M`;
 };
 const numberColor = (value:any) => {
-  console.log('value', value);
   if (value > 90) return '#FFF';
   return '#000';
 };
@@ -50,12 +49,12 @@ export const ScaledSquare = (props:Props) => {
         <g transform={`translate(0) scale(${1})`}>
           <g transform='translate(0)'>
             <rect id={indicators[0]} height={scale(value2030) * vScale} width={scale(value2030) * vScale} style={{ fill: 'var(--blue-300)' }} />
-            <text x={scale(value2030) * vScale > 90 ? 5 : scale(value2030) * vScale + 5} y='20' style={{ fill: numberColor(scale(value2030) * vScale), fontSize: '.9rem', fontWeight: 'bold' }}>{`${formatData(Math.abs(value2030 * factor))}${unit}`}</text>
+            <text x={scale(value2030) * vScale > 90 ? 5 : scale(value2030) * vScale + 5} y='20' style={{ fill: numberColor(scale(value2030) * vScale), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(Math.abs(value2030 * factor))}`}</text>
           </g>
 
           <g transform={`translate(0,${scale(value2030) * vScale + 5})`}>
             <rect height={scale(value2050) * vScale} width={scale(value2050) * vScale} style={{ fill: 'var(--blue-600)' }} />
-            <text className='squareLabel' x={scale(value2050) * vScale > 90 ? 5 : scale(value2050) * vScale + 5} y='20' style={{ fill: numberColor(scale(value2050) * vScale), fontSize: '.9rem', fontWeight: 'bold' }}>{`${formatData(Math.abs(value2050 * factor))}${unit}`}</text>
+            <text className='squareLabel' x={scale(value2050) * vScale > 90 ? 5 : scale(value2050) * vScale + 5} y='20' style={{ fill: numberColor(scale(value2050) * vScale), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(Math.abs(value2050 * factor))}`}</text>
           </g>
         </g>
       </svg>

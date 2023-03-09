@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styled from 'styled-components';
-import { Radio } from 'antd';
 import UNDPColorModule from 'undp-viz-colors';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
@@ -39,7 +38,6 @@ export const CountryMap = (props: Props) => {
   const {
     country,
   } = props;
-  // console.log('countryData', country);
   const year = 2020;
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
@@ -48,6 +46,7 @@ export const CountryMap = (props: Props) => {
   const keyBarWid = 40;
   const pctRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   useEffect(() => {
+    setSelectedLayer('hrea'); // not doing anything at the moment but it might be used when additional data is added
     let districtHoveredStateId: string | null = null;
     if (map.current) return;
     // initiate map and add base layer
@@ -153,7 +152,7 @@ export const CountryMap = (props: Props) => {
             'fill-color': [
               'case',
               ['==', ['get', `hrea_${year}`], ''],
-              'hsla(0, 0%, 0%, 0)',
+              '#FF0000',
               [
                 'interpolate',
                 ['linear'],
@@ -342,22 +341,7 @@ export const CountryMap = (props: Props) => {
   }, [selectedLayer]); */
   return (
     <div>
-      <Radio.Group defaultValue={selectedLayer}>
-        <Radio
-          className='undp-radio'
-          value='hrea'
-          onChange={(e) => { setSelectedLayer(e.target.value); }}
-        >
-          Map of reliable electricity access
-        </Radio>
-        <Radio
-          className='undp-radio'
-          value='poverty'
-          onChange={(e) => { setSelectedLayer(e.target.value); }}
-        >
-          Relative wealth (coming soon)
-        </Radio>
-      </Radio.Group>
+      <i className='small-font' style={{ color: 'var(--red)' }}>Relative wealth data to be added!</i>
       <div
         ref={mapContainer}
         className='map'

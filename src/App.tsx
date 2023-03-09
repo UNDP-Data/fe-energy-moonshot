@@ -146,8 +146,7 @@ const App = () => {
             });
           }
         });
-        // eslint-disable-next-line no-console
-        // console.log('projectCoordsWithDAta', projectCoordsWithData);
+
         // this can be used later probably
         /* const projectCoordsWithData = projectCoordsData.map((d) => ({
           ...d,
