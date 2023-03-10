@@ -70,7 +70,10 @@ export const CountryProfile = (props: Props) => {
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
-  const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
+  const indValue = (ind:string) => {
+    console.log('ind---------> ', ind, countryDataValues);
+    return countryDataValues.filter((d) => d.indicator === ind)[0].value;
+  };
   const maxValue = (ind1:string, ind2:string) => {
     const value1 = Math.abs(indValue(ind1));
     const value2 = Math.abs(indValue(ind2));
@@ -95,7 +98,7 @@ export const CountryProfile = (props: Props) => {
     setCardData(cardDataValues);
     const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
     setCountryGroupData(countryData);
-    console.log('hrea_2020', (indValue('hrea_2020') === ''));
+    // console.log('hrea_2020', (indValue('hrea_2020') === ''));
   }, [selectedCountry]);
 
   const formatPercent = (d: any) => {
