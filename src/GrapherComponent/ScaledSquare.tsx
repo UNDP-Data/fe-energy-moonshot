@@ -6,6 +6,7 @@ import { CountryIndicatorDataType } from '../Types';
 interface Props{
   values: CountryIndicatorDataType[];
   indicators: string[],
+  indicators2: string[],
   maxValue: number,
   unit: string,
   scaleChart: boolean,
@@ -22,6 +23,7 @@ export const ScaledSquare = (props:Props) => {
   const {
     values,
     indicators,
+    indicators2,
     maxValue,
     unit,
     scaleChart,
@@ -37,6 +39,13 @@ export const ScaledSquare = (props:Props) => {
     return false;
   };
 
+  /* const formatData = (d: undefined | number) => {
+    if (d === undefined) return d;
+
+    if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replaceAll(',', ' ');
+    return format('.3s')(d).replace('G', 'B').replaceAll(',', ' ');
+  }; */
+
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
     let value: number;
@@ -44,8 +53,9 @@ export const ScaledSquare = (props:Props) => {
     if (invert) {
       value = d * -1;
     } else value = d;
-    if (value < 1000000) return format(',')(value).replaceAll(',', '');
-    return `${format(',')(Math.round(value / 1000000))}M`;
+    if (value < 1000000) return format(',')(value).replaceAll(',', ' ');
+    return format('.3s')(value).replace('G', 'B').replaceAll(',', ' ');
+    // return `${format(',')(Math.round(value / 1000000))}M`;
   };
 
   const width = 250;
@@ -63,12 +73,14 @@ export const ScaledSquare = (props:Props) => {
         <g transform={`translate(0) scale(${1})`}>
           <g transform='translate(0)'>
             <rect id={indicators[0]} height={square2030Size} width={square2030Size} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
-            <text x={square2030Size > 90 ? 5 : square2030Size + 5} y='20' style={{ fill: numberColor(square2030Size), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(value2030 * factor)}`}</text>
+            <text x={square2030Size > 90 ? 5 : square2030Size + 5} y='20' style={{ fill: numberColor(square2030Size), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(value2030 * factor)} ${(indicators2.length > 0) ? `(${indicators2[0]})` : ''}`}</text>
           </g>
 
           <g transform={`translate(0,${square2030Size + 5})`}>
             <rect height={square2050Size} width={square2050Size} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
-            <text className='squareLabel' x={square2050Size > 90 ? 5 : square2050Size + 5} y='20' style={{ fill: numberColor(square2050Size), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(value2050 * factor)}`}</text>
+            <text className='squareLabel' x={square2050Size > 90 ? 5 : square2050Size + 5} y='20' style={{ fill: numberColor(square2050Size), fontSize: '.9rem', fontWeight: 'bold' }}>
+              {`${unit}${formatData(value2050 * factor)} ${(indicators2.length > 0) ? `(${indicators2[1]})` : ''}`}
+            </text>
           </g>
         </g>
       </svg>

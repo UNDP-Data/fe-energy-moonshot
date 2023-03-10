@@ -95,7 +95,6 @@ export const CountryProfile = (props: Props) => {
     setCardData(cardDataValues);
     const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
     setCountryGroupData(countryData);
-    console.log('hrea_2020', (indValue('hrea_2020') === ''));
   }, [selectedCountry]);
 
   const formatPercent = (d: any) => {
@@ -105,8 +104,16 @@ export const CountryProfile = (props: Props) => {
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
-    if (d < 100000) return format(',')(parseFloat(d.toFixed(0)));
-    return format('.3s')(d).replace('G', 'B');
+    if (d < 1000000) return format(',')(d).replaceAll(',', ' ');
+    return format('.3s')(d).replace('G', 'B').replaceAll(',', ' ');
+  };
+  const formatBillion = (d: any) => {
+    if (d > 1) return `${d}B`;
+    return `${d * 1000}M`;
+  };
+  const formatMillion = (d: any) => {
+    if (d > 1) return `${d}M`;
+    return `${d * 1000}K`;
   };
   return (
     <>
@@ -142,7 +149,7 @@ export const CountryProfile = (props: Props) => {
           <div className='margin-top-1'>
             <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
             <p className='undp-typography'>
-              {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${format(',')(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
+              {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${formatData(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
             </p>
             <div className='flex-div flex-wrap'>
               <div style={{ width: 'calc(70% - 1.334rem)', position: 'relative', minWidth: '800px' }}>
@@ -169,7 +176,7 @@ export const CountryProfile = (props: Props) => {
                     </div>
                     <div>
                       <h3 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
-                      <div className='stat-card-description'>{`${format(',')(indValue('pop_no_hrea_2020'))} people`}</div>
+                      <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} people`}</div>
                     </div>
                     <div className='stat-card-source'>
                       Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
@@ -181,7 +188,7 @@ export const CountryProfile = (props: Props) => {
             <h4 className='undp-typography margin-top-07'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
             <div>
               <p className='undp-typography'>
-                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${format(',')(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${format(',')(indValue('InvTotal_cum_2030_bi') * 1000)}M between now and 2030, including more than USD ${format(',')(indValue('InvRural_cum2030_bi') * 1000)}M on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${format(',')(indValue('GDPgains_cum2050_bi') * 1000)}M by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${format(',')(Math.abs(indValue('poverty_reduction_2050_million')) * 1000000)} people out of extreme poverty by mid-century and avoiding ${format(',')(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${formatData(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${formatBillion(indValue('InvTotal_cum_2030_bi'))} between now and 2030, including more than USD ${formatBillion(indValue('InvRural_cum2030_bi'))} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${formatBillion(indValue('GDPgains_cum2050_bi'))} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${formatMillion(Math.abs(indValue('poverty_reduction_2050_million')))} people out of extreme poverty by mid-century and avoiding ${formatData(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
               </p>
             </div>
             <div className='margin-bottom-05'>
@@ -203,6 +210,7 @@ export const CountryProfile = (props: Props) => {
                     <ScaledSquare
                       values={countryDataValues}
                       indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
+                      indicators2={[]}
                       maxValue={maxValueInvGdp(countryDataValues)}
                       unit='USD '
                       scaleChart={false}
@@ -229,6 +237,7 @@ export const CountryProfile = (props: Props) => {
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
+                          indicators2={[]}
                           maxValue={maxValueInvGdp(countryDataValues)}
                           unit='USD '
                           scaleChart={false}
@@ -242,19 +251,22 @@ export const CountryProfile = (props: Props) => {
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
+                          indicators2={[(indValue('poverty_reduction_2030_%')).replace('-', ''), (indValue('poverty_reduction_2050_%')).replace('-', '')]}
                           maxValue={maxValue('poverty_reduction_2030_million', 'poverty_reduction_2050_million')}
                           unit=''
                           scaleChart
                           factor={1000000}
                           invert
                         />
-                        <p className='undp-typography small-font margin-top-05 margin-bottom-00'>{`${indValue('poverty_reduction_2030_%').replace('-', '')} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'} in 2030, ${(indValue('poverty_reduction_2050_%')).replace('-', '')} ${(indValue('poverty_reduction_2050_million') < 0) ? 'less' : 'more'} in 2050`}</p>
-                        <div className='legend-container'>
-                          <div style={{ border: 'var(--dark-red) 2px solid', backgroundColor: 'var(--blue-300)' }} className='legend-square'>
-                            &nbsp;
-                          </div>
-                          <div className='legend-label'>Increase in poverty (....)</div>
-                        </div>
+                        {((indValue('poverty_reduction_2030_million') > 0) || (indValue('poverty_reduction_2050_million') > 0))
+                          ? (
+                            <div className='legend-container margin-top-04'>
+                              <div style={{ border: 'var(--dark-red) 2px solid', backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                                &nbsp;
+                              </div>
+                              <div className='legend-label'>Increase in poverty (....)</div>
+                            </div>
+                          ) : null }
                       </div>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-00' style={{ color: 'var(--gray-700)' }}>Averted deaths</h6>
@@ -262,6 +274,7 @@ export const CountryProfile = (props: Props) => {
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
+                          indicators2={[]}
                           maxValue={maxValue('cum_averteddeaths_2030', 'cum_averteddeaths_2050')}
                           unit=''
                           scaleChart
@@ -334,7 +347,7 @@ export const CountryProfile = (props: Props) => {
                         {d['Source of Funds']}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small' style={{ whiteSpace: 'nowrap' }}>
-                        {format(',')(parseFloat(d['Grant amount'].toFixed(0))).replaceAll(',', ' ')}
+                        {formatData(parseFloat(d['Grant amount'].toFixed(0)))}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small'>
                         <a href={d.Source_documentation} className='undp-style' target='_blank' rel='noreferrer'>{d.Source_documentation}</a>
