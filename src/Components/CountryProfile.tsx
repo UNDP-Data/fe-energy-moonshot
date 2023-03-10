@@ -30,12 +30,6 @@ interface CellProps {
   cursor?: string;
 }
 
-const StatCardSmallFont = styled.div`
-  color: var(--gray-500);
-  font-size: .9rem;
-  line-height: 1.4rem;
-`;
-
 const CellEl = styled.div<CellProps>`
   width: ${(props) => props.width};
   cursor: ${(props) => (props.cursor ? props.cursor : 'auto')};
@@ -78,8 +72,8 @@ export const CountryProfile = (props: Props) => {
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
   const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
   const maxValue = (ind1:string, ind2:string) => {
-    const value1 = indValue(ind1);
-    const value2 = indValue(ind2);
+    const value1 = Math.abs(indValue(ind1));
+    const value2 = Math.abs(indValue(ind2));
     if (value1 > value2) return value1;
     return value2;
   };
@@ -101,6 +95,7 @@ export const CountryProfile = (props: Props) => {
     setCardData(cardDataValues);
     const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
     setCountryGroupData(countryData);
+    console.log('hrea_2020', (indValue('hrea_2020') === ''));
   }, [selectedCountry]);
 
   const formatPercent = (d: any) => {
@@ -167,13 +162,19 @@ export const CountryProfile = (props: Props) => {
               </div>
               <div style={{ width: 'calc(30% - 1.334rem)', position: 'relative' }}>
                 <div className='stat-card margin-top-07'>
-                  <h6 className='undp-typography margin-bottom-06' style={{ color: 'var(--gray-700)' }}>Population without access to reliable energy services</h6>
-                  <h3 className='undp-typography'>{formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
-                  <p className='undp-typography'>{`${format(',')(indValue('pop_no_hrea_2020'))} people`}</p>
-                  <StatCardSmallFont>2020</StatCardSmallFont>
-                  <StatCardSmallFont>
-                    Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
-                  </StatCardSmallFont>
+                  <div style={{ height: '340px' }} className='column-flex'>
+                    <div>
+                      <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Population without access to reliable energy services</h6>
+                      <div className='stat-card-notes margin-bottom-06'>2020</div>
+                    </div>
+                    <div>
+                      <h3 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
+                      <div className='stat-card-description'>{`${format(',')(indValue('pop_no_hrea_2020'))} people`}</div>
+                    </div>
+                    <div className='stat-card-source'>
+                      Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -187,8 +188,8 @@ export const CountryProfile = (props: Props) => {
               <div>
                 <div className='flex-div flex-space-between'>
                   <div className='vis-div'>
-                    <h5 className='undp-typography'>Investment gap</h5>
-                    <div className='flex-wrap margin-bottom-09 legend-container'>
+                    <h5 className='undp-typography margin-bottom-00'>Investment gap</h5>
+                    <div className='legend-container' style={{ marginBottom: '52px' }}>
                       <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
                         &nbsp;
                       </div>
@@ -198,7 +199,7 @@ export const CountryProfile = (props: Props) => {
                       </div>
                       <div className='legend-label'>2050</div>
                     </div>
-                    <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
+                    <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
                     <ScaledSquare
                       values={countryDataValues}
                       indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
@@ -206,11 +207,12 @@ export const CountryProfile = (props: Props) => {
                       unit='USD '
                       scaleChart={false}
                       factor={1000000000}
+                      invert={false}
                     />
                   </div>
                   <div className='vis-div'>
-                    <h5 className='undp-typography'>Benefits</h5>
-                    <div className='flex-wrap margin-bottom-06 legend-container'>
+                    <h5 className='undp-typography margin-bottom-00'>Benefits</h5>
+                    <div className='margin-bottom-07 legend-container'>
                       <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
                         &nbsp;
                       </div>
@@ -223,7 +225,7 @@ export const CountryProfile = (props: Props) => {
                     <div className='flex-div'>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>GDP gains</h6>
-                        <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
+                        <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
@@ -231,11 +233,12 @@ export const CountryProfile = (props: Props) => {
                           unit='USD '
                           scaleChart={false}
                           factor={1000000000}
+                          invert={false}
                         />
                       </div>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
                         <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Poverty reduction</h6>
-                        <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>By 2030/2050</p>
+                        <div className='stat-card-notes margin-bottom-06'>By 2030/2050</div>
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
@@ -243,12 +246,19 @@ export const CountryProfile = (props: Props) => {
                           unit=''
                           scaleChart
                           factor={1000000}
+                          invert
                         />
-                        <p className='undp-typography small-font margin-top-05'>{`${(indValue('poverty_reduction_2030_million') < 0) ? 'fewer' : 'more'} people living in extreme poverty (${formatPercent(Math.abs(indValue('poverty_reduction_2030_million') * 100))} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'} in 2030, ${formatPercent(Math.abs(indValue('poverty_reduction_2050_million')) * 100)} ${(indValue('poverty_reduction_2050_million') < 0) ? 'less' : 'more'} in 2050) when comparing with the current path`}</p>
+                        <p className='undp-typography small-font margin-top-05 margin-bottom-00'>{`${indValue('poverty_reduction_2030_%').replace('-', '')} ${(indValue('poverty_reduction_2030_million') < 0) ? 'less' : 'more'} in 2030, ${(indValue('poverty_reduction_2050_%')).replace('-', '')} ${(indValue('poverty_reduction_2050_million') < 0) ? 'less' : 'more'} in 2050`}</p>
+                        <div className='legend-container'>
+                          <div style={{ border: 'var(--dark-red) 2px solid', backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                            &nbsp;
+                          </div>
+                          <div className='legend-label'>Increase in poverty (....)</div>
+                        </div>
                       </div>
                       <div style={{ width: '33%', paddingRight: '20px' }}>
-                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Averted deaths</h6>
-                        <p className='undp-typography small-font' style={{ color: 'var(--gray-600)' }}>Cumulative from 2022</p>
+                        <h6 className='undp-typography margin-bottom-00' style={{ color: 'var(--gray-700)' }}>Averted deaths</h6>
+                        <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
                         <ScaledSquare
                           values={countryDataValues}
                           indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
@@ -256,26 +266,27 @@ export const CountryProfile = (props: Props) => {
                           unit=''
                           scaleChart
                           factor={1}
+                          invert={false}
                         />
                         <p className='undp-typography small-font margin-top-05'>averted deaths due to the reduction of the use of traditional cookstoves</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <StatCardSmallFont style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</StatCardSmallFont>
+                <div className='stat-card-source' style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</div>
               </div>
             </div>
             <h4 className='undp-typography margin-top-07'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
-                <p className='undp-typography margin-bottom-10 margin-top-00'>Total grant amount USD</p>
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
+                <div className='stat-card-description margin-bottom-10 margin-top-00'>Total grant amount USD</div>
+                <div className='stat-card-source' style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</div>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h2>
-                <p className='undp-typography margin-bottom-10 margin-top-00'>Target number of beneficiaries</p>
-                <StatCardSmallFont style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</StatCardSmallFont>
+                <div className='stat-card-description margin-bottom-10 margin-top-00'>Target number of beneficiaries</div>
+                <div className='stat-card-source' style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</div>
               </StatCardsDiv>
             </div>
           </div>

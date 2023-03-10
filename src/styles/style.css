@@ -1,5 +1,6 @@
 .legend-container{
   display: flex;
+  flex-wrap: wrap;
   height: 12px;
   padding: 0px;
 }
@@ -15,4 +16,22 @@
 .vis-div{
   background-color: var(--gray-200);
   padding: 24px 32px;
+}
+.column-flex{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 22.5rem;
+  justify-content: space-between;
+}
+.stat-card-source{
+  color: var(--gray-500);
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+.stat-card-notes{
+  color: var(--gray-600);
+  font-size: .9rem;
+}
+.stat-card-description{
+  font-size: 1.25rem;
 }
