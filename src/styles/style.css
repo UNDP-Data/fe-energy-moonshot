@@ -17,6 +17,9 @@
   background-color: var(--gray-200);
   padding: 24px 32px;
 }
+.vis-div h6{
+  color: var(--gray-700);
+}
 .column-flex{
   display: flex;
   flex-direction: column;
@@ -34,4 +37,16 @@
 }
 .stat-card-description{
   font-size: 1.25rem;
+}
+vis-container-1{
+  column-gap: 1.334rem;
+}
+.flex-inner-div-0{
+  flex: 0 1 13rem;
+}
+.flex-inner-div-1{
+  flex: 3 1 60rem;
+}
+.flex-inner-div-1a{
+  flex: 1 1 20rem;
 }

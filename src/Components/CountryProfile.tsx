@@ -154,8 +154,8 @@ export const CountryProfile = (props: Props) => {
             <p className='undp-typography'>
               {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${formatData(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
             </p>
-            <div className='flex-div flex-wrap'>
-              <div style={{ width: 'calc(70% - 1.334rem)', position: 'relative', minWidth: '800px' }}>
+            <div className='flex-div flex-wrap vis-container-1'>
+              <div style={{ flex: '2 1 27rem' }}>
                 <CountryMap country={countryGroupData} />
                 <div className='small-font'>
                   <ol>
@@ -170,11 +170,11 @@ export const CountryProfile = (props: Props) => {
                   </ol>
                 </div>
               </div>
-              <div style={{ width: 'calc(30% - 1.334rem)', position: 'relative' }}>
+              <div style={{ flex: '0 1 20rem' }}>
                 <div className='stat-card margin-top-07'>
                   <div style={{ height: '340px' }} className='column-flex'>
                     <div>
-                      <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Population without access to reliable energy services</h6>
+                      <h6 className='undp-typography margin-bottom-01'>Population without access to reliable energy services</h6>
                       <div className='stat-card-notes margin-bottom-06'>2020</div>
                     </div>
                     <div>
@@ -196,8 +196,8 @@ export const CountryProfile = (props: Props) => {
             </div>
             <div className='margin-bottom-05'>
               <div>
-                <div className='flex-div flex-space-between'>
-                  <div className='vis-div'>
+                <div className='flex-div flex-wrap vis-container-1'>
+                  <div className='vis-div flex-inner-div-0'>
                     <h5 className='undp-typography margin-bottom-00'>Investment gap</h5>
                     <div className='legend-container' style={{ marginBottom: '52px' }}>
                       <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
@@ -221,7 +221,7 @@ export const CountryProfile = (props: Props) => {
                       invert={false}
                     />
                   </div>
-                  <div className='vis-div'>
+                  <div className='vis-div flex-inner-div-1'>
                     <h5 className='undp-typography margin-bottom-00'>Benefits</h5>
                     <div className='margin-bottom-07 legend-container'>
                       <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
@@ -233,9 +233,9 @@ export const CountryProfile = (props: Props) => {
                       </div>
                       <div className='legend-label'>2050</div>
                     </div>
-                    <div className='flex-div'>
-                      <div style={{ width: '33%', paddingRight: '20px' }}>
-                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>GDP gains</h6>
+                    <div className='flex-div flex-wrap' style={{ rowGap: '2rem' }}>
+                      <div className='flex-inner-div-1a'>
+                        <h6 className='undp-typography margin-bottom-01'>GDP gains</h6>
                         <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
                         <ScaledSquare
                           values={countryDataValues}
@@ -248,8 +248,8 @@ export const CountryProfile = (props: Props) => {
                           invert={false}
                         />
                       </div>
-                      <div style={{ width: '33%', paddingRight: '20px' }}>
-                        <h6 className='undp-typography margin-bottom-01' style={{ color: 'var(--gray-700)' }}>Poverty reduction</h6>
+                      <div className='flex-inner-div-1a'>
+                        <h6 className='undp-typography margin-bottom-01'>Poverty reduction</h6>
                         <div className='stat-card-notes margin-bottom-06'>By 2030/2050</div>
                         <ScaledSquare
                           values={countryDataValues}
@@ -271,8 +271,8 @@ export const CountryProfile = (props: Props) => {
                             </div>
                           ) : null }
                       </div>
-                      <div style={{ width: '33%', paddingRight: '20px' }}>
-                        <h6 className='undp-typography margin-bottom-00' style={{ color: 'var(--gray-700)' }}>Averted deaths</h6>
+                      <div className='flex-inner-div-1a'>
+                        <h6 className='undp-typography margin-bottom-00'>Averted deaths</h6>
                         <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
                         <ScaledSquare
                           values={countryDataValues}
