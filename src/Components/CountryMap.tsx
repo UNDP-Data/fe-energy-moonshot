@@ -3,6 +3,7 @@ import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styled from 'styled-components';
 import UNDPColorModule from 'undp-viz-colors';
+import pattern from '../assets/black-twill.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
@@ -63,11 +64,10 @@ export const CountryMap = (props: Props) => {
             type: 'vector',
             tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
           },
-          /* overlay: {
+          admin2data: {
             type: 'vector',
-            tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/poverty_points/{z}/{x}/{y}.pbf'],
-            maxzoom: 10,
-          }, */
+            tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/accessDistrictData/{z}/{x}/{y}.pbf'],
+          },
         },
         layers: [
           {
@@ -93,49 +93,6 @@ export const CountryMap = (props: Props) => {
             minzoom: 0,
             maxzoom: 22,
           },
-          /* {
-            id: 'overlay0',
-            type: 'circle',
-            source: 'overlay',
-            'source-layer': 'poverty_points',
-            paint: {
-              'circle-radius': 10,
-              'circle-opacity': 0,
-              'circle-color': '#FF0000',
-              'circle-stroke-color': '#FFFFFF',
-              'circle-stroke-opacity': 0.7,
-              'circle-stroke-width': 1,
-            },
-            filter: ['<', 'poverty', 0],
-          },
-          {
-            id: 'overlay1',
-            type: 'circle',
-            source: 'overlay',
-            'source-layer': 'poverty_points',
-            paint: {
-              'circle-radius': 1.5,
-              'circle-opacity': 0,
-              'circle-stroke-color': '#FFFFFF',
-              'circle-stroke-opacity': 0.7,
-              'circle-stroke-width': 0.5,
-            },
-            filter: ['>', 'poverty', 0.5],
-          },
-          {
-            id: 'overlay2',
-            type: 'circle',
-            source: 'overlay',
-            'source-layer': 'poverty_points',
-            paint: {
-              'circle-radius': 2,
-              'circle-opacity': 0,
-              'circle-stroke-color': '#333333',
-              'circle-stroke-opacity': 0.5,
-              'circle-stroke-width': 1,
-            },
-            filter: ['>', 'poverty', 1],
-          }, */
         ],
       },
       center: [country['Longitude (average)'], country['Latitude (average)']],
@@ -192,25 +149,10 @@ export const CountryMap = (props: Props) => {
           maxzoom: 22,
         },
       );
-      /* (map as any).current.addLayer(
-        {
-          id: 'overlay',
-          type: 'heatmap',
-          source: 'overlay',
-          'source-layer': 'poverty_points',
-          paint: {
-            'heatmap-weight': ['interpolate', ['exponential', 2], ['get', 'poverty'], 0, 0, 2.022, 1],
-            'heatmap-intensity': ['interpolate', ['exponential', 2], ['zoom'], 0, 0, 10, 5],
-            'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 0, 10, 30],
-          },
-        },
-        'admin2fill',
-      ); */
-      /* (map as any).current.setLayoutProperty(
-        'overlay',
-        'visibility',
-        'none',
-      ); */
+      (map as any).current.loadImage(pattern, (err:any, image:any) => {
+        if (err) throw err;
+        (map as any).current.addImage('pattern', image);
+      });
       // mouse over effect on district layer
       (map as any).current.on('mousemove', 'admin2choropleth', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
@@ -298,6 +240,35 @@ export const CountryMap = (props: Props) => {
             maxzoom: 22,
           },
         );
+        /* (map as any).current.removeLayer('admin2rwi');
+        (map as any).current.loadImage(pattern, (err:any, image:any) => {
+          // Throw an error if something went wrong
+          if (err) throw err;
+          // Declare the image
+          (map as any).current.addImage('pattern', image);
+          // Use it
+          (map as any).current.addLayer({
+            id: 'admin2rwi',
+            type: 'fill',
+            source: 'admin2data',
+            'source-layer': 'accessDistrictData',
+            paint: {
+              'fill-pattern': 'pattern',
+            },
+            filter: ['<', 'RWI', 100000],
+          });
+        }); */
+        (map as any).current.removeLayer('admin2rwi');
+        (map as any).current.addLayer({
+          id: 'admin2rwi',
+          type: 'fill',
+          source: 'admin2data',
+          'source-layer': 'accessDistrictData',
+          paint: {
+            'fill-pattern': 'pattern',
+          },
+          filter: ['<', 'RWI', 100000],
+        });
       });
 
       (map as any).current.flyTo({

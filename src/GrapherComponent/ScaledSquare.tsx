@@ -39,13 +39,6 @@ export const ScaledSquare = (props:Props) => {
     return false;
   };
 
-  /* const formatData = (d: undefined | number) => {
-    if (d === undefined) return d;
-
-    if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replaceAll(',', ' ');
-    return format('.3s')(d).replace('G', 'B').replaceAll(',', ' ');
-  }; */
-
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
     let value: number;
