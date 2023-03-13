@@ -267,7 +267,10 @@ export const CountryMap = (props: Props) => {
           paint: {
             'fill-pattern': 'pattern',
           },
-          filter: ['<', 'RWI', 100000],
+          filter: ['all',
+            ['<', 'RWI', 100000],
+            ['==', 'adm0_name', country['Country or Area']],
+          ],
         });
       });
 

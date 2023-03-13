@@ -51,7 +51,7 @@ export const ScaledSquare = (props:Props) => {
     // return `${format(',')(Math.round(value / 1000000))}M`;
   };
 
-  const width = 250;
+  const width = 230;
   const squareWidth = 240;
   const scale = scaleSqrt<number>().range([0, squareWidth]).domain([0, maxValue]);
   const value2030 = Number(filterIndicator(indicators[0]).value);
