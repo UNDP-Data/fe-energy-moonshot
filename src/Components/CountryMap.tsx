@@ -3,7 +3,8 @@ import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styled from 'styled-components';
 import UNDPColorModule from 'undp-viz-colors';
-import pattern from '../assets/black-twill.png';
+// import pattern from '../assets/black-twill.png';
+import pattern from '../assets/diagonal-hatch-black.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
@@ -268,7 +269,7 @@ export const CountryMap = (props: Props) => {
             'fill-pattern': 'pattern',
           },
           filter: ['all',
-            ['<', 'RWI', 100000],
+            ['<', 'RWI', 50000],
             ['==', 'adm0_name', country['Country or Area']],
           ],
         });
