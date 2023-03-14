@@ -1,5 +1,6 @@
 import { scaleSqrt } from 'd3-scale';
 import { format } from 'd3-format';
+import { arc } from 'd3-shape';
 import { CountryIndicatorDataType } from '../Types';
 
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
@@ -19,7 +20,21 @@ const numberColor = (value:any) => {
   return '#000';
 };
 
-export const ScaledSquare = (props:Props) => {
+const semiArcLeft = (value: number) => arc()({
+  innerRadius: 0,
+  outerRadius: value,
+  startAngle: -Math.PI,
+  endAngle: 0,
+});
+
+const semiArcRight = (value: number) => arc()({
+  innerRadius: 0,
+  outerRadius: value,
+  startAngle: 0,
+  endAngle: Math.PI,
+});
+
+export const ScaledHalfCircles = (props:Props) => {
   const {
     values,
     indicators,
@@ -62,21 +77,20 @@ export const ScaledSquare = (props:Props) => {
 
   return (
     <div>
-      <svg width={width + 20} height={278}>
-        <g transform={`translate(0) scale(${1})`}>
+      <svg width={width} height={278}>
+        <g transform='translate(120,120)'>
           <g transform='translate(0)'>
-            <rect id={indicators[0]} height={square2030Size} width={square2030Size} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
+            <path d={`${semiArcLeft(square2030Size / 4)}`} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
             <text x={square2030Size > 90 ? 5 : square2030Size + 5} y='20' style={{ fill: numberColor(square2030Size), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(value2030 * factor)} ${(indicators2.length > 0) ? `(${indicators2[0]})` : ''}`}</text>
           </g>
 
-          <g transform={`translate(0,${square2030Size + 5})`}>
-            <rect height={square2050Size} width={square2050Size} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
+          <g transform='translate(0)'>
+            <path d={`${semiArcRight(square2050Size / 4)}`} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
             <text className='squareLabel' x={square2050Size > 90 ? 5 : square2050Size + 5} y='20' style={{ fill: numberColor(square2050Size), fontSize: '.9rem', fontWeight: 'bold' }}>
               {`${unit}${formatData(value2050 * factor)} ${(indicators2.length > 0) ? `(${indicators2[1]})` : ''}`}
             </text>
           </g>
         </g>
-
       </svg>
     </div>
   );

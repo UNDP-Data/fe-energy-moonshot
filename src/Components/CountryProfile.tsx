@@ -14,6 +14,7 @@ import {
   CountryGroupDataType,
 } from '../Types';
 import { ScaledSquare } from '../GrapherComponent/ScaledSquare';
+import { ScaledHalfCircles } from '../GrapherComponent/ScaledHalfCircles';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
 import '../styles/style.css';
@@ -274,7 +275,7 @@ export const CountryProfile = (props: Props) => {
                       <div className='flex-inner-div-1a'>
                         <h6 className='undp-typography margin-bottom-00'>Averted deaths</h6>
                         <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
-                        <ScaledSquare
+                        <ScaledHalfCircles
                           values={countryDataValues}
                           indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
                           indicators2={[]}

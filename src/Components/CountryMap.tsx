@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styled from 'styled-components';
+import { Checkbox } from 'antd';
 import UNDPColorModule from 'undp-viz-colors';
-// import pattern from '../assets/black-twill.png';
-import pattern from '../assets/diagonal-hatch-black.png';
+import pattern from '../assets/black-twill.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
@@ -43,12 +43,12 @@ export const CountryMap = (props: Props) => {
   const year = 2020;
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
-  const [selectedLayer, setSelectedLayer] = useState<string>('hrea');
+  // const [selectedLayer, setSelectedLayer] = useState<string>('hrea');
   const [hoverData, setHoverData] = useState<null | HoverDataProps>(null);
   const keyBarWid = 40;
   const pctRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   useEffect(() => {
-    setSelectedLayer('hrea'); // not doing anything at the moment but it might be used when additional data is added
+    // setSelectedLayer('hrea'); // not doing anything at the moment but it might be used when additional data is added
     let districtHoveredStateId: string | null = null;
     if (map.current) return;
     // initiate map and add base layer
@@ -241,24 +241,6 @@ export const CountryMap = (props: Props) => {
             maxzoom: 22,
           },
         );
-        /* (map as any).current.removeLayer('admin2rwi');
-        (map as any).current.loadImage(pattern, (err:any, image:any) => {
-          // Throw an error if something went wrong
-          if (err) throw err;
-          // Declare the image
-          (map as any).current.addImage('pattern', image);
-          // Use it
-          (map as any).current.addLayer({
-            id: 'admin2rwi',
-            type: 'fill',
-            source: 'admin2data',
-            'source-layer': 'accessDistrictData',
-            paint: {
-              'fill-pattern': 'pattern',
-            },
-            filter: ['<', 'RWI', 100000],
-          });
-        }); */
         (map as any).current.removeLayer('admin2rwi');
         (map as any).current.addLayer({
           id: 'admin2rwi',
@@ -269,7 +251,7 @@ export const CountryMap = (props: Props) => {
             'fill-pattern': 'pattern',
           },
           filter: ['all',
-            ['<', 'RWI', 50000],
+            ['<', 'RWI', 100000],
             ['==', 'adm0_name', country['Country or Area']],
           ],
         });
@@ -316,7 +298,8 @@ export const CountryMap = (props: Props) => {
   }, [selectedLayer]); */
   return (
     <div>
-      <i className='small-font' style={{ color: 'var(--red)' }}>Relative wealth data to be added!</i>
+      <p className='label'>See poor districts</p>
+      <Checkbox className='undp-checkbox' />
       <div
         ref={mapContainer}
         className='map'
@@ -328,43 +311,37 @@ export const CountryMap = (props: Props) => {
         }}
       />
       <KeyEl>
-        <div>{ selectedLayer === 'hrea' ? 'Percentage Access to Reliable Electricity Services' : 'Relative poverty'}</div>
-        {
-        selectedLayer === 'hrea'
-          ? (
-            <svg height={25} width={colorScale.length * keyBarWid + 30}>
-              <g transform='translate(10,0)'>
-                {
-                  colorScale.map((d: string, i: number) => (
-                    <rect
-                      key={i}
-                      x={i * keyBarWid}
-                      height={10}
-                      y={0}
-                      width={keyBarWid}
-                      fill={d}
-                    />
-                  ))
-                }
-                {
-                  pctRange.map((d: number, i: number) => (
-                    <text
-                      key={i}
-                      x={(i) * keyBarWid}
-                      y={23}
-                      textAnchor='middle'
-                      fontSize={10}
-                    >
-                      {d}
-                      %
-                    </text>
-                  ))
-                }
-              </g>
-            </svg>
-          )
-          : null
-        }
+        <div>Percentage Access to Reliable Electricity Services</div>
+        <svg height='25' width='{colorScale.length * keyBarWid + 30}'>
+          <g transform='translate(10,0)'>
+            {
+              colorScale.map((d: string, i: number) => (
+                <rect
+                  key={i}
+                  x={i * keyBarWid}
+                  height={10}
+                  y={0}
+                  width={keyBarWid}
+                  fill={d}
+                />
+              ))
+            }
+            {
+              pctRange.map((d: number, i: number) => (
+                <text
+                  key={i}
+                  x={(i) * keyBarWid}
+                  y={23}
+                  textAnchor='middle'
+                  fontSize={10}
+                >
+                  {d}
+                  %
+                </text>
+              ))
+            }
+          </g>
+        </svg>
       </KeyEl>
       {
         hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
