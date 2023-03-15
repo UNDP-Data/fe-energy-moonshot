@@ -42,11 +42,14 @@ vis-container-1{
   column-gap: 1.334rem;
 }
 .flex-inner-div-0{
-  flex: 0 1 13rem;
+  flex: 1 1 10rem;
 }
 .flex-inner-div-1{
   flex: 3 1 45rem;
 }
 .flex-inner-div-1a{
   flex: 1 1 15rem;
+}
+.hide-div{
+  display: none;
 }

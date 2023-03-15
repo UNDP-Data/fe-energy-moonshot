@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import UNDPColorModule from 'undp-viz-colors';
-import pattern from '../assets/black-twill.png';
+import pattern from '../assets/diagonal-hatch-white_30.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */

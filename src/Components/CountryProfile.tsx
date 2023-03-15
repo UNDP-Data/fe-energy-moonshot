@@ -56,6 +56,18 @@ const maxValueInvGdp = (countryValues:any) => {
   });
   return max;
 };
+const maxValuePeople = (countryValues:any) => {
+  let max = 0;
+  const ind = ['cum_averteddeaths_2030', 'cum_averteddeaths_2050', 'poverty_reduction_2030_million', 'poverty_reduction_2050_million'];
+  ind.forEach((indicator) => {
+    const factor = (indicator.slice(indicator.length - 7) === 'million') ? 1000000 : 1;
+    console.log('factor', factor);
+    const value:number = Math.abs(countryValues.filter((d:any) => d.indicator === indicator)[0].value * factor);
+    if (value > max) max = value;
+  });
+  console.log('max', max);
+  return max;
+};
 export const CountryProfile = (props: Props) => {
   const {
     projectsData,
@@ -75,12 +87,12 @@ export const CountryProfile = (props: Props) => {
     console.log('ind---------> ', ind, countryDataValues);
     return countryDataValues.filter((d) => d.indicator === ind)[0].value;
   };
-  const maxValue = (ind1:string, ind2:string) => {
+  /* const maxValue = (ind1:string, ind2:string) => {
     const value1 = Math.abs(indValue(ind1));
     const value2 = Math.abs(indValue(ind2));
     if (value1 > value2) return value1;
     return value2;
-  };
+  }; */
   useEffect(() => {
     if (queryCountry)setSelectedCountry(queryCountry);
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
@@ -151,146 +163,153 @@ export const CountryProfile = (props: Props) => {
       selectedCountry !== undefined && countryDataValues.length > 0
         ? (
           <div className='margin-top-1'>
-            <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
-            <p className='undp-typography'>
-              {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${formatData(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
-            </p>
-            <div className='flex-div flex-wrap vis-container-1'>
-              <div style={{ flex: '2 1 27rem' }}>
-                <CountryMap country={countryGroupData} />
-                <div className='small-font'>
-                  <ol>
-                    <li>
-                      Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:
-                      <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
-                    </li>
-                    <li>
-                      Relative wealth index from Facebook (2015) For more details, check:
-                      <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
-                    </li>
-                  </ol>
-                </div>
-              </div>
-              <div style={{ flex: '0 1 20rem' }}>
-                <div className='stat-card margin-top-07'>
-                  <div style={{ height: '340px' }} className='column-flex'>
-                    <div>
-                      <h6 className='undp-typography margin-bottom-01'>Population without access to reliable energy services</h6>
-                      <div className='stat-card-notes margin-bottom-06'>2020</div>
-                    </div>
-                    <div>
-                      <h3 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
-                      <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} people`}</div>
-                    </div>
-                    <div className='stat-card-source'>
-                      Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <h4 className='undp-typography margin-top-07'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
-            <div>
+            <div className={`${indValue('hrea_2020') === '' ? 'hide-div' : ''}`}>
+              <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
               <p className='undp-typography'>
-                {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${formatData(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${formatBillion(indValue('InvTotal_cum_2030_bi'))} between now and 2030, including more than USD ${formatBillion(indValue('InvRural_cum2030_bi'))} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${formatBillion(indValue('GDPgains_cum2050_bi'))} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${formatMillion(Math.abs(indValue('poverty_reduction_2050_million')))} people out of extreme poverty by mid-century and avoiding ${formatData(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${formatData(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
               </p>
-            </div>
-            <div className='margin-bottom-05'>
-              <div>
-                <div className='flex-div flex-wrap vis-container-1'>
-                  <div className='vis-div flex-inner-div-0'>
-                    <h5 className='undp-typography margin-bottom-00'>Investment gap</h5>
-                    <div className='legend-container' style={{ marginBottom: '52px' }}>
-                      <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
-                        &nbsp;
-                      </div>
-                      <div className='legend-label'>2030</div>
-                      <div style={{ backgroundColor: 'var(--blue-600)' }} className='legend-square'>
-                        &nbsp;
-                      </div>
-                      <div className='legend-label'>2050</div>
-                    </div>
-                    <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
-                    <ScaledSquare
-                      values={countryDataValues}
-                      indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
-                      indicators2={[]}
-                      maxValue={maxValueInvGdp(countryDataValues)}
-                      unit='USD '
-                      scaleChart={false}
-                      factor={1000000000}
-                      invert={false}
-                    />
+              <div className='flex-div flex-wrap vis-container-1'>
+                <div style={{ flex: '2 1 27rem' }}>
+                  <CountryMap country={countryGroupData} />
+                  <div className='small-font'>
+                    <ol>
+                      <li>
+                        Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:
+                        <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
+                      </li>
+                      <li>
+                        Relative wealth index from Facebook (2015) For more details, check:
+                        <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
+                      </li>
+                    </ol>
                   </div>
-                  <div className='vis-div flex-inner-div-1'>
-                    <h5 className='undp-typography margin-bottom-00'>Benefits</h5>
-                    <div className='margin-bottom-07 legend-container'>
-                      <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
-                        &nbsp;
+                </div>
+                <div style={{ flex: '1 1 12rem' }}>
+                  <div className='stat-card margin-top-07'>
+                    <div style={{ height: '340px' }} className='column-flex'>
+                      <div>
+                        <h6 className='undp-typography margin-bottom-01'>Population without access to reliable energy services</h6>
+                        <div className='stat-card-notes margin-bottom-06'>2020</div>
                       </div>
-                      <div className='legend-label'>2030</div>
-                      <div style={{ backgroundColor: 'var(--blue-600)' }} className='legend-square'>
-                        &nbsp;
+                      <div>
+                        <h3 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
+                        <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} people`}</div>
                       </div>
-                      <div className='legend-label'>2050</div>
-                    </div>
-                    <div className='flex-div flex-wrap' style={{ rowGap: '2rem' }}>
-                      <div className='flex-inner-div-1a'>
-                        <h6 className='undp-typography margin-bottom-01'>GDP gains</h6>
-                        <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
-                        <ScaledSquare
-                          values={countryDataValues}
-                          indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
-                          indicators2={[]}
-                          maxValue={maxValueInvGdp(countryDataValues)}
-                          unit='USD '
-                          scaleChart={false}
-                          factor={1000000000}
-                          invert={false}
-                        />
-                      </div>
-                      <div className='flex-inner-div-1a'>
-                        <h6 className='undp-typography margin-bottom-01'>Poverty reduction</h6>
-                        <div className='stat-card-notes margin-bottom-06'>By 2030/2050</div>
-                        <ScaledHalfCircles
-                          values={countryDataValues}
-                          indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
-                          indicators2={[(indValue('poverty_reduction_2030_%')).replace('-', ''), (indValue('poverty_reduction_2050_%')).replace('-', '')]}
-                          maxValue={maxValue('poverty_reduction_2030_million', 'poverty_reduction_2050_million')}
-                          unit=''
-                          scaleChart
-                          factor={1000000}
-                          invert
-                        />
-                        {((indValue('poverty_reduction_2030_million') > 0) || (indValue('poverty_reduction_2050_million') > 0))
-                          ? (
-                            <div className='legend-container margin-top-04'>
-                              <div style={{ border: 'var(--dark-red) 2px solid', backgroundColor: 'var(--blue-300)' }} className='legend-square'>
-                                &nbsp;
-                              </div>
-                              <div className='legend-label'>Increase in poverty (....)</div>
-                            </div>
-                          ) : null }
-                      </div>
-                      <div className='flex-inner-div-1a'>
-                        <h6 className='undp-typography margin-bottom-00'>Averted deaths</h6>
-                        <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
-                        <ScaledHalfCircles
-                          values={countryDataValues}
-                          indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
-                          indicators2={[]}
-                          maxValue={maxValue('cum_averteddeaths_2030', 'cum_averteddeaths_2050')}
-                          unit=''
-                          scaleChart
-                          factor={1}
-                          invert={false}
-                        />
-                        <p className='undp-typography small-font margin-top-05'>averted deaths due to the reduction of the use of traditional cookstoves</p>
+                      <div className='stat-card-source'>
+                        Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className='stat-card-source' style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</div>
+              </div>
+              <h4 className='undp-typography margin-top-07'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
+              <div>
+                {
+                indValue('poverty_reduction_2030_million') < 0
+                  ? (
+                    <p className='undp-typography'>
+                      {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${formatData(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${formatBillion(indValue('InvTotal_cum_2030_bi'))} between now and 2030, including more than USD ${formatBillion(indValue('InvRural_cum2030_bi'))} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${formatBillion(indValue('GDPgains_cum2050_bi'))} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${formatMillion(Math.abs(indValue('poverty_reduction_2050_million')))} people out of extreme poverty by mid-century and avoiding ${formatData(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                    </p>
+                  ) : (
+                    <p className='undp-typography'>
+                      {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${formatData(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${formatBillion(indValue('InvTotal_cum_2030_bi'))} between now and 2030, including more than USD ${formatBillion(indValue('InvRural_cum2030_bi'))} on rural areas alone. Despite the short-term trade-offs in fiscal choices associated with the expansion of electrification, the long-term benefits of electricity access are translated into cumulative GDP gains reaching USD ${formatBillion(indValue('GDPgains_cum2050_bi'))} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${formatMillion(Math.abs(indValue('poverty_reduction_2050_million')))} people out of extreme poverty by mid-century and avoiding ${formatData(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                    </p>
+                  )
+                }
+              </div>
+              <div className='margin-bottom-05'>
+                <div>
+                  <div className='flex-div flex-wrap vis-container-1'>
+                    <div className='vis-div flex-inner-div-0'>
+                      <h5 className='undp-typography margin-bottom-00'>Investment gap</h5>
+                      <div className='legend-container' style={{ marginBottom: '52px' }}>
+                        <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                          &nbsp;
+                        </div>
+                        <div className='legend-label'>2030</div>
+                        <div style={{ backgroundColor: 'var(--blue-600)' }} className='legend-square'>
+                          &nbsp;
+                        </div>
+                        <div className='legend-label'>2050</div>
+                      </div>
+                      <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
+                      <ScaledSquare
+                        values={countryDataValues}
+                        indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
+                        indicators2={[]}
+                        maxValue={maxValueInvGdp(countryDataValues)}
+                        unit='USD '
+                        factor={1000000000}
+                        invert={false}
+                      />
+                    </div>
+                    <div className='vis-div flex-inner-div-1'>
+                      <h5 className='undp-typography margin-bottom-00'>Benefits</h5>
+                      <div className='margin-bottom-07 legend-container'>
+                        <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                          &nbsp;
+                        </div>
+                        <div className='legend-label'>2030</div>
+                        <div style={{ backgroundColor: 'var(--blue-600)' }} className='legend-square'>
+                          &nbsp;
+                        </div>
+                        <div className='legend-label'>2050</div>
+                      </div>
+                      <div className='flex-div flex-wrap' style={{ rowGap: '2rem' }}>
+                        <div className='flex-inner-div-1a'>
+                          <h6 className='undp-typography margin-bottom-01'>GDP gains</h6>
+                          <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
+                          <ScaledSquare
+                            values={countryDataValues}
+                            indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
+                            indicators2={[]}
+                            maxValue={maxValueInvGdp(countryDataValues)}
+                            unit='USD '
+                            factor={1000000000}
+                            invert={false}
+                          />
+                        </div>
+                        <div className='flex-inner-div-1a'>
+                          <h6 className='undp-typography margin-bottom-01'>Poverty reduction</h6>
+                          <div className='stat-card-notes margin-bottom-06'>By 2030/2050</div>
+                          <ScaledHalfCircles
+                            values={countryDataValues}
+                            indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
+                            indicators2={[(indValue('poverty_reduction_2030_%')).replace('-', ''), (indValue('poverty_reduction_2050_%')).replace('-', '')]}
+                            maxValue={maxValuePeople(countryDataValues)}
+                            unit=''
+                            factor={1000000}
+                            invert
+                          />
+                          {((indValue('poverty_reduction_2030_million') > 0) || (indValue('poverty_reduction_2050_million') > 0))
+                            ? (
+                              <div className='legend-container margin-top-04'>
+                                <div style={{ border: 'var(--dark-red) 2px solid', backgroundColor: 'var(--blue-300)' }} className='legend-square'>
+                                  &nbsp;
+                                </div>
+                                <div className='legend-label'>Increase in poverty</div>
+                              </div>
+                            ) : null }
+                        </div>
+                        <div className='flex-inner-div-1a'>
+                          <h6 className='undp-typography margin-bottom-00'>Averted deaths *</h6>
+                          <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
+                          <ScaledHalfCircles
+                            values={countryDataValues}
+                            indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
+                            indicators2={[]}
+                            maxValue={maxValuePeople(countryDataValues)}
+                            unit=''
+                            factor={1}
+                            invert={false}
+                          />
+                          <p className='undp-typography small-font margin-top-05'>* due to the reduction of the use of traditional cookstoves</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='stat-card-source' style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</div>
+                </div>
               </div>
             </div>
             <h4 className='undp-typography margin-top-07'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>

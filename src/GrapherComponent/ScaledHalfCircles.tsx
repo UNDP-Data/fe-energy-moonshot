@@ -10,7 +10,6 @@ interface Props{
   indicators2: string[],
   maxValue: number,
   unit: string,
-  scaleChart: boolean,
   factor: number,
   invert: boolean,
 }
@@ -41,7 +40,6 @@ export const ScaledHalfCircles = (props:Props) => {
     indicators2,
     maxValue,
     unit,
-    scaleChart,
     factor,
     invert,
   } = props;
@@ -63,31 +61,70 @@ export const ScaledHalfCircles = (props:Props) => {
     } else value = d;
     if (value < 1000000) return format(',')(value).replaceAll(',', ' ');
     return format('.3s')(value).replace('G', 'B').replaceAll(',', ' ');
-    // return `${format(',')(Math.round(value / 1000000))}M`;
   };
-
   const width = 230;
-  const squareWidth = 240;
-  const scale = scaleSqrt<number>().range([0, squareWidth]).domain([0, maxValue]);
-  const value2030 = Number(filterIndicator(indicators[0]).value);
-  const value2050 = Number(filterIndicator(indicators[1]).value);
-  const vScale = scaleChart ? 275 / (Math.abs(scale(value2030)) + Math.abs(scale(value2050))) : 1;
-  const square2030Size = scale(Math.abs(value2030)) * vScale;
-  const square2050Size = scale(Math.abs(value2050)) * vScale;
+  const maxRadius = width / 2 - 10;
+  const scale = scaleSqrt<number>().range([0, maxRadius]).domain([0, maxValue]);
+  const value2030 = Number(filterIndicator(indicators[0]).value * factor);
+  const value2050 = Number(filterIndicator(indicators[1]).value * factor);
+  const square2030Radius = scale(Math.abs(value2030));
+  const square2050Radius = scale(Math.abs(value2050));
 
   return (
     <div>
-      <svg width={width} height={278}>
-        <g transform='translate(120,120)'>
+      <svg width={width + 5} height={278}>
+        <g transform={`translate(${maxRadius},130)`}>
           <g transform='translate(0)'>
-            <path d={`${semiArcLeft(square2030Size / 2)}`} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
-            <text x={square2030Size > 90 ? 5 : square2030Size + 5} y='20' style={{ fill: numberColor(square2030Size), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(value2030 * factor)} ${(indicators2.length > 0) ? `(${indicators2[0]})` : ''}`}</text>
+            <path d={`${semiArcLeft(square2030Radius)}`} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
+            <text
+              x={square2030Radius > 90 ? -5 : -(square2030Radius + 5)}
+              y='5'
+              style={{
+                fill: numberColor(square2030Radius),
+                fontSize: '.9rem',
+                fontWeight: 'bold',
+                textAnchor: 'end',
+              }}
+            >
+              {`${unit}${formatData(value2030)}`}
+            </text>
+            <text
+              x={square2030Radius > 90 ? -5 : -(square2030Radius + 5)}
+              y='25'
+              style={{
+                fill: numberColor(square2030Radius),
+                fontSize: '.9rem',
+                fontWeight: 'bold',
+                textAnchor: 'end',
+              }}
+            >
+              {` ${(indicators2.length > 0) ? `(${indicators2[0]})` : ''}`}
+            </text>
           </g>
 
           <g transform='translate(3)'>
-            <path d={`${semiArcRight(square2050Size / 2)}`} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
-            <text className='squareLabel' x={square2050Size > 90 ? 5 : square2050Size + 5} y='20' style={{ fill: numberColor(square2050Size), fontSize: '.9rem', fontWeight: 'bold' }}>
-              {`${unit}${formatData(value2050 * factor)} ${(indicators2.length > 0) ? `(${indicators2[1]})` : ''}`}
+            <path d={`${semiArcRight(square2050Radius)}`} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
+            <text
+              x={square2050Radius > 90 ? 5 : square2050Radius + 5}
+              y='5'
+              style={{
+                fill: numberColor(square2050Radius),
+                fontSize: '.9rem',
+                fontWeight: 'bold',
+              }}
+            >
+              {`${unit}${formatData(value2050)}`}
+            </text>
+            <text
+              x={square2050Radius > 90 ? 5 : square2050Radius + 5}
+              y='25'
+              style={{
+                fill: numberColor(square2050Radius),
+                fontSize: '.9rem',
+                fontWeight: 'bold',
+              }}
+            >
+              {`${(indicators2.length > 0) ? `(${indicators2[1]})` : ''}`}
             </text>
           </g>
         </g>

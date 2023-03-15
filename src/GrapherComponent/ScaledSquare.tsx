@@ -9,7 +9,6 @@ interface Props{
   indicators2: string[],
   maxValue: number,
   unit: string,
-  scaleChart: boolean,
   factor: number,
   invert: boolean,
 }
@@ -26,7 +25,6 @@ export const ScaledSquare = (props:Props) => {
     indicators2,
     maxValue,
     unit,
-    scaleChart,
     factor,
     invert,
   } = props;
@@ -56,9 +54,8 @@ export const ScaledSquare = (props:Props) => {
   const scale = scaleSqrt<number>().range([0, squareWidth]).domain([0, maxValue]);
   const value2030 = Number(filterIndicator(indicators[0]).value);
   const value2050 = Number(filterIndicator(indicators[1]).value);
-  const vScale = scaleChart ? 275 / (Math.abs(scale(value2030)) + Math.abs(scale(value2050))) : 1;
-  const square2030Size = scale(Math.abs(value2030)) * vScale;
-  const square2050Size = scale(Math.abs(value2050)) * vScale;
+  const square2030Size = scale(Math.abs(value2030));
+  const square2050Size = scale(Math.abs(value2050));
 
   return (
     <div>
