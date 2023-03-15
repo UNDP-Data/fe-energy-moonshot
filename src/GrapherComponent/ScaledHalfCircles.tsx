@@ -80,12 +80,12 @@ export const ScaledHalfCircles = (props:Props) => {
       <svg width={width} height={278}>
         <g transform='translate(120,120)'>
           <g transform='translate(0)'>
-            <path d={`${semiArcLeft(square2030Size / 4)}`} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
+            <path d={`${semiArcLeft(square2030Size / 2)}`} style={{ fill: 'var(--blue-300)', stroke: negValue(value2030) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2030) ? '2' : '0' }} x={negValue(value2030) ? 1 : 0} y={negValue(value2030) ? 1 : 0} />
             <text x={square2030Size > 90 ? 5 : square2030Size + 5} y='20' style={{ fill: numberColor(square2030Size), fontSize: '.9rem', fontWeight: 'bold' }}>{`${unit}${formatData(value2030 * factor)} ${(indicators2.length > 0) ? `(${indicators2[0]})` : ''}`}</text>
           </g>
 
-          <g transform='translate(0)'>
-            <path d={`${semiArcRight(square2050Size / 4)}`} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
+          <g transform='translate(3)'>
+            <path d={`${semiArcRight(square2050Size / 2)}`} style={{ fill: 'var(--blue-600)', stroke: negValue(value2050) ? 'var(--dark-red)' : '', strokeWidth: negValue(value2050) ? '1' : '0' }} />
             <text className='squareLabel' x={square2050Size > 90 ? 5 : square2050Size + 5} y='20' style={{ fill: numberColor(square2050Size), fontSize: '.9rem', fontWeight: 'bold' }}>
               {`${unit}${formatData(value2050 * factor)} ${(indicators2.length > 0) ? `(${indicators2[1]})` : ''}`}
             </text>

@@ -3,6 +3,7 @@ import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styled from 'styled-components';
 import { Checkbox } from 'antd';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import UNDPColorModule from 'undp-viz-colors';
 import pattern from '../assets/black-twill.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
@@ -47,6 +48,10 @@ export const CountryMap = (props: Props) => {
   const [hoverData, setHoverData] = useState<null | HoverDataProps>(null);
   const keyBarWid = 40;
   const pctRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+  const displayRWI = (e:CheckboxChangeEvent) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
   useEffect(() => {
     // setSelectedLayer('hrea'); // not doing anything at the moment but it might be used when additional data is added
     let districtHoveredStateId: string | null = null;
@@ -298,8 +303,10 @@ export const CountryMap = (props: Props) => {
   }, [selectedLayer]); */
   return (
     <div>
-      <p className='label'>See poor districts</p>
-      <Checkbox className='undp-checkbox' />
+      <div className='flex-div'>
+        <p className='label'>See poor districts</p>
+        <Checkbox className='undp-checkbox' onChange={displayRWI} />
+      </div>
       <div
         ref={mapContainer}
         className='map'

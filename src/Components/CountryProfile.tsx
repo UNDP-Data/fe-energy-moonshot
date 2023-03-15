@@ -252,7 +252,7 @@ export const CountryProfile = (props: Props) => {
                       <div className='flex-inner-div-1a'>
                         <h6 className='undp-typography margin-bottom-01'>Poverty reduction</h6>
                         <div className='stat-card-notes margin-bottom-06'>By 2030/2050</div>
-                        <ScaledSquare
+                        <ScaledHalfCircles
                           values={countryDataValues}
                           indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
                           indicators2={[(indValue('poverty_reduction_2030_%')).replace('-', ''), (indValue('poverty_reduction_2050_%')).replace('-', '')]}
