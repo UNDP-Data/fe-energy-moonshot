@@ -61,11 +61,9 @@ const maxValuePeople = (countryValues:any) => {
   const ind = ['cum_averteddeaths_2030', 'cum_averteddeaths_2050', 'poverty_reduction_2030_million', 'poverty_reduction_2050_million'];
   ind.forEach((indicator) => {
     const factor = (indicator.slice(indicator.length - 7) === 'million') ? 1000000 : 1;
-    console.log('factor', factor);
     const value:number = Math.abs(countryValues.filter((d:any) => d.indicator === indicator)[0].value * factor);
     if (value > max) max = value;
   });
-  console.log('max', max);
   return max;
 };
 export const CountryProfile = (props: Props) => {
@@ -83,22 +81,12 @@ export const CountryProfile = (props: Props) => {
   const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
   const projectsDataSorted = sortBy(projectsData, 'Lead Country');
-  const indValue = (ind:string) => {
-    console.log('ind---------> ', ind, countryDataValues);
-    return countryDataValues.filter((d) => d.indicator === ind)[0].value;
-  };
-  /* const maxValue = (ind1:string, ind2:string) => {
-    const value1 = Math.abs(indValue(ind1));
-    const value2 = Math.abs(indValue(ind2));
-    if (value1 > value2) return value1;
-    return value2;
-  }; */
+  const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
   useEffect(() => {
     if (queryCountry)setSelectedCountry(queryCountry);
     const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
     setCountryDataValues(indicatorsByCountry);
-    console.log('indicatorBycountry', indicatorsByCountry);
     setTableData(dataByCountry);
     const relevantData = selectedCountry !== undefined || selectedCountry === 'All'
       ? projectsData.filter((d) => d['Lead Country'] === selectedCountry)
@@ -312,7 +300,8 @@ export const CountryProfile = (props: Props) => {
                 </div>
               </div>
             </div>
-            <h4 className='undp-typography margin-top-07'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
+            <h4 className='undp-typography margin-top-08'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
+            <p className='undp-typography'>{`By harnessing networks, finance, experience, and innovation, UNDP contributes to expanding access to energy for the most vulnerable people and accelerating energy transition in ${selectedCountry}. See below details on the actions UNDP and partners are taking to support ${selectedCountry} towards a more sustainable energy system.`}</p>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>

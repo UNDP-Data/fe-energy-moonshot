@@ -69,6 +69,7 @@
     "lodash.sumby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
     "maplibre-gl": "^2.4.0",
+    "pmtiles": "^2.7.1",
     "react": "^18.2.0",
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",

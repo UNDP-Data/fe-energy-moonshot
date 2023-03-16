@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import UNDPColorModule from 'undp-viz-colors';
+import * as pmtiles from 'pmtiles';
 import pattern from '../assets/diagonal-hatch-white_30.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
@@ -51,10 +52,10 @@ export const CountryMap = (props: Props) => {
   const displayRWI = (e:CheckboxChangeEvent) => {
     console.log(`checked = ${e.target.checked}`);
   };
-
+  const protocol = new pmtiles.Protocol();
   useEffect(() => {
-    // setSelectedLayer('hrea'); // not doing anything at the moment but it might be used when additional data is added
     let districtHoveredStateId: string | null = null;
+    maplibreGl.addProtocol('pmtiles', protocol.tile);
     if (map.current) return;
     // initiate map and add base layer
     (map as any).current = new maplibreGl.Map({
@@ -72,7 +73,7 @@ export const CountryMap = (props: Props) => {
           },
           admin2data: {
             type: 'vector',
-            tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/accessDistrictData/{z}/{x}/{y}.pbf'],
+            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/accessdataadm2_20230314160148.pmtiles',
           },
         },
         layers: [
@@ -155,6 +156,22 @@ export const CountryMap = (props: Props) => {
           maxzoom: 22,
         },
       );
+      (map as any).current.addLayer({
+        id: 'admin2rwi',
+        type: 'fill',
+        source: 'admin2data',
+        'source-layer': 'accessdataadm2_20230314160148',
+        paint: {
+          'fill-color': '#FF0000',
+        },
+        /*  paint: {
+          'fill-pattern': 'pattern',
+        },
+        filter: ['all',
+          ['<', 'RWI', 0],
+          ['==', 'adm0_name', country['Country or Area']],
+        ], */
+      });
       (map as any).current.loadImage(pattern, (err:any, image:any) => {
         if (err) throw err;
         (map as any).current.addImage('pattern', image);
@@ -179,6 +196,9 @@ export const CountryMap = (props: Props) => {
             );
           }
         }
+      });
+      (map as any).current.on('mousemove', 'admin2data', (e:any) => {
+        console.log('===========', e.features[0]);
       });
       (map as any).current.on('mouseleave', 'admin2choropleth', () => {
         if (districtHoveredStateId) {
@@ -251,14 +271,17 @@ export const CountryMap = (props: Props) => {
           id: 'admin2rwi',
           type: 'fill',
           source: 'admin2data',
-          'source-layer': 'accessDistrictData',
+          'source-layer': 'accessdataadm2_20230314160148',
           paint: {
+            'fill-color': '#FF0000',
+          },
+          /* paint: {
             'fill-pattern': 'pattern',
           },
           filter: ['all',
-            ['<', 'RWI', 100000],
+            ['<', 'RWI', 0],
             ['==', 'adm0_name', country['Country or Area']],
-          ],
+          ], */
         });
       });
 
@@ -271,40 +294,10 @@ export const CountryMap = (props: Props) => {
       ]);
     }
   }, [country]);
-  /* useEffect(() => {
-    if (map.current) {
-      (map as any).current.on('idle', () => {
-        if (selectedLayer === 'hrea') {
-          (map as any).current.setLayoutProperty(
-            'admin2choropleth',
-            'visibility',
-            'visible',
-          );
-          (map as any).current.setLayoutProperty(
-            'overlay',
-            'visibility',
-            'none',
-          );
-        } else {
-          (map as any).current.setLayoutProperty(
-            'overlay',
-            'visibility',
-            'visible',
-          );
-          (map as any).current.setLayoutProperty(
-            'admin2choropleth',
-            'visibility',
-            'none',
-          );
-        }
-        (map as any).current.moveLayer('admin2choropleth');
-      }); // starting position [lng, lat]
-    }
-  }, [selectedLayer]); */
   return (
     <div>
       <div className='flex-div'>
-        <p className='label'>See poor districts</p>
+        <p className='label'>See poor districts (not working yet)</p>
         <Checkbox className='undp-checkbox' onChange={displayRWI} />
       </div>
       <div
@@ -319,7 +312,7 @@ export const CountryMap = (props: Props) => {
       />
       <KeyEl>
         <div>Percentage Access to Reliable Electricity Services</div>
-        <svg height='25' width='{colorScale.length * keyBarWid + 30}'>
+        <svg height='25' width={colorScale.length * keyBarWid + 30}>
           <g transform='translate(10,0)'>
             {
               colorScale.map((d: string, i: number) => (
