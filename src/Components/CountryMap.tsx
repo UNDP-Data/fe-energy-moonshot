@@ -156,22 +156,6 @@ export const CountryMap = (props: Props) => {
           maxzoom: 22,
         },
       );
-      (map as any).current.addLayer({
-        id: 'admin2rwi',
-        type: 'fill',
-        source: 'admin2data',
-        'source-layer': 'accessdataadm2_20230314160148',
-        paint: {
-          'fill-color': '#FF0000',
-        },
-        /*  paint: {
-          'fill-pattern': 'pattern',
-        },
-        filter: ['all',
-          ['<', 'RWI', 0],
-          ['==', 'adm0_name', country['Country or Area']],
-        ], */
-      });
       (map as any).current.loadImage(pattern, (err:any, image:any) => {
         if (err) throw err;
         (map as any).current.addImage('pattern', image);
@@ -271,15 +255,13 @@ export const CountryMap = (props: Props) => {
           id: 'admin2rwi',
           type: 'fill',
           source: 'admin2data',
-          'source-layer': 'accessdataadm2_20230314160148',
+          'source-layer': 'tmpupnfcvgn',
           paint: {
-            'fill-color': '#FF0000',
-          },
-          /* paint: {
             'fill-pattern': 'pattern',
           },
-          filter: ['all',
-            ['<', 'RWI', 0],
+          filter: ['<', 'RWI', 0],
+          /* filter: ['all',
+            ['<', 'RWI', 1],
             ['==', 'adm0_name', country['Country or Area']],
           ], */
         });

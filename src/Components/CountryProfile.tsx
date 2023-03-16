@@ -301,7 +301,8 @@ export const CountryProfile = (props: Props) => {
               </div>
             </div>
             <h4 className='undp-typography margin-top-08'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
-            <p className='undp-typography'>{`By harnessing networks, finance, experience, and innovation, UNDP contributes to expanding access to energy for the most vulnerable people and accelerating energy transition in ${selectedCountry}. See below details on the actions UNDP and partners are taking to support ${selectedCountry} towards a more sustainable energy system.`}</p>
+            <p className={`undp-typography ${indValue('hrea_2020') === '' ? 'hide-div' : ''}`}>{`By harnessing networks, finance, experience, and innovation, UNDP contributes to expanding access to energy for the most vulnerable people and accelerating energy transition in ${selectedCountry}. See below details on the actions UNDP and partners are taking to support ${selectedCountry} towards a more sustainable energy system.`}</p>
+            <p className={`undp-typography ${indValue('hrea_2020') !== '' ? 'hide-div' : ''}`}>{`UNDP is supporting the acceleration of energy transition in ${selectedCountry} by harnessing networks, finance, experience, and innovation. See below details on the actions UNDP and partners are taking to support ${selectedCountry} towards a more sustainable energy system.`}</p>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
