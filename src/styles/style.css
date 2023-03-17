@@ -67,7 +67,9 @@
   padding-bottom: 5px;
   font-size: 0.9rem;
 }
-
+.rwi-legend{
+  padding-bottom: 0.9rem;
+}
 .rwi-legend-pattern{
   background-image: url('../assets/diagonal-hatch-white_30.png');
   width: 300px;

@@ -227,9 +227,9 @@ export const CountryMap = (props: Props) => {
         ref={mapContainer}
         className='map'
       />
-      <div className='map-legend-container flex-div'>
-        <div>
-          <div className='title'>
+      <div className='map-legend-container flex-div flex-wrap'>
+        <div style={{ flex: '1 1 26.5rem' }}>
+          <div className='title margin-top-01'>
             Percentage Access to Reliable Electricity Services
             <sup> 1</sup>
           </div>
@@ -264,14 +264,13 @@ export const CountryMap = (props: Props) => {
             </g>
           </svg>
         </div>
-        <div className='rwi-legend'>
-          <div className='flex-div'>
+        <div className='rwi-legend' style={{ flex: '2 1 11rem' }}>
+          <Checkbox className='undp-checkbox' onChange={displayRWI}>
             <div className='title'>
               Highlight poor areas
               <sup> 2</sup>
             </div>
-            <Checkbox className='undp-checkbox' onChange={displayRWI} />
-          </div>
+          </Checkbox>
           <div className='rwi-legend-pattern' />
         </div>
       </div>
