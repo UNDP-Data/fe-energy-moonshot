@@ -156,25 +156,13 @@ export const CountryProfile = (props: Props) => {
               <p className='undp-typography'>
                 {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${formatData(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
               </p>
-              <div className='flex-div flex-wrap vis-container-1'>
-                <div style={{ flex: '2 1 27rem' }}>
+              <div className='flex-div flex-wrap'>
+                <div style={{ flex: '2 1 27rem', backgroundColor: '#f7f7f7', border: '1px solid #f7f7f7' }}>
                   <CountryMap country={countryGroupData} />
-                  <div className='small-font'>
-                    <ol>
-                      <li>
-                        Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:
-                        <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
-                      </li>
-                      <li>
-                        Relative wealth index from Facebook (2015) For more details, check:
-                        <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
-                      </li>
-                    </ol>
-                  </div>
                 </div>
                 <div style={{ flex: '1 1 12rem' }}>
-                  <div className='stat-card margin-top-07'>
-                    <div style={{ height: '340px' }} className='column-flex'>
+                  <div className='stat-card'>
+                    <div className='column-flex'>
                       <div>
                         <h6 className='undp-typography margin-bottom-01'>Population without access to reliable energy services</h6>
                         <div className='stat-card-notes margin-bottom-06'>2020</div>
@@ -184,11 +172,24 @@ export const CountryProfile = (props: Props) => {
                         <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} people`}</div>
                       </div>
                       <div className='stat-card-source'>
-                        Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan).
+                        Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan)
+                        <sup> 1</sup>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className='small-font'>
+                <ol>
+                  <li>
+                    Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:
+                    <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
+                  </li>
+                  <li>
+                    Relative wealth index less than 0. Data for good, Facebook. For more details, check:
+                    <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
+                  </li>
+                </ol>
               </div>
               <h4 className='undp-typography margin-top-07'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
               <div>

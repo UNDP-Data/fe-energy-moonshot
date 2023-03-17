@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Checkbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import UNDPColorModule from 'undp-viz-colors';
@@ -10,20 +10,6 @@ import pattern from '../assets/diagonal-hatch-white_30.png';
 import { CountryMapTooltip } from './CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
-
-const KeyEl = styled.div`
-  padding: 0;
-  position: relative;
-  z-index: 5;
-  bottom: 0;
-  right: 0;
-  margin: 0 1rem 1rem 0;
-  background-color: rgba(255,255,255,0.75);
-  div {
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-  }
-`;
 
 interface Props {
   country: CountryGroupDataType;
@@ -43,16 +29,18 @@ export const CountryMap = (props: Props) => {
     country,
   } = props;
   const year = 2020;
+  const [showRwi, setShowRwi] = useState<Boolean>(false);
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
-  // const [selectedLayer, setSelectedLayer] = useState<string>('hrea');
   const [hoverData, setHoverData] = useState<null | HoverDataProps>(null);
   const keyBarWid = 40;
   const pctRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   const displayRWI = (e:CheckboxChangeEvent) => {
     console.log(`checked = ${e.target.checked}`);
+    setShowRwi(e.target.checked);
   };
   const protocol = new pmtiles.Protocol();
+  // when loading for the first time
   useEffect(() => {
     let districtHoveredStateId: string | null = null;
     maplibreGl.addProtocol('pmtiles', protocol.tile);
@@ -114,34 +102,29 @@ export const CountryMap = (props: Props) => {
           'source-layer': 'adm2_polygons',
           paint: {
             'fill-color': [
-              'case',
-              ['==', ['get', `hrea_${year}`], ''],
-              '#FF0000',
-              [
-                'interpolate',
-                ['linear'],
-                ['get', `hrea_${year}`],
-                0, colorScale[0],
-                0.0999, colorScale[0],
-                0.1, colorScale[1],
-                0.1999, colorScale[1],
-                0.2, colorScale[2],
-                0.2999, colorScale[2],
-                0.3, colorScale[3],
-                0.3999, colorScale[3],
-                0.4, colorScale[4],
-                0.4999, colorScale[4],
-                0.5, colorScale[5],
-                0.5999, colorScale[5],
-                0.6, colorScale[6],
-                0.6999, colorScale[6],
-                0.7, colorScale[7],
-                0.7999, colorScale[7],
-                0.8, colorScale[8],
-                0.8999, colorScale[8],
-                0.9, colorScale[9],
-                1, colorScale[9],
-              ],
+              'interpolate',
+              ['linear'],
+              ['get', `hrea_${year}`],
+              0, colorScale[0],
+              0.0999, colorScale[0],
+              0.1, colorScale[1],
+              0.1999, colorScale[1],
+              0.2, colorScale[2],
+              0.2999, colorScale[2],
+              0.3, colorScale[3],
+              0.3999, colorScale[3],
+              0.4, colorScale[4],
+              0.4999, colorScale[4],
+              0.5, colorScale[5],
+              0.5999, colorScale[5],
+              0.6, colorScale[6],
+              0.6999, colorScale[6],
+              0.7, colorScale[7],
+              0.7999, colorScale[7],
+              0.8, colorScale[8],
+              0.8999, colorScale[8],
+              0.9, colorScale[9],
+              1, colorScale[9],
             ],
             'fill-opacity': 1,
             'fill-outline-color': [
@@ -156,14 +139,35 @@ export const CountryMap = (props: Props) => {
           maxzoom: 22,
         },
       );
+      (map as any).current.addLayer({
+        id: 'admin2rwi',
+        type: 'fill',
+        source: 'admin2data',
+        'source-layer': 'tmpupnfcvgn',
+        paint: {
+          'fill-pattern': 'pattern',
+        },
+        filter: ['<', 'RWI', 0],
+        layout: {
+          visibility: 'none',
+        },
+        /* filter: ['all',
+          ['<', 'RWI', 1],
+          ['==', 'adm0_name', country['Country or Area']],
+        ], */
+      });
       (map as any).current.loadImage(pattern, (err:any, image:any) => {
         if (err) throw err;
         (map as any).current.addImage('pattern', image);
       });
       // mouse over effect on district layer
+      (map as any).current.on('mouseover', 'admin2choropleth', (e:any) => {
+        console.log('===========', e.features[0]);
+      });
       (map as any).current.on('mousemove', 'admin2choropleth', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
         if (e.features.length > 0) {
+          console.log('===========', e.features[0]);
           districtHoveredStateId = e.features[0].layer.id;
           if (districtHoveredStateId) {
             setHoverData({
@@ -181,9 +185,7 @@ export const CountryMap = (props: Props) => {
           }
         }
       });
-      (map as any).current.on('mousemove', 'admin2data', (e:any) => {
-        console.log('===========', e.features[0]);
-      });
+
       (map as any).current.on('mouseleave', 'admin2choropleth', () => {
         if (districtHoveredStateId) {
           setHoverData(null);
@@ -196,135 +198,83 @@ export const CountryMap = (props: Props) => {
       });
     });
   });
+  // when changing country
   useEffect(() => {
     if (map.current) {
-      (map as any).current.on('idle', () => {
-        (map as any).current.removeLayer('admin2choropleth');
-        (map as any).current.addLayer(
-          {
-            id: 'admin2choropleth',
-            type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
-            paint: {
-              'fill-color': [
-                'case',
-                ['==', ['get', `hrea_${year}`], ''],
-                'hsla(0, 0%, 0%, 0)',
-                [
-                  'interpolate',
-                  ['linear'],
-                  ['get', `hrea_${year}`],
-                  0, colorScale[0],
-                  0.0999, colorScale[0],
-                  0.1, colorScale[1],
-                  0.1999, colorScale[1],
-                  0.2, colorScale[2],
-                  0.2999, colorScale[2],
-                  0.3, colorScale[3],
-                  0.3999, colorScale[3],
-                  0.4, colorScale[4],
-                  0.4999, colorScale[4],
-                  0.5, colorScale[5],
-                  0.5999, colorScale[5],
-                  0.6, colorScale[6],
-                  0.6999, colorScale[6],
-                  0.7, colorScale[7],
-                  0.7999, colorScale[7],
-                  0.8, colorScale[8],
-                  0.8999, colorScale[8],
-                  0.9, colorScale[9],
-                  1, colorScale[9],
-                ],
-              ],
-              'fill-opacity': 1,
-              'fill-outline-color': [
-                'case',
-                ['boolean', ['feature-state', 'hover'], false],
-                'hsla(0, 0%, 0%, 1)',
-                'hsla(0, 0%, 100%, 0.5)',
-              ],
-            },
-            filter: ['==', 'adm0_name', country['Country or Area']],
-            minzoom: 0,
-            maxzoom: 22,
-          },
-        );
-        (map as any).current.removeLayer('admin2rwi');
-        (map as any).current.addLayer({
-          id: 'admin2rwi',
-          type: 'fill',
-          source: 'admin2data',
-          'source-layer': 'tmpupnfcvgn',
-          paint: {
-            'fill-pattern': 'pattern',
-          },
-          filter: ['<', 'RWI', 0],
-          /* filter: ['all',
-            ['<', 'RWI', 1],
-            ['==', 'adm0_name', country['Country or Area']],
-          ], */
-        });
-      });
-
-      (map as any).current.flyTo({
-        center: [country['Longitude (average)'], country['Latitude (average)']],
-      }); // starting position [lng, lat]
-      (map as any).current.fitBounds([
-        [country.bbox.sw.lon, country.bbox.sw.lat],
-        [country.bbox.ne.lon, country.bbox.ne.lat],
-      ]);
+      if ((map as any).current.getLayer('admin2choropleth')) {
+        (map as any).current.setFilter('admin2choropleth', ['==', 'adm0_name', country['Country or Area']]);
+        (map as any).current.flyTo({
+          center: [country['Longitude (average)'], country['Latitude (average)']],
+        }); // starting position [lng, lat]
+        (map as any).current.fitBounds([
+          [country.bbox.sw.lon, country.bbox.sw.lat],
+          [country.bbox.ne.lon, country.bbox.ne.lat],
+        ]);
+      }
     }
   }, [country]);
+  useEffect(() => {
+    if (map.current) {
+      if ((map as any).current.getLayer('admin2rwi')) {
+        if (showRwi) (map as any).current.setLayoutProperty('admin2rwi', 'visibility', 'visible');
+        else (map as any).current.setLayoutProperty('admin2rwi', 'visibility', 'none');
+      }
+    }
+  }, [showRwi]);
   return (
     <div>
-      <div className='flex-div'>
-        <p className='label'>See poor districts (not working yet)</p>
-        <Checkbox className='undp-checkbox' onChange={displayRWI} />
-      </div>
       <div
         ref={mapContainer}
         className='map'
-        style={{
-          height: '400px',
-          width: '100%',
-          backgroundColor: '#F7F7F7',
-          border: '2px solid #F7F7F7',
-        }}
       />
-      <KeyEl>
-        <div>Percentage Access to Reliable Electricity Services</div>
-        <svg height='25' width={colorScale.length * keyBarWid + 30}>
-          <g transform='translate(10,0)'>
-            {
-              colorScale.map((d: string, i: number) => (
-                <rect
-                  key={i}
-                  x={i * keyBarWid}
-                  height={10}
-                  y={0}
-                  width={keyBarWid}
-                  fill={d}
-                />
-              ))
-            }
-            {
-              pctRange.map((d: number, i: number) => (
-                <text
-                  key={i}
-                  x={(i) * keyBarWid}
-                  y={23}
-                  textAnchor='middle'
-                  fontSize={10}
-                >
-                  {d}
-                  %
-                </text>
-              ))
-            }
-          </g>
-        </svg>
-      </KeyEl>
+      <div className='map-legend-container flex-div'>
+        <div>
+          <div className='title'>
+            Percentage Access to Reliable Electricity Services
+            <sup> 1</sup>
+          </div>
+          <svg height='25' width={colorScale.length * keyBarWid + 30}>
+            <g transform='translate(10,0)'>
+              {
+                colorScale.map((d: string, i: number) => (
+                  <rect
+                    key={i}
+                    x={i * keyBarWid}
+                    height={10}
+                    y={0}
+                    width={keyBarWid}
+                    fill={d}
+                  />
+                ))
+              }
+              {
+                pctRange.map((d: number, i: number) => (
+                  <text
+                    key={i}
+                    x={(i) * keyBarWid}
+                    y={23}
+                    textAnchor='middle'
+                    fontSize={10}
+                  >
+                    {d}
+                    %
+                  </text>
+                ))
+              }
+            </g>
+          </svg>
+        </div>
+        <div className='rwi-legend'>
+          <div className='flex-div'>
+            <div className='title'>
+              Highlight poor areas
+              <sup> 2</sup>
+            </div>
+            <Checkbox className='undp-checkbox' onChange={displayRWI} />
+          </div>
+          <div className='rwi-legend-pattern' />
+        </div>
+      </div>
       {
         hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
       }

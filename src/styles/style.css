@@ -1,3 +1,4 @@
+/* color legend styles for charts */
 .legend-container{
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +14,7 @@
   font-size: .9rem;
   padding: 0px 16px 0 8px;
 }
+/* other */
 .vis-div{
   background-color: var(--gray-200);
   padding: 24px 32px;
@@ -25,6 +27,7 @@
   flex-direction: column;
   flex: 1 1 22.5rem;
   justify-content: space-between;
+  height: 340px;
 }
 .stat-card-source{
   color: var(--gray-500);
@@ -38,9 +41,6 @@
 .stat-card-description{
   font-size: 1.25rem;
 }
-vis-container-1{
-  column-gap: 1.334rem;
-}
 .flex-inner-div-0{
   flex: 1 1 10rem;
 }
@@ -52,4 +52,25 @@ vis-container-1{
 }
 .hide-div{
   display: none;
+}
+/* map and legend styles */
+.map{
+  height: 400px;
+  width: 100%;
+  border-bottom: #f7f7f7 1px solid;
+}
+.map-legend-container{
+  padding: 5px 10px;
+  background-color: #FFF;
+}
+.map-legend-container .title{
+  padding-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.rwi-legend-pattern{
+  background-image: url('../assets/diagonal-hatch-white_30.png');
+  width: 300px;
+  height: 12px;
+  background-color:#ccc;
 }
