@@ -19,6 +19,8 @@ interface HoverDataProps {
   country: string;
   pctValue?: number;
   popValue?: number;
+  popRuralNoAccess?: number;
+  popUrbanNoAccess?: number;
   xPosition: number;
   yPosition: number;
 }
@@ -28,7 +30,7 @@ export const CountryMap = (props: Props) => {
   const {
     country,
   } = props;
-  const year = 2020;
+  // const year = 2020;
   const [showRwi, setShowRwi] = useState<Boolean>(false);
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
@@ -55,13 +57,9 @@ export const CountryMap = (props: Props) => {
             type: 'vector',
             tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm0_polygons/{z}/{x}/{y}.pbf'],
           },
-          admin2: {
-            type: 'vector',
-            tiles: ['https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf'],
-          },
           admin2data: {
             type: 'vector',
-            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/accessdataadm2_20230314160148.pmtiles',
+            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/urban_rural_no_acess_adm2_20230320051218.pmtiles',
           },
         },
         layers: [
@@ -98,33 +96,38 @@ export const CountryMap = (props: Props) => {
         {
           id: 'admin2choropleth',
           type: 'fill',
-          source: 'admin2',
-          'source-layer': 'adm2_polygons',
+          source: 'admin2data',
+          'source-layer': 'tmptsfp0xoq',
           paint: {
             'fill-color': [
-              'interpolate',
-              ['linear'],
-              ['get', `hrea_${year}`],
-              0, colorScale[0],
-              0.0999, colorScale[0],
-              0.1, colorScale[1],
-              0.1999, colorScale[1],
-              0.2, colorScale[2],
-              0.2999, colorScale[2],
-              0.3, colorScale[3],
-              0.3999, colorScale[3],
-              0.4, colorScale[4],
-              0.4999, colorScale[4],
-              0.5, colorScale[5],
-              0.5999, colorScale[5],
-              0.6, colorScale[6],
-              0.6999, colorScale[6],
-              0.7, colorScale[7],
-              0.7999, colorScale[7],
-              0.8, colorScale[8],
-              0.8999, colorScale[8],
-              0.9, colorScale[9],
-              1, colorScale[9],
+              'let',
+              'percentAccess',
+              ['/', ['get', 'PopAccess2020'], ['get', 'TotPopulation']],
+              [
+                'interpolate',
+                ['linear'],
+                ['var', 'percentAccess'],
+                0, colorScale[0],
+                0.0999, colorScale[0],
+                0.1, colorScale[1],
+                0.1999, colorScale[1],
+                0.2, colorScale[2],
+                0.2999, colorScale[2],
+                0.3, colorScale[3],
+                0.3999, colorScale[3],
+                0.4, colorScale[4],
+                0.4999, colorScale[4],
+                0.5, colorScale[5],
+                0.5999, colorScale[5],
+                0.6, colorScale[6],
+                0.6999, colorScale[6],
+                0.7, colorScale[7],
+                0.7999, colorScale[7],
+                0.8, colorScale[8],
+                0.8999, colorScale[8],
+                0.9, colorScale[9],
+                1, colorScale[9],
+              ],
             ],
             'fill-opacity': 1,
             'fill-outline-color': [
@@ -143,7 +146,7 @@ export const CountryMap = (props: Props) => {
         id: 'admin2rwi',
         type: 'fill',
         source: 'admin2data',
-        'source-layer': 'tmpupnfcvgn',
+        'source-layer': 'tmptsfp0xoq',
         paint: {
           'fill-pattern': 'pattern',
         },
@@ -160,26 +163,24 @@ export const CountryMap = (props: Props) => {
         if (err) throw err;
         (map as any).current.addImage('pattern', image);
       });
-      // mouse over effect on district layer
-      (map as any).current.on('mouseover', 'admin2choropleth', (e:any) => {
-        console.log('===========', e.features[0]);
-      });
       (map as any).current.on('mousemove', 'admin2choropleth', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
         if (e.features.length > 0) {
-          console.log('===========', e.features[0]);
+          // console.log('===========', e.features[0]);
           districtHoveredStateId = e.features[0].layer.id;
           if (districtHoveredStateId) {
             setHoverData({
               district: e.features[0].properties.adm2_name !== ' ' && e.features[0].properties.adm2_name !== '' && e.features[0].properties.adm2_name ? e.features[0].properties.adm2_name : e.features[0].properties.adm1_name,
-              country: country['Country or Area'],
-              pctValue: e.features[0].properties.hrea_2020 * 100,
-              popValue: e.features[0].properties.pop_no_hrea_2020,
+              country: e.features[0].properties.adm0_name,
+              pctValue: (e.features[0].properties.PopAccess2020 / e.features[0].properties.TotPopulation) * 100,
+              popValue: e.features[0].properties.PopNoAccess2020,
+              popRuralNoAccess: e.features[0].properties.PopRuralNoAccess2020,
+              popUrbanNoAccess: e.features[0].properties.PopUrbanNoAccess2020,
               xPosition: e.originalEvent.clientX,
               yPosition: e.originalEvent.clientY,
             });
             (map as any).current.setFeatureState(
-              { source: 'admin2', id: districtHoveredStateId, sourceLayer: 'adm2_polygons' },
+              { source: 'admin2data', id: districtHoveredStateId, sourceLayer: 'tmptsfp0xoq' },
               { hover: true },
             );
           }
@@ -190,7 +191,7 @@ export const CountryMap = (props: Props) => {
         if (districtHoveredStateId) {
           setHoverData(null);
           (map as any).current.setFeatureState(
-            { source: 'admin2', id: districtHoveredStateId, sourceLayer: 'adm2_polygons' },
+            { source: 'admin2data', id: districtHoveredStateId, sourceLayer: 'tmptsfp0xoq' },
             { hover: false },
           );
         }
@@ -275,7 +276,7 @@ export const CountryMap = (props: Props) => {
         </div>
       </div>
       {
-        hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
+        hoverData ? <CountryMapTooltip district={hoverData.district} country={hoverData.country} popValue={hoverData.popValue} popRuralNoAccess={hoverData.popRuralNoAccess} popUrbanNoAccess={hoverData.popUrbanNoAccess} pctValue={hoverData.pctValue} xPosition={hoverData.xPosition} yPosition={hoverData.yPosition} /> : null
       }
     </div>
   );

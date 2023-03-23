@@ -4,6 +4,8 @@ import { format } from 'd3-format';
 interface Props {
   pctValue?: number;
   popValue?: number;
+  popRuralNoAccess?: number,
+  popUrbanNoAccess?: number,
   xPosition: number;
   yPosition: number;
   country: string;
@@ -34,6 +36,8 @@ export function CountryMapTooltip(props: Props) {
   const {
     pctValue,
     popValue,
+    popRuralNoAccess,
+    popUrbanNoAccess,
     district,
     country,
     xPosition,
@@ -79,11 +83,40 @@ export function CountryMapTooltip(props: Props) {
           <p className='small-font margin-bottom-00'>
             Number of people without Access to Reliable Energy Services
           </p>
-          <p className='small-font bold margin-bottom-00'>
+        </div>
+        <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
+          <p className='small-font margin-bottom-00 padding-bottom-00'>
+            Total
+          </p>
+          <p className='small-font bold margin-bottom-00 padding-bottom-00'>
             {
               popValue
                 ? format('.3s')(popValue).replace('G', 'B')
                 : popValue === 0 ? 0 : 'NA'
+            }
+          </p>
+        </div>
+        <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
+          <p className='small-font margin-bottom-00'>
+            Rural Areas
+          </p>
+          <p className='small-font bold margin-bottom-00'>
+            {
+              popRuralNoAccess
+                ? format('.3s')(popRuralNoAccess).replace('G', 'B')
+                : popRuralNoAccess === 0 ? 0 : 'NA'
+            }
+          </p>
+        </div>
+        <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
+          <p className='small-font margin-bottom-00'>
+            Urban Areas
+          </p>
+          <p className='small-font bold margin-bottom-00'>
+            {
+              popUrbanNoAccess
+                ? format('.3s')(popUrbanNoAccess).replace('G', 'B')
+                : popUrbanNoAccess === 0 ? 0 : 'NA'
             }
           </p>
         </div>

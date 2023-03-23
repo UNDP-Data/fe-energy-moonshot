@@ -186,7 +186,7 @@ export const CountryProfile = (props: Props) => {
                     <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
                   </li>
                   <li>
-                    Relative wealth index less than 0. Data for good, Facebook. For more details, check:
+                    Relative wealth index lower than 0. Data for good, Facebook. For more details, check:
                     <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
                   </li>
                 </ol>
