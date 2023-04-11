@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'd3-format';
 import parse from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
 import { CountryMap } from './CountryMap';
 import {
   ProjectLevelDataType,
@@ -73,43 +74,14 @@ export const CountryProfile = (props: Props) => {
     countriesData,
     data,
   } = props;
-  const queryParams = new URLSearchParams(window.location.search);
-  const queryCountry = queryParams.get('country');
-  const [selectedCountry, setSelectedCountry] = useState<string>(countries[0]);
-  const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
-  const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
-  const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
-  const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
-  const projectsDataSorted = sortBy(projectsData, 'Lead Country');
-  const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
-  useEffect(() => {
-    if (queryCountry)setSelectedCountry(queryCountry);
-    const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
-    const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
-    setCountryDataValues(indicatorsByCountry);
-    setTableData(dataByCountry);
-    const relevantData = selectedCountry !== undefined || selectedCountry === 'All'
-      ? projectsData.filter((d) => d['Lead Country'] === selectedCountry)
-      : projectsData;
-    const cardDataValues = {
-      peopleBenefiting: sumBy(relevantData, 'target_total'),
-      grantAmount: sumBy(relevantData, 'Grant amount'),
-      numberProjects: relevantData.length,
-    };
-    setCardData(cardDataValues);
-    const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
-    setCountryGroupData(countryData);
-  }, [selectedCountry]);
-
+  const formatData = (d: undefined | number) => {
+    if (d === undefined) return d;
+    if (d < 1000000) return format(',')(d).replaceAll(',', ' ');
+    return format('.3s')(d).replace('G', 'B').replaceAll(',', ' ');
+  };
   const formatPercent = (d: any) => {
     if (d === 'n/a') return d;
     return `${d}%`;
-  };
-  const formatData = (d: undefined | number) => {
-    if (d === undefined) return d;
-
-    if (d < 1000000) return format(',')(d).replaceAll(',', ' ');
-    return format('.3s')(d).replace('G', 'B').replaceAll(',', ' ');
   };
   const formatBillion = (d: any) => {
     if (d > 1) return `${d}B`;
@@ -119,6 +91,61 @@ export const CountryProfile = (props: Props) => {
     if (d > 1) return `${d}M`;
     return `${d * 1000}K`;
   };
+  const queryParams = new URLSearchParams(window.location.search);
+  const queryCountry = queryParams.get('country');
+  const [selectedCountry, setSelectedCountry] = useState<string>(countries[0]);
+  const [tableData, setTableData] = useState<ProjectLevelDataType[] | undefined>(undefined);
+  const [countryDataValues, setCountryDataValues] = useState<CountryIndicatorDataType[]>([]);
+  const [cardData, setCardData] = useState<DashboardDataType | undefined>(undefined);
+  const [text1Values, setText1Values] = useState<Object | undefined>(undefined);
+  const [text2Values, setText2Values] = useState<Object | undefined>(undefined);
+  const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
+  const projectsDataSorted = sortBy(projectsData, 'Lead Country');
+  const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
+  // translation
+  const { t } = useTranslation();
+  useEffect(() => {
+    if (queryCountry)setSelectedCountry(queryCountry);
+
+    const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
+    setTableData(dataByCountry);
+
+    const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
+    setCountryDataValues(indicatorsByCountry);
+
+    const relevantData = selectedCountry !== undefined || selectedCountry === 'All'
+      ? projectsData.filter((d) => d['Lead Country'] === selectedCountry)
+      : projectsData;
+    const cardDataValues = {
+      peopleBenefiting: sumBy(relevantData, 'target_total'),
+      grantAmount: sumBy(relevantData, 'Grant amount'),
+      numberProjects: relevantData.length,
+    };
+    setCardData(cardDataValues);
+
+    const indCountryValue = (ind:string) => indicatorsByCountry.filter((d) => d.indicator === ind)[0].value;
+    const hrea2020 = indCountryValue('hrea_2020');
+    const text1 = {
+      popNoHrea: formatData(indicatorsByCountry.filter((d) => d.indicator === 'pop_no_hrea_2020')[0].value),
+      percentNoHrea: (hrea2020 === '') ? '0%' : formatPercent(Math.round(100 - hrea2020 * 100)),
+    };
+    setText1Values(text1);
+
+    const text2 = {
+      popNoHrea: formatData(indCountryValue('pop_no_hrea_2020')),
+      invTotal2030: formatBillion(indCountryValue('InvTotal_cum_2030_bi')),
+      invRural2030: formatBillion(indCountryValue('InvRural_cum2030_bi')),
+      gdpGains2050: formatBillion(indCountryValue('GDPgains_cum2050_bi')),
+      povertyReduction2050percent: indCountryValue('poverty_reduction_2050_%').replace('-', ''),
+      povertyReduction2050: formatMillion(Math.abs(indCountryValue('poverty_reduction_2050_million'))),
+      avertedDeaths: formatData(Math.abs(indCountryValue('cum_averteddeaths_2050'))),
+    };
+    setText2Values(text2);
+
+    const countryData = data.filter((d) => d['Country or Area'] === selectedCountry)[0];
+    setCountryGroupData(countryData);
+  }, [selectedCountry]);
+
   return (
     <>
       {queryCountry ? <h2>{queryCountry}</h2> : null}
@@ -127,10 +154,9 @@ export const CountryProfile = (props: Props) => {
         ? (
           <div className='flex-div flex-space-between margin-bottom-07'>
             <div>
-              <p className='label'>Select a Country </p>
+              <p className='label'>{t('select-country') }</p>
               <Select
                 className='undp-select'
-                placeholder='Select a country'
                 value={selectedCountry}
                 showSearch
                 style={{ width: '400px' }}
@@ -154,7 +180,7 @@ export const CountryProfile = (props: Props) => {
             <div className={`${indValue('hrea_2020') === '' ? 'hide-div' : ''}`}>
               <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
               <p className='undp-typography'>
-                {`The latest estimates of access to reliable electricity for ${selectedCountry} based on satellite data indicates that ${(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))} (${formatData(indValue('pop_no_hrea_2020'))} people) of the population does not benefit from electrification. Significant differences in access are still visible at sub-national levels – as shown on the district-level map below.`}
+                {t('text-1', { selectedCountry, text1Values })}
               </p>
               <div className='flex-div flex-wrap'>
                 <div style={{ flex: '2 1 27rem', backgroundColor: '#f7f7f7', border: '1px solid #f7f7f7' }}>
@@ -164,15 +190,15 @@ export const CountryProfile = (props: Props) => {
                   <div className='stat-card'>
                     <div className='column-flex'>
                       <div>
-                        <h6 className='undp-typography margin-bottom-01'>Population without access to reliable energy services</h6>
+                        <h6 className='undp-typography margin-bottom-01'>{t('pop-no-access')}</h6>
                         <div className='stat-card-notes margin-bottom-06'>2020</div>
                       </div>
                       <div>
                         <h3 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
-                        <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} people`}</div>
+                        <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} ${t('people')}`}</div>
                       </div>
                       <div className='stat-card-source'>
-                        Source: Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan)
+                        {t('source-1')}
                         <sup> 1</sup>
                       </div>
                     </div>
@@ -182,22 +208,22 @@ export const CountryProfile = (props: Props) => {
               <div className='small-font'>
                 <ol>
                   <li>
-                    Reliable electricity access 2020 estimates based on data from satellite imagery (University of Michigan). For more details, check:
+                    {`${t('source-1')}${t('more-details')}`}
                     <a className='undp-style' href='http://www-personal.umich.edu/~brianmin/HREA/methods.html' target='_blank' rel='noreferrer'> http://www-personal.umich.edu/~brianmin/HREA/methods.html</a>
                   </li>
                   <li>
-                    Relative wealth index lower than 0. Data for good, Facebook. For more details, check:
+                    {`${t('source-2')}${t('more-details')}`}
                     <a className='undp-style' href='https://dataforgood.facebook.com/dfg/tools/relative-wealth-index' target='_blank' rel='noreferrer'> https://dataforgood.facebook.com/dfg/tools/relative-wealth-index</a>
                   </li>
                 </ol>
               </div>
-              <h4 className='undp-typography margin-top-07'>{`Achieving Universal Access in ${selectedCountry}`}</h4>
+              <h4 className='undp-typography margin-top-07'>{`${t('achieving-access')} ${selectedCountry}`}</h4>
               <div>
                 {
                 indValue('poverty_reduction_2030_million') < 0
                   ? (
                     <p className='undp-typography'>
-                      {`Currently levels of investments are not sufficient to expand access to all. Providing electrification to ${formatData(indValue('pop_no_hrea_2020'))} people in ${selectedCountry} requires a cumulative amount of investments of more than USD ${formatBillion(indValue('InvTotal_cum_2030_bi'))} between now and 2030, including more than USD ${formatBillion(indValue('InvRural_cum2030_bi'))} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD ${formatBillion(indValue('GDPgains_cum2050_bi'))} by 2050, poverty reduction of ${indValue('poverty_reduction_2050_%').replace('-', '')} (which is equivalent to lifting ${formatMillion(Math.abs(indValue('poverty_reduction_2050_million')))} people out of extreme poverty by mid-century and avoiding ${formatData(Math.abs(indValue('cum_averteddeaths_2050')))} deaths by 2050 due to the reduction of use of traditional cookstoves.`}
+                      {t('text-2', { selectedCountry, text2Values })}
                     </p>
                   ) : (
                     <p className='undp-typography'>
@@ -210,7 +236,7 @@ export const CountryProfile = (props: Props) => {
                 <div>
                   <div className='flex-div flex-wrap vis-container-1'>
                     <div className='vis-div flex-inner-div-0'>
-                      <h5 className='undp-typography margin-bottom-00'>Investment gap</h5>
+                      <h5 className='undp-typography margin-bottom-00'>{t('investment-gap')}</h5>
                       <div className='legend-container' style={{ marginBottom: '52px' }}>
                         <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
                           &nbsp;
@@ -221,7 +247,7 @@ export const CountryProfile = (props: Props) => {
                         </div>
                         <div className='legend-label'>2050</div>
                       </div>
-                      <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
+                      <div className='stat-card-notes margin-bottom-06'>{t('cumulative')}</div>
                       <ScaledSquare
                         values={countryDataValues}
                         indicators={['InvTotal_cum_2030_bi', 'InvTotal_cum_2050_bi']}
@@ -233,7 +259,7 @@ export const CountryProfile = (props: Props) => {
                       />
                     </div>
                     <div className='vis-div flex-inner-div-1'>
-                      <h5 className='undp-typography margin-bottom-00'>Benefits</h5>
+                      <h5 className='undp-typography margin-bottom-00'>{t('benefits')}</h5>
                       <div className='margin-bottom-07 legend-container'>
                         <div style={{ backgroundColor: 'var(--blue-300)' }} className='legend-square'>
                           &nbsp;
@@ -246,8 +272,8 @@ export const CountryProfile = (props: Props) => {
                       </div>
                       <div className='flex-div flex-wrap' style={{ rowGap: '2rem' }}>
                         <div className='flex-inner-div-1a'>
-                          <h6 className='undp-typography margin-bottom-01'>GDP gains</h6>
-                          <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
+                          <h6 className='undp-typography margin-bottom-01'>{t('gdp-gains')}</h6>
+                          <div className='stat-card-notes margin-bottom-06'>{t('cumulative')}</div>
                           <ScaledSquare
                             values={countryDataValues}
                             indicators={['GDPgains_cum2030_bi', 'GDPgains_cum2050_bi']}
@@ -259,8 +285,8 @@ export const CountryProfile = (props: Props) => {
                           />
                         </div>
                         <div className='flex-inner-div-1a'>
-                          <h6 className='undp-typography margin-bottom-01'>Poverty reduction</h6>
-                          <div className='stat-card-notes margin-bottom-06'>By 2030/2050</div>
+                          <h6 className='undp-typography margin-bottom-01'>{t('poverty-reduction')}</h6>
+                          <div className='stat-card-notes margin-bottom-06'>{`${t('by')} 2030/2050` }</div>
                           <ScaledHalfCircles
                             values={countryDataValues}
                             indicators={['poverty_reduction_2030_million', 'poverty_reduction_2050_million']}
@@ -281,8 +307,8 @@ export const CountryProfile = (props: Props) => {
                             ) : null }
                         </div>
                         <div className='flex-inner-div-1a'>
-                          <h6 className='undp-typography margin-bottom-00'>Averted deaths *</h6>
-                          <div className='stat-card-notes margin-bottom-06'>Cumulative from 2022</div>
+                          <h6 className='undp-typography margin-bottom-00'>{`${t('averted-deaths')} *`}</h6>
+                          <div className='stat-card-notes margin-bottom-06'>{t('cumulative')}</div>
                           <ScaledHalfCircles
                             values={countryDataValues}
                             indicators={['cum_averteddeaths_2030', 'cum_averteddeaths_2050']}
@@ -292,28 +318,28 @@ export const CountryProfile = (props: Props) => {
                             factor={1}
                             invert={false}
                           />
-                          <p className='undp-typography small-font margin-top-05'>* due to the reduction of the use of traditional cookstoves</p>
+                          <p className='undp-typography small-font margin-top-05'>{`* ${t('due-reduction')}`}</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className='stat-card-source' style={{ paddingTop: '30px' }}>Source: SDG Push+: Accelerating universal electricity access and its effects on sustainable development indicators</div>
+                  <div className='stat-card-source' style={{ paddingTop: '30px' }}>{t('source-3')}</div>
                 </div>
               </div>
             </div>
-            <h4 className='undp-typography margin-top-08'>{`Work of UNDP and partners in ${selectedCountry}`}</h4>
-            <p className={`undp-typography ${indValue('hrea_2020') === '' ? 'hide-div' : ''}`}>{`By harnessing networks, finance, experience, and innovation, UNDP contributes to expanding access to energy for the most vulnerable people and accelerating energy transition in ${selectedCountry}. See below details on the actions UNDP and partners are taking to support ${selectedCountry} towards a more sustainable energy system.`}</p>
-            <p className={`undp-typography ${indValue('hrea_2020') !== '' ? 'hide-div' : ''}`}>{`UNDP is supporting the acceleration of energy transition in ${selectedCountry} by harnessing networks, finance, experience, and innovation. See below details on the actions UNDP and partners are taking to support ${selectedCountry} towards a more sustainable energy system.`}</p>
+            <h4 className='undp-typography margin-top-08'>{t('work-undp', { selectedCountry })}</h4>
+            <p className={`undp-typography ${indValue('hrea_2020') === '' ? 'hide-div' : ''}`}>{t('text-3a', { selectedCountry })}</p>
+            <p className={`undp-typography ${indValue('hrea_2020') !== '' ? 'hide-div' : ''}`}>{t('text-3b', { selectedCountry })}</p>
             <div className='stat-card-container margin-bottom-05 flex-space-between'>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h2>
-                <div className='stat-card-description margin-bottom-10 margin-top-00'>Total grant amount USD</div>
-                <div className='stat-card-source' style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</div>
+                <div className='stat-card-description margin-bottom-10 margin-top-00'>{ t('total-grant-usd') }</div>
+                <div className='stat-card-source' style={{ position: 'absolute', bottom: '2rem' }}>{t('source-4')}</div>
               </StatCardsDiv>
               <StatCardsDiv className='stat-card' width='calc(50% - 1.334rem)'>
                 <h2 className='undp-typography'>{cardData === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h2>
-                <div className='stat-card-description margin-bottom-10 margin-top-00'>Target number of beneficiaries</div>
-                <div className='stat-card-source' style={{ position: 'absolute', bottom: '2rem' }}>Source: UNDP data (active projects)</div>
+                <div className='stat-card-description margin-bottom-10 margin-top-00'>{t('target-beneficiaries')}</div>
+                <div className='stat-card-source' style={{ position: 'absolute', bottom: '2rem' }}>{t('source-4')}</div>
               </StatCardsDiv>
             </div>
           </div>
@@ -326,22 +352,22 @@ export const CountryProfile = (props: Props) => {
               <div style={{ width: '100%' }}>
                 <div className='undp-table-head-small undp-table-head-sticky'>
                   <CellEl width='8%' className='undp-table-head-cell undp-sticky-head-column'>
-                    Country
+                    {t('country')}
                   </CellEl>
                   <CellEl width='12%' className='undp-table-head-cell'>
-                    Project title
+                    {t('project-title')}
                   </CellEl>
                   <CellEl width='40%' className='undp-table-head-cell'>
-                    Project description
+                    {t('project-description')}
                   </CellEl>
                   <CellEl width='20%' className='undp-table-head-cell'>
-                    Source of Funds
+                    {t('source-funds')}
                   </CellEl>
                   <CellEl width='10%' className='undp-table-head-cell'>
-                    Grant amount USD
+                    {t('grant-amount-usd-1')}
                   </CellEl>
                   <CellEl width='10%' className='undp-table-head-cell'>
-                    Source
+                    {t('source')}
                   </CellEl>
                 </div>
                 {

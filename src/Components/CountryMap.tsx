@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import maplibreGl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 // import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { Checkbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import UNDPColorModule from 'undp-viz-colors';
@@ -42,6 +43,8 @@ export const CountryMap = (props: Props) => {
     setShowRwi(e.target.checked);
   };
   const protocol = new pmtiles.Protocol();
+  // translation
+  const { t } = useTranslation();
   // when loading for the first time
   useEffect(() => {
     let districtHoveredStateId: string | null = null;
@@ -231,7 +234,7 @@ export const CountryMap = (props: Props) => {
       <div className='map-legend-container flex-div flex-wrap'>
         <div style={{ flex: '1 1 26.5rem' }}>
           <div className='title margin-top-01'>
-            Percentage Access to Reliable Electricity Services
+            {t('map-percent-access')}
             <sup> 1</sup>
           </div>
           <svg height='25' width={colorScale.length * keyBarWid + 30}>
@@ -268,7 +271,7 @@ export const CountryMap = (props: Props) => {
         <div className='rwi-legend' style={{ flex: '2 1 11rem' }}>
           <Checkbox className='undp-checkbox' onChange={displayRWI}>
             <div className='title'>
-              Highlight poor areas
+              {t('map-highlight-poor')}
               <sup> 2</sup>
             </div>
           </Checkbox>

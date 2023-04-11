@@ -5,6 +5,7 @@ import {
 import styled from 'styled-components';
 import { json, csv } from 'd3-request';
 import { queue } from 'd3-queue';
+import { useTranslation } from 'react-i18next';
 import { Tabs } from 'antd';
 import {
   CountryGroupDataType, IndicatorMetaDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
@@ -103,6 +104,8 @@ const App = () => {
   function removeDuplicates(arr: any) {
     return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
   }
+  // translation
+  const { t } = useTranslation();
   useEffect(() => {
     queue()
       .defer(json, `${ROOT_DIR}/data/indicatorMetaData.json`)
@@ -219,7 +222,7 @@ const App = () => {
                           className='undp-tabs'
                           items={[
                             {
-                              label: 'World Overview',
+                              label: t('world-overview'),
                               key: '1',
                               children: <GrapherComponent
                                 countryGroupData={countryGroupData}
@@ -231,7 +234,7 @@ const App = () => {
                               />,
                             },
                             {
-                              label: 'Country Profiles',
+                              label: t('country-profiles'),
                               key: '2',
                               children: <CountryProfile
                                 projectsData={projectLevelData}

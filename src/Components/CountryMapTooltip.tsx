@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { format } from 'd3-format';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   pctValue?: number;
@@ -43,6 +44,8 @@ export function CountryMapTooltip(props: Props) {
     xPosition,
     yPosition,
   } = props;
+  // translation
+  const { t } = useTranslation();
   return (
     <TooltipEl x={xPosition} y={yPosition} verticalAlignment={yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
       <div className='flex-div flex-wrap' style={{ padding: 'var(--spacing-05)', alignItems: 'baseline' }}>
@@ -71,7 +74,7 @@ export function CountryMapTooltip(props: Props) {
       <div style={{ padding: 'var(--spacing-03) var(--spacing-05) var(--spacing-05) var(--spacing-05)' }}>
         <div className='flex-div margin-bottom-00 flex-space-between' style={{ alignItems: 'flex-start' }}>
           <p className='small-font margin-bottom-00'>
-            Access to Reliable Energy Services
+            {t('access-reliable-energy')}
           </p>
           <p className='small-font bold margin-bottom-00'>
             {
@@ -81,12 +84,12 @@ export function CountryMapTooltip(props: Props) {
         </div>
         <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
           <p className='small-font margin-bottom-00'>
-            Number of people without Access to Reliable Energy Services
+            {t('number-without')}
           </p>
         </div>
         <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
           <p className='small-font margin-bottom-00 padding-bottom-00'>
-            Total
+            {t('total')}
           </p>
           <p className='small-font bold margin-bottom-00 padding-bottom-00'>
             {
@@ -98,7 +101,7 @@ export function CountryMapTooltip(props: Props) {
         </div>
         <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
           <p className='small-font margin-bottom-00'>
-            Rural Areas
+            {t('rural-areas')}
           </p>
           <p className='small-font bold margin-bottom-00'>
             {
@@ -110,7 +113,7 @@ export function CountryMapTooltip(props: Props) {
         </div>
         <div className='flex-div flex-space-between' style={{ alignItems: 'flex-start' }}>
           <p className='small-font margin-bottom-00'>
-            Urban Areas
+            {t('urban-areas')}
           </p>
           <p className='small-font bold margin-bottom-00'>
             {

@@ -3,6 +3,7 @@
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Select } from 'antd';
+import { useTranslation } from 'react-i18next';
 import Context from '../Context/Context';
 import {
   CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordsDataType,
@@ -65,6 +66,9 @@ export const Graph = (props: Props) => {
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.map((d) => d.Indicator);
+  // translation
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
@@ -75,7 +79,7 @@ export const Graph = (props: Props) => {
     <El id='graph-node'>
       <SettingEl>
         <div className='margin-bottom-05' style={{ width: '100%', minWidth: '19rem' }}>
-          <p className='label'>Select Indicator</p>
+          <p className='label'>{t('select-indicator')}</p>
           <Select
             className='undp-select'
             placeholder='Please select'
@@ -90,7 +94,7 @@ export const Graph = (props: Props) => {
             }
           </Select>
         </div>
-        <Checkbox className='undp-checkbox' checked={showProjectLocations} onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>Show project locations</Checkbox>
+        <Checkbox className='undp-checkbox' checked={showProjectLocations} onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>{t('show-locations')}</Checkbox>
       </SettingEl>
       <UnivariateMap
         data={data}

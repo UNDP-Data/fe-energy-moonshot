@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { format } from 'd3-format';
+import { useTranslation } from 'react-i18next';
 import { ProjectHoverDataType } from '../Types';
 
 interface Props {
@@ -30,6 +31,8 @@ export const ProjectTooltip = (props: Props) => {
   const {
     data,
   } = props;
+  // translation
+  const { t } = useTranslation();
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
 
@@ -43,14 +46,14 @@ export const ProjectTooltip = (props: Props) => {
         {data.name}
       </h6>
       <div className='margin-bottom-07'>
-        <p className='undp-typography margin-bottom-01'>
-          Donor:
+        <p className='small-font margin-bottom-01'>
+          {`${t('donor')}:`}
           {' '}
           <span className='bold'>
             {data.donor === undefined ? 'N/A' : data.donor}
           </span>
         </p>
-        <p className='undp-typography margin-bottom-01'>
+        <p className='small-font margin-bottom-01'>
           Budget (USD):
           {' '}
           <span className='bold'>

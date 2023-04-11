@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './i18n';
 
 const getEl = (embedSelector: string) => {
   if (typeof embedSelector === 'string') {
