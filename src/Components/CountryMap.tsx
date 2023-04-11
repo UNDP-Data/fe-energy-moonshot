@@ -166,9 +166,9 @@ export const CountryMap = (props: Props) => {
       (map as any).current.on('mousemove', 'admin2choropleth', (e:any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
         if (e.features.length > 0) {
-          // console.log('===========', e.features[0]);
           districtHoveredStateId = e.features[0].layer.id;
           if (districtHoveredStateId) {
+            // console.log('===========', e.features[0].properties.PopAccess2020, e.features[0].properties.PopNoAccess2020, e.features[0].properties.PopAccess2020 + e.features[0].properties.PopNoAccess2020, e.features[0].properties.TotPopulation);
             setHoverData({
               district: e.features[0].properties.adm2_name !== ' ' && e.features[0].properties.adm2_name !== '' && e.features[0].properties.adm2_name ? e.features[0].properties.adm2_name : e.features[0].properties.adm1_name,
               country: e.features[0].properties.adm0_name,
