@@ -7,6 +7,7 @@ import { zoom } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { scaleThreshold } from 'd3-scale';
+import { useTranslation } from 'react-i18next';
 import {
   CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectHoverDataType, ProjectCoordsDataType,
 } from '../Types';
@@ -69,6 +70,8 @@ export const UnivariateMap = (props: Props) => {
   const valueArray = xIndicatorMetaData.BinningRangeLarge;
   const colorArray = COLOR_SCALES.Linear[`RedColor${(valueArray.length + 1) as 4 | 5 | 6 | 7 | 8 | 9 | 10}`];
   const colorScale = scaleThreshold<number, string>().domain(valueArray).range(colorArray);
+  // translation
+  const { t } = useTranslation();
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -345,7 +348,7 @@ export const UnivariateMap = (props: Props) => {
         </g>
       </svg>
       <LegendEl>
-        <h6 className='undp-typography'>{xIndicatorMetaData.Indicator}</h6>
+        <h6 className='undp-typography'>{ t(xIndicatorMetaData.TranslationKey) }</h6>
         <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {

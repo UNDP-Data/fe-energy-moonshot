@@ -15,6 +15,7 @@
   "select-indicator":"Seleccione un indicador",
   "grant-amount":"Importe de la subvención",
   "show-locations":"Mostrar ubicación de los proyectos",
+  "reliable-access":"Acceso confiable a la electricidad en {{selectedCountry}}: estado más reciente",
   "select-country":"Seleccione un país",
   "pop-no-access":"Población sin acceso a servicios de energía confiables",
   "people":"personas",
@@ -47,12 +48,17 @@
   "text-3a":"Aprovechando las redes, las finanzas, la experiencia y la innovación, el PNUD contribuye a ampliar el acceso a la energía para las personas más vulnerables y acelerar la transición energética en {{selectedCountry}}. A continuación se presentan los detalles sobre las acciones que el PNUD y sus socios están tomando para apoyar a {{selectedCountry}} hacia un sistema energético más sostenible.",
   "text-3b":"El PNUD está apoyando la aceleración de la transición energética en {{selectedCountry}} aprovechando las redes, las finanzas, la experiencia y la innovación. A continuación se presentan los detalles sobre las acciones que el PNUD y los socios están tomando para apoyar a {{selectedCountry}} hacia un sistema energético más sostenible.",
   "map-percent-access":"Porcentaje de acceso a servicios de electricidad confiables",
-  "map-highlight-poor":"Resaltar áreas pobres",
+  "map-highlight-poor":"Resaltar zonas pobres",
   "donor":"Donante",
   "budget":"Presupuesto (USD)",
   "access-reliable-energy":"Acceso a Servicios de Energía Confiable",
   "number-without":"Personas sin acceso a Servicios de Energía Confiable",
   "total":"Total",
   "rural-areas":"Zonas rurales",
-  "urban-areas":"Zonas urbanas"
+  "urban-areas":"Zonas urbanas",
+  "RBA":"Oficina Regional para África (ORA)",
+  "RBAP":"Oficina Regional para Asia y el Pacífico (ORAP)",
+  "RBAS":"Oficina Regional para los Estados Árabes (OREA)",
+  "RBEC":"Oficina Regional para Europa y la Comunidad de Estados Independientes (ORECI)",
+  "RBLAC":"Oficina Regional para América Latina y el Caribe (ORALC)"
 }

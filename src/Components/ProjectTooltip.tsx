@@ -45,15 +45,15 @@ export const ProjectTooltip = (props: Props) => {
       <h6 className='undp-typography bold margin-bottom-05'>
         {data.name}
       </h6>
-      <div className='margin-bottom-07'>
-        <p className='small-font margin-bottom-01'>
+      <div className='margin-bottom-03'>
+        <p className='small-font'>
           {`${t('donor')}:`}
           {' '}
           <span className='bold'>
             {data.donor === undefined ? 'N/A' : data.donor}
           </span>
         </p>
-        <p className='small-font margin-bottom-01'>
+        <p className='small-font'>
           Budget (USD):
           {' '}
           <span className='bold'>

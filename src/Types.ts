@@ -48,6 +48,7 @@ export interface IndicatorMetaDataType {
   Indicator: string;
   IndicatorLabelTable: string;
   IndicatorDescription: string;
+  TranslationKey: string;
   DataKey: string;
   BinningRangeLarge: number[];
 }

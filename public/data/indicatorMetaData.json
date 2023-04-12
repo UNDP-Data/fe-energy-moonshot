@@ -3,6 +3,7 @@
       "Indicator": "People directly benefiting",
       "IndicatorLabelTable": "target_total",
       "IndicatorDescription": "The total number of people directly benefiting from these projects",
+      "TranslationKey": "people-benefiting",
       "DataKey": "target_total",
       "BinningRangeLarge": [
         100,
@@ -18,6 +19,7 @@
       "Indicator": "Grant Amount",
       "IndicatorLabelTable": "Grant amount",
       "IndicatorDescription": "Grant amount",
+      "TranslationKey":"grant-amount",
       "DataKey": "Grant amount",
       "BinningRangeLarge": [
         1000000,

@@ -178,7 +178,7 @@ export const CountryProfile = (props: Props) => {
         ? (
           <div className='margin-top-1'>
             <div className={`${indValue('hrea_2020') === '' ? 'hide-div' : ''}`}>
-              <h4 className='undp-typography'>{`Reliable access to electricity in ${selectedCountry}: latest status`}</h4>
+              <h4 className='undp-typography'>{t('reliable-access', { selectedCountry })}</h4>
               <p className='undp-typography'>
                 {t('text-1', { selectedCountry, text1Values })}
               </p>

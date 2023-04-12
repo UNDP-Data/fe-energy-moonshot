@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { format } from 'd3-format';
+import { useTranslation } from 'react-i18next';
 import { HoverDataType } from '../Types';
 
 interface Props {
@@ -36,11 +37,12 @@ export const Tooltip = (props: Props) => {
     if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
-
+  // translation
+  const { t } = useTranslation();
   return (
     <TooltipEl x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
       <div className='flex-div flex-wrap' style={{ alignItems: 'baseline' }}>
-        <h5 className='undp-typography bold margin-bottom-05 bold'>
+        <h5 className='undp-typography bold margin-bottom-02 bold'>
           {data.country}
           {' '}
           <span
@@ -56,22 +58,22 @@ export const Tooltip = (props: Props) => {
         </h5>
       </div>
       <div className='margin-bottom-05'>
-        <p className='undp-typography margin-bottom-01'>
-          People directly benefiting:
+        <p className='small-font margin-bottom-00'>
+          {`${t('people-benefiting')}:`}
           {' '}
           <span className='bold'>
             { data.peopleDirectlyBenefiting === undefined ? 'N/A' : formatData(data.peopleDirectlyBenefiting) }
           </span>
         </p>
-        <p className='undp-typography margin-bottom-01'>
-          Grant Amount (USD):
+        <p className='small-font margin-bottom-00'>
+          {`${t('grant-amount-usd-1')}:`}
           {' '}
           <span className='bold'>
             {data.grantAmount === undefined ? 'N/A' : formatData(data.grantAmount)}
           </span>
         </p>
-        <p className='undp-typography margin-bottom-01'>
-          Number of projects:
+        <p className='small-font margin-bottom-00'>
+          {`${t('number-projects')}:`}
           {' '}
           <span className='bold'>
             {data.numberProjects === undefined ? 'N/A' : formatData(data.numberProjects)}

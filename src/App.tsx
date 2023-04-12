@@ -27,7 +27,13 @@ const VizAreaEl = styled.div`
   height: 6.25rem;
 `;
 
-const App = () => {
+interface Props {
+  language: string;
+}
+
+const App = (props: Props) => {
+  const { language } = props;
+  // console.log('language: ', language);
   const containerEl = useRef(null);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
@@ -105,8 +111,9 @@ const App = () => {
     return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
   }
   // translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   useEffect(() => {
+    i18n.changeLanguage(language);
     queue()
       .defer(json, `${ROOT_DIR}/data/indicatorMetaData.json`)
       .defer(csv, `${ROOT_DIR}/data/countryIndicatorMetadata.csv`)

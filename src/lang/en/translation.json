@@ -15,6 +15,7 @@
   "select-indicator":"Select indicator",
   "grant-amount":"Grant amount",
   "show-locations":"Show project locations",
+  "reliable-access":"Reliable access to electricity in {{selectedCountry}}: latest status",
   "select-country":"Select a country",
   "pop-no-access":"Population without access to reliable energy services",
   "people":"people",
@@ -40,6 +41,9 @@
   "text-2":"Currently levels of investments are not sufficient to expand access to all. Providing electrification to {{text2Values.popNoHrea}} people in {{selectedCountry}} requires a cumulative amount of investments of more than USD {{text2Values.invTotal2030}} between now and 2030, including more than USD {{text2Values.invRural2030}} on expanding rural access alone. Expansion to access at this scale can provide economic and development benefits, such as cumulative GDP gains reaching USD {{text2Values.gdpGains2050}} by 2050, poverty reduction of {{text2Values.povertyReduction2050percent}} (which is equivalent to lifting {{text2Values.povertyReduction2050}} people out of extreme poverty by mid-century and avoiding {{text2Values.avertedDeaths}} deaths by 2050 due to the reduction of use of traditional cookstoves.",
   "work-undp":"Work of UNDP and partners in {{selectedCountry}}",
   "country":"Country",
+  "project-title":"Project title",
+  "project-description":"Project description",
+  "source-funds":"Source funds",
   "source":"Source",
   "text-3a":"By harnessing networks, finance, experience, and innovation, UNDP contributes to expanding access to energy for the most vulnerable people and accelerating energy transition in {{selectedCountry}}. See below details on the actions UNDP and partners are taking to support {{selectedCountry}} towards a more sustainable energy system.",
   "text-3b":"UNDP is supporting the acceleration of energy transition in {{selectedCountry}} by harnessing networks, finance, experience, and innovation. See below details on the actions UNDP and partners are taking to support {{selectedCountry}} towards a more sustainable energy system.",
@@ -51,5 +55,10 @@
   "number-without":"Number of people without Access to Reliable Energy Services",
   "total":"Total",
   "rural-areas":"Rural areas",
-  "urban-areas":"Urban areas"
+  "urban-areas":"Urban areas",
+  "RBA":"Regional Bureau for Africa (RBA)",
+  "RBAP":"Regional Bureau for Asia and the Pacific (RBAP)",
+  "RBAS":"Regional Bureau for Arab States (RBAS)",
+  "RBEC":"Regional Bureau for Europe and the Commonwealth of Independent States (RBEC)",
+  "RBLAC":"Regional Bureau on Latin America and the Caribbean (RBLAC)"
 }

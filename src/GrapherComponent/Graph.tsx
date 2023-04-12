@@ -10,7 +10,7 @@ import {
 } from '../Types';
 import { UnivariateMap } from './UnivariateMap';
 import { DEFAULT_VALUES } from '../Constants';
-
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
@@ -66,6 +66,7 @@ export const Graph = (props: Props) => {
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.map((d) => d.Indicator);
+  // console.log('options', options);
   // translation
   const { t } = useTranslation();
 
@@ -89,7 +90,7 @@ export const Graph = (props: Props) => {
           >
             {
               options.map((d) => (
-                <Select.Option className='undp-select-option' key={d}>{d}</Select.Option>
+                <Select.Option className='undp-select-option' key={d}>{t(indicators.filter((k) => k.Indicator === d)[0].TranslationKey)}</Select.Option>
               ))
             }
           </Select>

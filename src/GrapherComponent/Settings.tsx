@@ -71,7 +71,7 @@ export const Settings = (props: Props) => {
                 <Select.Option className='undp-select-option' key='All'>{t('all-regions')}</Select.Option>
                 {
                   regions.map((d) => (
-                    <Select.Option className='undp-select-option' key={d.value}>{d.label}</Select.Option>
+                    <Select.Option className='undp-select-option' key={d.value}>{t(d.value)}</Select.Option>
                   ))
                 }
               </Select>

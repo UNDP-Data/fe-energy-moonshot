@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 import trEn from './lang/en/translation.json';
 import trEs from './lang/es/translation.json';
+import trFr from './lang/fr/translation.json';
 
 const resources = {
   en: {
@@ -11,6 +12,9 @@ const resources = {
   es: {
     translation: trEs,
   },
+  fr: {
+    translation: trFr,
+  },
 };
 
 i18next
@@ -18,7 +22,6 @@ i18next
   .init({
     resources,
     debug: true,
-    lng: 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
