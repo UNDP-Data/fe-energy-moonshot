@@ -39,7 +39,7 @@ export const CountryMap = (props: Props) => {
   const keyBarWid = 40;
   const pctRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   const displayRWI = (e:CheckboxChangeEvent) => {
-    console.log(`checked = ${e.target.checked}`);
+    // console.log(`checked = ${e.target.checked}`);
     setShowRwi(e.target.checked);
   };
   const protocol = new pmtiles.Protocol();
@@ -62,7 +62,7 @@ export const CountryMap = (props: Props) => {
           },
           admin2data: {
             type: 'vector',
-            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/urban_rural_no_acess_adm2_20230320051218.pmtiles',
+            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/urban_rural_District_ElectricityAccess_20230411183105.pmtiles',
           },
         },
         layers: [
@@ -100,7 +100,7 @@ export const CountryMap = (props: Props) => {
           id: 'admin2choropleth',
           type: 'fill',
           source: 'admin2data',
-          'source-layer': 'tmptsfp0xoq',
+          'source-layer': 'tmpk_z_jokg',
           paint: {
             'fill-color': [
               'let',
@@ -149,7 +149,7 @@ export const CountryMap = (props: Props) => {
         id: 'admin2rwi',
         type: 'fill',
         source: 'admin2data',
-        'source-layer': 'tmptsfp0xoq',
+        'source-layer': 'tmpk_z_jokg',
         paint: {
           'fill-pattern': 'pattern',
         },
@@ -183,7 +183,7 @@ export const CountryMap = (props: Props) => {
               yPosition: e.originalEvent.clientY,
             });
             (map as any).current.setFeatureState(
-              { source: 'admin2data', id: districtHoveredStateId, sourceLayer: 'tmptsfp0xoq' },
+              { source: 'admin2data', id: districtHoveredStateId, sourceLayer: 'tmpk_z_jokg' },
               { hover: true },
             );
           }
@@ -194,7 +194,7 @@ export const CountryMap = (props: Props) => {
         if (districtHoveredStateId) {
           setHoverData(null);
           (map as any).current.setFeatureState(
-            { source: 'admin2data', id: districtHoveredStateId, sourceLayer: 'tmptsfp0xoq' },
+            { source: 'admin2data', id: districtHoveredStateId, sourceLayer: 'tmpk_z_jokg' },
             { hover: false },
           );
         }
