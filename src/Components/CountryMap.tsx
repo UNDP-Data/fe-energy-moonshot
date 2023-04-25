@@ -62,7 +62,7 @@ export const CountryMap = (props: Props) => {
           },
           admin2data: {
             type: 'vector',
-            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/urban_rural_District_ElectricityAccess_20230411183105.pmtiles',
+            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/rural_urban_District_Electricity_Access_20230421004438.pmtiles',
           },
         },
         layers: [
@@ -100,7 +100,7 @@ export const CountryMap = (props: Props) => {
           id: 'admin2choropleth',
           type: 'fill',
           source: 'admin2data',
-          'source-layer': 'tmpk_z_jokg',
+          'source-layer': 'tmpl3ue0da4',
           paint: {
             'fill-color': [
               'let',

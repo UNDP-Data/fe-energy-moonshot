@@ -194,7 +194,7 @@ export const CountryProfile = (props: Props) => {
                         <div className='stat-card-notes margin-bottom-06'>2020</div>
                       </div>
                       <div>
-                        <h3 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h3>
+                        <h2 className='undp-typography margin-bottom-00'>{(indValue('hrea_2020') === '') ? '0%' : formatPercent(Math.round(100 - indValue('hrea_2020') * 100))}</h2>
                         <div className='stat-card-description'>{`${formatData(indValue('pop_no_hrea_2020'))} ${t('people')}`}</div>
                       </div>
                       <div className='stat-card-source'>
