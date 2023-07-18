@@ -149,7 +149,7 @@ export const CountryMap = (props: Props) => {
         id: 'admin2rwi',
         type: 'fill',
         source: 'admin2data',
-        'source-layer': 'tmpk_z_jokg',
+        'source-layer': 'tmpl3ue0da4',
         paint: {
           'fill-pattern': 'pattern',
         },
@@ -157,10 +157,6 @@ export const CountryMap = (props: Props) => {
         layout: {
           visibility: 'none',
         },
-        /* filter: ['all',
-          ['<', 'RWI', 1],
-          ['==', 'adm0_name', country['Country or Area']],
-        ], */
       });
       (map as any).current.loadImage(pattern, (err:any, image:any) => {
         if (err) throw err;
