@@ -14,9 +14,8 @@ import {
   DashboardDataType,
   CountryGroupDataType,
 } from '../Types';
-import { ScaledSquare } from '../GrapherComponent/ScaledSquare';
-import { ScaledHalfCircles } from '../GrapherComponent/ScaledHalfCircles';
-/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
+import { ScaledSquare } from './ScaledSquare';
+import { ScaledHalfCircles } from './ScaledHalfCircles';
 
 import '../styles/style.css';
 

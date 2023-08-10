@@ -13,8 +13,8 @@ import {
 import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
-import { Graph } from './Graph';
-/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
+import { UnivariateMap } from './UnivariateMap';
+
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
@@ -32,7 +32,7 @@ const regionList = [
   { value: 'RBLAC', label: 'Regional Bureau on Latin America and the Caribbean (RBLAC)' },
 ];
 
-export const GrapherComponent = (props: Props) => {
+export const Global = (props: Props) => {
   const {
     countryGroupData,
     indicators,
@@ -117,7 +117,7 @@ export const GrapherComponent = (props: Props) => {
         data={mapData}
       />
       <div style={{ backgroundColor: 'var(--gray-200)' }}>
-        <Graph
+        <UnivariateMap
           data={mapData}
           indicators={indicators}
           projectCoordsData={projectCoordsData}

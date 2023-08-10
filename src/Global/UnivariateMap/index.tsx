@@ -4,13 +4,13 @@ import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
-import Context from '../Context/Context';
+import Context from '../../Context/Context';
 import {
   CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordsDataType,
-} from '../Types';
-import { UnivariateMap } from './UnivariateMap';
-import { DEFAULT_VALUES } from '../Constants';
-/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
+} from '../../Types';
+import { Map } from './Map';
+import { DEFAULT_VALUES } from '../../Constants';
+
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
@@ -22,12 +22,6 @@ const El = styled.div`
   overflow: auto;
   position: relative;
   background-color: var(--black-100);
-  @media (min-width: 961px) {
-    height: 740px;
-  }
-  @media (max-width: 960px) {
-    width: 100%;
-  }
 `;
 
 const SettingEl = styled.div`
@@ -51,7 +45,7 @@ const SettingEl = styled.div`
   }
 `;
 
-export const Graph = (props: Props) => {
+export const UnivariateMap = (props: Props) => {
   const {
     data,
     indicators,
@@ -66,7 +60,7 @@ export const Graph = (props: Props) => {
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.map((d) => d.Indicator);
-  // console.log('options', options);
+  
   // translation
   const { t } = useTranslation();
 
@@ -97,7 +91,7 @@ export const Graph = (props: Props) => {
         </div>
         <Checkbox className='undp-checkbox' checked={showProjectLocations} onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>{t('show-locations')}</Checkbox>
       </SettingEl>
-      <UnivariateMap
+      <Map
         data={data}
         indicators={indicators}
         projectCoordsData={projectCoordsData}

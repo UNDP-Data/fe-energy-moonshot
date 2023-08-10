@@ -10,8 +10,8 @@ import { Tabs } from 'antd';
 import {
   CountryGroupDataType, IndicatorMetaDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
 } from './Types';
-import { GrapherComponent } from './GrapherComponent';
-import { CountryProfile } from './Components/CountryProfile';
+import { Global } from './Global';
+import { CountryProfile } from './CountryProfile';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
@@ -231,7 +231,7 @@ const App = (props: Props) => {
                             {
                               label: t('world-overview'),
                               key: '1',
-                              children: <GrapherComponent
+                              children: <Global
                                 countryGroupData={countryGroupData}
                                 indicators={indicatorsList}
                                 regions={regionList}

@@ -8,7 +8,7 @@ import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import UNDPColorModule from 'undp-viz-colors';
 import * as pmtiles from 'pmtiles';
 import pattern from '../assets/diagonal-hatch-white_30.png';
-import { CountryMapTooltip } from './CountryMapTooltip';
+import { CountryMapTooltip } from '../Components/CountryMapTooltip';
 import { CountryGroupDataType } from '../Types';
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
