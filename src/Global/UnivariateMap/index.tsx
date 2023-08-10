@@ -60,7 +60,6 @@ export const UnivariateMap = (props: Props) => {
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.map((d) => d.Indicator);
-  
   // translation
   const { t } = useTranslation();
 
