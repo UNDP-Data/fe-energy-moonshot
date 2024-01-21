@@ -6,7 +6,7 @@ import {
   CountryGroupDataType,
   CtxDataType,
   IndicatorMetaDataType,
-  RegionDataType,
+  // RegionDataType,
   ProjectLevelDataType,
   ProjectCoordsDataType,
 } from '../Types';
@@ -18,7 +18,7 @@ import { UnivariateMap } from './UnivariateMap';
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
-  regions: RegionDataType[];
+  // regions: RegionDataType[];
   countries: string[];
   projectLevelData: ProjectLevelDataType[];
   projectCoordsData: ProjectCoordsDataType[];
@@ -36,7 +36,7 @@ export const Global = (props: Props) => {
   const {
     countryGroupData,
     indicators,
-    regions,
+    // regions,
     countries,
     projectLevelData,
     projectCoordsData,
@@ -50,9 +50,8 @@ export const Global = (props: Props) => {
   const { t } = useTranslation();
   function calculateCountryTotals() {
     const groupedData = nest()
-      .key((d: any) => d['Lead Country'])
+      .key((d: any) => d.country)
       .entries(filteredProjectData);
-
     const countryData = groupedData.map((country) => {
       const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
       const region = country.values[0]['Regional Bureau'];
@@ -79,12 +78,12 @@ export const Global = (props: Props) => {
   }
   const mapData = calculateCountryTotals();
   const rbaPercentProjects = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.numberProjects) / projectLevelData.length;
-  const rbaTotalGrant = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'Grant amount')[0].value);
-  const rbaTargetTotal = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'target_total')[0].value);
+  const rbaTotalGrant = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'budget')[0].value);
+  const rbaTargetTotal = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'dirBeneficiaries')[0].value);
   // - variables for text
   const nrCountries = countries.length;
-  const totalProjectsAmount = Math.round(sumBy(projectLevelData, (project:any) => project['Grant amount']) / 1000000);
-  const targetTotal = Math.round(sumBy(projectLevelData, (project:any) => project.target_total) / 1000000);
+  const totalProjectsAmount = Math.round(sumBy(projectLevelData, (project:any) => project.budget) / 1000000);
+  const targetTotal = Math.round(sumBy(projectLevelData, (project:any) => project.dirBeneficiaries) / 1000000);
   const percentProjectsSubSah = Math.round(rbaPercentProjects * 100);
   const nrProjects = projectLevelData.length;
   const amountSubSah = Math.round(rbaTotalGrant / 1000000);
@@ -110,9 +109,7 @@ export const Global = (props: Props) => {
         </p>
         <i className='small-font'>Note: The values within the text are dynamically calculated according to the data available at the moment. New values will appear once the SEH team data is being used.</i>
       </div>
-      <Settings
-        regions={regions}
-      />
+      <Settings />
       <Cards
         data={mapData}
       />

@@ -8,7 +8,7 @@ import { queue } from 'd3-queue';
 import { useTranslation } from 'react-i18next';
 import { Tabs } from 'antd';
 import {
-  CountryGroupDataType, IndicatorMetaDataType, RegionDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
+  CountryGroupDataType, IndicatorMetaDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
 } from './Types';
 import { Global } from './Global';
 import { CountryProfile } from './CountryProfile';
@@ -37,7 +37,7 @@ const App = (props: Props) => {
   const containerEl = useRef(null);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
-  const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
+  // const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
   const [allCountriesData, setAllCountriesData] = useState<CountryData[] | undefined>(undefined);
   const [projectLevelData, setProjectLevelData] = useState<ProjectLevelDataType[] | undefined>(undefined);
@@ -54,17 +54,11 @@ const App = (props: Props) => {
     showProjectLocations: false,
     selectedProjectType: 'All',
     selectedTaxonomy: 'All',
+    selectedCategory: 'all',
+    selectedSubCategory: 'all',
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
-
-  const regions = [
-    { value: 'RBA', label: 'Regional Bureau for Africa (RBA)' },
-    { value: 'RBAP', label: 'Regional Bureau for Asia and the Pacific (RBAP)' },
-    { value: 'RBAS', label: 'Regional Bureau for Arab States (RBAS)' },
-    { value: 'RBEC', label: 'Regional Bureau for Europe and the Commonwealth of Independent States (RBEC)' },
-    { value: 'RBLAC', label: 'Regional Bureau on Latin America and the Caribbean (RBLAC)' },
-  ];
 
   const updateSelectedRegions = (selectedRegions: string[]) => {
     dispatch({
@@ -107,6 +101,21 @@ const App = (props: Props) => {
       payload: selectedTaxonomy,
     });
   };
+
+  const updateSelectedCategory = (selectedCategory: string) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_CATEGORY',
+      payload: selectedCategory,
+    });
+  };
+
+  const updateSelectedSubCategory = (selectedSubCategory: string) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_SUBCATEGORY',
+      payload: selectedSubCategory,
+    });
+  };
+
   function removeDuplicates(arr: any) {
     return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
   }
@@ -125,34 +134,35 @@ const App = (props: Props) => {
       .defer(csv, `${ROOT_DIR}/data/country_level_data6.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data7.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data8.csv`)
-      .defer(csv, `${ROOT_DIR}/data/project_level_data1.csv`)
+      .defer(json, `${ROOT_DIR}/data/newDataFile.json`)
       .defer(csv, `${ROOT_DIR}/data/project_level_data2.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
       .defer(json, 'https://gist.githubusercontent.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee/raw/b36904c0c8ea72fdb82f68eb33f29891095deab3/country_codes')
       .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: any[], countryBoundingBoxData: any) => {
         if (err) throw err;
         const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3, countryLevelData4, countryLevelData5, countryLevelData6, countryLevelData7, countryLevelData8];
-        const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
-          ...d,
-          'Grant amount': Number(d.Grant_amount.replaceAll(',', '')),
-          'target_Electricity access': +d['target_Electricity access'].replaceAll(',', ''),
-          'target_Clean cooking': +d['target_Clean cooking'].replaceAll(',', ''),
-          'target_Energy services': +d['target_Energy services'].replaceAll(',', ''),
-          target_total: +d.target_total.replaceAll(',', ''),
-          'results_Electricity access': +d['results_Electricity access'].replaceAll(',', ''),
-          'results_Clean cooking': +d['results_Clean cooking'].replaceAll(',', ''),
-          'results_Energy services': +d['results_Energy services'].replaceAll(',', ''),
-          results_total: Number(d.results_total.replaceAll(',', '')),
-        }));
-        setProjectLevelData(projectLevelDataWithNumbers);
+        // const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
+        //   ...d,
+        //   'Grant amount': Number(d.Grant_amount.replaceAll(',', '')),
+        //   'Energy Saved': Number(d.nrgSaved.replaceAll(',', '')),
+        //   'target_Electricity access': +d['target_Electricity access'].replaceAll(',', ''),
+        //   'target_Clean cooking': +d['target_Clean cooking'].replaceAll(',', ''),
+        //   'target_Energy services': +d['target_Energy services'].replaceAll(',', ''),
+        //   target_total: +d.target_total.replaceAll(',', ''),
+        //   'results_Electricity access': +d['results_Electricity access'].replaceAll(',', ''),
+        //   'results_Clean cooking': +d['results_Clean cooking'].replaceAll(',', ''),
+        //   'results_Energy services': +d['results_Energy services'].replaceAll(',', ''),
+        //   results_total: Number(d.results_total.replaceAll(',', '')),
+        // }));
+        setProjectLevelData(projectLevelData1);
         // here we need to have only the projects which are at projectLevelData
         const projectCoordsWithData: ProjectCoordsDataType[] = [];
         projectCoordsData.forEach((d: any) => {
-          const index = projectLevelDataWithNumbers.findIndex((el: ProjectLevelDataType) => el['projectID_PIMS+'] === d['projectID_PIMS+']);
+          const index = projectLevelData1.findIndex((el: ProjectLevelDataType) => el.projectID === d['projectID_PIMS+']);
           if (index > 0) {
             projectCoordsWithData.push({
               ...d,
-              projectData: projectLevelDataWithNumbers[index],
+              projectData: projectLevelData1[index],
             });
           }
         });
@@ -169,7 +179,7 @@ const App = (props: Props) => {
         }));
         setProjectCoordsData(projectCoordsWithData);
         setCountryGroupData(countryGroupDataBbox);
-        const countries = removeDuplicates(projectLevelDataWithNumbers.map((d) => d['Lead Country']));
+        const countries = removeDuplicates(projectLevelData1.map((d) => d.country));
         setCountryList(countries);
         const countriesData : CountryData[] = [];
         countries.forEach((country:string) => {
@@ -186,7 +196,7 @@ const App = (props: Props) => {
           countriesData.push(countryData);
         });
         setAllCountriesData(countriesData);
-        setRegionList(regions);
+        // setRegionList(regions);
         setIndicatorsList(indicatorMetaData);
       });
     if (countryList && countryGroupData) {
@@ -202,7 +212,7 @@ const App = (props: Props) => {
   return (
     <div className='undp-container'>
       {
-        indicatorsList && regionList && countryList && countryGroupData && allCountriesData && projectLevelData && projectCoords
+        indicatorsList && countryList && countryGroupData && allCountriesData && projectLevelData && projectCoords
           ? (
             <>
               <Context.Provider
@@ -214,6 +224,8 @@ const App = (props: Props) => {
                   updateXAxisIndicator,
                   updateShowProjectLocations,
                   updateSelectedTaxonomy,
+                  updateSelectedCategory,
+                  updateSelectedSubCategory,
                 }}
               >
                 <div
@@ -234,7 +246,7 @@ const App = (props: Props) => {
                               children: <Global
                                 countryGroupData={countryGroupData}
                                 indicators={indicatorsList}
-                                regions={regionList}
+                                // regions={regionList}
                                 countries={countryList}
                                 projectLevelData={projectLevelData}
                                 projectCoordsData={projectCoords}

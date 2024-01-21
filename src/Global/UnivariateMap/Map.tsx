@@ -161,7 +161,6 @@ export const Map = (props: Props) => {
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
               const val = indicatorIndex === -1 ? undefined : d.indicators[indicatorIndex].value;
               const color = val !== undefined ? colorScale(val) : '#f5f9fe';
-
               const regionOpacity = selectedRegions === 'All' || selectedRegions === d.region;
               const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
 
@@ -178,8 +177,8 @@ export const Map = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d.region,
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
-                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'dirBeneficiaries')[0].value,
+                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'budget')[0].value,
                         numberProjects: d.numberProjects,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
@@ -191,8 +190,8 @@ export const Map = (props: Props) => {
                       setHoverData({
                         country: d['Country or Area'],
                         continent: d.region,
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
-                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
+                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'dirBeneficiaries')[0].value,
+                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'budget')[0].value,
                         numberProjects: d.numberProjects,
                         xPosition: event.clientX,
                         yPosition: event.clientY,
@@ -304,7 +303,7 @@ export const Map = (props: Props) => {
             showProjectLocations
             && projectCoordsData.filter((d) => selectedTaxonomy === 'All' || d.projectData.taxonomy_level3 === selectedTaxonomy).map((d, i: number) => {
               const regionOpacity = selectedRegions === 'All' || selectedRegions === d.projectData['Regional Bureau'];
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries === d.projectData['Lead Country'];
+              const countryOpacity = selectedCountries.length === 0 || selectedCountries === d.projectData.country;
               const projectOpacity = selectedProjects === '' || selectedProjects === d.projectData['projectID_PIMS+'].toString();
 
               const point = projection([d.Longitude, d.Latitude]) as [number, number];
@@ -317,7 +316,7 @@ export const Map = (props: Props) => {
                     setProjectHoverData({
                       name: d.projectData['Short Title'],
                       donor: d.projectData['Source of Funds'],
-                      grantAmount: d.projectData['Grant amount'],
+                      grantAmount: d.projectData.budget,
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });
@@ -327,7 +326,7 @@ export const Map = (props: Props) => {
                     setProjectHoverData({
                       name: d.projectData['Short Title'],
                       donor: d.projectData['Source of Funds'],
-                      grantAmount: d.projectData['Grant amount'],
+                      grantAmount: d.projectData.budget,
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });

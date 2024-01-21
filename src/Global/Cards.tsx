@@ -40,8 +40,8 @@ export const Cards = (props: Props) => {
     : selectedRegions !== 'All'
       ? data.filter((d) => d.region === selectedRegions) : data;
   const cardData = {
-    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'target_total')[0].value),
-    grantAmount: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'Grant amount')[0].value),
+    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'dirBeneficiaries')[0].value),
+    grantAmount: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
     numberCountries: relevantData.length,
   };
   // translation

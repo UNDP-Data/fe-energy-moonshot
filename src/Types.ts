@@ -79,6 +79,8 @@ export interface CtxDataType {
   selectedRegions: string;
   selectedCountries: string;
   selectedProjects: string;
+  selectedCategory: string;
+  selectedSubCategory: string;
   xAxisIndicator: string;
   showProjectLocations: boolean;
   selectedTaxonomy: string;
@@ -88,6 +90,8 @@ export interface CtxDataType {
   updateXAxisIndicator: (_d: string) => void;
   updateShowProjectLocations: (_d: boolean) => void;
   updateSelectedTaxonomy: (_d: string) => void;
+  updateSelectedCategory: (_d: string) => void;
+  updateSelectedSubCategory: (_d: string) => void;
 }
 
 export interface CountryIndicatorMetaDataType {
@@ -107,6 +111,23 @@ export interface CountryData{
   values: CountryIndicatorDataType[];
 }
 export interface ProjectLevelDataType{
+  projectID: string,
+  title: string,
+  description: string,
+  country: string,
+  regionBureau: string,
+  VF: boolean,
+  budget: number,
+  outputCount: number,
+  dirBeneficiaries: number,
+  indirBeneficiaries: number,
+  nrgSaved: number,
+  fundingSources: string,
+  HDItier: string,
+  incomeLevel: string,
+  isSIDS: boolean,
+  isLLDC: boolean,
+  isLDC: boolean,
   'projectID_PIMS+': number,
   'projectID_Atlas': number,
   'Short Title': string,
@@ -114,7 +135,6 @@ export interface ProjectLevelDataType{
   'Lead Country': string,
   'Regional Bureau': string,
   'Source of Funds': string,
-  VF: string,
   taxonomy_level3?: string,
   'Grant amount': number,
   'target_Electricity access'?: number,

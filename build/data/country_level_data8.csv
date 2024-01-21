@@ -1,0 +1,315 @@
+fid,adm0_id,adm0_src,adm0_name,country,iso_cd,iso_2,iso_3,iso_3_grp,region3_cd,region3_nm,region2_cd,region2_nm,region1_cd,region1_nm,status_cd,status_nm,wld_date,wld_update,wld_view,pop_hrea_2020,pop_no_hrea_2020,hrea_2020,pop
+1,ABW-20220530,ABW,Aruba (Neth.),Aruba,533,AW,ABW,NLD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,107612
+2,AFG-20220530,AFG,Afghanistan,Afghanistan,4,AF,AFG,AFG,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,40754375
+3,AGO-20220530,AGO,Angola,Angola,24,AO,AGO,AGO,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,9245335,5217954,0.6392277026,35027348
+4,AIA-20220530,AIA,Anguilla (UK),Anguilla,660,AI,AIA,GBR,29,Caribbean,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,15225
+5,ALA-20220530,ALA,Åland Islands (Fin.),Åland Islands,248,AX,ALA,FIN,154,Northern Europe,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,29754
+6,ALB-20220530,ALB,Albania,Albania,8,AL,ALB,ALB,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,2866380
+7,AND-20220530,AND,Andorra,Andorra,20,AD,AND,AND,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,77460
+8,ARE-20220530,ARE,United Arab Emirates,United Arab Emirates,784,AE,ARE,ARE,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,10081781
+9,ARG-20220530,ARG,Argentina,Argentina,32,AR,ARG,ARG,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,22098443,2945309,0.8823934609,46010238
+10,ARM-20220530,ARM,Armenia,Armenia,51,AM,ARM,ARM,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,2971968
+11,ASM-20220530,ASM,American Samoa (USA),American Samoa,16,AS,ASM,USA,61,Polynesia,61,Polynesia,9,Oceania,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,55032
+12,ATA-20220530,ATA,Antarctica,Antarctica,10,AQ,ATA,ATA,0,Antarctica,0,Antarctica,0,Antarctica,0,Antarctica,2021/05/28,2022/05/30,intl,,,,0
+13,ATF_1-20220530,ATF_1,Kerguelen Islands (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+14,ATF_2-20220530,ATF_2,Crozet Archipelago (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+15,ATF_3-20220530,ATF_3,Saint Paul and Amsterdam Islands (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+16,ATF_4-20220530,ATF_4,Bassas da India (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+17,ATF_5-20220530,ATF_5,Europa Island (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+18,ATF_6-20220530,ATF_6,Glorioso Islands (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+19,ATF_7-20220530,ATF_7,Juan de Nova Island (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+20,ATF_8-20220530,ATF_8,Tromelin Island (Fr.),French Southern Territories,260,TF,ATF,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+21,ATG-20220530,ATG,Antigua and Barbuda,Antigua and Barbuda,28,AG,ATG,ATG,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,99505
+22,AUS_1-20220530,AUS_1,Australia,Australia,36,AU,AUS,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,26068794
+23,AUS_2-20220530,AUS_2,Ashmore & Cartier Islands (Aust.),Australia,36,AU,AUS,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+24,AUS_3-20220530,AUS_3,Coral Sea Islands (Aust.),Australia,36,AU,AUS,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+25,AUT-20220530,AUT,Austria,Austria,40,AT,AUT,AUT,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,9066687
+26,AZE-20220530,AZE,Azerbaijan,Azerbaijan,31,AZ,AZE,AZE,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,10300198
+27,BDI-20220530,BDI,Burundi,Burundi,108,BI,BDI,BDI,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,980268,5247312,0.1574075323,12624848
+28,BEL-20220530,BEL,Belgium,Belgium,56,BE,BEL,BEL,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,11668272
+29,BEN-20220530,BEN,Benin,Benin,204,BJ,BEN,BEN,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,3207779,3063087,0.5115368436,12784728
+30,BES_1-20220530,BES_1,Bonaire (Neth.),"Bonaire, Sint Eustatius and Saba",535,BQ,BES,NLD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,19859
+31,BES_2-20220530,BES_2,Sint Eustatius (Neth.),"Bonaire, Sint Eustatius and Saba",535,BQ,BES,NLD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,4767
+32,BES_3-20220530,BES_3,Saba (Neth.),"Bonaire, Sint Eustatius and Saba",535,BQ,BES,NLD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,2016
+33,BFA-20220530,BFA,Burkina Faso,Burkina Faso,854,BF,BFA,BFA,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,3503294,6934669,0.3356300458,22102838
+34,BGD-20220530,BGD,Bangladesh,Bangladesh,50,BD,BGD,BGD,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,65146759,27671775,0.7018723114,167885664
+35,BGR-20220530,BGR,Bulgaria,Bulgaria,100,BG,BGR,BGR,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,6844597
+36,BHR-20220530,BHR,Bahrain,Bahrain,48,BH,BHR,BHR,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,1783984
+37,BHS-20220530,BHS,Bahamas,Bahamas,44,BS,BHS,BHS,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,400515
+38,BIH-20220530,BIH,Bosnia and Herzegovina,Bosnia and Herzegovina,70,BA,BIH,BIH,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,3249305
+39,BLM-20220530,BLM,Saint Barthélemy (Fr.),Saint Barthélemy,652,BL,BLM,FRA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,9946
+40,BLR-20220530,BLR,Belarus,Belarus,112,BY,BLR,BLR,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,9432802
+41,BLZ-20220530,BLZ,Belize,Belize,84,BZ,BLZ,BLZ,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,174550,32028,0.844959289,412201
+42,BMU-20220530,BMU,Bermuda (UK),Bermuda,60,BM,BMU,GBR,21,Northern America,21,Northern America,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,61941
+43,BOL-20220530,BOL,Bolivia (Plurinational State of),Bolivia (Plurinational State of),68,BO,BOL,BOL,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,4852875,1343391,0.7831934588,11992653
+44,BRA-20220530,BRA,Brazil,Brazil,76,BR,BRA,BRA,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,215353589
+45,BRB-20220530,BRB,Barbados,Barbados,52,BB,BRB,BRB,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,288022
+46,BRN-20220530,BRN,Brunei Darussalam,Brunei Darussalam,96,BN,BRN,BRN,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,4731,26,,445429
+47,BTN-20220530,BTN,Bhutan,Bhutan,64,BT,BTN,BTN,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,237282,208020,0.5328563537,787944
+48,BVT-20220530,BVT,Bouvet Island (Nor.),Bouvet Island,74,BV,BVT,NOR,5,South America,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+49,BWA-20220530,BWA,Botswana,Botswana,72,BW,BWA,BWA,18,Southern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,871181,435459,0.6667337599,2441152
+50,CAF-20220530,CAF,Central African Republic,Central African Republic,140,CF,CAF,CAF,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,683493,2142313,0.2418754154,5016678
+51,CAN-20220530,CAN,Canada,Canada,124,CA,CAN,CAN,21,Northern America,21,Northern America,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,38388406
+52,CCK-20220530,CCK,Cocos (Keeling) Islands (Aust.),Cocos (Keeling) Islands,166,CC,CCK,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,461
+53,CHE-20220530,CHE,Switzerland,Switzerland,756,CH,CHE,CHE,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,8773642
+54,CHL-20220530,CHL,Chile,Chile,152,CL,CHL,CHL,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,19250190
+55,CHN-20220530,CHN,China,China,156,CN,CHN,CHN,30,Eastern Asia,30,Eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,1448471402
+56,CIV-20220530,CIV,Côte d'Ivoire,Côte d'Ivoire,384,CI,CIV,CIV,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,9015039,4000134,0.6926561022,27742303
+57,CMR-20220530,CMR,Cameroon,Cameroon,120,CM,CMR,CMR,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,6852543,6613385,0.5088801158,27911541
+58,COD-20220530,COD,Democratic Republic of the Congo,Democratic Republic of the Congo,180,CD,COD,COD,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,11975405,33180023,0.2652041079,95240783
+59,COG-20220530,COG,Congo,Congo,178,CG,COG,COG,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,1805274,830572,0.6848935788,5797800
+60,COK-20220530,COK,Cook Islands (NZ),Cook Islands,184,CK,COK,NZL,61,Polynesia,61,Polynesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,17564
+61,COL-20220530,COL,Colombia,Colombia,170,CO,COL,COL,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,23371671,4502885,0.8384589516,51512743
+62,COM-20220530,COM,Comoros,Comoros,174,KM,COM,COM,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,203587,253185,0.4457081432,907411
+63,CPT-20220530,CPT,Clipperton Island (Fr.),Clipperton Island,900,CP,CPT,FRA,61,Polynesia,61,Polynesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+64,CPV-20220530,CPV,Cabo Verde,Cabo Verde,132,CV,CPV,CPV,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,258728,40806,0.8637683869,567676
+65,CRI-20220530,CRI,Costa Rica,Costa Rica,188,CR,CRI,CRI,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,5182355
+66,CUB-20220530,CUB,Cuba,Cuba,192,CU,CUB,CUB,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,11305650
+67,CUW-20220530,CUW,Curaçao (Neth.),Curaçao,531,CW,CUW,NLD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,165531
+68,CXR-20220530,CXR,Christmas Island (Aust.),Christmas Island,162,CX,CXR,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,1995
+69,CYM-20220530,CYM,Cayman Islands (UK),Cayman Islands,136,KY,CYM,GBR,29,Caribbean,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,67280
+70,CYP-20220530,CYP,Cyprus,Cyprus,196,CY,CYP,CYP,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,1223390
+71,CZE-20220530,CZE,Czechia,Czechia,203,CZ,CZE,CZE,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,10735840
+72,DEU-20220530,DEU,Germany,Germany,276,DE,DEU,DEU,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,83883314
+73,DJI-20220530,DJI,Djibouti,Djibouti,262,DJ,DJI,DJI,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,308392,64858,0.8262344273,1016099
+74,DMA-20220530,DMA,Dominica,Dominica,212,DM,DMA,DMA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,72337
+75,DNK-20220530,DNK,Denmark,Denmark,208,DK,DNK,DNK,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,5834948
+76,DOM-20220530,DOM,Dominican Republic,Dominican Republic,214,DO,DOM,DOM,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,5801728,272805,0.9550903748,11056366
+77,DZA-20220530,DZA,Algeria,Algeria,12,DZ,DZA,DZA,15,Northern Africa,15,Northern Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,21029177,2009644,0.9127714044,45350131
+78,ECU-20220530,ECU,Ecuador,Ecuador,218,EC,ECU,ECU,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,8660863,647237,0.9304651862,18113383
+79,EGY-20220530,EGY,Egypt,Egypt,818,EG,EGY,EGY,15,Northern Africa,15,Northern Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,52176295,627820,0.9881103963,106156696
+80,ERI-20220530,ERI,Eritrea,Eritrea,232,ER,ERI,ERI,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,625314,3531949,0.1504148282,3662251
+81,ESH-20220530,ESH,Western Sahara,Western Sahara,732,EH,ESH,MAR,15,Northern Africa,15,Northern Africa,2,Africa,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,626168
+82,ESP_1-20220530,ESP_1,Spain,Spain,724,ES,ESP,ESP,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,44353798
+83,ESP_2-20220530,ESP_2,Canary Islands (Sp.),Spain,724,ES,ESP,ESP,39,Southern Europe,39,Southern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,2198219
+84,ESP_3-20220530,ESP_3,Plazas de soberanía (Sp.),Spain,724,ES,ESP,ESP,15,Northern Africa,15,Northern Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,166616
+85,EST-20220530,EST,Estonia,Estonia,233,EE,EST,EST,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,1322002
+86,ETH-20220530,ETH,Ethiopia,Ethiopia,231,ET,ETH,ETH,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,17256816,48134270,0.2639016578,120812697
+87,FIN-20220530,FIN,Finland,Finland,246,FI,FIN,FIN,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,5554953
+88,FJI-20220530,FJI,Fiji,Fiji,242,FJ,FJI,FJI,54,Melanesia,54,Melanesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,909457
+89,FLK-20220530,FLK,Falkland Islands (Malvinas),Falkland Islands (Malvinas),238,FK,FLK,GBR,5,South America,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,3534
+90,FRA-20220530,FRA,France,France,250,FR,FRA,FRA,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,65584513
+91,FRO-20220530,FRO,Faroe Islands (Den.),Faroe Islands,234,FO,FRO,DNK,154,Northern Europe,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,49230
+92,FSM-20220530,FSM,Micronesia (Federated States of),Micronesia (Federated States of),583,FM,FSM,FSM,57,Micronesia,57,Micronesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,3404,1776,0.6571428571,117484
+93,GAB-20220530,GAB,Gabon,Gabon,266,GA,GAB,GAB,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,487623,191646,0.7178643512,2331533
+94,GBR-20220530,GBR,United Kingdom of Great Britain and Northern Ireland,United Kingdom of Great Britain and Northern Ireland,826,GB,GBR,GBR,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,68497861
+95,GEO_1-20220530,GEO_1,Georgia,Georgia,268,GE,GEO,GEO,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,3968729
+96,GGY-20220530,GGY,Guernsey (UK),Guernsey,831,GG,GGY,GBR,830,Channel Islands,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,66033
+97,GHA-20220530,GHA,Ghana,Ghana,288,GH,GHA,GHA,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,12966000,2917020,0.8163434914,32395456
+98,GIB-20220530,GIB,Gibraltar (UK),Gibraltar,292,GI,GIB,GBR,39,Southern Europe,39,Southern Europe,150,Europe,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,33714
+99,GIN-20220530,GIN,Guinea,Guinea,324,GN,GIN,GIN,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,2615930,4665345,0.3592681227,13865683
+100,GLP-20220530,GLP,Guadeloupe (Fr.),Guadeloupe,312,GP,GLP,FRA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,399804
+101,GMB-20220530,GMB,Gambia,Gambia,270,GM,GMB,GMB,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,723577,430202,0.627136566,2558493
+102,GNB-20220530,GNB,Guinea-Bissau,Guinea-Bissau,624,GW,GNB,GNB,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,347703,719661,0.3257585978,2063358
+103,GNQ-20220530,GNQ,Equatorial Guinea,Equatorial Guinea,226,GQ,GNQ,GNQ,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,155708,130569,0.5439067756,1496672
+104,GRC-20220530,GRC,Greece,Greece,300,GR,GRC,GRC,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,10316641
+105,GRD-20220530,GRD,Grenada,Grenada,308,GD,GRD,GRD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,51631,875,0.9833352379,113478
+106,GRL-20220530,GRL,Greenland (Den.),Greenland,304,GL,GRL,DNK,21,Northern America,21,Northern America,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,56975
+107,GTM-20220530,GTM,Guatemala,Guatemala,320,GT,GTM,GTM,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,5899370,2512651,0.7013023386,18584040
+108,GUF-20220530,GUF,French Guiana (Fr.),French Guiana,254,GF,GUF,FRA,5,South America,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,314170
+109,GUM-20220530,GUM,Guam (USA),Guam,316,GU,GUM,USA,57,Micronesia,57,Micronesia,9,Oceania,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,171528
+110,GUY-20220530,GUY,Guyana,Guyana,328,GY,GUY,GUY,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,380612,63168,0.8576592005,794040
+111,HKG-20220530,HKG,"Hong Kong, SAR China","Hong Kong, Special Administrative Region of China",344,HK,HKG,CHN,30,Eastern Asia,30,Eastern Asia,142,Asia,6,Special region or province,2021/05/28,2022/05/30,intl,4100888,8925,0.9978283683,7604306
+112,HMD-20220530,HMD,Heard Island and McDonald Islands (Aust.),Heard Island and McDonald Islands,334,HM,HMD,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+113,HND-20220530,HND,Honduras,Honduras,340,HN,HND,HND,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,3432087,793163,0.8122802201,10221258
+114,HRV-20220530,HRV,Croatia,Croatia,191,HR,HRV,HRV,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,4059284
+115,HTI-20220530,HTI,Haiti,Haiti,332,HT,HTI,HTI,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,1492158,3431448,0.3030620241,11680283
+116,HUN-20220530,HUN,Hungary,Hungary,348,HU,HUN,HUN,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,9606247
+117,IDN-20220530,IDN,Indonesia,Indonesia,360,ID,IDN,IDN,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,131637214,16918606,0.8861128026,279134488
+118,IMN-20220530,IMN,Isle of Man (UK),Isle of Man,833,IM,IMN,GBR,154,Northern Europe,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,85737
+119,IND-20220530,IND,India,India,356,IN,IND,IND,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,667101845,82160796,0.8903444647,1406631780
+120,IOT-20220530,IOT,British Indian Ocean Territory,British Indian Ocean Territory,86,IO,IOT,GBR,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+121,IRL-20220530,IRL,Ireland,Ireland,372,IE,IRL,IRL,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,5019282
+122,IRN-20220530,IRN,Iran (Islamic Republic of),Iran (Islamic Republic of),364,IR,IRN,IRN,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,86022847
+123,IRQ-20220530,IRQ,Iraq,Iraq,368,IQ,IRQ,IRQ,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,20509516,534965,0.9745793208,42164968
+124,ISL-20220530,ISL,Iceland,Iceland,352,IS,ISL,ISL,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,345398
+125,ISR-20220530,ISR,Israel,Israel,376,IL,ISR,ISR,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,8922894
+126,ITA-20220530,ITA,Italy,Italy,380,IT,ITA,ITA,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,60262764
+127,JAM-20220530,JAM,Jamaica,Jamaica,388,JM,JAM,JAM,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,1566737,41990,0.9738986167,2985086
+128,JEY-20220530,JEY,Jersey (UK),Jersey,832,JE,JEY,GBR,830,Channel Islands,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,105411
+129,JOR-20220530,JOR,Jordan,Jordan,400,JO,JOR,JOR,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,4355342,24553,0.9943941579,10300861
+130,JPN-20220530,JPN,Japan,Japan,392,JP,JPN,JPN,30,Eastern Asia,30,Eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,125584844
+131,KAZ-20220530,KAZ,Kazakhstan,Kazakhstan,398,KZ,KAZ,KAZ,143,Central Asia,143,Central Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,19205038
+132,KEN-20220530,KEN,Kenya,Kenya,404,KE,KEN,KEN,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,13486949,13612493,0.4976836423,56215218
+133,KGZ-20220530,KGZ,Kyrgyzstan,Kyrgyzstan,417,KG,KGZ,KGZ,143,Central Asia,143,Central Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,6728270
+134,KHM-20220530,KHM,Cambodia,Cambodia,116,KH,KHM,KHM,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,4192952,4813882,0.4655300631,17168642
+135,KIR-20220530,KIR,Kiribati,Kiribati,296,KI,KIR,KIR,57,Micronesia,57,Micronesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,123414
+136,KNA-20220530,KNA,Saint Kitts and Nevis,Saint Kitts and Nevis,659,KN,KNA,KNA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,53865
+137,KOR-20220530,KOR,Republic of Korea,Republic of Korea,410,KR,KOR,KOR,30,Eastern Asia,30,Eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,28642152,333320,0.9884964773,51329917
+138,KWT-20220530,KWT,Kuwait,Kuwait,414,KW,KWT,KWT,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,4380339
+139,LAO-20220530,LAO,Lao People's Democratic Republic,Lao People's Democratic Republic,418,LA,LAO,LAO,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,1964180,2939384,0.4005617139,7481026
+140,LBN-20220530,LBN,Lebanon,Lebanon,422,LB,LBN,LBN,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,6684852
+141,LBR-20220530,LBR,Liberia,Liberia,430,LR,LBR,LBR,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,671578,1512586,0.3074759954,5305125
+142,LBY-20220530,LBY,Libya,Libya,434,LY,LBY,LBY,15,Northern Africa,15,Northern Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,3460691,169199,0.9533872927,7040747
+143,LCA-20220530,LCA,Saint Lucia,Saint Lucia,662,LC,LCA,LCA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,88469,1055,0.9882154506,185083
+144,LIE-20220530,LIE,Liechtenstein,Liechtenstein,438,LI,LIE,LIE,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,38388
+145,LKA-20220530,LKA,Sri Lanka,Sri Lanka,144,LK,LKA,LKA,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,8934421,1991529,0.817724866,21575841
+146,LSO-20220530,LSO,Lesotho,Lesotho,426,LS,LSO,LSO,18,Southern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,453081,735869,0.3810765802,2175694
+147,LTU-20220530,LTU,Lithuania,Lithuania,440,LT,LTU,LTU,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,2661711
+148,LUX-20220530,LUX,Luxembourg,Luxembourg,442,LU,LUX,LUX,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,642365
+149,LVA-20220530,LVA,Latvia,Latvia,428,LV,LVA,LVA,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,1848834
+150,MAC-20220530,MAC,"Macao, SAR China","Macao, Special Administrative Region of China",446,MO,MAC,CHN,30,Eastern Asia,30,Eastern Asia,142,Asia,6,Special region or province,2021/05/28,2022/05/30,intl,,,,667492
+151,MAF-20220530,MAF,Saint Martin (Fr.),Saint Martin (French Part),663,MF,MAF,FRA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,39732
+152,MAR-20220530,MAR,Morocco,Morocco,504,MA,MAR,MAR,15,Northern Africa,15,Northern Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,1362825450,178038883,0.8844551858,37772756
+153,MCO-20220530,MCO,Monaco,Monaco,492,MC,MCO,MCO,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,39778
+154,MDA-20220530,MDA,Republic of Moldova,Republic of Moldova,498,MD,MDA,MDA,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,4013176
+155,MDG-20220530,MDG,Madagascar,Madagascar,450,MG,MDG,MDG,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,2356531,11657525,0.1681548154,29178100
+156,MDV-20220530,MDV,Maldives,Maldives,462,MV,MDV,MDV,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,540980
+157,MEX-20220530,MEX,Mexico,Mexico,484,MX,MEX,MEX,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,70857129,2480011,0.9661834236,131562798
+158,MHL-20220530,MHL,Marshall Islands,Marshall Islands,584,MH,MHL,MHL,57,Micronesia,57,Micronesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,15176,5294,0.7413776258,60048
+159,MKD-20220530,MKD,North Macedonia,North Macedonia,807,MK,MKD,MKD,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,2081305
+160,MLI-20220530,MLI,Mali,Mali,466,ML,MLI,MLI,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,3514052,6670828,0.3450263528,21473785
+161,MLT-20220530,MLT,Malta,Malta,470,MT,MLT,MLT,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,444030
+162,MMR-20220530,MMR,Myanmar,Myanmar,104,MM,MMR,MMR,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,1637069170,503786909,0.7646796934,55227154
+163,MNE-20220530,MNE,Montenegro,Montenegro,499,ME,MNE,MNE,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,627953
+164,MNG-20220530,MNG,Mongolia,Mongolia,496,MN,MNG,MNG,30,Eastern Asia,30,Eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,1347005,359325,0.7894164669,3378079
+165,MNP-20220530,MNP,Northern Mariana Islands (USA),Northern Mariana Islands,580,MP,MNP,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,58271
+166,MOZ-20220530,MOZ,Mozambique,Mozambique,508,MZ,MOZ,MOZ,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,5225877,10919542,0.3236755268,33089460
+167,MRT-20220530,MRT,Mauritania,Mauritania,478,MR,MRT,MRT,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,1043539,1298662,0.4455377655,4901976
+168,MSR-20220530,MSR,Montserrat (UK),Montserrat,500,MS,MSR,GBR,29,Caribbean,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,4968
+169,MTQ-20220530,MTQ,Martinique (Fr.),Martinique,474,MQ,MTQ,FRA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,374083
+170,MUS-20220530,MUS,Mauritius,Mauritius,480,MU,MUS,MUS,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,634494,24288,0.9631319617,1274719
+171,MWI-20220530,MWI,Malawi,Malawi,454,MW,MWI,MWI,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,2663114,7280992,0.2678082876,20180835
+172,MYS-20220530,MYS,Malaysia,Malaysia,458,MY,MYS,MYS,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,16693580,764722,0.9561972293,33181078
+173,MYT-20220530,MYT,Mayotte (Fr.),Mayotte,175,YT,MYT,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,286254
+174,NAM-20220530,NAM,Namibia,Namibia,516,NA,NAM,NAM,18,Southern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,804889,622442,0.5639119447,2633879
+175,NCL-20220530,NCL,New Caledonia (Fr.),New Caledonia,540,NC,NCL,FRA,54,Melanesia,54,Melanesia,9,Oceania,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,290924
+176,NER-20220530,NER,Niger,Niger,562,NE,NER,NER,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,2367858,9107871,0.2063361726,26083662
+177,NFK-20220530,NFK,Norfolk Island (Aust.),Norfolk Island,574,NF,NFK,AUS,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,2047
+178,NGA-20220530,NGA,Nigeria,Nigeria,566,NG,NGA,NGA,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,54683562,50582066,0.5194816488,216746936
+179,NIC-20220530,NIC,Nicaragua,Nicaragua,558,NI,NIC,NIC,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,1747988,1194808,0.593988846,6779103
+180,NIU-20220530,NIU,Niue (NZ),Niue,570,NU,NIU,NZL,61,Polynesia,61,Polynesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,1617
+181,NLD-20220530,NLD,Netherlands,Netherlands,528,NL,NLD,NLD,155,Western Europe,155,Western Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,17211447
+182,NOR-20220530,NOR,Norway,Norway,578,NO,NOR,NOR,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,5511377
+183,NPL-20220530,NPL,Nepal,Nepal,524,NP,NPL,NPL,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,9575608,6920814,0.5804657519,30225579
+184,NRU-20220530,NRU,Nauru,Nauru,520,NR,NRU,NRU,57,Micronesia,57,Micronesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,10896
+185,NZL-20220530,NZL,New Zealand,New Zealand,554,NZ,NZL,NZL,53,Australia and New Zealand,53,Australia and New Zealand,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,4898200
+186,OMN-20220530,OMN,Oman,Oman,512,OM,OMN,OMN,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,5324000
+187,PAK-20220530,PAK,Pakistan,Pakistan,586,PK,PAK,PAK,34,Southern Asia,34,Southern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,82921079,23498245,0.7791919351,229488995
+188,PAN-20220530,PAN,Panama,Panama,591,PA,PAN,PAN,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,1188665,286797,0.805622239,4446953
+189,PCN-20220530,PCN,Pitcairn (UK),Pitcairn,612,PN,PCN,GBR,61,Polynesia,61,Polynesia,9,Oceania,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,48
+190,PER-20220530,PER,Peru,Peru,604,PE,PER,PER,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,14805805,3308281,0.8173641772,33684223
+191,PHL-20220530,PHL,Philippines,Philippines,608,PH,PHL,PHL,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,42476533,14731371,0.7424941316,112508983
+192,PLW-20220530,PLW,Palau,Palau,585,PW,PLW,PLW,57,Micronesia,57,Micronesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,18224
+193,PNG-20220530,PNG,Papua New Guinea,Papua New Guinea,598,PG,PNG,PNG,54,Melanesia,54,Melanesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,1123528,3261079,0.2562437181,9292168
+194,POL-20220530,POL,Poland,Poland,616,PL,POL,POL,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,37739773
+195,PRI-20220530,PRI,Puerto Rico (USA),Puerto Rico,630,PR,PRI,USA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,1018260,30516,0.9709032243,2829807
+196,PRK-20220530,PRK,Democratic People's Republic of Korea,Democratic People's Republic of Korea,408,KP,PRK,PRK,30,Eastern Asia,30,Eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,25990669
+197,PRT_1-20220530,PRT_1,Portugal,Portugal,620,PT,PRT,PRT,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,9650712
+198,PRT_2-20220530,PRT_2,Madeira Islands (Port.),Portugal,620,PT,PRT,PRT,39,Southern Europe,39,Southern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,255098
+199,PRT_3-20220530,PRT_3,Azores Islands (Port.),Portugal,620,PT,PRT,PRT,39,Southern Europe,39,Southern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,234817
+200,PRY-20220530,PRY,Paraguay,Paraguay,600,PY,PRY,PRY,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,3429226,402776,0.8948914954,7305842
+201,PSE_1-20220530,PSE_1,West Bank,State of Palestine,275,PS,PSE,PSE,145,Western Asia,145,Western Asia,142,Asia,2,Occupied Palestinian Territory,2021/05/28,2022/05/30,intl,,,,3326459
+202,PSE_2-20220530,PSE_2,Gaza,State of Palestine,275,PS,PSE,PSE,145,Western Asia,145,Western Asia,142,Asia,2,Occupied Palestinian Territory,2021/05/28,2022/05/30,intl,,,,2019086
+203,PYF-20220530,PYF,French Polynesia (Fr.),French Polynesia,258,PF,PYF,FRA,61,Polynesia,61,Polynesia,9,Oceania,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,284160
+204,QAT-20220530,QAT,Qatar,Qatar,634,QA,QAT,QAT,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,2979916
+205,REU-20220530,REU,Réunion (Fr.),Réunion,638,RE,REU,FRA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,908063
+206,ROU-20220530,ROU,Romania,Romania,642,RO,ROU,ROU,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,19031334
+207,RUS-20220530,RUS,Russian Federation,Russian Federation,643,RU,RUS,RUS,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,145805941
+208,RWA-20220530,RWA,Rwanda,Rwanda,646,RW,RWA,RWA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,1721886,4715319,0.2674896947,13600470
+209,SAU-20220530,SAU,Saudi Arabia,Saudi Arabia,682,SA,SAU,SAU,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,35844918
+210,SDN-20220530,SDN,Sudan,Sudan,729,SD,SDN,SDN,15,Northern Africa,15,Northern Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,998863638,550365624,0.6447487551,45992020
+211,SEN-20220530,SEN,Senegal,Senegal,686,SN,SEN,SEN,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,5505780,3240318,0.6295127267,17653668
+212,SGP-20220530,SGP,Singapore,Singapore,702,SG,SGP,SGP,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,5943552
+213,SGS-20220530,SGS,South Georgia and the South Sandwich Islands (UK),South Georgia and the South Sandwich Islands,239,GS,SGS,GBR,5,South America,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+214,SHN_1-20220530,SHN_1,Saint Helena (UK),Saint Helena,654,SH,SHN,GBR,11,Western Africa,202,Sub-Saharan Africa,2,Africa,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,4594
+215,SHN_2-20220530,SHN_2,Ascencion (UK),Saint Helena,654,SH,SHN,GBR,11,Western Africa,202,Sub-Saharan Africa,2,Africa,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,1114
+216,SHN_3-20220530,SHN_3,Tristan da Cunha (UK),Saint Helena,654,SH,SHN,GBR,11,Western Africa,202,Sub-Saharan Africa,2,Africa,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,400
+217,SHN_4-20220530,SHN_4,Gough (UK),Saint Helena,654,SH,SHN,GBR,11,Western Africa,202,Sub-Saharan Africa,2,Africa,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+218,SJM_1-20220530,SJM_1,Svalbard Islands (Nor.),Svalbard and Jan Mayen Islands,744,SJ,SJM,NOR,154,Northern Europe,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,3009
+219,SJM_2-20220530,SJM_2,Jan Mayen Island (Nor.),Svalbard and Jan Mayen Islands,744,SJ,SJM,NOR,154,Northern Europe,154,Northern Europe,150,Europe,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,14
+220,SLB-20220530,SLB,Solomon Islands,Solomon Islands,90,SB,SLB,SLB,54,Melanesia,54,Melanesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,65766,259371,0.2022716578,721173
+221,SLE-20220530,SLE,Sierra Leone,Sierra Leone,694,SL,SLE,SLE,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,582463,2422547,0.1938306362,8306438
+222,SLV-20220530,SLV,El Salvador,El Salvador,222,SV,SLV,SLV,13,Central America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,2390300,530784,0.8182921135,6550396
+223,SMR-20220530,SMR,San Marino,San Marino,674,SM,SMR,SMR,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,34077
+224,SOM-20220530,SOM,Somalia,Somalia,706,SO,SOM,SOM,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,231690290,173256481,0.5721499876,16841806
+225,SPM-20220530,SPM,Saint Pierre and Miquelon (Fr.),Saint Pierre and Miquelon,666,PM,SPM,FRA,21,Northern America,21,Northern America,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,5757
+226,SRB_1-20220530,SRB_1,Serbia,Serbia,688,RS,SRB,SRB,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,8653016
+227,SSD-20220530,SSD,South Sudan,South Sudan,728,SS,SSD,SSD,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,97413435,348587044,0.218415539,11618515
+228,STP-20220530,STP,Sao Tome and Principe,Sao Tome and Principe,678,ST,STP,STP,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,36229,7245,0.8333486682,227678
+229,SUR-20220530,SUR,Suriname,Suriname,740,SR,SUR,SUR,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,281261,29087,0.9062761803,596841
+230,SVK-20220530,SVK,Slovakia,Slovakia,703,SK,SVK,SVK,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,5460194
+231,SVN-20220530,SVN,Slovenia,Slovenia,705,SI,SVN,SVN,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,2078025
+232,SWE-20220530,SWE,Sweden,Sweden,752,SE,SWE,SWE,154,Northern Europe,154,Northern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,10218949
+233,SWZ-20220530,SWZ,Eswatini,Eswatini,748,SZ,SWZ,SWZ,18,Southern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,442593,266538,0.6241343278,1184822
+234,SXM-20220530,SXM,Sint Maarten (Neth.),Sint Maarten (Dutch part),534,SX,SXM,NLD,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,43970
+235,SYC-20220530,SYC,Seychelles,Seychelles,690,SC,SYC,SYC,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,53053,1705,0.9688629972,99435
+236,SYR-20220530,SYR,Syrian Arab Republic,Syrian Arab Republic,760,SY,SYR,SYR,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,19364805
+237,TCA-20220530,TCA,Turks and Caicos Islands (UK),Turks and Caicos Islands,796,TC,TCA,GBR,29,Caribbean,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,39744
+238,TCD-20220530,TCD,Chad,Chad,148,TD,TCD,TCD,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,1267251,6939729,0.1544113669,17413573
+239,TGO-20220530,TGO,Togo,Togo,768,TG,TGO,TGO,11,Western Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,2654186,1507525,0.63776317,8680849
+240,THA-20220530,THA,Thailand,Thailand,764,TH,THA,THA,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,34867990,7014733,0.8325148773,70078175
+241,TJK-20220530,TJK,Tajikistan,Tajikistan,762,TJ,TJK,TJK,143,Central Asia,143,Central Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,4222165,650507,0.8664989148,9957468
+242,TKL-20220530,TKL,Tokelau (NZ),Tokelau,772,TK,TKL,NZL,61,Polynesia,61,Polynesia,9,Oceania,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,1378
+243,TKM-20220530,TKM,Turkmenistan,Turkmenistan,795,TM,TKM,TKM,143,Central Asia,143,Central Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,6201945
+244,TLS-20220530,TLS,Timor-Leste,Timor-Leste,626,TL,TLS,TLS,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,469588,211793,0.6891709631,1369437
+245,TON-20220530,TON,Tonga,Tonga,776,TO,TON,TON,61,Polynesia,61,Polynesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,107741
+246,TTO-20220530,TTO,Trinidad and Tobago,Trinidad and Tobago,780,TT,TTO,TTO,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,391641,1641,0.9958274215,1406586
+247,TUN-20220530,TUN,Tunisia,Tunisia,788,TN,TUN,TUN,15,Northern Africa,15,Northern Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,5297498,1203003,0.8149368795,12046648
+248,TUR-20220530,TUR,Turkey,Turkey,792,TR,TUR,TUR,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,85561965
+249,TUV-20220530,TUV,Tuvalu,Tuvalu,798,TV,TUV,TUV,61,Polynesia,61,Polynesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,12061
+250,TWN-20220530,TWN,Taiwan,"Taiwan, Province of China",158,TW,TWN,CHN,30,Eastern Asia,30,Eastern Asia,142,Asia,6,Special region or province,2021/05/28,2022/05/30,intl,,,,23888597
+251,TZA-20220530,TZA,United Republic of Tanzania,United Republic of Tanzania,834,TZ,TZA,TZA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,11008356,19863441,0.3565829356,63298535
+252,UGA-20220530,UGA,Uganda,Uganda,800,UG,UGA,UGA,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,5208213,18155158,0.2229221545,48432880
+253,UKR-20220530,UKR,Ukraine,Ukraine,804,UA,UKR,UKR,151,Eastern Europe,151,Eastern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,43192103
+254,UMI_1-20220530,UMI_1,Baker Island (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+255,UMI_2-20220530,UMI_2,Howland Island (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+256,UMI_3-20220530,UMI_3,Jarvis Island (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+257,UMI_4-20220530,UMI_4,Johnston Atoll (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+258,UMI_5-20220530,UMI_5,Kingman Reef (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+259,UMI_6-20220530,UMI_6,Midway Islands (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+260,UMI_7-20220530,UMI_7,Palmyra Atoll (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+261,UMI_8-20220530,UMI_8,Wake Island (USA),United States Minor Outlying Islands,581,UM,UMI,USA,57,Micronesia,57,Micronesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+262,UMI_9-20220530,UMI_9,Navassa Island (USA),United States Minor Outlying Islands,581,UM,UMI,USA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+263,URY-20220530,URY,Uruguay,Uruguay,858,UY,URY,URY,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,1932608,48019,0.9757556572,3496015
+264,USA-20220530,USA,United States of America,United States of America,840,US,USA,USA,21,Northern America,21,Northern America,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,334805277
+265,UZB-20220530,UZB,Uzbekistan,Uzbekistan,860,UZ,UZB,UZB,143,Central Asia,143,Central Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,34382076
+266,VAT-20220530,VAT,Holy See,Holy See,336,VA,VAT,VAT,39,Southern Europe,39,Southern Europe,150,Europe,1,State,2021/05/28,2022/05/30,intl,,,,808
+267,VCT-20220530,VCT,Saint Vincent and the Grenadines,Saint Vincent and the Grenadines,670,VC,VCT,VCT,29,Caribbean,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,111552
+268,VEN_1-20220530,VEN_1,Venezuela (Bolivarian Republic of),Venezuela (Bolivarian Republic of),862,VE,VEN,VEN,5,South America,419,Latin America and the Caribbean,19,Americas,1,State,2021/05/28,2022/05/30,intl,,,,29266992
+269,VEN_2-20220530,VEN_2,Bird Island (Ven.),Venezuela (Bolivarian Republic of),862,VE,VEN,VEN,29,Caribbean,419,Latin America and the Caribbean,19,Americas,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,0
+270,VGB-20220530,VGB,British Virgin Islands (UK),British Virgin Islands,92,VG,VGB,GBR,29,Caribbean,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,30606
+271,VIR-20220530,VIR,United States Virgin Islands (USA),United States Virgin Islands,850,VI,VIR,USA,29,Caribbean,419,Latin America and the Caribbean,19,Americas,3,Non-self-governing territory,2021/05/28,2022/05/30,intl,,,,103968
+272,VNM-20220530,VNM,Viet Nam,Viet Nam,704,VN,VNM,VNM,35,South-eastern Asia,35,South-eastern Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,45099632,8884293,0.8354270646,98953535
+273,VUT-20220530,VUT,Vanuatu,Vanuatu,548,VU,VUT,VUT,54,Melanesia,54,Melanesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,51668,100394,0.3397824572,321831
+274,WLF-20220530,WLF,Wallis and Futuna Islands (Fr.),Wallis and Futuna Islands,876,WF,WLF,FRA,61,Polynesia,61,Polynesia,9,Oceania,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,10979
+275,WSM-20220530,WSM,Samoa,Samoa,882,WS,WSM,WSM,61,Polynesia,61,Polynesia,9,Oceania,1,State,2021/05/28,2022/05/30,intl,,,,202242
+276,XAB-20220530,XAB,Abyei,Abyei,901,XA,XAB,XAB,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,510044,20877,0.9606777656,76652
+277,XAC-20220530,XAC,,Aksai Chin,902,XB,XAC,XAC,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,2855
+278,XAP-20220530,XAP,,Arunachal Pradesh,904,XD,XAP,XAP,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,1165442
+279,XCE-20220530,XCE,,Chumar East,905,XE,XCE,XCE,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,17
+280,XCH-20220530,XCH,,Chumar,906,XF,XCH,XCH,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,12
+281,XCR-20220530,XCR,,Congo River,907,XG,XCR,XCR,17,Middle Africa,202,Sub-Saharan Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,485,10852,0.042780277,17792
+282,XDE-20220530,XDE,,Demchok,908,XH,XDE,XDE,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,992
+283,XDI-20220530,XDI,,Doumeira Islands,909,XI,XDI,XDI,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,0,0
+284,XDS-20220530,XDS,,Dramana-Shakatoe,910,XJ,XDS,XDS,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,44
+285,XHI-20220530,XHI,,Hans Island,912,XM,XHI,XHI,21,Northern America,21,Northern America,19,Americas,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,0
+286,XHT-20220530,XHT,,Hala'ib Triangle,913,XN,XHT,SDN,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,971,684,0.5867069486,7518
+287,XIB-20220530,XIB,,Isla Brasilera,914,XO,XIB,XIB,5,South America,419,Latin America and the Caribbean,19,Americas,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,2
+288,XIK-20220530,XIK,,Imia/Kardak,915,XP,XIK,XIK,39,Southern Europe,39,Southern Europe,150,Europe,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,0
+289,XIT_1-20220530,XIT_1,,Ilemi Triangle,916,XQ,XIT,SSD,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,88,18134,0.0048293272,16265
+290,XJK-20220530,XJK,Jammu and Kashmir,Jammu and Kashmir,917,XR,XJK,XJK,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,7773842,2570597,0.7514996222,19492752
+291,XJL-20220530,XJL,,No Man's Land,918,XS,XJL,XJL,145,Western Asia,145,Western Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,71266
+292,XJN-20220530,XJN,,Jadh-Nelang,919,XT,XJN,XJN,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,2922
+293,XKA-20220530,XKA,,Kalapani,920,XU,XKA,XKA,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,78
+294,XKI-20220530,XKI,,Kuril Islands,921,XV,XKI,RUS,30,Eastern Asia,30,Eastern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,14382
+295,XKO-20220530,XKO,,Koualou,923,XX,XKO,XKO,11,Western Africa,202,Sub-Saharan Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,452,0,661
+296,XKU-20220530,XKU,,Kauirik,924,XY,XKU,XKU,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,1345
+297,XLB-20220530,XLB,,Lapthal-Bara Hoti,926,XZ,XLB,XLB,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,1092
+298,XLR-20220530,XLR,,Liancourt Rocks,927,QM,XLR,XLR,30,Eastern Asia,30,Eastern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,35
+299,XMA-20220530,XMA,,Machias Seal Island,928,QN,XMA,XMA,21,Northern America,21,Northern America,19,Americas,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,0
+300,XMB-20220530,XMB,,Mont Blanc,929,QO,XMB,XMB,155,Western Europe,155,Western Europe,150,Europe,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,0
+301,XMR-20220530,XMR,,Moselle River,930,QP,XMO,XMO,155,Western Europe,155,Western Europe,150,Europe,8,Joint sovereignty,2021/05/28,2022/05/30,intl,,,,165
+302,XMS-20220530,XMS,,Bi'r Tawīl,931,QQ,XMS,EGY,15,Northern Africa,15,Northern Africa,2,Africa,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,0,5229
+303,XPH-20220530,XPH,,Pheasant Island,932,QR,XPH,XPH,155,Western Europe,155,Western Europe,150,Europe,8,Joint sovereignty,2021/05/28,2022/05/30,intl,,,,0
+304,XPI-20220530,XPI,,Paracel Islands,933,QS,XPI,XPI,35,South-eastern Asia,35,South-eastern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,364
+305,XSI-20220530,XSI,,Spratly Islands,934,QT,XSI,XSI,35,South-eastern Asia,35,South-eastern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,0
+306,XSK-20220530,XSK,,Senkaku Islands,935,QU,XSK,JPN,30,Eastern Asia,30,Eastern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,38
+307,XSP-20220530,XSP,,Shipki Pass,936,QV,XSP,XSP,34,Southern Asia,34,Southern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,246
+308,XSR-20220530,XSR,,Scarborough Reef,937,QW,XSR,XSR,35,South-eastern Asia,35,South-eastern Asia,142,Asia,99,Sovereignty unsettled,2021/05/28,2022/05/30,intl,,,,0
+309,XUK_1-20220530,XUK_1,Akrotiri (UK),Akrotiri and Dekelia,939,QY,XUK,GBR,145,Western Asia,145,Western Asia,142,Asia,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,13349
+310,XUK_2-20220530,XUK_2,Dekelia (UK),Akrotiri and Dekelia,939,QY,XUK,GBR,145,Western Asia,145,Western Asia,142,Asia,5,Territory/Self-governing territory,2021/05/28,2022/05/30,intl,,,,14349
+311,YEM-20220530,YEM,Yemen,Yemen,887,YE,YEM,YEM,145,Western Asia,145,Western Asia,142,Asia,1,State,2021/05/28,2022/05/30,intl,,,,31154827
+312,ZAF-20220530,ZAF,South Africa,South Africa,710,ZA,ZAF,ZAF,18,Southern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,29024990,2443735,0.9223440098,60756126
+313,ZMB-20220530,ZMB,Zambia,Zambia,894,ZM,ZMB,ZMB,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,3925467,5446826,0.4188374179,19470243
+314,ZWE-20220530,ZWE,Zimbabwe,Zimbabwe,716,ZW,ZWE,ZWE,14,Eastern Africa,202,Sub-Saharan Africa,2,Africa,1,State,2021/05/28,2022/05/30,intl,3448711,5562356,0.3827194937,15331427
