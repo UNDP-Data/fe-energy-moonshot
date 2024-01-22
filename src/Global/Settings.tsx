@@ -13,15 +13,18 @@ export const Settings = () => {
   //   regions,
   // } = props;
   const {
-    // selectedRegions,
-    // selectedTaxonomy,
+    selectedRegions,
+    selectedFunding,
+    selectedVariousTaxonomy,
     selectedCategory,
     selectedSubCategory,
-    // selectedSubSubCategory,
-    // updateSelectedRegions,
-    // updateSelectedTaxonomy,
+    selectedSubSubCategory,
+    updateSelectedRegions,
+    updateSelectedFunding,
+    updateSelectedVariousTaxonomy,
     updateSelectedCategory,
     updateSelectedSubCategory,
+    updateSelectedSubSubCategory,
   } = useContext(Context) as CtxDataType;
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
@@ -57,7 +60,7 @@ export const Settings = () => {
       ],
     },
     {
-      value: 'energyAccess',
+      value: 'Energy Access',
       label: t('energy-access'),
       subcategories: [
         {
@@ -73,31 +76,31 @@ export const Settings = () => {
               label: t('all'),
             },
             {
-              value: 'solar',
+              value: 'Solar',
               label: t('solar'),
             },
             {
-              value: 'wind',
+              value: 'Wind',
               label: t('wind'),
             },
             {
-              value: 'geothermal',
+              value: 'Geothermal',
               label: t('geothermal'),
             },
             {
-              value: 'biomass',
+              value: 'Biomass',
               label: t('biomass'),
             },
           ],
         },
         {
-          value: 'cleanCooking',
+          value: 'Clean Cooking',
           label: t('clean-cooking'),
         },
       ],
     },
     {
-      value: 'energyTransition',
+      value: 'Energy Transition',
       label: t('energy-transition'),
       subcategories: [
         {
@@ -105,25 +108,25 @@ export const Settings = () => {
           label: t('All'),
         },
         {
-          value: 'solar',
+          value: 'Solar',
           label: t('solar'),
         },
         {
-          value: 'wind',
+          value: 'Wind',
           label: t('wind'),
         },
         {
-          value: 'geothermal',
-          label: t('Geothermal'),
+          value: 'Geothermal',
+          label: t('geothermal'),
         },
         {
-          value: 'biomass',
+          value: 'Biomass',
           label: t('biomass'),
         },
       ],
     },
     {
-      value: 'productiveUse',
+      value: 'Productive Use',
       label: t('productive-use'),
       subcategories: [
         {
@@ -131,19 +134,19 @@ export const Settings = () => {
           label: t('all'),
         },
         {
-          value: 'healthServices',
+          value: 'Health Services',
           label: t('health'),
         },
         {
-          value: 'educationServices',
+          value: 'Education Services',
           label: t('education'),
         },
         {
-          value: 'AgricultureAndFoodSystems',
+          value: 'Agriculture and Food System',
           label: t('agriculture'),
         },
         {
-          value: 'WaterServices',
+          value: 'Water Services',
           label: t('water'),
         },
       ],
@@ -235,11 +238,11 @@ export const Settings = () => {
         },
         {
           label: t('lldcs'),
-          value: 'LLDCs',
+          value: 'LLDC',
         },
         {
           label: t('ldcs'),
-          value: 'LDCs',
+          value: 'LDC',
         },
       ],
     },
@@ -255,7 +258,7 @@ export const Settings = () => {
       key: 'flagship',
       options: [
         {
-          label: t('all'),
+          label: t('all-flagships'),
           value: 'allFlagships',
         },
         {
@@ -264,7 +267,7 @@ export const Settings = () => {
         },
         {
           label: t('solar-for-health'),
-          value: 'Solar for Health',
+          value: 'Solar4Health',
         },
         {
           label: t('pudc'),
@@ -371,6 +374,8 @@ export const Settings = () => {
             <Select
               className='undp-select'
               style={{ maxWidth: 'calc(33.333% - .65rem)' }}
+              value={selectedSubSubCategory}
+              onChange={(d:string) => { updateSelectedSubSubCategory(d); }}
               placeholder='Select a project taxonomy'
             >
               {
@@ -388,12 +393,14 @@ export const Settings = () => {
           <Select
             className='undp-select'
             placeholder={t('select-country-group')}
+            value={selectedRegions}
+            onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'all' : d); }}
           >
             {
               countryGroupingsTaxonomy.map((d) => {
                 if (d.options) {
                   return (
-                    <Select.OptGroup key={d.value} label={d.label}>
+                    <Select.OptGroup key={d.key} label={d.label}>
                       {d.options.map((o) => (
                         <Select.Option className='undp-select-option' key={o.value}>{o.label}</Select.Option>
                       ))}
@@ -412,12 +419,14 @@ export const Settings = () => {
           <Select
             className='undp-select'
             placeholder={t('select-taxonomy')}
+            value={selectedVariousTaxonomy}
+            onChange={(d: string) => { updateSelectedVariousTaxonomy(d === undefined ? 'all' : d); }}
           >
             {
               variousTaxonomy.map((d) => {
                 if (d.options) {
                   return (
-                    <Select.OptGroup key={d.value} label={d.label}>
+                    <Select.OptGroup key={d.key} label={d.label}>
                       {d.options.map((o) => (
                         <Select.Option className='undp-select-option' key={o.value}>{o.label}</Select.Option>
                       ))}
@@ -432,12 +441,12 @@ export const Settings = () => {
           </Select>
         </div>
         <div style={{ width: `${!queryRegion ? 'calc(50% - 0.5rem)' : '100%'}` }}>
-          <p className='label'>{ t('select-funding')}</p>
+          <p className='label'>{t('select-funding')}</p>
           <Select
             className='undp-select'
             placeholder={t('select-funding')}
-            // value={selectedTaxonomy}
-            // onChange={(d: string) => { updateSelectedTaxonomy(d === undefined ? 'All' : d); }}
+            value={selectedFunding}
+            onChange={(d: string) => { updateSelectedFunding(d === undefined ? 'all' : d); }}
           >
             {
               fundingTaxonomy.map((d) => (

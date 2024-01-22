@@ -1,0 +1,63 @@
+[
+    {
+      "Indicator": "People directly benefiting",
+      "IndicatorLabelTable": "dirBeneficiaries",
+      "IndicatorDescription": "The total number of people directly benefiting from these projects",
+      "TranslationKey": "people-benefiting",
+      "DataKey": "dirBeneficiaries",
+      "BinningRangeLarge": [
+        100,
+        500,
+        1000,
+        10000,
+        50000,
+        100000,
+        1000000
+      ]
+    },
+    {
+      "Indicator": "Energy Saved",
+      "IndicatorLabelTable": "nrg-saved",
+      "IndicatorDescription": "nrg-saved",
+      "TranslationKey": "nrg-saved",
+      "DataKey": "nrgSaved",
+      "BinningRangeLarge": [
+        100,
+        500,
+        1000,
+        10000,
+        50000,
+        100000,
+        205000
+      ]
+    },
+    {
+      "Indicator": "Number of projecs",
+      "IndicatorLabelTable": "proj-number",
+      "IndicatorDescription": "proj-number",
+      "TranslationKey": "proj-number",
+      "DataKey": "projNumber",
+      "BinningRangeLarge": [
+        1,
+        2,
+        3,
+        5,
+        10,
+        15
+      ]
+    },
+    {
+      "Indicator": "Budget",
+      "IndicatorLabelTable": "Budget",
+      "IndicatorDescription": "Budget",
+      "TranslationKey":"budget",
+      "DataKey": "budget",
+      "BinningRangeLarge": [
+        1000000,
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ]
+    }
+]

@@ -116,7 +116,7 @@ export const CountryProfile = (props: Props) => {
       ? projectsData.filter((d) => d.country === selectedCountry)
       : projectsData;
     const cardDataValues = {
-      peopleBenefiting: sumBy(relevantData, 'dirBeneficiaries'),
+      peopleBenefiting: sumBy(relevantData, 'directBeneficiaries'),
       grantAmount: sumBy(relevantData, 'budget'),
       numberProjects: relevantData.length,
     };

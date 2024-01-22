@@ -2,6 +2,10 @@ export default (state: any, action: any) => {
   switch (action.type) {
     case 'UPDATE_SELECTED_REGIONS':
       return { ...state, selectedRegions: action.payload };
+    case 'UPDATE_SELECTED_FUNDING':
+      return { ...state, selectedFunding: action.payload };
+    case 'UPDATE_SELECTED_VARIOUS_TAXONOMY':
+      return { ...state, selectedVariousTaxonomy: action.payload };
     case 'UPDATE_SELECTED_COUNTRIES':
       return { ...state, selectedCountries: action.payload };
     case 'UPDATE_SELECTED_PROJECTS':
@@ -18,6 +22,8 @@ export default (state: any, action: any) => {
       return { ...state, selectedCategory: action.payload };
     case 'UPDATE_SELECTED_SUBCATEGORY':
       return { ...state, selectedSubCategory: action.payload };
+    case 'UPDATE_SELECTED_SUB_SUBCATEGORY':
+      return { ...state, selectedSubSubCategory: action.payload };
     default:
       return { ...state };
   }

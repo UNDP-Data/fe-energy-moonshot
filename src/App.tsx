@@ -47,15 +47,18 @@ const App = (props: Props) => {
   const queryCountry = queryParams.get('country');
 
   const initialState = {
-    selectedRegions: queryParams.get('region') || 'All',
+    selectedRegions: queryParams.get('region') || 'all',
     selectedCountries: [],
     selectedProjects: '',
+    selectedCategory: 'all',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
     showProjectLocations: false,
     selectedProjectType: 'All',
     selectedTaxonomy: 'All',
-    selectedCategory: 'all',
+    selectedFunding: 'all',
+    selectedVariousTaxonomy: 'all',
     selectedSubCategory: 'all',
+    selectedSubSubCategory: 'all',
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -64,6 +67,20 @@ const App = (props: Props) => {
     dispatch({
       type: 'UPDATE_SELECTED_REGIONS',
       payload: selectedRegions,
+    });
+  };
+
+  const updateSelectedFunding = (selectedFunding: string[]) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_FUNDING',
+      payload: selectedFunding,
+    });
+  };
+
+  const updateSelectedVariousTaxonomy = (selectedVariousTaxonomy: string[]) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_VARIOUS_TAXONOMY',
+      payload: selectedVariousTaxonomy,
     });
   };
 
@@ -116,6 +133,13 @@ const App = (props: Props) => {
     });
   };
 
+  const updateSelectedSubSubCategory = (selectedSubSubCategory: string) => {
+    dispatch({
+      type: 'UPDATE_SELECTED_SUB_SUBCATEGORY',
+      payload: selectedSubSubCategory,
+    });
+  };
+
   function removeDuplicates(arr: any) {
     return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
   }
@@ -134,7 +158,7 @@ const App = (props: Props) => {
       .defer(csv, `${ROOT_DIR}/data/country_level_data6.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data7.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data8.csv`)
-      .defer(json, `${ROOT_DIR}/data/newDataFile.json`)
+      .defer(json, `${ROOT_DIR}/data/moonshotData.json`)
       .defer(csv, `${ROOT_DIR}/data/project_level_data2.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
       .defer(json, 'https://gist.githubusercontent.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee/raw/b36904c0c8ea72fdb82f68eb33f29891095deab3/country_codes')
@@ -219,6 +243,8 @@ const App = (props: Props) => {
                 value={{
                   ...state,
                   updateSelectedRegions,
+                  updateSelectedFunding,
+                  updateSelectedVariousTaxonomy,
                   updateSelectedCountries,
                   updateSelectedProjects,
                   updateXAxisIndicator,
@@ -226,6 +252,7 @@ const App = (props: Props) => {
                   updateSelectedTaxonomy,
                   updateSelectedCategory,
                   updateSelectedSubCategory,
+                  updateSelectedSubSubCategory,
                 }}
               >
                 <div

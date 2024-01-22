@@ -50,6 +50,7 @@ export interface IndicatorMetaDataType {
   IndicatorDescription: string;
   TranslationKey: string;
   DataKey: string;
+  AggregationLevel: string,
   BinningRangeLarge: number[];
 }
 
@@ -84,12 +85,18 @@ export interface CtxDataType {
   xAxisIndicator: string;
   showProjectLocations: boolean;
   selectedTaxonomy: string;
+  selectedVariousTaxonomy: string;
+  selectedFunding: string;
+  selectedSubSubCategory: string;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
   updateShowProjectLocations: (_d: boolean) => void;
   updateSelectedTaxonomy: (_d: string) => void;
+  updateSelectedSubSubCategory: (_d: string) => void;
+  updateSelectedVariousTaxonomy: (_d: string) => void;
+  updateSelectedFunding: (_d: string) => void;
   updateSelectedCategory: (_d: string) => void;
   updateSelectedSubCategory: (_d: string) => void;
 }
@@ -115,19 +122,21 @@ export interface ProjectLevelDataType{
   title: string,
   description: string,
   country: string,
-  regionBureau: string,
-  VF: boolean,
+  region: string,
+  verticalFunded: boolean,
+  flagship: string,
   budget: number,
   outputCount: number,
   dirBeneficiaries: number,
   indirBeneficiaries: number,
   nrgSaved: number,
   fundingSources: string,
-  HDItier: string,
-  incomeLevel: string,
-  isSIDS: boolean,
-  isLLDC: boolean,
-  isLDC: boolean,
+  hdiTier: string,
+  outputs:any[],
+  thematics:string[],
+  incomeGroup: string,
+  specialGroupings: string[],
+  regionBureau: string,
   'projectID_PIMS+': number,
   'projectID_Atlas': number,
   'Short Title': string,

@@ -42,23 +42,71 @@ export const Global = (props: Props) => {
     projectCoordsData,
   } = props;
   const {
-    selectedTaxonomy,
+    selectedRegions,
+    selectedFunding,
+    selectedCategory,
+    selectedSubCategory,
+    selectedSubSubCategory,
+    selectedVariousTaxonomy,
   } = useContext(Context) as CtxDataType;
   const queryParams = new URLSearchParams(window.location.search);
   const queryRegion = queryParams.get('region');
-  const filteredProjectData = projectLevelData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
+  let filteredProjectData = [...projectLevelData];
+  if (selectedCategory !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.outputs.some((o) => o.outputCategory === selectedCategory));
+  }
+  if (selectedSubCategory !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.outputs.some((o) => {
+      if (selectedSubCategory === 'cleanElectricity') {
+        if (selectedSubSubCategory === 'all') return true;
+        return o.beneficiaryCategory === selectedSubSubCategory;
+      }
+      return o.beneficiaryCategory === selectedSubCategory;
+    }));
+  }
+  if (selectedCategory !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.outputs.some((o) => o.outputCategory === selectedCategory));
+  }
+  if (selectedFunding !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.verticalFunded === (selectedFunding === 'vf'));
+  }
+  if (selectedVariousTaxonomy !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.flagship === selectedVariousTaxonomy || d.thematics.includes(selectedVariousTaxonomy)
+      || (selectedVariousTaxonomy === 'allFlagships' && d.flagship));
+  }
+  if (selectedRegions !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
+    || d.hdiTier === selectedRegions || d.specialGroupings.includes(selectedRegions));
+  }
   const { t } = useTranslation();
   function calculateCountryTotals() {
     const groupedData = nest()
-      .key((d: any) => d.country)
+      .key((d: any) => d.countryName)
       .entries(filteredProjectData);
     const countryData = groupedData.map((country) => {
       const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
-      const region = country.values[0]['Regional Bureau'];
+      const { region } = country.values[0];
       const numberOfProjects = country.values.length;
       const indTemp = indicators.map((indicator) => {
         const indicatorName = indicator.DataKey;
-        const value = sumBy(country.values, (project:any) => project[indicatorName]);
+        let value;
+        if (indicator.AggregationLevel === 'outputs') {
+          value = sumBy(country.values, (project:any) => sumBy(project.outputs, (output:any) => {
+            if (selectedCategory === 'all' || output.outputCategory === selectedCategory) {
+              if (selectedSubCategory === 'cleanElectricity') {
+                if (selectedSubSubCategory === 'all') return output[indicatorName];
+                return output.beneficiaryCategory === selectedSubSubCategory ? output[indicatorName] : 0;
+              }
+              if (selectedSubCategory === 'all' || output.beneficiaryCategory === selectedSubCategory) {
+                return output[indicatorName];
+              }
+              return 0;
+            }
+            return 0;
+          }));
+        } else {
+          value = sumBy(country.values, (project:any) => project[indicatorName]);
+        }
         return (
           {
             indicator: indicatorName,
@@ -66,6 +114,7 @@ export const Global = (props: Props) => {
           }
         );
       });
+      indTemp[4].value = numberOfProjects;
       return ({
         ...countryGroup,
         region,
@@ -79,11 +128,11 @@ export const Global = (props: Props) => {
   const mapData = calculateCountryTotals();
   const rbaPercentProjects = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.numberProjects) / projectLevelData.length;
   const rbaTotalGrant = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'budget')[0].value);
-  const rbaTargetTotal = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'dirBeneficiaries')[0].value);
+  const rbaTargetTotal = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'directBeneficiaries')[0].value);
   // - variables for text
   const nrCountries = countries.length;
   const totalProjectsAmount = Math.round(sumBy(projectLevelData, (project:any) => project.budget) / 1000000);
-  const targetTotal = Math.round(sumBy(projectLevelData, (project:any) => project.dirBeneficiaries) / 1000000);
+  const targetTotal = Math.round(sumBy(projectLevelData, (project:any) => project.directBeneficiaries) / 1000000);
   const percentProjectsSubSah = Math.round(rbaPercentProjects * 100);
   const nrProjects = projectLevelData.length;
   const amountSubSah = Math.round(rbaTotalGrant / 1000000);

@@ -1,12 +1,8 @@
-import { useContext } from 'react';
 import sumBy from 'lodash.sumby';
 import styled from 'styled-components';
 import { format } from 'd3-format';
 import { useTranslation } from 'react-i18next';
-import {
-  CtxDataType, DataType,
-} from '../Types';
-import Context from '../Context/Context';
+import { DataType } from '../Types';
 
 interface WidthProps {
   width: string;
@@ -24,25 +20,21 @@ export const Cards = (props: Props) => {
   const {
     data,
   } = props;
-  const {
-    selectedCountries,
-    selectedRegions,
-  } = useContext(Context) as CtxDataType;
+
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
-
     if (d < 10000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
-
-  const relevantData = selectedCountries.length > 0
-    ? data.filter((d) => d['Country or Area'] === selectedCountries)
-    : selectedRegions !== 'All'
-      ? data.filter((d) => d.region === selectedRegions) : data;
+  //
+  // const relevantData = selectedCountries.length > 0
+  //   ? data.filter((d) => d['Country or Area'] === selectedCountries)
+  //   : selectedRegions !== 'All'
+  //     ? data.filter((d) => d.region === selectedRegions) : data;
   const cardData = {
-    peopleBenefiting: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'dirBeneficiaries')[0].value),
-    grantAmount: sumBy(relevantData, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
-    numberCountries: relevantData.length,
+    peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
+    grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
+    numberCountries: data.length,
   };
   // translation
   const { t } = useTranslation();
