@@ -158,3 +158,275 @@ export const COLOR_SCALES = {
     ['#F782A5', '#D180B3', '#9F7DC5', '#727AD4', '#4978E3'],
   ],
 };
+
+export const outputsTaxonomy = [
+  {
+    value: 'all',
+    label: 'all',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'solar',
+        label: 'solar',
+      },
+      {
+        value: 'wind',
+        label: 'wind',
+      },
+      {
+        value: 'geothermal',
+        label: 'geothermal',
+      },
+      {
+        value: 'biomass',
+        label: 'biomass',
+      },
+    ],
+  },
+  {
+    value: 'Energy Access',
+    label: 'energy-access',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'Solar',
+        label: 'solar',
+      },
+      {
+        value: 'Wind',
+        label: 'wind',
+      },
+      {
+        value: 'Geothermal',
+        label: 'geothermal',
+      },
+      {
+        value: 'Biomass',
+        label: 'biomass',
+      },
+      {
+        value: 'Clean Cooking',
+        label: 'clean-cooking',
+      },
+    ],
+  },
+  {
+    value: 'Energy Transition',
+    label: 'energy-transition',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'All',
+      },
+      {
+        value: 'Solar',
+        label: 'solar',
+      },
+      {
+        value: 'Wind',
+        label: 'wind',
+      },
+      {
+        value: 'Geothermal',
+        label: 'geothermal',
+      },
+      {
+        value: 'Biomass',
+        label: 'biomass',
+      },
+    ],
+  },
+  {
+    value: 'Productive Use',
+    label: 'productive-use',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'Health Services',
+        label: 'health',
+      },
+      {
+        value: 'Education Services',
+        label: 'education',
+      },
+      {
+        value: 'Agriculture and Food System',
+        label: 'agriculture',
+      },
+      {
+        value: 'Water Services',
+        label: 'water',
+      },
+    ],
+  },
+];
+
+export const countryGroupingsTaxonomy = [
+  {
+    label: 'all-country-groupings',
+    value: 'all',
+  },
+  {
+    label: 'regional-bureaus',
+    key: 'region',
+    options: [
+      {
+        label: 'RBLAC',
+        value: 'RBLAC',
+      },
+      {
+        label: 'RBA',
+        value: 'RBA',
+      },
+      {
+        label: 'RBAP',
+        value: 'RBAP',
+      },
+      {
+        label: 'RBEC',
+        value: 'RBEC',
+      },
+      {
+        label: 'RBAS',
+        value: 'RBAS',
+      },
+    ],
+  },
+  {
+    label: 'income-groups',
+    key: 'incomeGrouping',
+    options: [
+      {
+        label: 'high-income',
+        value: 'High income',
+      },
+      {
+        label: 'upper-middle-income',
+        value: 'Upper middle income',
+      },
+      {
+        label: 'lower-middle-income',
+        value: 'Lower middle income',
+      },
+      {
+        label: 'low-income',
+        value: 'Low income',
+      },
+    ],
+  },
+  {
+    label: 'hdi-tiers',
+    key: 'hdiTier',
+    options: [
+      {
+        label: 'very-high',
+        value: 'Very High',
+      },
+      {
+        label: 'high',
+        value: 'High',
+      },
+      {
+        label: 'medium',
+        value: 'Medium',
+      },
+      {
+        label: 'low',
+        value: 'Low',
+      },
+    ],
+  },
+  {
+    label: 'special-groupings',
+    key: 'specialGroupings',
+    options: [
+      {
+        label: 'sids',
+        value: 'SIDS',
+      },
+      {
+        label: 'lldcs',
+        value: 'LLDC',
+      },
+      {
+        label: 'ldcs',
+        value: 'LDC',
+      },
+    ],
+  },
+];
+
+export const variousTaxonomy = [
+  {
+    label: 'all-taxonomies',
+    value: 'all',
+  },
+  {
+    label: 'undp-flagships',
+    key: 'flagship',
+    options: [
+      {
+        label: 'all-flagships',
+        value: 'allFlagships',
+      },
+      {
+        label: 'amp',
+        value: 'AMP',
+      },
+      {
+        label: 'solar-for-health',
+        value: 'Solar4Health',
+      },
+      {
+        label: 'pudc',
+        value: 'PUDC',
+      },
+      {
+        label: 'action-opportunities',
+        value: 'Action Opportunities',
+      },
+    ],
+  },
+  {
+    label: 'thematics',
+    key: 'thematic',
+    options: [
+      {
+        label: 'energy-finance',
+        value: 'Energy Finance',
+      },
+      {
+        label: 'gender-equality',
+        value: 'Gender Equality',
+      },
+      {
+        label: 'energy-governance',
+        value: 'Energy Governance',
+      },
+    ],
+  },
+];
+
+export const fundingTaxonomy = [
+  {
+    value: 'all',
+    label: 'all-funding-sources',
+  },
+  {
+    value: 'vf',
+    label: 'vf',
+  },
+  {
+    value: 'nonvf',
+    label: 'non-vf',
+  },
+];

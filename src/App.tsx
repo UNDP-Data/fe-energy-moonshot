@@ -11,6 +11,7 @@ import {
   CountryGroupDataType, IndicatorMetaDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
 } from './Types';
 import { Global } from './Global';
+import Footer from './Global/Footer';
 import { CountryProfile } from './CountryProfile';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
@@ -58,7 +59,6 @@ const App = (props: Props) => {
     selectedFunding: 'all',
     selectedVariousTaxonomy: 'all',
     selectedSubCategory: 'all',
-    selectedSubSubCategory: 'all',
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -133,13 +133,6 @@ const App = (props: Props) => {
     });
   };
 
-  const updateSelectedSubSubCategory = (selectedSubSubCategory: string) => {
-    dispatch({
-      type: 'UPDATE_SELECTED_SUB_SUBCATEGORY',
-      payload: selectedSubSubCategory,
-    });
-  };
-
   function removeDuplicates(arr: any) {
     return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
   }
@@ -182,7 +175,7 @@ const App = (props: Props) => {
         // here we need to have only the projects which are at projectLevelData
         const projectCoordsWithData: ProjectCoordsDataType[] = [];
         projectCoordsData.forEach((d: any) => {
-          const index = projectLevelData1.findIndex((el: ProjectLevelDataType) => el.projectID === d['projectID_PIMS+']);
+          const index = projectLevelData1.findIndex((el: ProjectLevelDataType) => el.projectId === d['projectID_PIMS+']);
           if (index > 0) {
             projectCoordsWithData.push({
               ...d,
@@ -252,7 +245,6 @@ const App = (props: Props) => {
                   updateSelectedTaxonomy,
                   updateSelectedCategory,
                   updateSelectedSubCategory,
-                  updateSelectedSubSubCategory,
                 }}
               >
                 <div
@@ -274,7 +266,6 @@ const App = (props: Props) => {
                                 countryGroupData={countryGroupData}
                                 indicators={indicatorsList}
                                 // regions={regionList}
-                                countries={countryList}
                                 projectLevelData={projectLevelData}
                                 projectCoordsData={projectCoords}
                               />,
@@ -302,6 +293,7 @@ const App = (props: Props) => {
                     }
                   </div>
                 </div>
+                <Footer />
               </Context.Provider>
             </>
           )

@@ -32,6 +32,7 @@ export const Cards = (props: Props) => {
   //   : selectedRegions !== 'All'
   //     ? data.filter((d) => d.region === selectedRegions) : data;
   const cardData = {
+    numberProjects: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'nProj')[0].value),
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
     numberCountries: data.length,
@@ -42,15 +43,19 @@ export const Cards = (props: Props) => {
   return (
     <>
       <div className='stat-container flex-div margin-bottom-05'>
-        <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
+          <h3 className='undp-typography'>{formatData(cardData.numberProjects)}</h3>
+          <p>{t('number-projects')}</p>
+        </StatCardsDiv>
+        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           <h3 className='undp-typography'>{formatData(cardData.numberCountries)}</h3>
           <p>{t('number-countries')}</p>
         </StatCardsDiv>
-        <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           <h3 className='undp-typography'>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
           <p>{t('people-benefiting')}</p>
         </StatCardsDiv>
-        <StatCardsDiv className='stat-card' width='calc(33.33% - 1.334rem)'>
+        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           <h3 className='undp-typography'>{cardData.grantAmount === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
           <p>{t('total-grant-usd')}</p>
         </StatCardsDiv>

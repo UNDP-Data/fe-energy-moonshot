@@ -87,14 +87,12 @@ export interface CtxDataType {
   selectedTaxonomy: string;
   selectedVariousTaxonomy: string;
   selectedFunding: string;
-  selectedSubSubCategory: string;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
   updateShowProjectLocations: (_d: boolean) => void;
   updateSelectedTaxonomy: (_d: string) => void;
-  updateSelectedSubSubCategory: (_d: string) => void;
   updateSelectedVariousTaxonomy: (_d: string) => void;
   updateSelectedFunding: (_d: string) => void;
   updateSelectedCategory: (_d: string) => void;
@@ -118,9 +116,11 @@ export interface CountryData{
   values: CountryIndicatorDataType[];
 }
 export interface ProjectLevelDataType{
-  projectID: string,
+  projectId: string,
   title: string,
   description: string,
+  countryName: string,
+  projectTitle: string,
   country: string,
   region: string,
   verticalFunded: boolean,
@@ -129,7 +129,8 @@ export interface ProjectLevelDataType{
   outputCount: number,
   dirBeneficiaries: number,
   indirBeneficiaries: number,
-  nrgSaved: number,
+  energySaved: number,
+  ghgEmissions:number,
   fundingSources: string,
   hdiTier: string,
   outputs:any[],
@@ -169,6 +170,24 @@ export interface DashboardDataType{
   peopleBenefiting: number;
   grantAmount: number;
   numberProjects: number;
+}
+
+interface LowLevelTaxonomy {
+    label: string,
+    value:string,
+}
+
+export interface Taxonomy {
+  label: string,
+  value?:string,
+  key?:string,
+  options?: LowLevelTaxonomy[]
+}
+
+export interface OutputsTaxonomy {
+  label: string,
+  value: string,
+  subcategories: LowLevelTaxonomy[]
 }
 // export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
 export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/Lenseg/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '.';

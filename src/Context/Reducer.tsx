@@ -22,8 +22,6 @@ export default (state: any, action: any) => {
       return { ...state, selectedCategory: action.payload };
     case 'UPDATE_SELECTED_SUBCATEGORY':
       return { ...state, selectedSubCategory: action.payload };
-    case 'UPDATE_SELECTED_SUB_SUBCATEGORY':
-      return { ...state, selectedSubSubCategory: action.payload };
     default:
       return { ...state };
   }

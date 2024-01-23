@@ -12,7 +12,6 @@ const Context = createContext<CtxDataType>({
   selectedTaxonomy: 'All',
   selectedCategory: 'all',
   selectedSubCategory: 'all',
-  selectedSubSubCategory: 'all',
   updateSelectedRegions: (_d: string) => {},
   updateSelectedVariousTaxonomy: (_d: string) => {},
   updateSelectedFunding: (_d: string) => {},
@@ -23,7 +22,6 @@ const Context = createContext<CtxDataType>({
   updateSelectedTaxonomy: (_d: string) => {},
   updateSelectedCategory: (_d: string) => {},
   updateSelectedSubCategory: (_d: string) => {},
-  updateSelectedSubSubCategory: (_d: string) => {},
 });
 
 export default Context;
