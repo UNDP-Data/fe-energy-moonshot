@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 0px;
 }
 /* color legend styles for charts */
 .legend-container{
@@ -88,4 +88,7 @@ body {
 }
 .undp-accordion.no-background.ant-collapse-small .ant-collapse-content-box {
   padding-bottom: 0px !important
+}
+.ant-segmented-item-selected {
+  font-weight: bold;
 }

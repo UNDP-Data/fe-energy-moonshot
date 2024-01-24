@@ -17,8 +17,6 @@ import {
 import { ScaledSquare } from './ScaledSquare';
 import { ScaledHalfCircles } from './ScaledHalfCircles';
 
-import '../styles/style.css';
-
 interface Props {
   projectsData: ProjectLevelDataType[];
   countries: string[];

@@ -6,16 +6,17 @@ import styled from 'styled-components';
 import { json, csv } from 'd3-request';
 import { queue } from 'd3-queue';
 import { useTranslation } from 'react-i18next';
-import { Tabs } from 'antd';
 import {
   CountryGroupDataType, IndicatorMetaDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ROOT_DIR,
 } from './Types';
 import { Global } from './Global';
+import Header from './Global/Header';
 import Footer from './Global/Footer';
-import { CountryProfile } from './CountryProfile';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { DEFAULT_VALUES } from './Constants';
+
+import './styles/style.css';
 
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
@@ -43,11 +44,8 @@ const App = (props: Props) => {
   const [allCountriesData, setAllCountriesData] = useState<CountryData[] | undefined>(undefined);
   const [projectLevelData, setProjectLevelData] = useState<ProjectLevelDataType[] | undefined>(undefined);
 
-  const queryParams = new URLSearchParams(window.location.search);
-  const queryCountry = queryParams.get('country');
-
   const initialState = {
-    selectedRegions: queryParams.get('region') || 'all',
+    selectedRegions: 'all',
     selectedCountries: [],
     selectedProjects: '',
     selectedCategory: 'all',
@@ -128,7 +126,7 @@ const App = (props: Props) => {
     return arr.filter((item: any, index: number) => arr.indexOf(item) === index);
   }
   // translation
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   useEffect(() => {
     i18n.changeLanguage(language);
     queue()
@@ -225,49 +223,18 @@ const App = (props: Props) => {
                   updateSelectedSubCategory,
                 }}
               >
+                <Header />
                 <div
                   ref={containerEl}
-                  className='bodyEl'
+                  className='bodyEl padding-top-07 padding-right-05 padding-left-05'
                 >
-                  <div className='margin-bottom07'>
-                    {
-                    !queryCountry
-                      ? (
-                        <Tabs
-                          defaultActiveKey='1'
-                          className='undp-tabs'
-                          items={[
-                            {
-                              label: t('world-overview'),
-                              key: '1',
-                              children: <Global
-                                countryGroupData={countryGroupData}
-                                indicators={indicatorsList}
-                                // regions={regionList}
-                                projectLevelData={projectLevelData}
-                              />,
-                            },
-                            {
-                              label: t('country-profiles'),
-                              key: '2',
-                              children: <CountryProfile
-                                projectsData={projectLevelData}
-                                countries={countryList}
-                                countriesData={allCountriesData}
-                                data={countryGroupData}
-                              />,
-                            },
-                          ]}
-                        />
-                      ) : (
-                        <CountryProfile
-                          projectsData={projectLevelData}
-                          countries={countryList}
-                          countriesData={allCountriesData}
-                          data={countryGroupData}
-                        />
-                      )
-                    }
+                  <div className='margin-bottom-07'>
+                    <Global
+                      countryGroupData={countryGroupData}
+                      indicators={indicatorsList}
+                      // regions={regionList}
+                      projectLevelData={projectLevelData}
+                    />
                   </div>
                 </div>
                 <Footer />

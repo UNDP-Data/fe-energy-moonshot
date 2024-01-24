@@ -48,7 +48,7 @@ export const Settings = () => {
       <div className='margin-bottom-04'>
         <p className='undp-typography label'>{t('select-output-type')}</p>
         <Segmented
-          className='undp-segmented'
+          className='undp-segmented-small'
           block
           // @ts-ignore
           onChange={(d:string) => { updateSelectedCategory(d); }}
@@ -56,11 +56,11 @@ export const Settings = () => {
           options={outputsTaxonomyTranslated}
         />
       </div>
-      <div className='margin-bottom-07'>
+      <div className='margin-bottom-07 margin-left-05'>
         <p className='undp-typography label'>{t('select-output-sub-type')}</p>
         <div className='flex-div flex-space-between'>
           <Segmented
-            className='undp-segmented'
+            className='undp-segmented-small'
             block
             style={{ width: '100%' }}
             disabled={selectedCategory === 'all'}
