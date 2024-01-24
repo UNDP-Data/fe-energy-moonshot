@@ -79,3 +79,13 @@ body {
   height: 12px;
   background-color:#ccc;
 }
+.undp-accordion.no-background.ant-collapse-small .ant-collapse-item {
+  border-top: 1px solid var(--gray-500) !important;
+}
+.undp-accordion.no-background.ant-collapse-small .ant-collapse-item .ant-collapse-header-text {
+  font-size: 14px !important;
+  text-transform: none !important;
+}
+.undp-accordion.no-background.ant-collapse-small .ant-collapse-content-box {
+  padding-bottom: 0px !important
+}

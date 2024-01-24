@@ -2,11 +2,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Checkbox, Select } from 'antd';
+import { Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Context from '../../Context/Context';
 import {
-  CtxDataType, DataType, IndicatorMetaDataType, ProjectCoordsDataType,
+  CtxDataType, DataType, IndicatorMetaDataType,
 } from '../../Types';
 import { Map } from './Map';
 import { DEFAULT_VALUES } from '../../Constants';
@@ -14,7 +14,6 @@ import { DEFAULT_VALUES } from '../../Constants';
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
-  projectCoordsData: ProjectCoordsDataType[];
 }
 
 const El = styled.div`
@@ -49,14 +48,11 @@ export const UnivariateMap = (props: Props) => {
   const {
     data,
     indicators,
-    projectCoordsData,
   } = props;
 
   const {
     xAxisIndicator,
     updateXAxisIndicator,
-    updateShowProjectLocations,
-    showProjectLocations,
   } = useContext(Context) as CtxDataType;
 
   const options = indicators.map((d) => d.Indicator);
@@ -88,12 +84,10 @@ export const UnivariateMap = (props: Props) => {
             }
           </Select>
         </div>
-        <Checkbox className='undp-checkbox' checked={showProjectLocations} onClick={() => { updateShowProjectLocations(!showProjectLocations); }}>{t('show-locations')}</Checkbox>
       </SettingEl>
       <Map
         data={data}
         indicators={indicators}
-        projectCoordsData={projectCoordsData}
       />
     </El>
   );

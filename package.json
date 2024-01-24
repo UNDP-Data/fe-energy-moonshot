@@ -68,6 +68,7 @@
     "lodash.sortby": "^4.7.0",
     "lodash.sumby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
+    "lucide-react": "^0.314.0",
     "maplibre-gl": "^2.4.0",
     "pmtiles": "^2.7.1",
     "react": "^18.2.0",

@@ -11,18 +11,16 @@ import { scaleThreshold } from 'd3-scale';
 import { useTranslation } from 'react-i18next';
 import UNDPColorModule from 'undp-viz-colors';
 import {
-  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectHoverDataType, ProjectCoordsDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType,
 } from '../../Types';
 import Context from '../../Context/Context';
 import World from '../../Data/worldMap.json';
 import { COLOR_SCALES } from '../../Constants';
 import { Tooltip } from '../../Components/Tooltip';
-import { ProjectTooltip } from '../../Components/ProjectTooltip';
 
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
-  projectCoordsData: ProjectCoordsDataType[];
 }
 
 const LegendEl = styled.div`
@@ -49,17 +47,12 @@ export const Map = (props: Props) => {
   const {
     data,
     indicators,
-    projectCoordsData,
   } = props;
   const {
     xAxisIndicator,
-    showProjectLocations,
-    selectedTaxonomy,
-    updateSelectedProjects,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
-  const [projectHoverData, setProjectHoverData] = useState<ProjectHoverDataType | undefined>(undefined);
   const [zoomLevel, setZoomLevel] = useState(1);
   const queryParams = new URLSearchParams(window.location.search);
   const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960 ? 1280 : 960;
@@ -288,56 +281,6 @@ export const Map = (props: Props) => {
                 </G>
               )) : null
           }
-          {
-            showProjectLocations
-            && projectCoordsData.filter((d) => selectedTaxonomy === 'All' || d.projectData.taxonomy_level3 === selectedTaxonomy).map((d, i: number) => {
-              // const regionOpacity = selectedRegions === 'All' || selectedRegions === d.projectData.regionBureau;
-              // const countryOpacity = selectedCountries.length === 0 || selectedCountries === d.projectData.country;
-              // const projectOpacity = selectedProjects === '' || selectedProjects === d.projectData['projectID_PIMS+'].toString();
-
-              const point = projection([d.Longitude, d.Latitude]) as [number, number];
-              return (
-                <g
-                  key={i}
-                  opacity={0.01}
-                  onMouseEnter={(event) => {
-                    updateSelectedProjects(d['projectID_PIMS+'].toString());
-                    setProjectHoverData({
-                      name: d.projectData['Short Title'],
-                      donor: d.projectData['Source of Funds'],
-                      grantAmount: d.projectData.budget,
-                      xPosition: event.clientX,
-                      yPosition: event.clientY,
-                    });
-                  }}
-                  onMouseMove={(event) => {
-                    updateSelectedProjects(d['projectID_PIMS+'].toString());
-                    setProjectHoverData({
-                      name: d.projectData['Short Title'],
-                      donor: d.projectData['Source of Funds'],
-                      grantAmount: d.projectData.budget,
-                      xPosition: event.clientX,
-                      yPosition: event.clientY,
-                    });
-                  }}
-                  onMouseLeave={() => {
-                    updateSelectedProjects('');
-                    setProjectHoverData(undefined);
-                  }}
-                >
-                  <circle
-                    key={i}
-                    cx={point[0]}
-                    cy={point[1]}
-                    r={(zoomLevel < 3) ? 3 / zoomLevel : 4 / zoomLevel}
-                    fill='#FFF'
-                    stroke='#006EB5'
-                    strokeWidth={1 / zoomLevel}
-                  />
-                </g>
-              );
-            })
-          }
         </g>
       </svg>
       <LegendEl>
@@ -391,9 +334,6 @@ export const Map = (props: Props) => {
       </LegendEl>
       {
         hoverData ? <Tooltip data={hoverData} /> : null
-      }
-      {
-        projectHoverData ? <ProjectTooltip data={projectHoverData} /> : null
       }
     </div>
   );

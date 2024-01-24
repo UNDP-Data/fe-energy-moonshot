@@ -5,9 +5,7 @@ import {
   CountryGroupDataType,
   CtxDataType,
   IndicatorMetaDataType,
-  // RegionDataType,
   ProjectLevelDataType,
-  ProjectCoordsDataType,
 } from '../Types';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
@@ -21,7 +19,6 @@ interface Props {
   indicators: IndicatorMetaDataType[];
   // regions: RegionDataType[];
   projectLevelData: ProjectLevelDataType[];
-  projectCoordsData: ProjectCoordsDataType[];
 }
 
 export const Global = (props: Props) => {
@@ -29,7 +26,6 @@ export const Global = (props: Props) => {
     countryGroupData,
     indicators,
     projectLevelData,
-    projectCoordsData,
   } = props;
   const {
     selectedRegions,
@@ -116,7 +112,6 @@ export const Global = (props: Props) => {
             <UnivariateMap
               data={mapData}
               indicators={indicators}
-              projectCoordsData={projectCoordsData}
             />
           </div>
         </div>

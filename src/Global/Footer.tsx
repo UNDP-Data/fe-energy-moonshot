@@ -3,11 +3,16 @@ import { Logo } from '../Icons';
 function Footer() {
   return (
     <footer>
-      <div className='undp-footer'>
+      <div
+        className='undp-footer'
+        style={{
+          padding: '2.25rem 0.75rem 2rem 0.75rem',
+        }}
+      >
         <div
-          className='flex-div flex-space-between margin-bottom-07'
+          className='flex-div flex-space-between margin-bottom-05'
           style={{
-            padding: '0 0.75rem var(--spacing-09) 0.75rem',
+            padding: '0 0.75rem var(--spacing-05) 0.75rem',
             borderBottom: '1px solid var(--white)',
           }}
         >
@@ -20,35 +25,13 @@ function Footer() {
               target='_blank'
               rel='noreferrer'
             >
-              <Logo height={130} white />
+              <Logo height={100} white />
             </a>
             <h5 className='undp-typography margin-bottom-00'>
               United Nations
               <br />
               Development Programme
             </h5>
-          </div>
-          <div>
-            <div className='margin-bottom-03 '>
-              <a
-                className='undp-footer-link undp-footer-right-link'
-                href='mailto:data@undp.org'
-                target='_blank'
-                rel='noreferrer'
-              >
-                Contact Us
-              </a>
-            </div>
-            <div className='margin-bottom-03'>
-              <a
-                className='undp-footer-link undp-footer-right-link'
-                href='https://data.undp.org/'
-                target='_blank'
-                rel='noreferrer'
-              >
-                Data Futures Exchange
-              </a>
-            </div>
           </div>
         </div>
         <div className='flex-div flex-space-between'>

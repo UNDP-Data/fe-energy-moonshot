@@ -8,7 +8,7 @@ import { queue } from 'd3-queue';
 import { useTranslation } from 'react-i18next';
 import { Tabs } from 'antd';
 import {
-  CountryGroupDataType, IndicatorMetaDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ProjectCoordsDataType, ROOT_DIR,
+  CountryGroupDataType, IndicatorMetaDataType, CountryIndicatorMetaDataType, CountryIndicatorDataType, CountryData, ProjectLevelDataType, ROOT_DIR,
 } from './Types';
 import { Global } from './Global';
 import Footer from './Global/Footer';
@@ -42,7 +42,6 @@ const App = (props: Props) => {
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
   const [allCountriesData, setAllCountriesData] = useState<CountryData[] | undefined>(undefined);
   const [projectLevelData, setProjectLevelData] = useState<ProjectLevelDataType[] | undefined>(undefined);
-  const [projectCoords, setProjectCoordsData] = useState<ProjectCoordsDataType[] | undefined>(undefined);
 
   const queryParams = new URLSearchParams(window.location.search);
   const queryCountry = queryParams.get('country');
@@ -53,7 +52,6 @@ const App = (props: Props) => {
     selectedProjects: '',
     selectedCategory: 'all',
     xAxisIndicator: DEFAULT_VALUES.firstMetric,
-    showProjectLocations: false,
     selectedProjectType: 'All',
     selectedTaxonomy: 'All',
     selectedFunding: 'all',
@@ -105,13 +103,6 @@ const App = (props: Props) => {
     });
   };
 
-  const updateShowProjectLocations = (showProjectLocations: boolean) => {
-    dispatch({
-      type: 'UPDATE_SHOW_PROJECT_LOCATIONS',
-      payload: showProjectLocations,
-    });
-  };
-
   const updateSelectedTaxonomy = (selectedTaxonomy: string) => {
     dispatch({
       type: 'UPDATE_SELECTED_TAXONOMY',
@@ -152,10 +143,9 @@ const App = (props: Props) => {
       .defer(csv, `${ROOT_DIR}/data/country_level_data7.csv`)
       .defer(csv, `${ROOT_DIR}/data/country_level_data8.csv`)
       .defer(json, `${ROOT_DIR}/data/moonshotData.json`)
-      .defer(csv, `${ROOT_DIR}/data/project_level_data2.csv`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
       .defer(json, 'https://gist.githubusercontent.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee/raw/b36904c0c8ea72fdb82f68eb33f29891095deab3/country_codes')
-      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], projectCoordsData: ProjectCoordsDataType[], countryGroupDataRaw: any[], countryBoundingBoxData: any) => {
+      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], countryGroupDataRaw: any[], countryBoundingBoxData: any) => {
         if (err) throw err;
         const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3, countryLevelData4, countryLevelData5, countryLevelData6, countryLevelData7, countryLevelData8];
         // const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
@@ -173,16 +163,6 @@ const App = (props: Props) => {
         // }));
         setProjectLevelData(projectLevelData1);
         // here we need to have only the projects which are at projectLevelData
-        const projectCoordsWithData: ProjectCoordsDataType[] = [];
-        projectCoordsData.forEach((d: any) => {
-          const index = projectLevelData1.findIndex((el: ProjectLevelDataType) => el.projectId === d['projectID_PIMS+']);
-          if (index > 0) {
-            projectCoordsWithData.push({
-              ...d,
-              projectData: projectLevelData1[index],
-            });
-          }
-        });
 
         // this can be used later probably
         /* const projectCoordsWithData = projectCoordsData.map((d) => ({
@@ -194,7 +174,6 @@ const App = (props: Props) => {
           ...d,
           bbox: (countryBoundingBoxData[d['Alpha-2 code'].toLowerCase()] !== undefined) ? countryBoundingBoxData[d['Alpha-2 code'].toLowerCase()].boundingBox : {},
         }));
-        setProjectCoordsData(projectCoordsWithData);
         setCountryGroupData(countryGroupDataBbox);
         const countries = removeDuplicates(projectLevelData1.map((d) => d.country));
         setCountryList(countries);
@@ -229,7 +208,7 @@ const App = (props: Props) => {
   return (
     <div className='undp-container'>
       {
-        indicatorsList && countryList && countryGroupData && allCountriesData && projectLevelData && projectCoords
+        indicatorsList && countryList && countryGroupData && allCountriesData && projectLevelData
           ? (
             <>
               <Context.Provider
@@ -241,7 +220,6 @@ const App = (props: Props) => {
                   updateSelectedCountries,
                   updateSelectedProjects,
                   updateXAxisIndicator,
-                  updateShowProjectLocations,
                   updateSelectedTaxonomy,
                   updateSelectedCategory,
                   updateSelectedSubCategory,
@@ -267,7 +245,6 @@ const App = (props: Props) => {
                                 indicators={indicatorsList}
                                 // regions={regionList}
                                 projectLevelData={projectLevelData}
-                                projectCoordsData={projectCoords}
                               />,
                             },
                             {

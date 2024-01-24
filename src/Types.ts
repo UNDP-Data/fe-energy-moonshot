@@ -83,7 +83,6 @@ export interface CtxDataType {
   selectedCategory: string;
   selectedSubCategory: string;
   xAxisIndicator: string;
-  showProjectLocations: boolean;
   selectedTaxonomy: string;
   selectedVariousTaxonomy: string;
   selectedFunding: string;
@@ -91,7 +90,6 @@ export interface CtxDataType {
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
-  updateShowProjectLocations: (_d: boolean) => void;
   updateSelectedTaxonomy: (_d: string) => void;
   updateSelectedVariousTaxonomy: (_d: string) => void;
   updateSelectedFunding: (_d: string) => void;
