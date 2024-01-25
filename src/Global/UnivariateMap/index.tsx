@@ -6,7 +6,7 @@ import { Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Context from '../../Context/Context';
 import {
-  CtxDataType, DataType, IndicatorMetaDataType,
+  CtxDataType, DataType, IndicatorMetaDataType, IndicatorRange,
 } from '../../Types';
 import { Map } from './Map';
 import { DEFAULT_VALUES } from '../../Constants';
@@ -14,6 +14,7 @@ import { DEFAULT_VALUES } from '../../Constants';
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
+  binningRangeLarge: IndicatorRange;
 }
 
 const El = styled.div`
@@ -47,6 +48,7 @@ const SettingEl = styled.div`
 export const UnivariateMap = (props: Props) => {
   const {
     data,
+    binningRangeLarge,
     indicators,
   } = props;
 
@@ -54,7 +56,6 @@ export const UnivariateMap = (props: Props) => {
     xAxisIndicator,
     updateXAxisIndicator,
   } = useContext(Context) as CtxDataType;
-
   const options = indicators.map((d) => d.Indicator);
   // translation
   const { t } = useTranslation();
@@ -87,6 +88,7 @@ export const UnivariateMap = (props: Props) => {
       </SettingEl>
       <Map
         data={data}
+        binningRangeLarge={binningRangeLarge}
         indicators={indicators}
       />
     </El>

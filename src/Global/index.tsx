@@ -6,6 +6,7 @@ import {
   CtxDataType,
   IndicatorMetaDataType,
   ProjectLevelDataType,
+  IndicatorRange,
 } from '../Types';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
@@ -99,6 +100,36 @@ export const Global = (props: Props) => {
     return (countryData);
   }
   const mapData = calculateCountryTotals();
+  function calculateRanges() {
+    const ranges:IndicatorRange = mapData.reduce((acum:IndicatorRange, country) => {
+      country.indicatorsAvailable.forEach((indAva:string) => {
+        const value = country.indicators.find((ind) => ind.indicator === indAva);
+        if (value) {
+          acum[indAva].push(value.value);
+        }
+      });
+      return acum;
+    }, indicators.reduce((acum, indi:IndicatorMetaDataType) => ({
+      ...acum,
+      [indi.DataKey]: [],
+    }), {}));
+    indicators.forEach((indi:IndicatorMetaDataType) => {
+      ranges[indi.DataKey].sort((a:number, b:number) => a - b);
+      const q = Math.ceil((ranges[indi.DataKey].length - 1) / 9);
+      let i = 1;
+      const legendArray = [];
+      while (i * q < ranges[indi.DataKey].length) {
+        const numstr = Math.ceil(ranges[indi.DataKey][i * q]).toString();
+        const num = parseInt(numstr[0] + '0'.repeat(numstr.length - 1), 10);
+        legendArray.push(num);
+        i += 1;
+      }
+      ranges[indi.DataKey] = Array.from(new Set(legendArray));
+    });
+    return ranges;
+  }
+
+  const binningRangeLarge = calculateRanges();
   return (
     <>
       <div className='flex-div flex-wrap'>
@@ -112,6 +143,7 @@ export const Global = (props: Props) => {
             <UnivariateMap
               data={mapData}
               indicators={indicators}
+              binningRangeLarge={binningRangeLarge}
             />
           </div>
         </div>

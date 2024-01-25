@@ -11,7 +11,7 @@ import { scaleThreshold } from 'd3-scale';
 import { useTranslation } from 'react-i18next';
 import UNDPColorModule from 'undp-viz-colors';
 import {
-  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, IndicatorRange,
 } from '../../Types';
 import Context from '../../Context/Context';
 import World from '../../Data/worldMap.json';
@@ -21,6 +21,7 @@ import { Tooltip } from '../../Components/Tooltip';
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
+  binningRangeLarge: IndicatorRange;
 }
 
 const LegendEl = styled.div`
@@ -47,6 +48,7 @@ export const Map = (props: Props) => {
   const {
     data,
     indicators,
+    binningRangeLarge,
   } = props;
   const {
     xAxisIndicator,
@@ -64,7 +66,7 @@ export const Map = (props: Props) => {
     .scale(200)
     .translate([svgWidth / 2 - 50, svgHeight / 2 + 25]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
-  const valueArray = xIndicatorMetaData.BinningRangeLarge;
+  const valueArray = binningRangeLarge[xIndicatorMetaData.DataKey];
   const colorArray = (valueArray.length === 5) ? UNDPColorModule.sequentialColors.neutralColorsx06 : UNDPColorModule.sequentialColors.neutralColorsx08;
   const colorScale = scaleThreshold<number, string>().domain(valueArray).range(colorArray);
   // translation
@@ -296,15 +298,15 @@ export const Map = (props: Props) => {
                   style={{ cursor: 'pointer' }}
                 >
                   <rect
-                    x={(i * 320) / colorArray.length + 1}
+                    x={(i * 320) / valueArray.length + 1}
                     y={1}
-                    width={(320 / colorArray.length) - 2}
+                    width={(320 / valueArray.length) - 2}
                     height={8}
                     fill={colorArray[i]}
                     stroke={selectedColor === colorArray[i] ? '#212121' : colorArray[i]}
                   />
                   <text
-                    x={((i + 1) * 320) / colorArray.length}
+                    x={((i + 1) * 320) / valueArray.length}
                     y={25}
                     textAnchor='middle'
                     fontSize={12}
@@ -319,9 +321,9 @@ export const Map = (props: Props) => {
               <rect
                 onMouseOver={() => { setSelectedColor(colorArray[valueArray.length]); }}
                 onMouseLeave={() => { setSelectedColor(undefined); }}
-                x={((valueArray.length * 320) / colorArray.length) + 1}
+                x={((valueArray.length * 320) / valueArray.length) + 1}
                 y={1}
-                width={(320 / colorArray.length) - 2}
+                width={(320 / valueArray.length) - 2}
                 height={8}
                 fill={colorArray[valueArray.length]}
                 stroke={selectedColor === colorArray[valueArray.length] ? '#212121' : colorArray[valueArray.length]}
