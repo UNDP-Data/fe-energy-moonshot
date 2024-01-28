@@ -54,7 +54,7 @@ export const Global = (props: Props) => {
   }
   if (selectedRegions !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
-    || d.hdiTier === selectedRegions || d.specialGroupings.includes(selectedRegions));
+    || d.hdiTier === selectedRegions || d.countryName === selectedRegions || d.specialGroupings.includes(selectedRegions));
   }
 
   function calculateCountryTotals() {
@@ -100,6 +100,12 @@ export const Global = (props: Props) => {
     return (countryData);
   }
   const mapData = calculateCountryTotals();
+  const countryList = projectLevelData.reduce((acum:string[], projectData) => {
+    if (!acum.includes(projectData.countryName)) {
+      acum.push(projectData.countryName);
+    }
+    return acum;
+  }, []);
   function calculateRanges() {
     const ranges:IndicatorRange = mapData.reduce((acum:IndicatorRange, country) => {
       country.indicatorsAvailable.forEach((indAva:string) => {
@@ -118,12 +124,12 @@ export const Global = (props: Props) => {
       const q = Math.ceil((ranges[indi.DataKey].length - 1) / 9);
       let i = 1;
       const legendArray = [];
-      while (i * q < ranges[indi.DataKey].length) {
+      do {
         const numstr = Math.ceil(ranges[indi.DataKey][i * q]).toString();
         const num = parseInt(numstr[0] + '0'.repeat(numstr.length - 1), 10);
         legendArray.push(num);
         i += 1;
-      }
+      } while (i * q < ranges[indi.DataKey].length - 1);
       ranges[indi.DataKey] = Array.from(new Set(legendArray));
     });
     return ranges;
@@ -134,7 +140,9 @@ export const Global = (props: Props) => {
     <>
       <div className='flex-div flex-wrap'>
         <div style={{ maxWidth: '75%', width: '100%' }}>
-          <Settings />
+          <Settings
+            countryList={countryList}
+          />
           <MainText />
           <Cards
             data={mapData}

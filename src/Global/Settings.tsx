@@ -7,7 +7,11 @@ import {
   outputsTaxonomy, countryGroupingsTaxonomy, variousTaxonomy, fundingTaxonomy,
 } from '../Constants';
 
-export const Settings = () => {
+interface Props {
+  countryList: string[];
+}
+
+export const Settings = (props: Props) => {
   const {
     selectedRegions,
     selectedFunding,
@@ -23,6 +27,8 @@ export const Settings = () => {
   // translation
   const { t } = useTranslation();
 
+  const { countryList } = props;
+
   const outputsTaxonomyTranslated = outputsTaxonomy.map((ot) => ({
     value: ot.value,
     label: t(ot.label),
@@ -35,6 +41,16 @@ export const Settings = () => {
   const [subCategoriesTaxonomy, setSubCategoriesTaxonomy] = useState(() => {
     const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory) || outputsTaxonomyTranslated[0];
     return activeOutputsTaxonomy?.subcategories;
+  });
+
+  const countryGroupingsMerged = [...countryGroupingsTaxonomy];
+  countryGroupingsMerged.push({
+    label: 'countries',
+    key: 'countries',
+    options: countryList.map((c) => ({
+      label: c,
+      value: c,
+    })),
   });
 
   useEffect(() => {
@@ -81,7 +97,7 @@ export const Settings = () => {
             onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'all' : d); }}
           >
             {
-              countryGroupingsTaxonomy.map((d) => {
+              countryGroupingsMerged.map((d) => {
                 if (d.options) {
                   return (
                     <Select.OptGroup key={d.key} label={t(d.label)}>

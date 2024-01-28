@@ -52,6 +52,7 @@ export const Map = (props: Props) => {
   } = props;
   const {
     xAxisIndicator,
+    updateSelectedRegions,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
@@ -181,6 +182,9 @@ export const Map = (props: Props) => {
                       xPosition: event.clientX,
                       yPosition: event.clientY,
                     });
+                  }}
+                  onClick={() => {
+                    updateSelectedRegions(d['Country or Area']);
                   }}
                   onMouseLeave={() => {
                     setHoverData(undefined);
