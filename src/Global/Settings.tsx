@@ -91,7 +91,9 @@ export const Settings = (props: Props) => {
         <div style={{ maxWidth: 'calc(33.33% - .65rem)', width: '100%' }}>
           <p className='label'>{t('select-country-group')}</p>
           <Select
+            showSearch
             className='undp-select'
+            filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input?.toLowerCase())}
             placeholder={t('select-country-group')}
             value={selectedRegions}
             onChange={(d: string) => { updateSelectedRegions(d === undefined ? 'all' : d); }}
@@ -102,13 +104,13 @@ export const Settings = (props: Props) => {
                   return (
                     <Select.OptGroup key={d.key} label={t(d.label)}>
                       {d.options.map((o) => (
-                        <Select.Option className='undp-select-option' key={o.value}>{t(o.label)}</Select.Option>
+                        <Select.Option className='undp-select-option' label={t(o.label)} key={o.value}>{t(o.label)}</Select.Option>
                       ))}
                     </Select.OptGroup>
                   );
                 }
                 return (
-                  <Select.Option className='undp-select-option' key={d.value}>{t(d.label)}</Select.Option>
+                  <Select.Option className='undp-select-option' label={t(d.label)} key={d.value}>{t(d.label)}</Select.Option>
                 );
               })
             }
@@ -117,7 +119,9 @@ export const Settings = (props: Props) => {
         <div style={{ maxWidth: 'calc(33.33% - .65rem)', width: '100%' }}>
           <p className='label'>{ t('select-taxonomy')}</p>
           <Select
+            showSearch
             className='undp-select'
+            filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input?.toLowerCase())}
             placeholder={t('select-taxonomy')}
             value={selectedVariousTaxonomy}
             onChange={(d: string) => { updateSelectedVariousTaxonomy(d === undefined ? 'all' : d); }}
@@ -128,13 +132,13 @@ export const Settings = (props: Props) => {
                   return (
                     <Select.OptGroup key={d.key} label={t(d.label)}>
                       {d.options.map((o) => (
-                        <Select.Option className='undp-select-option' key={o.value}>{t(o.label)}</Select.Option>
+                        <Select.Option className='undp-select-option' label={t(o.label)} key={o.value}>{t(o.label)}</Select.Option>
                       ))}
                     </Select.OptGroup>
                   );
                 }
                 return (
-                  <Select.Option className='undp-select-option' key={d.value}>{t(d.label)}</Select.Option>
+                  <Select.Option className='undp-select-option' label={t(d.label)} key={d.value}>{t(d.label)}</Select.Option>
                 );
               })
             }
@@ -143,6 +147,8 @@ export const Settings = (props: Props) => {
         <div style={{ maxWidth: 'calc(33.33% - .65rem)', width: '100%' }}>
           <p className='label'>{t('select-funding')}</p>
           <Select
+            showSearch
+            filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input?.toLowerCase())}
             className='undp-select'
             placeholder={t('select-funding')}
             value={selectedFunding}
@@ -150,7 +156,7 @@ export const Settings = (props: Props) => {
           >
             {
               fundingTaxonomy.map((d) => (
-                <Select.Option className='undp-select-option' key={d.value}>{t(d.label)}</Select.Option>
+                <Select.Option className='undp-select-option' label={t(d.label)} key={d.value}>{t(d.label)}</Select.Option>
               ))
             }
           </Select>
