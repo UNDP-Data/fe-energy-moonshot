@@ -5,7 +5,7 @@ export default (state: any, action: any) => {
     case 'UPDATE_SELECTED_FUNDING':
       return { ...state, selectedFunding: action.payload };
     case 'UPDATE_SELECTED_VARIOUS_TAXONOMY':
-      return { ...state, selectedVariousTaxonomy: action.payload };
+      return { ...state, selectedGenderMarker: action.payload };
     case 'UPDATE_SELECTED_COUNTRIES':
       return { ...state, selectedCountries: action.payload };
     case 'UPDATE_SELECTED_PROJECTS':

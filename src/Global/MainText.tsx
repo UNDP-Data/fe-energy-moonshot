@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  outputsTaxonomy, countryGroupingsTaxonomy, variousTaxonomy, fundingTaxonomy,
+  outputsTaxonomy, countryGroupingsTaxonomy, genderMarkers, fundingTaxonomy,
 } from '../Constants';
 import Context from '../Context/Context';
 import { CtxDataType, Taxonomy, OutputsTaxonomy } from '../Types';
@@ -10,7 +10,7 @@ export const MainText = () => {
   const {
     selectedRegions,
     selectedFunding,
-    selectedVariousTaxonomy,
+    selectedGenderMarker,
     selectedCategory,
     selectedSubCategory,
   } = useContext(Context) as CtxDataType;
@@ -38,7 +38,7 @@ export const MainText = () => {
 
   const countryGroupings = getTextLabel(countryGroupingsTaxonomy, selectedRegions);
   const fundingSources = getTextLabel(fundingTaxonomy, selectedFunding);
-  const taxonomy = getTextLabel(variousTaxonomy, selectedVariousTaxonomy);
+  const taxonomy = getTextLabel(genderMarkers, selectedGenderMarker);
   const outputCategory = getCategoryLabel(outputsTaxonomy, selectedCategory, selectedSubCategory);
   return (
     <div className='margin-bottom-05'>

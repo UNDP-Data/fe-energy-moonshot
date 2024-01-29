@@ -92,3 +92,12 @@ body {
 .ant-segmented-item-selected {
   font-weight: bold;
 }
+.ant-tooltip-placement-bottom {
+    padding-top: 0 !important;
+}
+.ant-tooltip-placement-top {
+    padding-bottom: 0 !important;
+}
+.underline {
+  text-decoration: underline;
+}

@@ -33,7 +33,7 @@ export const Global = (props: Props) => {
     selectedFunding,
     selectedCategory,
     selectedSubCategory,
-    selectedVariousTaxonomy,
+    selectedGenderMarker,
   } = useContext(Context) as CtxDataType;
   let filteredProjectData = [...projectLevelData];
   if (selectedCategory !== 'all') {
@@ -48,9 +48,8 @@ export const Global = (props: Props) => {
   if (selectedFunding !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.verticalFunded === (selectedFunding === 'vf'));
   }
-  if (selectedVariousTaxonomy !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.flagship === selectedVariousTaxonomy || d.thematics.includes(selectedVariousTaxonomy)
-      || (selectedVariousTaxonomy === 'allFlagships' && d.flagship));
+  if (selectedGenderMarker !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.genderMarker === selectedGenderMarker);
   }
   if (selectedRegions !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions

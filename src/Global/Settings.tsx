@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { Select, Segmented } from 'antd';
+import { Select, Segmented, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { CtxDataType } from '../Types';
 import Context from '../Context/Context';
 import {
-  outputsTaxonomy, countryGroupingsTaxonomy, variousTaxonomy, fundingTaxonomy,
+  outputsTaxonomy, countryGroupingsTaxonomy, genderMarkers, fundingTaxonomy,
 } from '../Constants';
 
 interface Props {
@@ -15,12 +15,12 @@ export const Settings = (props: Props) => {
   const {
     selectedRegions,
     selectedFunding,
-    selectedVariousTaxonomy,
+    selectedGenderMarker,
     selectedCategory,
     selectedSubCategory,
     updateSelectedRegions,
     updateSelectedFunding,
-    updateSelectedVariousTaxonomy,
+    updateSelectedGenderMarker,
     updateSelectedCategory,
     updateSelectedSubCategory,
   } = useContext(Context) as CtxDataType;
@@ -117,30 +117,35 @@ export const Settings = (props: Props) => {
           </Select>
         </div>
         <div style={{ maxWidth: 'calc(33.33% - .65rem)', width: '100%' }}>
-          <p className='label'>{ t('select-taxonomy')}</p>
+          <Tooltip
+            title={<div dangerouslySetInnerHTML={{ __html: t('gender-marker-tooltip') || '' }} />}
+            placement='top'
+            overlayStyle={{
+              maxWidth: '550px',
+            }}
+          >
+            <p className='label underline'>{ t('gender-marker')}</p>
+          </Tooltip>
           <Select
             showSearch
             className='undp-select'
             filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input?.toLowerCase())}
             placeholder={t('select-taxonomy')}
-            value={selectedVariousTaxonomy}
-            onChange={(d: string) => { updateSelectedVariousTaxonomy(d === undefined ? 'all' : d); }}
+            value={selectedGenderMarker}
+            onChange={(d: string) => { updateSelectedGenderMarker(d === undefined ? 'all' : d); }}
           >
             {
-              variousTaxonomy.map((d) => {
-                if (d.options) {
-                  return (
-                    <Select.OptGroup key={d.key} label={t(d.label)}>
-                      {d.options.map((o) => (
-                        <Select.Option className='undp-select-option' label={t(o.label)} key={o.value}>{t(o.label)}</Select.Option>
-                      ))}
-                    </Select.OptGroup>
-                  );
-                }
-                return (
-                  <Select.Option className='undp-select-option' label={t(d.label)} key={d.value}>{t(d.label)}</Select.Option>
-                );
-              })
+              genderMarkers.map((d) => (
+                <Select.Option className='undp-select-option' label={t(d.label)} key={d.value}>
+                  { d.tooltip ? (
+                    <Tooltip title={t(d.tooltip)}>
+                      {t(d.label)}
+                    </Tooltip>
+                  ) : (
+                    t(d.label)
+                  )}
+                </Select.Option>
+              ))
             }
           </Select>
         </div>

@@ -84,14 +84,14 @@ export interface CtxDataType {
   selectedSubCategory: string;
   xAxisIndicator: string;
   selectedTaxonomy: string;
-  selectedVariousTaxonomy: string;
+  selectedGenderMarker: string;
   selectedFunding: string;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
   updateSelectedTaxonomy: (_d: string) => void;
-  updateSelectedVariousTaxonomy: (_d: string) => void;
+  updateSelectedGenderMarker: (_d: string) => void;
   updateSelectedFunding: (_d: string) => void;
   updateSelectedCategory: (_d: string) => void;
   updateSelectedSubCategory: (_d: string) => void;
@@ -125,6 +125,7 @@ export interface ProjectLevelDataType{
   flagship: string,
   budget: number,
   outputCount: number,
+  genderMarker: string,
   dirBeneficiaries: number,
   indirBeneficiaries: number,
   energySaved: number,

@@ -4,7 +4,7 @@ import { CtxDataType } from '../Types';
 const Context = createContext<CtxDataType>({
   selectedRegions: '',
   selectedFunding: 'all',
-  selectedVariousTaxonomy: 'all',
+  selectedGenderMarker: 'all',
   selectedCountries: '',
   selectedProjects: '',
   xAxisIndicator: '',
@@ -12,7 +12,7 @@ const Context = createContext<CtxDataType>({
   selectedCategory: 'all',
   selectedSubCategory: 'all',
   updateSelectedRegions: (_d: string) => {},
-  updateSelectedVariousTaxonomy: (_d: string) => {},
+  updateSelectedGenderMarker: (_d: string) => {},
   updateSelectedFunding: (_d: string) => {},
   updateSelectedCountries: (_d: string) => {},
   updateSelectedProjects: (_d: string) => {},

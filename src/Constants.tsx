@@ -365,54 +365,30 @@ export const countryGroupingsTaxonomy = [
   },
 ];
 
-export const variousTaxonomy = [
+export const genderMarkers = [
   {
-    label: 'all-taxonomies',
+    label: 'all',
     value: 'all',
   },
   {
-    label: 'undp-flagships',
-    key: 'flagship',
-    options: [
-      {
-        label: 'all-flagships',
-        value: 'allFlagships',
-      },
-      {
-        label: 'amp',
-        value: 'AMP',
-      },
-      {
-        label: 'solar-for-health',
-        value: 'Solar4Health',
-      },
-      {
-        label: 'pudc',
-        value: 'PUDC',
-      },
-      {
-        label: 'action-opportunities',
-        value: 'Action Opportunities',
-      },
-    ],
+    label: 'GEN0',
+    value: 'GEN0',
+    tooltip: 'GEN0-tooltip',
   },
   {
-    label: 'thematics',
-    key: 'thematic',
-    options: [
-      {
-        label: 'energy-finance',
-        value: 'Energy Finance',
-      },
-      {
-        label: 'gender-equality',
-        value: 'Gender Equality',
-      },
-      {
-        label: 'energy-governance',
-        value: 'Energy Governance',
-      },
-    ],
+    label: 'GEN1',
+    value: 'GEN1',
+    tooltip: 'GEN1-tooltip',
+  },
+  {
+    label: 'GEN2',
+    value: 'GEN2',
+    tooltip: 'GEN2-tooltip',
+  },
+  {
+    label: 'GEN3',
+    value: 'GEN3',
+    tooltip: 'GEN3-tooltip',
   },
 ];
 

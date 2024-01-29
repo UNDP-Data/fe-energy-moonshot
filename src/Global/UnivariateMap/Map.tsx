@@ -7,6 +7,7 @@ import { geoEqualEarth } from 'd3-geo';
 import { zoom } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
+import { Select } from 'antd';
 import { scaleThreshold } from 'd3-scale';
 import { useTranslation } from 'react-i18next';
 import UNDPColorModule from 'undp-viz-colors';
@@ -15,7 +16,7 @@ import {
 } from '../../Types';
 import Context from '../../Context/Context';
 import World from '../../Data/worldMap.json';
-import { COLOR_SCALES } from '../../Constants';
+import { COLOR_SCALES, DEFAULT_VALUES } from '../../Constants';
 import { Tooltip } from '../../Components/Tooltip';
 
 interface Props {
@@ -53,6 +54,7 @@ export const Map = (props: Props) => {
   const {
     xAxisIndicator,
     updateSelectedRegions,
+    updateXAxisIndicator,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
@@ -72,6 +74,15 @@ export const Map = (props: Props) => {
   const colorScale = scaleThreshold<number, string>().domain(valueArray).range(colorArray);
   // translation
   const { t } = useTranslation();
+
+  const options = indicators.map((d) => d.Indicator);
+
+  useEffect(() => {
+    if (options.findIndex((d) => d === xAxisIndicator) === -1) {
+      updateXAxisIndicator(options[0]);
+    }
+  }, [options]);
+
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -290,7 +301,22 @@ export const Map = (props: Props) => {
         </g>
       </svg>
       <LegendEl>
-        <h6 className='undp-typography'>{ t(xIndicatorMetaData.TranslationKey) }</h6>
+        <div className='margin-bottom-05' style={{ width: '100%', minWidth: '19rem' }}>
+          <p className='label'>{t('select-indicator')}</p>
+          <Select
+            className='undp-select'
+            placeholder='Please select'
+            value={xAxisIndicator}
+            onChange={(d) => { updateXAxisIndicator(d); }}
+            defaultValue={DEFAULT_VALUES.firstMetric}
+          >
+            {
+              options.map((d) => (
+                <Select.Option className='undp-select-option' key={d}>{t(indicators.filter((k) => k.Indicator === d)[0].TranslationKey)}</Select.Option>
+              ))
+            }
+          </Select>
+        </div>
         <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {

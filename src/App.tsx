@@ -53,7 +53,7 @@ const App = (props: Props) => {
     selectedProjectType: 'All',
     selectedTaxonomy: 'All',
     selectedFunding: 'all',
-    selectedVariousTaxonomy: 'all',
+    selectedGenderMarker: 'all',
     selectedSubCategory: 'all',
   };
 
@@ -73,10 +73,10 @@ const App = (props: Props) => {
     });
   };
 
-  const updateSelectedVariousTaxonomy = (selectedVariousTaxonomy: string[]) => {
+  const updateSelectedGenderMarker = (selectedGenderMarker: string[]) => {
     dispatch({
       type: 'UPDATE_SELECTED_VARIOUS_TAXONOMY',
-      payload: selectedVariousTaxonomy,
+      payload: selectedGenderMarker,
     });
   };
 
@@ -214,7 +214,7 @@ const App = (props: Props) => {
                   ...state,
                   updateSelectedRegions,
                   updateSelectedFunding,
-                  updateSelectedVariousTaxonomy,
+                  updateSelectedGenderMarker,
                   updateSelectedCountries,
                   updateSelectedProjects,
                   updateXAxisIndicator,
