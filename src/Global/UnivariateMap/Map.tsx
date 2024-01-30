@@ -146,8 +146,8 @@ export const Map = (props: Props) => {
                         stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
                         onClick={() => {
-                          if (avaliableCountryList.includes(d.properties.NAME)) {
-                            updateSelectedRegions(d.properties.NAME);
+                          if (avaliableCountryList.includes(d.properties.ISO3)) {
+                            updateSelectedRegions(d.properties.ISO3);
                           } else {
                             updateSelectedRegions('all');
                           }
@@ -169,8 +169,8 @@ export const Map = (props: Props) => {
                         stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
                         onClick={() => {
-                          if (avaliableCountryList.includes(d.properties.NAME)) {
-                            updateSelectedRegions(d.properties.NAME);
+                          if (avaliableCountryList.includes(d.properties.ISO3)) {
+                            updateSelectedRegions(d.properties.ISO3);
                           } else {
                             updateSelectedRegions('all');
                           }
