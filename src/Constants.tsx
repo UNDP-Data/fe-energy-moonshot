@@ -169,26 +169,30 @@ export const outputsTaxonomy = [
         label: 'all',
       },
       {
-        value: 'solar',
-        label: 'solar',
+        value: 'Access',
+        label: 'access',
       },
       {
-        value: 'wind',
-        label: 'wind',
+        value: 'Transition',
+        label: 'transition',
       },
       {
-        value: 'geothermal',
-        label: 'geothermal',
+        value: 'Productive Use',
+        label: 'productive-use',
       },
       {
-        value: 'biomass',
-        label: 'biomass',
+        value: 'Policy',
+        label: 'policy',
+      },
+      {
+        value: 'Finance',
+        label: 'finance',
       },
     ],
   },
   {
     value: 'Energy Access',
-    label: 'energy-access',
+    label: 'access',
     subcategories: [
       {
         value: 'all',
@@ -197,6 +201,10 @@ export const outputsTaxonomy = [
       {
         value: 'Solar',
         label: 'solar',
+      },
+      {
+        value: 'Hydro',
+        label: 'hydro',
       },
       {
         value: 'Wind',
@@ -218,7 +226,7 @@ export const outputsTaxonomy = [
   },
   {
     value: 'Energy Transition',
-    label: 'energy-transition',
+    label: 'transition',
     subcategories: [
       {
         value: 'all',
@@ -227,6 +235,10 @@ export const outputsTaxonomy = [
       {
         value: 'Solar',
         label: 'solar',
+      },
+      {
+        value: 'Hydro',
+        label: 'hydro',
       },
       {
         value: 'Wind',
@@ -259,12 +271,40 @@ export const outputsTaxonomy = [
         label: 'education',
       },
       {
+        value: 'Water Services',
+        label: 'water',
+      },
+      {
         value: 'Agriculture and Food System',
         label: 'agriculture',
       },
       {
-        value: 'Water Services',
-        label: 'water',
+        value: 'Energy Infrastructure Services',
+        label: 'infrastructure',
+      },
+      {
+        value: 'Transportation and E-mobility Services',
+        label: 'transport',
+      },
+    ],
+  },
+  {
+    label: 'policy',
+    value: 'Policy',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+    ],
+  },
+  {
+    label: 'finance',
+    value: 'Market Development',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
       },
     ],
   },

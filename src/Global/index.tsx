@@ -36,21 +36,16 @@ export const Global = (props: Props) => {
     selectedGenderMarker,
   } = useContext(Context) as CtxDataType;
   let filteredProjectData = [...projectLevelData];
-  if (selectedCategory !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.outputs.some((o) => o.outputCategory === selectedCategory));
-  }
-  if (selectedSubCategory !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.outputs.some((o) => o.beneficiaryCategory === selectedSubCategory));
-  }
-  if (selectedCategory !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.outputs.some((o) => o.outputCategory === selectedCategory));
-  }
-  if (selectedFunding !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.verticalFunded === (selectedFunding === 'vf'));
-  }
-  if (selectedGenderMarker !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.genderMarker === selectedGenderMarker);
-  }
+
+  filteredProjectData = filteredProjectData.filter((d) => (
+    (selectedFunding === 'all' || d.verticalFunded === (selectedFunding === 'vf'))
+    && (selectedGenderMarker === 'all' || d.genderMarker === selectedGenderMarker)
+    && d.outputs.some((o) => (
+      (selectedCategory === 'all' || o.outputCategory === selectedCategory)
+      && (selectedSubCategory === 'all' || o.beneficiaryCategory === selectedSubCategory)
+      && (selectedSubCategory === 'all' || o.beneficiaryCategory === selectedSubCategory)
+    ))
+  ));
   const avaliableCountryList = Array.from(new Set(filteredProjectData.map((p) => p.countryName)));
   if (selectedRegions !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
@@ -72,14 +67,14 @@ export const Global = (props: Props) => {
           value = sumBy(country.values, (project:any) => sumBy(project.outputs, (output:any) => {
             if (selectedCategory === 'all' || output.outputCategory === selectedCategory) {
               if (selectedSubCategory === 'all' || output.beneficiaryCategory === selectedSubCategory) {
-                return output[indicatorName];
+                return output[indicatorName] || 0;
               }
               return 0;
             }
             return 0;
           }));
         } else {
-          value = sumBy(country.values, (project:any) => project[indicatorName]);
+          value = sumBy(country.values, (project:any) => project[indicatorName]) || 0;
         }
         return (
           {

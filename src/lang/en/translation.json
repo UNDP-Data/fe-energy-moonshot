@@ -136,5 +136,13 @@
   "project-info": "Project Info",
   "output-beneficiaries": "Output Beneficiaries",
   "output-description": "Output Description",
-  "type": "Type"
+  "type": "Type",
+  "access": "Access",
+  "transition": "Transition",
+  "productive-use": "Productive Use",
+  "policy": "Policy",
+  "finance": "Finance",
+  "hydro": "Hydro",
+  "infrastructure": "Infrastructure",
+  "transport": "Transport"
 }
