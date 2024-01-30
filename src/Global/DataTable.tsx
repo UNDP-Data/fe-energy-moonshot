@@ -78,7 +78,7 @@ const Project = (props:ProjectProps) => {
       <div style={{ width: '50%' }} className='undp-table-row-cell'>
         {
           project.outputs.map((o, i) => (
-            <div className='flex-div'>
+            <div key={`${i}output`} className='flex-div'>
               <div
                 style={{ width: '40%' }}
                 className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
@@ -89,8 +89,8 @@ const Project = (props:ProjectProps) => {
                     values={{
                       nBeneficaries: Math.abs(o.directBeneficiaries) < 1
                         ? o.directBeneficiaries : format('~s')(o.directBeneficiaries).replace('G', 'B'),
-                      outputType: t(o.beneficiaryCategory),
-                      outputCategory: t(o.outputCategory),
+                      outputType: o.beneficiaryCategory,
+                      outputCategory: o.outputCategory,
                     }}
                   />
                 </p>
@@ -144,7 +144,7 @@ export const DataTable = (props: TableProps) => {
           </div>
         </div>
         {
-          projects.map((project) => (<Project project={project} />))
+          projects.map((project, i) => (<Project key={`${i}project`} project={project} />))
         }
       </div>
     </>

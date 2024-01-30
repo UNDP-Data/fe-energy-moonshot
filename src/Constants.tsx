@@ -230,7 +230,7 @@ export const outputsTaxonomy = [
     subcategories: [
       {
         value: 'all',
-        label: 'All',
+        label: 'all',
       },
       {
         value: 'Solar',

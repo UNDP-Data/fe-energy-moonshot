@@ -46,18 +46,18 @@ export const Global = (props: Props) => {
       && (selectedSubCategory === 'all' || o.beneficiaryCategory === selectedSubCategory)
     ))
   ));
-  const avaliableCountryList = Array.from(new Set(filteredProjectData.map((p) => p.countryName)));
+  const avaliableCountryList = Array.from(new Set(filteredProjectData.map((p) => p.countryCode)));
   if (selectedRegions !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
-    || d.hdiTier === selectedRegions || d.countryName === selectedRegions || d.specialGroupings.includes(selectedRegions));
+    || d.hdiTier === selectedRegions || d.countryCode === selectedRegions || d.specialGroupings.includes(selectedRegions));
   }
 
   function calculateCountryTotals() {
     const groupedData = nest()
-      .key((d: any) => d.countryName)
+      .key((d: any) => d.countryCode)
       .entries(filteredProjectData);
     const countryData = groupedData.map((country) => {
-      const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
+      const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Alpha-3 code'] === country.key)];
       const { region } = country.values[0];
       const numberOfProjects = country.values.length;
       const indTemp = indicators.map((indicator) => {
@@ -96,8 +96,8 @@ export const Global = (props: Props) => {
   }
   const mapData = calculateCountryTotals();
   const countryList = projectLevelData.reduce((acum:string[], projectData) => {
-    if (!acum.includes(projectData.countryName)) {
-      acum.push(projectData.countryName);
+    if (!acum.includes(projectData.countryCode)) {
+      acum.push(projectData.countryCode);
     }
     return acum;
   }, []);

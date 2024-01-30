@@ -118,6 +118,7 @@ export interface ProjectLevelDataType{
   title: string,
   description: string,
   countryName: string,
+  countryCode: string,
   projectTitle: string,
   country: string,
   region: string,

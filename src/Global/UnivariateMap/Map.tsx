@@ -220,10 +220,10 @@ export const Map = (props: Props) => {
                     });
                   }}
                   onClick={() => {
-                    if (d['Country or Area'] === selectedRegions) {
+                    if (d['Alpha-3 code'] === selectedRegions) {
                       updateSelectedRegions('all');
                     } else {
-                      updateSelectedRegions(d['Country or Area']);
+                      updateSelectedRegions(d['Alpha-3 code']);
                     }
                   }}
                   onMouseLeave={() => {
