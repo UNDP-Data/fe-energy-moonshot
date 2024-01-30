@@ -39,7 +39,8 @@ export const Settings = (props: Props) => {
   }));
 
   const [subCategoriesTaxonomy, setSubCategoriesTaxonomy] = useState(() => {
-    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory) || outputsTaxonomyTranslated[0];
+    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory)
+      || outputsTaxonomyTranslated[0];
     return activeOutputsTaxonomy?.subcategories;
   });
 
@@ -55,7 +56,8 @@ export const Settings = (props: Props) => {
 
   useEffect(() => {
     updateSelectedSubCategory('all');
-    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory) || outputsTaxonomyTranslated[0];
+    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory)
+      || outputsTaxonomyTranslated[0];
     setSubCategoriesTaxonomy(activeOutputsTaxonomy.subcategories);
   }, [selectedCategory]);
 
@@ -104,7 +106,13 @@ export const Settings = (props: Props) => {
                   return (
                     <Select.OptGroup key={d.key} label={t(d.label)}>
                       {d.options.map((o) => (
-                        <Select.Option className='undp-select-option' label={t(o.label)} key={o.value}>{t(o.label)}</Select.Option>
+                        <Select.Option
+                          className='undp-select-option'
+                          label={t(o.label)}
+                          key={o.value}
+                        >
+                          {t(o.label)}
+                        </Select.Option>
                       ))}
                     </Select.OptGroup>
                   );
@@ -124,7 +132,7 @@ export const Settings = (props: Props) => {
               maxWidth: '550px',
             }}
           >
-            <p className='label underline'>{ t('gender-marker')}</p>
+            <p className='label underline'>{ t('select-gender-marker')}</p>
           </Tooltip>
           <Select
             showSearch

@@ -138,7 +138,7 @@ export const Global = (props: Props) => {
   return (
     <>
       <div className='flex-div flex-wrap'>
-        <div style={{ maxWidth: '75%', width: '100%' }}>
+        <div style={{ maxWidth: '100%', width: '100%' }}>
           <Settings
             countryList={countryList}
           />
@@ -154,9 +154,10 @@ export const Global = (props: Props) => {
             />
           </div>
         </div>
-        <div style={{ flex: '1 1', position: 'relative' }}>
-          <DataTable projects={filteredProjectData} />
-        </div>
+      </div>
+      <hr className='undp-style light' />
+      <div>
+        <DataTable projects={filteredProjectData} />
       </div>
     </>
   );

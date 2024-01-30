@@ -101,3 +101,6 @@ body {
 .underline {
   text-decoration: underline;
 }
+.table-cell-no-border {
+  border-bottom: none !important;
+}

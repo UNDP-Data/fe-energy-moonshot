@@ -1,6 +1,5 @@
-import { useTranslation } from 'react-i18next';
-import { Collapse } from 'antd';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
+import { format } from 'd3-format';
 import { ProjectLevelDataType } from '../Types';
 
 interface TableProps {
@@ -19,77 +18,95 @@ const Project = (props:ProjectProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className='margin-left-05 margin-right-04'>
-      <p className='undp-typography small-font'>
-        <b>{project.projectId}</b>
-        {' '}
-        -
-        {' '}
-        {project.countryName}
-        {' '}
-        -
-        {' '}
-        {project.projectTitle}
-        {' '}
-        -
-        {' '}
-        {t('budget')}
-        {' '}
-        {project.budget}
-        {' '}
-        -
-        {' '}
-        {t('energy-saved-mj')}
-        {' '}
-        {project.energySaved}
-        {' '}
-        -
-        {' '}
-        {t('ghg-emissions-reduction')}
-        {' '}
-        {project.ghgEmissions}
-      </p>
-      <Collapse
-        accordion
-        className='undp-accordion no-background'
-        bordered={false}
-        // items={items}
-        destroyInactivePanel
-        expandIcon={({ isActive }) => (
-          isActive
-            ? (
-              <ChevronDown size={16} strokeWidth={1} stroke='var(--blue-600)' />
-            ) : (
-              <ChevronRight size={16} strokeWidth={1} stroke='var(--blue-600)' />
-            )
-        )}
-        size='small'
-        expandIconPosition='end'
-      >
-        <Collapse.Panel header={t('outputs')} key='1'>
+    <div className='undp-table-row'>
+      <div style={{ width: '30%' }} className='undp-table-row-cell'>
+        <div className='padding-left-05 padding-right-05'>
+          <h6 className='undp-typography'>
+            {project.projectTitle}
+            {' - '}
+            {project.projectId}
+            {' - '}
+            {project.genderMarker}
+          </h6>
+          <p className='undp-typography'>
+            {project.projectDescription}
+          </p>
+        </div>
+      </div>
+      <div style={{ width: '20%' }} className='undp-table-row-cell'>
+        <div className='padding-left-05 padding-right-05'>
+          <p className='undp-typography'>
+            {t('country')}
+            {' - '}
+            <b>{project.countryName}</b>
+          </p>
+          <p className='undp-typography'>
+            {t('budget')}
+            {' - '}
+            <b>{Math.abs(project.budget) < 1 ? project.budget : format('~s')(project.budget).replace('G', 'B')}</b>
+          </p>
+          <p className='undp-typography'>
+            {t('type')}
+            {' - '}
+            <b>{t(project.verticalFunded ? 'vf' : 'non-vf')}</b>
+          </p>
           {
-            project.outputs.map((o, i) => (
-              <div key={i}>
-                <hr className='undp-style light' />
-                <p className='margin-left-05 undp-typography small-font'>
-                  {o.outputCategory}
+            project.genderMarker ? (
+              <p className='undp-typography'>
+                {t('gender-equality')}
+                {' - '}
+                <b>{t(`${project.genderMarker}-contribution`)}</b>
+              </p>
+            ) : ''
+          }
+          {
+            project.ghgEmissions ? (
+              <p className='undp-typography'>
+                {t('ghg-emissions-reduction')}
+                {' - '}
+                <b>
+                  {project.ghgEmissions}
+                  M
                   {' '}
-                  -
-                  {' '}
-                  {o.beneficiaryCategory}
-                  {' '}
-                  -
-                  {' '}
-                  {t('direct-beneficiaries')}
-                  {' '}
-                  {o.directBeneficiaries}
+                  {t('tonnes')}
+                </b>
+              </p>
+            ) : ''
+          }
+        </div>
+      </div>
+      <div style={{ width: '50%' }} className='undp-table-row-cell'>
+        {
+          project.outputs.map((o, i) => (
+            <div className='flex-div'>
+              <div
+                style={{ width: '40%' }}
+                className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
+              >
+                <p className='undp-typography'>
+                  <Trans
+                    i18nKey='output-data-text'
+                    values={{
+                      nBeneficaries: Math.abs(o.directBeneficiaries) < 1
+                        ? o.directBeneficiaries : format('~s')(o.directBeneficiaries).replace('G', 'B'),
+                      outputType: t(o.beneficiaryCategory),
+                      outputCategory: t(o.outputCategory),
+                    }}
+                  />
                 </p>
               </div>
-            ))
-          }
-        </Collapse.Panel>
-      </Collapse>
-      <hr className='undp-style' />
+              <div
+                style={{ width: '60%' }}
+                className={
+                  `undp-table-row-cell align-right ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
+                }
+              >
+                {o.outputDescription}
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   );
 };
@@ -102,20 +119,34 @@ export const DataTable = (props: TableProps) => {
   const { t } = useTranslation();
 
   return (
-    <div
-      className='undp-scrollbar'
-      style={{
-        overflow: 'auto', position: 'absolute', top: 0, height: '100%', maxWidth: '100%', width: '100%',
-      }}
-    >
-      <div
-        style={{ overflow: 'auto', backgroundColor: 'var(--gray-200)' }}
-      >
-        <h5 className='margin-left-04'>{t('filtered-projects')}</h5>
+    <>
+      <div className='undp-scrollbar' style={{ height: '20rem' }}>
+        <div className='undp-table-head undp-table-head-sticky'>
+          <div style={{ width: '30%' }} className='undp-table-head-cell undp-sticky-head-column'>
+            <div className='padding-left-05 padding-right-05'>
+              {t('project-title-and-description')}
+            </div>
+          </div>
+          <div style={{ width: '20%' }} className='undp-table-head-cell undp-sticky-head-column'>
+            <div className='padding-left-05 padding-right-05'>
+              {t('project-info')}
+            </div>
+          </div>
+          <div style={{ width: '20%' }} className='undp-table-head-cell undp-sticky-head-column align-right'>
+            <div className='padding-left-05 padding-right-05'>
+              {t('output-beneficiaries')}
+            </div>
+          </div>
+          <div style={{ width: '30%' }} className='undp-table-head-cell undp-sticky-head-column align-right'>
+            <div className='padding-left-05 padding-right-05'>
+              {t('output-description')}
+            </div>
+          </div>
+        </div>
         {
-          projects.map((p, i) => (<Project key={i} project={p} />))
+          projects.map((project) => (<Project project={project} />))
         }
       </div>
-    </div>
+    </>
   );
 };

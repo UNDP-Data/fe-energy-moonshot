@@ -132,6 +132,7 @@ export interface ProjectLevelDataType{
   ghgEmissions:number,
   fundingSources: string,
   hdiTier: string,
+  projectDescription:string,
   outputs:any[],
   thematics:string[],
   incomeGroup: string,
