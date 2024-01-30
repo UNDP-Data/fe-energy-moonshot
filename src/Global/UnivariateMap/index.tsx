@@ -9,6 +9,7 @@ import { Map } from './Map';
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
+  avaliableCountryList: string[];
   binningRangeLarge: IndicatorRange;
 }
 
@@ -22,6 +23,7 @@ const El = styled.div`
 export const UnivariateMap = (props: Props) => {
   const {
     data,
+    avaliableCountryList,
     binningRangeLarge,
     indicators,
   } = props;
@@ -42,6 +44,7 @@ export const UnivariateMap = (props: Props) => {
     <El id='graph-node'>
       <Map
         data={data}
+        avaliableCountryList={avaliableCountryList}
         binningRangeLarge={binningRangeLarge}
         indicators={indicators}
       />

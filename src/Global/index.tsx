@@ -51,6 +51,7 @@ export const Global = (props: Props) => {
   if (selectedGenderMarker !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.genderMarker === selectedGenderMarker);
   }
+  const avaliableCountryList = Array.from(new Set(filteredProjectData.map((p) => p.countryName)));
   if (selectedRegions !== 'all') {
     filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
     || d.hdiTier === selectedRegions || d.countryName === selectedRegions || d.specialGroupings.includes(selectedRegions));
@@ -148,6 +149,7 @@ export const Global = (props: Props) => {
           />
           <div style={{ backgroundColor: 'var(--gray-200)' }}>
             <UnivariateMap
+              avaliableCountryList={avaliableCountryList}
               data={mapData}
               indicators={indicators}
               binningRangeLarge={binningRangeLarge}

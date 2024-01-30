@@ -22,6 +22,7 @@ import { Tooltip } from '../../Components/Tooltip';
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
+  avaliableCountryList: string[];
   binningRangeLarge: IndicatorRange;
 }
 
@@ -49,10 +50,12 @@ export const Map = (props: Props) => {
   const {
     data,
     indicators,
+    avaliableCountryList,
     binningRangeLarge,
   } = props;
   const {
     xAxisIndicator,
+    selectedRegions,
     updateSelectedRegions,
     updateXAxisIndicator,
   } = useContext(Context) as CtxDataType;
@@ -102,7 +105,15 @@ export const Map = (props: Props) => {
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         ref={mapSvg}
       >
-        <rect y='-20' width={svgWidth} height={svgHeight + 40} fill='#f7f7f7' />
+        <rect
+          y='-20'
+          width={svgWidth}
+          height={svgHeight + 40}
+          fill='#f7f7f7'
+          onClick={() => {
+            updateSelectedRegions('all');
+          }}
+        />
         <g ref={mapG}>
           {
             (World as any).features.map((d: any, i: number) => {
@@ -134,6 +145,13 @@ export const Map = (props: Props) => {
                         d={masterPath}
                         stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
+                        onClick={() => {
+                          if (avaliableCountryList.includes(d.properties.NAME)) {
+                            updateSelectedRegions(d.properties.NAME);
+                          } else {
+                            updateSelectedRegions('all');
+                          }
+                        }}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -150,6 +168,13 @@ export const Map = (props: Props) => {
                         d={path}
                         stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
+                        onClick={() => {
+                          if (avaliableCountryList.includes(d.properties.NAME)) {
+                            updateSelectedRegions(d.properties.NAME);
+                          } else {
+                            updateSelectedRegions('all');
+                          }
+                        }}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -195,7 +220,11 @@ export const Map = (props: Props) => {
                     });
                   }}
                   onClick={() => {
-                    updateSelectedRegions(d['Country or Area']);
+                    if (d['Country or Area'] === selectedRegions) {
+                      updateSelectedRegions('all');
+                    } else {
+                      updateSelectedRegions(d['Country or Area']);
+                    }
                   }}
                   onMouseLeave={() => {
                     setHoverData(undefined);

@@ -98,7 +98,7 @@ const Project = (props:ProjectProps) => {
               <div
                 style={{ width: '60%' }}
                 className={
-                  `undp-table-row-cell align-right ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
+                  `undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
                 }
               >
                 {o.outputDescription}
@@ -132,12 +132,12 @@ export const DataTable = (props: TableProps) => {
               {t('project-info')}
             </div>
           </div>
-          <div style={{ width: '20%' }} className='undp-table-head-cell undp-sticky-head-column align-right'>
+          <div style={{ width: '20%' }} className='undp-table-head-cell undp-sticky-head-column'>
             <div className='padding-left-05 padding-right-05'>
               {t('output-beneficiaries')}
             </div>
           </div>
-          <div style={{ width: '30%' }} className='undp-table-head-cell undp-sticky-head-column align-right'>
+          <div style={{ width: '30%' }} className='undp-table-head-cell undp-sticky-head-column'>
             <div className='padding-left-05 padding-right-05'>
               {t('output-description')}
             </div>
