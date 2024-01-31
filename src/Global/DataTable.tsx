@@ -84,15 +84,16 @@ const Project = (props:ProjectProps) => {
                 className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
               >
                 <p className='undp-typography'>
-                  <Trans
-                    i18nKey='output-data-text'
-                    values={{
-                      nBeneficaries: Math.abs(o.directBeneficiaries) < 1
-                        ? o.directBeneficiaries : format('~s')(o.directBeneficiaries).replace('G', 'B'),
-                      outputType: o.beneficiaryCategory,
-                      outputCategory: o.outputCategory,
-                    }}
-                  />
+                  { o.directBeneficiaries !== 0 ? (
+                    <Trans
+                      i18nKey='output-data-text'
+                      values={{
+                        nBeneficaries: format('~s')(o.directBeneficiaries).replace('G', 'B'),
+                        outputType: o.beneficiaryCategory,
+                        outputCategory: o.outputCategory,
+                      }}
+                    />
+                  ) : t('indirect-beneficiaries')}
                 </p>
               </div>
               <div
