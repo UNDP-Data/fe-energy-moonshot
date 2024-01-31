@@ -24,6 +24,14 @@
         "AggregationLevel":"projects"
     },
     {
+        "Indicator": "MW Added",
+        "IndicatorDescription": "MW Added",
+        "DataKey": "mwAdded",
+        "TranslationKey": "mw-added",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"outputs"
+    },
+    {
         "Indicator": "GHG Emissions Reduction",
         "IndicatorDescription": "GHG Emissions Reduction (tonnes CO2)",
         "DataKey": "ghgEmissions",
