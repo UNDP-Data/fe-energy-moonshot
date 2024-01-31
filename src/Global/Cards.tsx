@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import sumBy from 'lodash.sumby';
 import styled from 'styled-components';
 import { format } from 'd3-format';
 import { useTranslation } from 'react-i18next';
-import { DataType } from '../Types';
+import { CtxDataType, DataType } from '../Types';
+import Context from '../Context/Context';
 
 interface WidthProps {
   width: string;
@@ -20,6 +22,9 @@ export const Cards = (props: Props) => {
   const {
     data,
   } = props;
+  const {
+    selectedCategory,
+  } = useContext(Context) as CtxDataType;
 
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
@@ -34,6 +39,7 @@ export const Cards = (props: Props) => {
   const cardData = {
     numberProjects: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'nProj')[0].value),
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
+    mwAdded: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'mwAdded')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
     numberCountries: data.length,
   };
@@ -52,8 +58,62 @@ export const Cards = (props: Props) => {
           <p>{t('number-countries')}</p>
         </StatCardsDiv>
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
-          <h3 className='undp-typography'>{cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}</h3>
-          <p>{t('people-benefiting')}</p>
+          {
+            (selectedCategory === 'Energy Transition') && (
+              <>
+                <h3 className='undp-typography'>
+                  {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
+                </h3>
+                <p>{t('mw-added')}</p>
+              </>
+            )
+          }
+          {
+            (selectedCategory === 'Energy Access') && (
+              <>
+                <h3 className='undp-typography'>
+                  {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
+                </h3>
+                <p>{t('people-benefiting')}</p>
+              </>
+            )
+          }
+          {
+            (selectedCategory === 'Policy' || selectedCategory === 'Market Development') && (
+              <>
+                <h3 className='undp-typography'>
+                  N/A
+                </h3>
+              </>
+            )
+          }
+          {
+            (selectedCategory === 'all') && (
+              ((cardData.peopleBenefiting) && (
+                <>
+                  <h3 className='undp-typography'>
+                    {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
+                  </h3>
+                  <p>{t('people-benefiting')}</p>
+                </>
+              ))
+              || ((cardData.mwAdded) && (
+                <>
+                  <h3 className='undp-typography'>
+                    {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
+                  </h3>
+                  <p>{t('mw-added')}</p>
+                </>
+              ))
+              || (
+                <>
+                  <h3 className='undp-typography'>
+                    N/A
+                  </h3>
+                </>
+              )
+            )
+          }
         </StatCardsDiv>
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           <h3 className='undp-typography'>{cardData.grantAmount === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
