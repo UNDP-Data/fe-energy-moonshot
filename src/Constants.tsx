@@ -284,16 +284,16 @@ export const outputsTaxonomy = [
       },
     ],
   },
-  {
-    label: 'finance',
-    value: 'Market Development',
-    subcategories: [
-      {
-        value: 'all',
-        label: 'all',
-      },
-    ],
-  },
+  // {
+  //   label: 'finance',
+  //   value: 'Market Development',
+  //   subcategories: [
+  //     {
+  //       value: 'all',
+  //       label: 'all',
+  //     },
+  //   ],
+  // },
 ];
 
 export const countryGroupingsTaxonomy = [
