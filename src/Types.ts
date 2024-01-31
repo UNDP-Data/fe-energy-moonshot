@@ -114,7 +114,7 @@ export interface CountryData{
   values: CountryIndicatorDataType[];
 }
 export interface ProjectLevelDataType{
-  projectId: string,
+  id: string,
   title: string,
   description: string,
   countryName: string,

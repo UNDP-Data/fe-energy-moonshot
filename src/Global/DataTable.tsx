@@ -22,14 +22,14 @@ const Project = (props:ProjectProps) => {
       <div style={{ width: '30%' }} className='undp-table-row-cell'>
         <div className='padding-left-05 padding-right-05'>
           <h6 className='undp-typography'>
-            {project.projectTitle}
+            {project.title}
             {' - '}
-            {project.projectId}
+            {project.id}
             {' - '}
             {project.genderMarker}
           </h6>
           <p className='undp-typography'>
-            {project.projectDescription}
+            {project.description}
           </p>
         </div>
       </div>
@@ -102,7 +102,7 @@ const Project = (props:ProjectProps) => {
                   `undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
                 }
               >
-                {o.outputDescription}
+                {o.description}
               </div>
             </div>
           ))
