@@ -199,28 +199,32 @@ export const outputsTaxonomy = [
         label: 'all',
       },
       {
-        value: 'Solar',
-        label: 'solar',
-      },
-      {
-        value: 'Hydro',
-        label: 'hydro',
-      },
-      {
-        value: 'Wind',
-        label: 'wind',
-      },
-      {
-        value: 'Geothermal',
-        label: 'geothermal',
-      },
-      {
-        value: 'Biomass',
-        label: 'biomass',
+        value: 'Clean Electricity',
+        label: 'clean-electricity',
       },
       {
         value: 'Clean Cooking',
         label: 'clean-cooking',
+      },
+      {
+        value: 'Health Services',
+        label: 'health',
+      },
+      {
+        value: 'Water Services',
+        label: 'water',
+      },
+      {
+        value: 'Agriculture and Food System',
+        label: 'agriculture',
+      },
+      {
+        value: 'Transportation and E-mobility Services',
+        label: 'transport',
+      },
+      {
+        value: 'Energy Infrastructure Services',
+        label: 'infrastructure',
       },
     ],
   },
@@ -249,42 +253,8 @@ export const outputsTaxonomy = [
         label: 'geothermal',
       },
       {
-        value: 'Biomass',
+        value: 'Bioenergy',
         label: 'biomass',
-      },
-    ],
-  },
-  {
-    value: 'Productive Use',
-    label: 'productive-use',
-    subcategories: [
-      {
-        value: 'all',
-        label: 'all',
-      },
-      {
-        value: 'Health Services',
-        label: 'health',
-      },
-      {
-        value: 'Education Services',
-        label: 'education',
-      },
-      {
-        value: 'Water Services',
-        label: 'water',
-      },
-      {
-        value: 'Agriculture and Food System',
-        label: 'agriculture',
-      },
-      {
-        value: 'Energy Infrastructure Services',
-        label: 'infrastructure',
-      },
-      {
-        value: 'Transportation and E-mobility Services',
-        label: 'transport',
       },
     ],
   },
@@ -295,6 +265,22 @@ export const outputsTaxonomy = [
       {
         value: 'all',
         label: 'all',
+      },
+      {
+        value: 'Electricity Access',
+        label: 'energy-access',
+      },
+      {
+        value: 'Renewable Energy',
+        label: 'renewable-energy',
+      },
+      {
+        value: 'Clean Cooking',
+        label: 'clean-cooking',
+      },
+      {
+        value: 'Energy Efficiency',
+        label: 'energy-efficiency',
       },
     ],
   },
