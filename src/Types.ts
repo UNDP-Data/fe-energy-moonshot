@@ -63,6 +63,9 @@ export interface HoverDataType {
   continent: string;
   peopleDirectlyBenefiting?: number;
   grantAmount?: number;
+  energySaved?: number;
+  mwAdded?: number;
+  ghgEmissions?: number;
   numberProjects?: number;
   xPosition: number;
   yPosition: number;

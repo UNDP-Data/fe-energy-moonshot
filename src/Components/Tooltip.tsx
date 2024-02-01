@@ -22,6 +22,7 @@ const TooltipEl = styled.div<TooltipElProps>`
   padding: var(--spacing-05);
   word-wrap: break-word;
   width:${(props) => (props.horizontalAlignment === 'right' ? 'auto' : (props.x < 280 ? `${props.x - 60}px` : '280px'))};
+  max-width: 280px;
   top: ${(props) => (props.verticalAlignment === 'bottom' ? props.y - 40 : props.y + 40)}px;
   left: ${(props) => (props.horizontalAlignment === 'left' ? props.x - 20 : props.x + 20)}px;
   transform: ${(props) => `translate(${props.horizontalAlignment === 'left' ? '-100%' : '0%'},${props.verticalAlignment === 'top' ? '-100%' : '0%'})`};
@@ -33,7 +34,7 @@ export const Tooltip = (props: Props) => {
   } = props;
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
-
+    if (d < 1) return parseFloat(d.toFixed(3));
     if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
@@ -58,20 +59,60 @@ export const Tooltip = (props: Props) => {
         </h5>
       </div>
       <div className='margin-bottom-05'>
-        <p className='small-font margin-bottom-00'>
-          {`${t('people-benefiting')}:`}
-          {' '}
-          <span className='bold'>
-            { data.peopleDirectlyBenefiting === 0 ? t('indirect-beneficiaries') : formatData(data.peopleDirectlyBenefiting) }
-          </span>
-        </p>
-        <p className='small-font margin-bottom-00'>
-          {`${t('grant-amount-usd-1')}:`}
-          {' '}
-          <span className='bold'>
-            {data.grantAmount === undefined ? 'N/A' : formatData(data.grantAmount)}
-          </span>
-        </p>
+        { data.peopleDirectlyBenefiting !== 0
+          ? (
+            <p className='small-font margin-bottom-00'>
+              {`${t('people-benefiting')}:`}
+              {' '}
+              <span className='bold'>
+                {formatData(data.peopleDirectlyBenefiting)}
+              </span>
+            </p>
+          ) : (
+            <p className='small-font margin-bottom-00'>
+              {t('indirect-beneficiaries')}
+            </p>
+          )}
+        { data.grantAmount !== 0
+          ? (
+            <p className='small-font margin-bottom-00'>
+              {`${t('grant-amount')}:`}
+              {' '}
+              <span className='bold'>
+                {formatData(data.grantAmount)}
+              </span>
+            </p>
+          ) : ''}
+        { data.energySaved !== 0
+          ? (
+            <p className='small-font margin-bottom-00'>
+              {`${t('energy-saved-mj')}:`}
+              {' '}
+              <span className='bold'>
+                {formatData(data.energySaved)}
+              </span>
+            </p>
+          ) : ''}
+        { data.mwAdded !== 0
+          ? (
+            <p className='small-font margin-bottom-00'>
+              {`${t('mw-added')}:`}
+              {' '}
+              <span className='bold'>
+                {formatData(data.mwAdded)}
+              </span>
+            </p>
+          ) : ''}
+        { data.ghgEmissions !== 0
+          ? (
+            <p className='small-font margin-bottom-00'>
+              {`${t('ghg-emissions-reduction')}:`}
+              {' '}
+              <span className='bold'>
+                {formatData(data.ghgEmissions)}
+              </span>
+            </p>
+          ) : ''}
         <p className='small-font margin-bottom-00'>
           {`${t('number-projects')}:`}
           {' '}
