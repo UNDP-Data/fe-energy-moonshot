@@ -133,8 +133,29 @@ export const Global = (props: Props) => {
   const binningRangeLarge = calculateRanges();
   return (
     <>
-      <div className='flex-div flex-wrap'>
+      <div id='tracker' className='flex-div flex-wrap padding-top-06'>
         <div style={{ maxWidth: '100%', width: '100%' }}>
+          <h2 className='undp-typography margin-bottom-05 page-title'>
+            <span style={{ color: 'var(--yellow)' }}>
+              Energy Moonshot
+            </span>
+            {' '}
+            Tracker
+          </h2>
+          <h5 className='undp-typography'>
+            Select filters to analyze beneficiary targets of
+            {' '}
+            <b>
+              UNDP energy-related projects
+            </b>
+            {' '}
+            active during the Strategic Plan
+            {' '}
+            <b>
+              2022-2025:
+            </b>
+            {' '}
+          </h5>
           <Settings
             countryList={countryList}
           />
