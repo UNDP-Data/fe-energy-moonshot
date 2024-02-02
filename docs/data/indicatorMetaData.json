@@ -21,7 +21,7 @@
         "DataKey": "energySaved",
         "TranslationKey": "energy-saved-mj",
         "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
-        "AggregationLevel":"projects"
+        "AggregationLevel":"outputs"
     },
     {
         "Indicator": "MW Added",
