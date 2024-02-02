@@ -256,6 +256,10 @@ export const outputsTaxonomy = [
         value: 'Bioenergy',
         label: 'biomass',
       },
+      {
+        value: 'Efficiency',
+        label: 'energy-efficiency',
+      },
     ],
   },
   {

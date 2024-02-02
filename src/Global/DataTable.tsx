@@ -95,6 +95,17 @@ const Project = (props:ProjectProps) => {
                     />
                   ) : t('indirect-beneficiaries')}
                 </p>
+                {
+                  o.energySaved ? (
+                    <p className='undp-typography'>
+                      {t('energy-saved-mj')}
+                      {' - '}
+                      <b>
+                        {format('~s')(o.energySaved).replace('G', 'B')}
+                      </b>
+                    </p>
+                  ) : ''
+                }
               </div>
               <div
                 style={{ width: '60%' }}
