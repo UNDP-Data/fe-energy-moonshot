@@ -94,6 +94,23 @@ const Project = (props:ProjectProps) => {
                       }}
                     />
                   ) : t('indirect-beneficiaries')}
+                  { o.percentFemale && o.directBeneficiaries ? (
+                    <Trans
+                      i18nKey='output-gender-data'
+                      values={{
+                        nFemaleBeneficaries: format('~s')(o.directBeneficiaries * o.percentFemale).replace('G', 'B'),
+                        percent: !(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale),
+                      }}
+                    />
+                  ) : ''}
+                  { o.percentFemale && o.directBeneficiaries === 0 ? (
+                    <Trans
+                      i18nKey='output-gender-data-indirect'
+                      values={{
+                        percent: !(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale),
+                      }}
+                    />
+                  ) : ''}
                 </p>
                 {
                   o.energySaved ? (
