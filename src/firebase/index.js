@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { collection, addDoc, getFirestore } from 'firebase/firestore';
 
-// TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyBzPopNjJAfYiYOmPQAt0VfST1UgfzSWS8',
   authDomain: 'energy-moonshot-tracker.firebaseapp.com',

@@ -223,7 +223,7 @@ const Project = (props:ProjectProps) => {
                 >
                   <EditableCell
                     text={o.description}
-                    fieldName={`output-${i+1}-${o.outputCategory}`}
+                    fieldName={`output-${i + 1}-${o.outputCategory}`}
                     sendUpdate={sendUpdateCallback}
                   />
                 </div>
