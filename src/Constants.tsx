@@ -207,19 +207,19 @@ export const outputsTaxonomy = [
         label: 'clean-cooking',
       },
       {
-        value: 'Health Services',
+        value: 'Health',
         label: 'health',
       },
       {
-        value: 'Water Services',
+        value: 'Water',
         label: 'water',
       },
       {
-        value: 'Agriculture and Food System',
+        value: 'Agriculture',
         label: 'agriculture',
       },
       {
-        value: 'Transportation and E-mobility Services',
+        value: 'Transport',
         label: 'transport',
       },
       {
