@@ -68,7 +68,7 @@ const Project = (props:ProjectProps) => {
       addProposedEdit({
         fieldName,
         value,
-        date: new Date().toGMTString(),
+        date: new Date().toUTCString(),
         outputId,
         ...userRef.current as FieldType,
         projectId: project.id,
