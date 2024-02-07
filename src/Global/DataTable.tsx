@@ -1,7 +1,7 @@
 import {
   useState, useEffect, useRef, useCallback,
 } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { format } from 'd3-format';
 import { Modal, Form, Input } from 'antd';
 import { ProjectLevelDataType } from '../Types';
@@ -59,7 +59,7 @@ const Project = (props:ProjectProps) => {
     });
   }
 
-  async function sendUpdate(value:string, fieldName:string) {
+  async function sendUpdate(value:string, fieldName:string, outputId?:string) {
     if (!userRef.current) {
       setModalOpen(true);
       await requestUserData();
@@ -68,6 +68,7 @@ const Project = (props:ProjectProps) => {
       addProposedEdit({
         fieldName,
         value,
+        outputId,
         ...userRef.current as FieldType,
         projectId: project.id,
       });
@@ -134,36 +135,28 @@ const Project = (props:ProjectProps) => {
                 />
               </b>
             </p>
-            {
-              project.genderMarker ? (
-                <p className='undp-typography'>
-                  {t('gender-equality')}
-                  {' - '}
-                  <b>
-                    <EditableCell
-                      text={t(`${project.genderMarker}-contribution`)}
-                      fieldName='genderMarker'
-                      sendUpdate={sendUpdateCallback}
-                    />
-                  </b>
-                </p>
-              ) : ''
-            }
-            {
-              project.ghgEmissions ? (
-                <p className='undp-typography'>
-                  {t('ghg-emissions-reduction')}
-                  {' - '}
-                  <b>
-                    <EditableCell
-                      text={`${project.ghgEmissions}M ${t('tonnes')}`}
-                      fieldName='ghgEmissions'
-                      sendUpdate={sendUpdateCallback}
-                    />
-                  </b>
-                </p>
-              ) : ''
-            }
+            <p className='undp-typography'>
+              {t('gender-equality')}
+              {' - '}
+              <b>
+                <EditableCell
+                  text={project.genderMarker === null ? `${project.genderMarker}` : 'N/A'}
+                  fieldName='genderMarker'
+                  sendUpdate={sendUpdateCallback}
+                />
+              </b>
+            </p>
+            <p className='undp-typography'>
+              {t('ghg-emissions-reduction')}
+              {' - '}
+              <b>
+                <EditableCell
+                  text={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : 'N/A'}
+                  fieldName='ghgEmissions'
+                  sendUpdate={sendUpdateCallback}
+                />
+              </b>
+            </p>
           </div>
         </div>
         <div style={{ width: '50%' }} className='undp-table-row-cell'>
@@ -176,44 +169,82 @@ const Project = (props:ProjectProps) => {
                 >
                   <p className='undp-typography'>
                     { o.directBeneficiaries !== 0 ? (
-                      <Trans
-                        i18nKey='output-data-text'
-                        values={{
-                          nBeneficaries: format('~s')(o.directBeneficiaries).replace('G', 'B'),
-                          outputType: o.beneficiaryCategory,
-                          outputCategory: o.outputCategory,
-                        }}
-                      />
-                    ) : t('indirect-beneficiaries')}
-                    { o.percentFemale && o.directBeneficiaries ? (
-                      <Trans
-                        i18nKey='output-gender-data'
-                        values={{
-                          nFemaleBeneficaries: format('~s')(o.directBeneficiaries * o.percentFemale).replace('G', 'B'),
-                          percent: !(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale),
-                        }}
-                      />
-                    ) : ''}
-                    { o.percentFemale && o.directBeneficiaries === 0 ? (
-                      <Trans
-                        i18nKey='output-gender-data-indirect'
-                        values={{
-                          percent: !(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale),
-                        }}
-                      />
-                    ) : ''}
-                  </p>
-                  {
-                    o.energySaved ? (
                       <p className='undp-typography'>
-                        {t('energy-saved-mj')}
+                        {t('direct-beneficiaries')}
                         {' - '}
                         <b>
-                          {format('~s')(o.energySaved).replace('G', 'B')}
+                          <EditableCell
+                            text={format('~s')(o.directBeneficiaries).replace('G', 'B')}
+                            fieldName='beneficiaries'
+                            outputId={o.id}
+                            sendUpdate={sendUpdateCallback}
+                          />
                         </b>
                       </p>
-                    ) : ''
-                  }
+                    ) : (
+                      <p className='undp-typography'>
+                        <b>
+                          <EditableCell
+                            text={t('indirect-beneficiaries')}
+                            fieldName='beneficiaries'
+                            outputId={o.id}
+                            sendUpdate={sendUpdateCallback}
+                          />
+                        </b>
+                      </p>
+                    )}
+                    <p className='undp-typography'>
+                      {t('select-output-type')}
+                      {' - '}
+                      <b>
+                        <EditableCell
+                          text={o.outputCategory}
+                          fieldName='beneficiaries'
+                          outputId={o.id}
+                          sendUpdate={sendUpdateCallback}
+                        />
+                      </b>
+                    </p>
+                    <p className='undp-typography'>
+                      {t('select-output-sub-type')}
+                      {' - '}
+                      <b>
+                        <EditableCell
+                          text={o.beneficiaryCategory}
+                          fieldName='beneficiaries'
+                          outputId={o.id}
+                          sendUpdate={sendUpdateCallback}
+                        />
+                      </b>
+                    </p>
+                    <p className='undp-typography'>
+                      {t('female-percent')}
+                      {' - '}
+                      <b>
+                        <EditableCell
+                          text={
+                            o.percentFemale === null ? 'N/A'
+                              : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
+                          }
+                          fieldName='percentFemale'
+                          outputId={o.id}
+                          sendUpdate={sendUpdateCallback}
+                        />
+                      </b>
+                    </p>
+                  </p>
+                  <p className='undp-typography'>
+                    {t('energy-saved-mj')}
+                    {' - '}
+                    <b>
+                      <EditableCell
+                        text={o.energySaved ? format('~s')(o.energySaved).replace('G', 'B') : 'N/A'}
+                        fieldName='energySaved'
+                        outputId={o.id}
+                        sendUpdate={sendUpdateCallback}
+                      />
+                    </b>
+                  </p>
                 </div>
                 <div
                   style={{ width: '60%' }}
@@ -223,7 +254,8 @@ const Project = (props:ProjectProps) => {
                 >
                   <EditableCell
                     text={o.description}
-                    fieldName={`output-${i + 1}-${o.outputCategory}`}
+                    outputId={o.id}
+                    fieldName='description'
                     sendUpdate={sendUpdateCallback}
                   />
                 </div>
