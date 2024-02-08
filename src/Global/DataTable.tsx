@@ -141,7 +141,7 @@ const Project = (props:ProjectProps) => {
               {' - '}
               <b>
                 <EditableCell
-                  text={project.genderMarker === null ? `${project.genderMarker}` : 'N/A'}
+                  text={project.genderMarker === null ? `${project.genderMarker}` : '__'}
                   fieldName='genderMarker'
                   sendUpdate={sendUpdateCallback}
                 />
@@ -152,7 +152,7 @@ const Project = (props:ProjectProps) => {
               {' - '}
               <b>
                 <EditableCell
-                  text={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : 'N/A'}
+                  text={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : '__'}
                   fieldName='ghgEmissions'
                   sendUpdate={sendUpdateCallback}
                 />
@@ -224,7 +224,7 @@ const Project = (props:ProjectProps) => {
                       <b>
                         <EditableCell
                           text={
-                            o.percentFemale === null ? 'N/A'
+                            o.percentFemale === null ? '__'
                               : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
                           }
                           fieldName='percentFemale'
@@ -239,7 +239,7 @@ const Project = (props:ProjectProps) => {
                     {' - '}
                     <b>
                       <EditableCell
-                        text={o.energySaved ? format('~s')(o.energySaved).replace('G', 'B') : 'N/A'}
+                        text={o.energySaved ? format('~s')(o.energySaved).replace('G', 'B') : '__'}
                         fieldName='energySaved'
                         outputId={o.id}
                         sendUpdate={sendUpdateCallback}
@@ -337,7 +337,7 @@ export const DataTable = (props: TableProps) => {
 
   return (
     <>
-      <div className='undp-scrollbar' style={{ height: '20rem' }}>
+      <div className='undp-scrollbar' style={{ height: '40rem' }}>
         <div className='undp-table-head undp-table-head-sticky'>
           <div style={{ width: '30%' }} className='undp-table-head-cell undp-sticky-head-column'>
             <div className='padding-left-05 padding-right-05'>
