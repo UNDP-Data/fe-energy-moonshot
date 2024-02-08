@@ -151,6 +151,7 @@
   "energy-efficiency": "Energy Efficiency",
   "type": "Type",
   "access": "Access",
+  "name": "Name",
   "transition": "Transition",
   "productive-use": "Productive Use",
   "policy": "Policy",

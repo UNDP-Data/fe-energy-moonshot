@@ -27,6 +27,7 @@ export const EditableCell = (props: Props) => {
     <span
       style={{ color: 'var(--blue-700)' }}
       contentEditable
+      suppressContentEditableWarning
       onFocus={(e) => {
         setCachedValue(e.target.innerText);
       }}

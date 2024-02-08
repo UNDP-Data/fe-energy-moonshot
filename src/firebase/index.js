@@ -16,9 +16,16 @@ const db = getFirestore(app);
 // Get a list of cities from your database
 export async function addProposedEdit(data) {
   try {
-    const docRef = await addDoc(collection(db, 'edits'), data);
-    console.log('Document written with ID: ', docRef.id);
+    await addDoc(collection(db, 'edits'), data);
   } catch (e) {
-    console.error('Error adding document: ', e);
+    console.warn(e);
+  }
+}
+
+export async function createNewComment(data) {
+  try {
+    await addDoc(collection(db, 'comments'), data);
+  } catch (e) {
+    console.warn(e);
   }
 }

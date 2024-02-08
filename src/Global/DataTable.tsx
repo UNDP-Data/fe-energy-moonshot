@@ -3,7 +3,9 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'd3-format';
-import { Modal, Form, Input } from 'antd';
+import {
+  Modal, Form, Input, message,
+} from 'antd';
 import { ProjectLevelDataType } from '../Types';
 import { EditableCell } from '../Components/EditableCell';
 import { addProposedEdit } from '../firebase';
@@ -31,6 +33,8 @@ const Project = (props:ProjectProps) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [userData, setUserData] = useState(null);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const userRef = useRef(userData);
   const modalRef = useRef(modalOpen);
@@ -65,13 +69,20 @@ const Project = (props:ProjectProps) => {
       await requestUserData();
     }
     if (userRef.current) {
-      addProposedEdit({
+      await addProposedEdit({
         fieldName,
         value,
         date: new Date().toUTCString(),
         outputId,
         ...userRef.current as FieldType,
         projectId: project.id,
+      });
+
+      messageApi.open({
+        type: 'success',
+        content: 'Update sent',
+        duration: 5,
+        className: 'undp-message',
       });
     }
   }
@@ -80,6 +91,7 @@ const Project = (props:ProjectProps) => {
 
   return (
     <>
+      {contextHolder}
       <div className='undp-table-row'>
         <div style={{ width: '30%' }} className='undp-table-row-cell'>
           <div className='padding-left-05 padding-right-05'>
@@ -168,71 +180,69 @@ const Project = (props:ProjectProps) => {
                   style={{ width: '40%' }}
                   className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
                 >
+                  { o.directBeneficiaries !== 0 ? (
+                    <p className='undp-typography'>
+                      {t('direct-beneficiaries')}
+                      {' - '}
+                      <b>
+                        <EditableCell
+                          text={format('~s')(o.directBeneficiaries).replace('G', 'B')}
+                          fieldName='beneficiaries'
+                          outputId={o.id}
+                          sendUpdate={sendUpdateCallback}
+                        />
+                      </b>
+                    </p>
+                  ) : (
+                    <p className='undp-typography'>
+                      <b>
+                        <EditableCell
+                          text={t('indirect-beneficiaries')}
+                          fieldName='beneficiaries'
+                          outputId={o.id}
+                          sendUpdate={sendUpdateCallback}
+                        />
+                      </b>
+                    </p>
+                  )}
                   <p className='undp-typography'>
-                    { o.directBeneficiaries !== 0 ? (
-                      <p className='undp-typography'>
-                        {t('direct-beneficiaries')}
-                        {' - '}
-                        <b>
-                          <EditableCell
-                            text={format('~s')(o.directBeneficiaries).replace('G', 'B')}
-                            fieldName='beneficiaries'
-                            outputId={o.id}
-                            sendUpdate={sendUpdateCallback}
-                          />
-                        </b>
-                      </p>
-                    ) : (
-                      <p className='undp-typography'>
-                        <b>
-                          <EditableCell
-                            text={t('indirect-beneficiaries')}
-                            fieldName='beneficiaries'
-                            outputId={o.id}
-                            sendUpdate={sendUpdateCallback}
-                          />
-                        </b>
-                      </p>
-                    )}
-                    <p className='undp-typography'>
-                      {t('select-output-type')}
-                      {' - '}
-                      <b>
-                        <EditableCell
-                          text={o.outputCategory}
-                          fieldName='beneficiaries'
-                          outputId={o.id}
-                          sendUpdate={sendUpdateCallback}
-                        />
-                      </b>
-                    </p>
-                    <p className='undp-typography'>
-                      {t('select-output-sub-type')}
-                      {' - '}
-                      <b>
-                        <EditableCell
-                          text={o.beneficiaryCategory}
-                          fieldName='beneficiaries'
-                          outputId={o.id}
-                          sendUpdate={sendUpdateCallback}
-                        />
-                      </b>
-                    </p>
-                    <p className='undp-typography'>
-                      {t('female-percent')}
-                      {' - '}
-                      <b>
-                        <EditableCell
-                          text={
-                            o.percentFemale === null ? '__'
-                              : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
-                          }
-                          fieldName='percentFemale'
-                          outputId={o.id}
-                          sendUpdate={sendUpdateCallback}
-                        />
-                      </b>
-                    </p>
+                    {t('select-output-type')}
+                    {' - '}
+                    <b>
+                      <EditableCell
+                        text={o.outputCategory}
+                        fieldName='beneficiaries'
+                        outputId={o.id}
+                        sendUpdate={sendUpdateCallback}
+                      />
+                    </b>
+                  </p>
+                  <p className='undp-typography'>
+                    {t('select-output-sub-type')}
+                    {' - '}
+                    <b>
+                      <EditableCell
+                        text={o.beneficiaryCategory}
+                        fieldName='beneficiaries'
+                        outputId={o.id}
+                        sendUpdate={sendUpdateCallback}
+                      />
+                    </b>
+                  </p>
+                  <p className='undp-typography'>
+                    {t('female-percent')}
+                    {' - '}
+                    <b>
+                      <EditableCell
+                        text={
+                          o.percentFemale === null ? '__'
+                            : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
+                        }
+                        fieldName='percentFemale'
+                        outputId={o.id}
+                        sendUpdate={sendUpdateCallback}
+                      />
+                    </b>
                   </p>
                   <p className='undp-typography'>
                     {t('energy-saved-mj')}
