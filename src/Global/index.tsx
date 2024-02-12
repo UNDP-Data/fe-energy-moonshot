@@ -14,7 +14,6 @@ import { Settings } from './Settings';
 import { UnivariateMap } from './UnivariateMap';
 import { DataTable } from './DataTable';
 import { MainText } from './MainText';
-import { CommentForm } from './CommentForm';
 
 interface Props {
   countryGroupData: CountryGroupDataType[];
@@ -177,10 +176,6 @@ export const Global = (props: Props) => {
       <hr className='undp-style light' />
       <div>
         <DataTable projects={filteredProjectData} />
-      </div>
-      <hr className='undp-style light margin-top-05 margin-bottom-05' />
-      <div>
-        <CommentForm />
       </div>
     </>
   );

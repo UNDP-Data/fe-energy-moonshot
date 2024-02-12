@@ -198,4 +198,4 @@ export interface IndicatorRange {
   [key: string]: number[],
 }
 // export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
-export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/Lenseg/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '.';
+export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/Lenseg/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '/Energy-Hub-Dashboard/';

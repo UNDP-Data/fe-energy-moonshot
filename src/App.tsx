@@ -16,6 +16,8 @@ import Million from './Global/500million';
 import Footer from './Global/Footer';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
+import { CommentForm } from './Global/CommentForm';
+import Resources from './Global/Resources';
 import { DEFAULT_VALUES } from './Constants';
 
 import './styles/style.css';
@@ -239,6 +241,15 @@ const App = (props: Props) => {
                       // regions={regionList}
                       projectLevelData={projectLevelData}
                     />
+                  </div>
+
+                  <hr className='undp-style light margin-top-05 margin-bottom-05' />
+                  <div>
+                    <Resources />
+                  </div>
+                  <hr className='undp-style light margin-top-05 margin-bottom-05' />
+                  <div>
+                    <CommentForm />
                   </div>
                 </div>
                 <Footer />

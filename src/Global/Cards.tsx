@@ -50,14 +50,6 @@ export const Cards = (props: Props) => {
     <>
       <div className='stat-container flex-div margin-bottom-05'>
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
-          <h3 className='undp-typography'>{formatData(cardData.numberProjects)}</h3>
-          <p>{t('number-projects')}</p>
-        </StatCardsDiv>
-        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
-          <h3 className='undp-typography'>{formatData(cardData.numberCountries)}</h3>
-          <p>{t('number-countries')}</p>
-        </StatCardsDiv>
-        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           {
             (selectedCategory === 'Energy Transition') && (
               <>
@@ -114,6 +106,14 @@ export const Cards = (props: Props) => {
               )
             )
           }
+        </StatCardsDiv>
+        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
+          <h3 className='undp-typography'>{formatData(cardData.numberProjects)}</h3>
+          <p>{t('number-projects')}</p>
+        </StatCardsDiv>
+        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
+          <h3 className='undp-typography'>{formatData(cardData.numberCountries)}</h3>
+          <p>{t('number-countries')}</p>
         </StatCardsDiv>
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           <h3 className='undp-typography'>{cardData.grantAmount === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
