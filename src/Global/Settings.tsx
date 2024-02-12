@@ -91,7 +91,15 @@ export const Settings = (props: Props) => {
       </div>
       <div className='flex-div flex-space-between margin-bottom-07'>
         <div style={{ maxWidth: 'calc(33.33% - .65rem)', width: '100%' }}>
-          <p className='label'>{t('select-country-group')}</p>
+          <Tooltip
+            title={<div dangerouslySetInnerHTML={{ __html: t('country-group-tooltip') || '' }} />}
+            placement='top'
+            overlayStyle={{
+              maxWidth: '550px',
+            }}
+          >
+            <p className='label underline'>{t('select-country-group')}</p>
+          </Tooltip>
           <Select
             showSearch
             className='undp-select'
@@ -158,7 +166,15 @@ export const Settings = (props: Props) => {
           </Select>
         </div>
         <div style={{ maxWidth: 'calc(33.33% - .65rem)', width: '100%' }}>
-          <p className='label'>{t('select-funding')}</p>
+          <Tooltip
+            title={<div dangerouslySetInnerHTML={{ __html: t('funding-tooltip') || '' }} />}
+            placement='top'
+            overlayStyle={{
+              maxWidth: '550px',
+            }}
+          >
+            <p className='label underline'>{t('select-funding')}</p>
+          </Tooltip>
           <Select
             showSearch
             filterOption={(input, option) => (option?.label ?? '').toString().toLowerCase().includes(input?.toLowerCase())}
