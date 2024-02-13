@@ -36,7 +36,6 @@ export const Cards = (props: Props) => {
   //   ? data.filter((d) => d['Country or Area'] === selectedCountries)
   //   : selectedRegions !== 'All'
   //     ? data.filter((d) => d.region === selectedRegions) : data;
-  console.log(data);
   const cardData = {
     numberProjects: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'nProj')[0].value),
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),

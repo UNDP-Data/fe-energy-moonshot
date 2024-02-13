@@ -63,10 +63,16 @@ export const Settings = (props: Props) => {
 
   return (
     <div>
-      <div className='margin-bottom-04'>
-        <p className='undp-typography label'>{t('select-output-type')}</p>
+      <div
+        style={{
+          maxWidth: '1200px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+        className='margin-bottom-00'
+      >
         <Segmented
-          className='undp-segmented-small'
+          className='undp-segmented-small padding-bottom-00 padding-left-00 padding-right-00 data-platform-segmented'
           block
           // @ts-ignore
           onChange={(d:string) => { updateSelectedCategory(d); }}
@@ -74,11 +80,17 @@ export const Settings = (props: Props) => {
           options={outputsTaxonomyTranslated}
         />
       </div>
-      <div className='margin-bottom-07 margin-left-05'>
-        <p className='undp-typography label'>{t('select-output-sub-type')}</p>
+      <div
+        style={{
+          maxWidth: '1200px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+        className='margin-left-auto margin-right-auto margin-bottom-07'
+      >
         <div className='flex-div flex-space-between'>
           <Segmented
-            className='undp-segmented-small'
+            className='undp-segmented-small data-platform-segmented-small padding-top-00 padding-bottom-00 padding-left-00 padding-right-00'
             block
             style={{ width: '100%' }}
             disabled={selectedCategory === 'all'}
