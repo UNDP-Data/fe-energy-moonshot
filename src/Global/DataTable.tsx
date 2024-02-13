@@ -11,10 +11,12 @@ import { EditableCell } from '../Components/EditableCell';
 import { addProposedEdit } from '../firebase';
 
 interface TableProps {
+  countryLinkDict: any;
   projects: ProjectLevelDataType[];
 }
 
 interface ProjectProps {
+  countryLinkDict: any;
   project: ProjectLevelDataType;
 }
 
@@ -27,6 +29,7 @@ type FieldType = {
 const Project = (props:ProjectProps) => {
   const {
     project,
+    countryLinkDict,
   } = props;
 
   const { t } = useTranslation();
@@ -124,7 +127,21 @@ const Project = (props:ProjectProps) => {
             <p className='undp-typography'>
               {t('country')}
               {' - '}
-              <b>{project.countryName}</b>
+              <b>
+                {
+                  countryLinkDict[project.countryCode]
+                    ? (
+                      <a
+                        href={countryLinkDict[project.countryCode]}
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        {project.countryName}
+                      </a>
+                    )
+                    : (project.countryName)
+                }
+              </b>
             </p>
             <p className='undp-typography'>
               {t('budget')}
@@ -341,6 +358,7 @@ const Project = (props:ProjectProps) => {
 export const DataTable = (props: TableProps) => {
   const {
     projects,
+    countryLinkDict,
   } = props;
 
   const { t } = useTranslation();
@@ -371,7 +389,7 @@ export const DataTable = (props: TableProps) => {
           </div>
         </div>
         {
-          projects.map((project, i) => (<Project key={`${i}project`} project={project} />))
+          projects.map((project, i) => (<Project key={`${i}project`} countryLinkDict={countryLinkDict} project={project} />))
         }
       </div>
     </>

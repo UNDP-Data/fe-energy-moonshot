@@ -18,7 +18,7 @@ import { MainText } from './MainText';
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
-  // regions: RegionDataType[];
+  countryLinkDict:any;
   projectLevelData: ProjectLevelDataType[];
 }
 
@@ -27,6 +27,7 @@ export const Global = (props: Props) => {
     countryGroupData,
     indicators,
     projectLevelData,
+    countryLinkDict,
   } = props;
   const {
     selectedRegions,
@@ -175,7 +176,7 @@ export const Global = (props: Props) => {
       </div>
       <hr className='undp-style light' />
       <div>
-        <DataTable projects={filteredProjectData} />
+        <DataTable countryLinkDict={countryLinkDict} projects={filteredProjectData} />
       </div>
     </>
   );

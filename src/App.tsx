@@ -43,6 +43,7 @@ const App = (props: Props) => {
   const containerEl = useRef(null);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
+  const [countryLinkDict, setCountryLinkDict] = useState<any>({});
   // const [regionList, setRegionList] = useState<RegionDataType[] | undefined>(undefined);
   const [countryList, setCountryList] = useState<string[] | undefined>(undefined);
   const [allCountriesData, setAllCountriesData] = useState<CountryData[] | undefined>(undefined);
@@ -147,7 +148,8 @@ const App = (props: Props) => {
       .defer(json, `${ROOT_DIR}/data/moonshotData.json`)
       .defer(json, 'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json')
       .defer(json, 'https://gist.githubusercontent.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee/raw/b36904c0c8ea72fdb82f68eb33f29891095deab3/country_codes')
-      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], countryGroupDataRaw: any[], countryBoundingBoxData: any) => {
+      .defer(json, `${ROOT_DIR}/data/countrylinkdict.json`)
+      .await((err: any, indicatorMetaData: IndicatorMetaDataType[], countryIndicatorMetadata: CountryIndicatorMetaDataType[], countryLevelData1: any[], countryLevelData2: any[], countryLevelData3: any[], countryLevelData4: any[], countryLevelData5: any[], countryLevelData6: any[], countryLevelData7: any[], countryLevelData8: any[], projectLevelData1: any[], countryGroupDataRaw: any[], countryBoundingBoxData: any, countryLinks: any) => {
         if (err) throw err;
         const countryIndicatorsData = [countryLevelData1, countryLevelData2, countryLevelData3, countryLevelData4, countryLevelData5, countryLevelData6, countryLevelData7, countryLevelData8];
         // const projectLevelDataWithNumbers = projectLevelData1.map((d) => ({
@@ -179,6 +181,7 @@ const App = (props: Props) => {
         setCountryGroupData(countryGroupDataBbox);
         const countries = removeDuplicates(projectLevelData1.map((d) => d.country));
         setCountryList(countries);
+        setCountryLinkDict(countryLinks);
         const countriesData : CountryData[] = [];
         countries.forEach((country:string) => {
           const values : CountryIndicatorDataType[] = [];
@@ -238,7 +241,7 @@ const App = (props: Props) => {
                     <Global
                       countryGroupData={countryGroupData}
                       indicators={indicatorsList}
-                      // regions={regionList}
+                      countryLinkDict={countryLinkDict}
                       projectLevelData={projectLevelData}
                     />
                   </div>
