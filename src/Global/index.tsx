@@ -84,7 +84,7 @@ export const Global = (props: Props) => {
           }
         );
       });
-      indTemp[5].value = numberOfProjects;
+      indTemp[6].value = numberOfProjects;
       return ({
         ...countryGroup,
         region,

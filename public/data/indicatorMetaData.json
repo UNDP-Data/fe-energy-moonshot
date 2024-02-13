@@ -40,6 +40,14 @@
         "AggregationLevel":"projects"
     },
     {
+        "Indicator": "Number of Policies",
+        "IndicatorDescription": "Number of Policies",
+        "DataKey": "policies",
+        "TranslationKey": "number-of-policies",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"outputs"
+    },
+    {
         "Indicator": "Number of Projects",
         "IndicatorDescription": "Number or Projects",
         "DataKey": "nProj",

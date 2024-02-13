@@ -36,11 +36,13 @@ export const Cards = (props: Props) => {
   //   ? data.filter((d) => d['Country or Area'] === selectedCountries)
   //   : selectedRegions !== 'All'
   //     ? data.filter((d) => d.region === selectedRegions) : data;
+  console.log(data);
   const cardData = {
     numberProjects: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'nProj')[0].value),
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
     mwAdded: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'mwAdded')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
+    policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
     numberCountries: data.length,
   };
   // translation
@@ -71,7 +73,17 @@ export const Cards = (props: Props) => {
             )
           }
           {
-            (selectedCategory === 'Policy' || selectedCategory === 'Market Development') && (
+            (selectedCategory === 'Policy') && (
+              <>
+                <h3 className='undp-typography'>
+                  {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
+                </h3>
+                <p>{t('number-of-policies')}</p>
+              </>
+            )
+          }
+          {
+            (selectedCategory === 'Market Development') && (
               <>
                 <h3 className='undp-typography'>
                   N/A
@@ -95,6 +107,14 @@ export const Cards = (props: Props) => {
                     {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
                   </h3>
                   <p>{t('mw-added')}</p>
+                </>
+              ))
+              || ((cardData.policies) && (
+                <>
+                  <h3 className='undp-typography'>
+                    {cardData.policies === undefined ? 'N/A' : formatData(cardData.policies)}
+                  </h3>
+                  <p>{t('number-of-policies')}</p>
                 </>
               ))
               || (
