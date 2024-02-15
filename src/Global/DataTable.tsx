@@ -96,7 +96,7 @@ const Project = (props:ProjectProps) => {
     <>
       {contextHolder}
       <div className='undp-table-row'>
-        <div style={{ width: '30%' }} className='undp-table-row-cell'>
+        <div style={{ width: '30%', background: 'transparent' }} className='undp-table-row-cell'>
           <div className='padding-left-05 padding-right-05'>
             <h6 className='undp-typography'>
               <EditableCell
@@ -126,7 +126,7 @@ const Project = (props:ProjectProps) => {
             </p>
           </div>
         </div>
-        <div style={{ width: '20%' }} className='undp-table-row-cell'>
+        <div style={{ width: '20%', background: 'transparent' }} className='undp-table-row-cell'>
           <div className='padding-left-05 padding-right-05'>
             <p className='undp-typography'>
               {t('country')}
@@ -193,12 +193,12 @@ const Project = (props:ProjectProps) => {
             </p>
           </div>
         </div>
-        <div style={{ width: '50%' }} className='undp-table-row-cell'>
+        <div style={{ width: '50%', background: 'transparent' }} className='undp-table-row-cell'>
           {
             project.outputs.map((o, i) => (
               <div key={`${i}output`} className='flex-div'>
                 <div
-                  style={{ width: '40%' }}
+                  style={{ width: '40%', background: 'transparent' }}
                   className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
                 >
                   { o.directBeneficiaries !== 0 ? (
@@ -279,7 +279,7 @@ const Project = (props:ProjectProps) => {
                   </p>
                 </div>
                 <div
-                  style={{ width: '60%' }}
+                  style={{ width: '60%', background: 'transparent' }}
                   className={
                     `undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
                   }
