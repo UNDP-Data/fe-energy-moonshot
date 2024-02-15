@@ -71,7 +71,7 @@ function Resources() {
     },
   ];
   return (
-    <section>
+    <section id='resources'>
       <h2 className='undp-typography margin-bottom-03 page-title'>
         Resources
       </h2>

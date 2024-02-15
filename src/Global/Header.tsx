@@ -53,6 +53,14 @@ function Header() {
               MOONSHOT TRACKER
             </a>
           </div>
+          <div
+            className='flex-div gap-09'
+            style={{ flexGrow: 1, justifyContent: 'center' }}
+          >
+            <a href='#resources' className='header-link'>
+              RESOURCES
+            </a>
+          </div>
           <div />
         </div>
         <div
