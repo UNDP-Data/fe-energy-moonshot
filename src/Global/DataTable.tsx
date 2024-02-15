@@ -105,7 +105,11 @@ const Project = (props:ProjectProps) => {
                 sendUpdate={sendUpdateCallback}
               />
               {' - '}
-              {project.id}
+              <EditableCell
+                text={project.id}
+                fieldName='id'
+                sendUpdate={sendUpdateCallback}
+              />
               {' - '}
               <EditableCell
                 text={project.genderMarker}
