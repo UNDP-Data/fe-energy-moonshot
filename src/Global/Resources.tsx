@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
+import { json } from 'd3-request';
+import { queue } from 'd3-queue';
 import { ROOT_DIR } from '../Types';
-import resources from '../Data/resources'
+
 interface ResourceInterface {
   img:string;
   title:string;
@@ -25,19 +28,32 @@ function Resource(props: ResourceProps) {
         <p>{resource.description}</p>
       </div>
       <div>
-        <button
-          type='button'
+        <a
+          target='_blank'
+          rel='noreferrer'
+          href={resource.link}
           className='undp-button button-tertiary button-arrow'
-          onClick={() => { console.log('button pressed'); }}
+          style={{
+            display: 'inline-flex',
+            textDecoration: 'none',
+          }}
         >
           Explore
-        </button>
+        </a>
       </div>
     </div>
   );
 }
 
 function Resources() {
+  const [resources, setResources] = useState<ResourceInterface[]>([]);
+  useEffect(() => {
+    queue()
+      .defer(json, `${ROOT_DIR}/data/resources.json`)
+      .await((err: any, resourcesData: ResourceInterface[]) => {
+        setResources(resourcesData);
+      });
+  }, []);
   return (
     <section id='resources'>
       <h2 className='undp-typography margin-bottom-03 page-title'>
