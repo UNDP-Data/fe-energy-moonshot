@@ -7,7 +7,7 @@ function Million() {
       id='million'
       className='flex-div flex-column flex-hor-align-center padding-top-12 padding-left-10 padding-right-10 padding-bottom-5'
       style={{
-        background: `no-repeat 0% center url(${bgLeft}), no-repeat 100% center url(${bgRight})`,
+        background: `no-repeat 0% center url(${bgLeft}), no-repeat 100% center url(${bgRight}), #F6F6F6` }},
       }}
     >
       <div

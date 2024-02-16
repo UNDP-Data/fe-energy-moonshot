@@ -235,7 +235,6 @@ const App = (props: Props) => {
                 <Million />
                 <div
                   ref={containerEl}
-                  style={{ background: '#F6F6F6' }}
                   className='bodyEl padding-top-07 margin-bottom-07 padding-bottom-01 padding-right-05 padding-left-05'
                 >
                   <div className='margin-bottom-07'>
@@ -247,7 +246,7 @@ const App = (props: Props) => {
                     />
                   </div>
                 </div>
-                <div className='padding-right-05 padding-left-05'>
+                <div style={{ background: '#F6F6F6' }} className='padding-right-05 padding-left-05'>
                   <div>
                     <Resources />
                   </div>

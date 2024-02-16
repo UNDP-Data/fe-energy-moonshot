@@ -1,5 +1,5 @@
 import { ROOT_DIR } from '../Types';
-
+import resources from '../Data/resources'
 interface ResourceInterface {
   img:string;
   title:string;
@@ -38,38 +38,6 @@ function Resource(props: ResourceProps) {
 }
 
 function Resources() {
-  const resources = [
-    {
-      img: '/img/resource-bg-1.jpg',
-      title: 'Moonshot Tracker Report',
-      description: 'A database of over 4000 development indicators for SIDS, complied from 22 sources and featured alongside visualization and analytic tools.',
-      link: '',
-    },
-    {
-      img: '/img/resource-bg-1.jpg',
-      title: 'Moonshot Tracker Report',
-      description: 'A database of over 4000 development indicators for SIDS, complied from 22 sources and featured alongside visualization and analytic tools.',
-      link: '',
-    },
-    {
-      img: '/img/resource-bg-1.jpg',
-      title: 'Moonshot Tracker Report',
-      description: 'A database of over 4000 development indicators for SIDS, complied from 22 sources and featured alongside visualization and analytic tools.',
-      link: '',
-    },
-    {
-      img: '/img/resource-bg-1.jpg',
-      title: 'Moonshot Tracker Report',
-      description: 'A database of over 4000 development indicators for SIDS, complied from 22 sources and featured alongside visualization and analytic tools.',
-      link: '',
-    },
-    {
-      img: '/img/resource-bg-1.jpg',
-      title: 'Moonshot Tracker Report',
-      description: 'A database of over 4000 development indicators for SIDS, complied from 22 sources and featured alongside visualization and analytic tools.',
-      link: '',
-    },
-  ];
   return (
     <section id='resources'>
       <h2 className='undp-typography margin-bottom-03 page-title'>
