@@ -143,7 +143,7 @@ const Project = (props:ProjectProps) => {
                       {project.id}
                     </span>
                   ) : ('')}
-                {' - '}
+                {project.genderMarker && ' - '}
                 {project.genderMarker
                   ? (
                     <span>
@@ -181,7 +181,7 @@ const Project = (props:ProjectProps) => {
             </p>
             <Cell
               text={t('budget')}
-              value={Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B')}
+              value={Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('.3s')(project.budget).replace('G', 'B')}
             />
             <Cell
               text={t('type')}
@@ -190,6 +190,10 @@ const Project = (props:ProjectProps) => {
             <Cell
               value={project.genderMarker}
               text={t('gender-equality')}
+            />
+            <Cell
+              value={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : null}
+              text={t('ghg-emissions-reduction')}
             />
             <Cell
               value={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : null}
@@ -206,7 +210,7 @@ const Project = (props:ProjectProps) => {
                   className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
                 >
                   <Cell
-                    value={o.directBeneficiaries !== 0 ? format('~s')(o.directBeneficiaries).replace('G', 'B') : t('indirect-beneficiaries')}
+                    value={o.directBeneficiaries !== 0 ? format('.3s')(o.directBeneficiaries).replace('G', 'B') : null}
                     text={o.directBeneficiaries !== 0 ? t('direct-beneficiaries') : null}
                   />
                   <Cell
@@ -214,7 +218,7 @@ const Project = (props:ProjectProps) => {
                     text={t('select-output-type')}
                   />
                   <Cell
-                    value={o.beneficiaryCategory}
+                    value={o.outputCategory === 'Other' ? null : o.beneficiaryCategory}
                     text={t('select-output-sub-type')}
                   />
                   <Cell
@@ -225,7 +229,7 @@ const Project = (props:ProjectProps) => {
                     text={t('female-percent')}
                   />
                   <Cell
-                    value={o.energySaved === '0' ? format('~s')(o.energySaved).replace('G', 'B') : null}
+                    value={o.energySaved === '0' || o.beneficiaryCategory === 'Energy Efficiency' ? format('~s')(o.energySaved).replace('G', 'B') : null}
                     text={t('energy-saved-mj')}
                   />
                 </div>

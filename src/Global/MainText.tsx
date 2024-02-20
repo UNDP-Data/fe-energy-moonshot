@@ -16,29 +16,34 @@ export const MainText = () => {
   } = useContext(Context) as CtxDataType;
 
   const { t } = useTranslation();
+  const getGenderLabel = (taxonomyObj:Taxonomy[], value:string) => taxonomyObj.reduce((groupingText, group) => {
+    if (group.value === value && value !== 'all') return ` with ${t(group.label)} gender marker `;
+    return groupingText;
+  }, '');
+
   const getTextLabel = (taxonomyObj:Taxonomy[], value:string) => taxonomyObj.reduce((groupingText, group) => {
     if (group.value === value) return t(group.label);
     if (group.options) {
       const validOption = group.options.find((o) => o.value === value);
       if (validOption) {
-        return `${t(group.label)} - ${t(validOption.label)}`;
+        return `${t(validOption.label)}`;
       }
     }
     return groupingText;
   }, '');
 
   const getCategoryLabel = (taxonomyObj:OutputsTaxonomy[], category:string, subcategory:string) => taxonomyObj.reduce((groupingText, group) => {
-    if (group.value === category) {
+    if (group.value === category && category !== 'all') {
       const validOption = group.subcategories.find((o) => o.value === subcategory);
-      if (validOption) return `${t(group.label)} - ${t(validOption.label)}`;
-      return `${t(group.label)} - ${t('all')}`;
+      if (validOption && subcategory !== 'all') return `${t(group.value)}, ${t(validOption.label)}`;
+      return `${t(group.value)}`;
     }
     return groupingText;
-  }, '');
+  }, 'all output types');
 
   const countryGroupings = getTextLabel(countryGroupingsTaxonomy, selectedRegions);
   const fundingSources = getTextLabel(fundingTaxonomy, selectedFunding);
-  const taxonomy = getTextLabel(genderMarkers, selectedGenderMarker);
+  const taxonomy = getGenderLabel(genderMarkers, selectedGenderMarker);
   const outputCategory = getCategoryLabel(outputsTaxonomy, selectedCategory, selectedSubCategory);
   return (
     <div className='margin-bottom-05'>
@@ -52,6 +57,8 @@ export const MainText = () => {
               outputCategory,
             })
         }
+        {' '}
+        target the following benefits.
       </p>
     </div>
   );
