@@ -70,7 +70,7 @@ export const Tooltip = (props: Props) => {
             </p>
           ) : (
             <p className='small-font margin-bottom-00'>
-              {t('indirect-beneficiaries')}
+              Indirect beneficiaries
             </p>
           )}
         { data.grantAmount !== 0
@@ -79,6 +79,8 @@ export const Tooltip = (props: Props) => {
               {`${t('grant-amount')}:`}
               {' '}
               <span className='bold'>
+                USD
+                {' '}
                 {formatData(data.grantAmount)}
               </span>
             </p>

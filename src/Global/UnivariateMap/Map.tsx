@@ -201,6 +201,7 @@ export const Map = (props: Props) => {
                     setHoverData({
                       country: d['Country or Area'],
                       continent: d.region,
+                      // outputCategory: d.outputCategory,
                       peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'directBeneficiaries')[0].value,
                       grantAmount: d.indicators.filter((ind) => ind.indicator === 'budget')[0].value,
                       energySaved: d.indicators.filter((ind) => ind.indicator === 'energySaved')[0].value,
