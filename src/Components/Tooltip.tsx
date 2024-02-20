@@ -35,7 +35,7 @@ export const Tooltip = (props: Props) => {
   const formatData = (d: undefined | number) => {
     if (d === undefined) return d;
     if (d < 1) return parseFloat(d.toFixed(3));
-    if (d < 1000000) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
+    if (d < 100) return format(',')(parseFloat(d.toFixed(0))).replace(',', ' ');
     return format('.3s')(d).replace('G', 'B');
   };
   // translation
