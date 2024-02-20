@@ -41,7 +41,7 @@ export const Cards = (props: Props) => {
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
     mwAdded: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'mwAdded')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
-    policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
+    // policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
     numberCountries: data.length,
   };
   // translation
@@ -72,17 +72,18 @@ export const Cards = (props: Props) => {
             )
           }
           {
-            (selectedCategory === 'Policy') && (
-              <>
-                <h3 className='undp-typography'>
-                  {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
-                </h3>
-                <p>{t('number-of-policies')}</p>
-              </>
-            )
+            // (
+              // selectedCategory === 'Policy') && (
+              // <>
+              //   <h3 className='undp-typography'>
+              //     {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
+              //   </h3>
+              //   <p>{t('number-of-policies')}</p>
+              // </>
+            // )
           }
           {
-            (selectedCategory === 'Market Development') && (
+            (selectedCategory === 'Market Development' || selectedCategory === 'Policy') && (
               <>
                 <h3 className='undp-typography'>
                   N/A
@@ -108,14 +109,16 @@ export const Cards = (props: Props) => {
                   <p>{t('mw-added')}</p>
                 </>
               ))
-              || ((cardData.policies) && (
-                <>
-                  <h3 className='undp-typography'>
-                    {cardData.policies === undefined ? 'N/A' : formatData(cardData.policies)}
-                  </h3>
-                  <p>{t('number-of-policies')}</p>
-                </>
-              ))
+              // || (
+              //   (cardData.policies) && (
+              //   <>
+              //     <h3 className='undp-typography'>
+              //       {cardData.policies === undefined ? 'N/A' : formatData(cardData.policies)}
+              //     </h3>
+              //     <p>{t('number-of-policies')}</p>
+              //   </>
+              // )
+              // )
               || (
                 <>
                   <h3 className='undp-typography'>

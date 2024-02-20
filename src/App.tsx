@@ -17,7 +17,7 @@ import Footer from './Global/Footer';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
 import { CommentForm } from './Global/CommentForm';
-import Resources from './Global/Resources';
+// import Resources from './Global/Resources';
 import { DEFAULT_VALUES } from './Constants';
 
 import './styles/style.css';
@@ -247,9 +247,11 @@ const App = (props: Props) => {
                   </div>
                 </div>
                 <div style={{ background: '#F6F6F6' }} className='padding-top-07 padding-right-05 padding-left-05'>
-                  <div>
-                    <Resources />
-                  </div>
+                  {
+                    // <div>
+                    //   <Resources />
+                    // </div>
+                  }
                   <hr className='undp-style light margin-top-05 margin-bottom-05' />
                   <div>
                     <CommentForm />

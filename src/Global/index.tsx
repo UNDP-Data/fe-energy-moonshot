@@ -137,7 +137,7 @@ export const Global = (props: Props) => {
       <div id='tracker' className='flex-div flex-wrap padding-top-06'>
         <div style={{ maxWidth: '100%', width: '100%' }}>
           <h2 className='undp-typography margin-bottom-05 page-title'>
-            <span style={{ color: 'var(--yellow)' }}>
+            <span style={{ color: 'var(--dark-yellow)' }}>
               Energy Moonshot
             </span>
             {' '}

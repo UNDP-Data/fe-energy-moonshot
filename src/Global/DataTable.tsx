@@ -1,14 +1,16 @@
 import {
-  useState, useEffect, useRef, useCallback,
+  useState, useEffect, useRef,
+  // useCallback,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'd3-format';
 import {
-  Modal, Form, Input, message,
+  Modal, Form, Input,
+  // message,
 } from 'antd';
 import { ProjectLevelDataType } from '../Types';
-import { EditableCell } from '../Components/EditableCell';
-import { addProposedEdit } from '../firebase';
+// import { EditableCell } from '../Components/EditableCell';
+// import { addProposedEdit } from '../firebase';
 
 interface TableProps {
   countryLinkDict: any;
@@ -20,10 +22,36 @@ interface ProjectProps {
   project: ProjectLevelDataType;
 }
 
+interface CellProps {
+  value: string | 0 | null;
+  // fieldName: string;
+  // outputId?: string;
+  // sendUpdate: Function;
+  text?:string | null;
+}
+
 type FieldType = {
   name: string;
   office: string;
   position: string;
+};
+
+const Cell = (props:CellProps) => {
+  const {
+    value,
+    text,
+  } = props;
+
+  return (
+    <p className='undp-typography'>
+      <>
+        {
+          text && value ? (`${text} - `) : ('')
+        }
+        {value || ''}
+      </>
+    </p>
+  );
 };
 
 const Project = (props:ProjectProps) => {
@@ -37,7 +65,7 @@ const Project = (props:ProjectProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  const [messageApi, contextHolder] = message.useMessage();
+  // const [messageApi, contextHolder] = message.useMessage();
 
   const userRef = useRef(userData);
   const modalRef = useRef(modalOpen);
@@ -51,79 +79,83 @@ const Project = (props:ProjectProps) => {
     modalRef.current = modalOpen;
   }, [modalOpen, userData]);
 
-  function requestUserData() {
-    return new Promise<void>((resolve, reject) => {
-      const interval = setInterval(() => {
-        if (userRef.current) {
-          clearInterval(interval);
-          resolve();
-        }
-        if (!modalRef.current) {
-          clearInterval(interval);
-          reject();
-        }
-      }, 300);
-    });
-  }
+  // function requestUserData() {
+  //   return new Promise<void>((resolve, reject) => {
+  //     const interval = setInterval(() => {
+  //       if (userRef.current) {
+  //         clearInterval(interval);
+  //         resolve();
+  //       }
+  //       if (!modalRef.current) {
+  //         clearInterval(interval);
+  //         reject();
+  //       }
+  //     }, 300);
+  //   });
+  // }
 
-  async function sendUpdate(value:string, fieldName:string, outputId?:string) {
-    if (!userRef.current) {
-      setModalOpen(true);
-      await requestUserData();
-    }
-    if (userRef.current) {
-      await addProposedEdit({
-        fieldName,
-        value,
-        date: new Date().toUTCString(),
-        outputId,
-        ...userRef.current as FieldType,
-        projectId: project.id,
-      });
+  // async function sendUpdate(value:string, fieldName:string, outputId?:string) {
+  //   if (!userRef.current) {
+  //     setModalOpen(true);
+  //     await requestUserData();
+  //   }
+  //   if (userRef.current) {
+  //     await addProposedEdit({
+  //       fieldName,
+  //       value,
+  //       date: new Date().toUTCString(),
+  //       outputId,
+  //       ...userRef.current as FieldType,
+  //       projectId: project.id,
+  //     });
+  //
+  //     messageApi.open({
+  //       type: 'success',
+  //       content: 'Update sent',
+  //       duration: 5,
+  //       className: 'undp-message',
+  //     });
+  //   }
+  // }
 
-      messageApi.open({
-        type: 'success',
-        content: 'Update sent',
-        duration: 5,
-        className: 'undp-message',
-      });
-    }
-  }
-
-  const sendUpdateCallback = useCallback(sendUpdate, []);
+  // const sendUpdateCallback = useCallback(sendUpdate, []);
 
   return (
     <>
-      {contextHolder}
+      {
+        // contextHolder
+      }
       <div className='undp-table-row'>
         <div style={{ width: '30%', background: 'transparent' }} className='undp-table-row-cell'>
           <div className='padding-left-05 padding-right-05'>
             <h6 className='undp-typography'>
-              <EditableCell
-                text={project.title}
-                fieldName='title'
-                sendUpdate={sendUpdateCallback}
-              />
-              {' - '}
-              <EditableCell
-                text={project.id}
-                fieldName='id'
-                sendUpdate={sendUpdateCallback}
-              />
-              {' - '}
-              <EditableCell
-                text={project.genderMarker}
-                fieldName='genderMarker'
-                sendUpdate={sendUpdateCallback}
-              />
+              <p className='undp-typography'>
+                {project.title
+                  ? (
+                    <span>
+                      {project.title}
+                    </span>
+                  ) : ('')}
+                {' - '}
+                {project.id
+                  ? (
+                    <span>
+                      {project.id}
+                    </span>
+                  ) : ('')}
+                {' - '}
+                {project.genderMarker
+                  ? (
+                    <span>
+                      {project.genderMarker}
+                    </span>
+                  ) : ('')}
+              </p>
+
             </h6>
-            <p className='undp-typography'>
-              <EditableCell
-                text={project.description}
-                fieldName='description'
-                sendUpdate={sendUpdateCallback}
-              />
-            </p>
+            <Cell
+              value={project.description}
+            />
           </div>
         </div>
         <div style={{ width: '20%', background: 'transparent' }} className='undp-table-row-cell'>
@@ -147,50 +179,22 @@ const Project = (props:ProjectProps) => {
                 }
               </b>
             </p>
-            <p className='undp-typography'>
-              {t('budget')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B')}
-                  fieldName='budget'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
-            </p>
-            <p className='undp-typography'>
-              {t('type')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={t(project.verticalFunded ? 'vf' : 'non-vf')}
-                  fieldName='verticalFunded'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
-            </p>
-            <p className='undp-typography'>
-              {t('gender-equality')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={project.genderMarker === null ? `${project.genderMarker}` : '__'}
-                  fieldName='genderMarker'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
-            </p>
-            <p className='undp-typography'>
-              {t('ghg-emissions-reduction')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : '__'}
-                  fieldName='ghgEmissions'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
-            </p>
+            <Cell
+              text={t('budget')}
+              value={Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B')}
+            />
+            <Cell
+              text={t('type')}
+              value={t(project.verticalFunded ? 'vf' : 'non-vf')}
+            />
+            <Cell
+              value={project.genderMarker}
+              text={t('gender-equality')}
+            />
+            <Cell
+              value={project.ghgEmissions === null ? `${project.ghgEmissions}M ${t('tonnes')}` : null}
+              text={t('ghg-emissions-reduction')}
+            />
           </div>
         </div>
         <div style={{ width: '50%', background: 'transparent' }} className='undp-table-row-cell'>
@@ -201,82 +205,29 @@ const Project = (props:ProjectProps) => {
                   style={{ width: '40%', background: 'transparent' }}
                   className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
                 >
-                  { o.directBeneficiaries !== 0 ? (
-                    <p className='undp-typography'>
-                      {t('direct-beneficiaries')}
-                      {' - '}
-                      <b>
-                        <EditableCell
-                          text={format('~s')(o.directBeneficiaries).replace('G', 'B')}
-                          fieldName='beneficiaries'
-                          outputId={o.id}
-                          sendUpdate={sendUpdateCallback}
-                        />
-                      </b>
-                    </p>
-                  ) : (
-                    <p className='undp-typography'>
-                      <b>
-                        <EditableCell
-                          text={t('indirect-beneficiaries')}
-                          fieldName='beneficiaries'
-                          outputId={o.id}
-                          sendUpdate={sendUpdateCallback}
-                        />
-                      </b>
-                    </p>
-                  )}
-                  <p className='undp-typography'>
-                    {t('select-output-type')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={o.outputCategory}
-                        fieldName='beneficiaries'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
-                  </p>
-                  <p className='undp-typography'>
-                    {t('select-output-sub-type')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={o.beneficiaryCategory}
-                        fieldName='beneficiaries'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
-                  </p>
-                  <p className='undp-typography'>
-                    {t('female-percent')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={
-                          o.percentFemale === null ? '__'
-                            : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
-                        }
-                        fieldName='percentFemale'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
-                  </p>
-                  <p className='undp-typography'>
-                    {t('energy-saved-mj')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={o.energySaved ? format('~s')(o.energySaved).replace('G', 'B') : '__'}
-                        fieldName='energySaved'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
-                  </p>
+                  <Cell
+                    value={o.directBeneficiaries !== 0 ? format('~s')(o.directBeneficiaries).replace('G', 'B') : t('indirect-beneficiaries')}
+                    text={o.directBeneficiaries !== 0 ? t('direct-beneficiaries') : null}
+                  />
+                  <Cell
+                    value={o.outputCategory}
+                    text={t('select-output-type')}
+                  />
+                  <Cell
+                    value={o.beneficiaryCategory}
+                    text={t('select-output-sub-type')}
+                  />
+                  <Cell
+                    value={
+                      o.percentFemale === null ? null
+                        : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
+                    }
+                    text={t('female-percent')}
+                  />
+                  <Cell
+                    value={o.energySaved === '0' ? format('~s')(o.energySaved).replace('G', 'B') : null}
+                    text={t('energy-saved-mj')}
+                  />
                 </div>
                 <div
                   style={{ width: '60%', background: 'transparent' }}
@@ -284,11 +235,8 @@ const Project = (props:ProjectProps) => {
                     `undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
                   }
                 >
-                  <EditableCell
-                    text={o.description}
-                    outputId={o.id}
-                    fieldName='description'
-                    sendUpdate={sendUpdateCallback}
+                  <Cell
+                    value={o.description}
                   />
                 </div>
               </div>
