@@ -1,22 +1,23 @@
 # Energy Hub Dashboard - with country profiles (work in progress!)
 
-Visualization of UNDP energy related projects. 
+Visualization of UNDP energy related projects.
 
 ## Features
 * Load and display data for around xxx different projects.
 * Interactively filter according to categories and regions.
 * Display different statistics
 * Display data on a map
-* It includes country profiles with a dashboard showing different indicators
+<!-- * It includes country profiles with a dashboard showing different indicators -->
 
 __Link for the visualization__
-[https://energy-hub-country-profiles.netlify.app/](https://energy-hub-country-profiles.netlify.app/)
+[https://lenseg.github.io/Energy-Hub-Dashboard/](https://lenseg.github.io/Energy-Hub-Dashboard/)
 
 __Pages Where the Visualization is Used__
 The visualization is in development at this moment and it's therefore not being used
 
 __Link for stylesheets__
 * https://undp-data.github.io/stylesheets-for-viz/style/mainStyleSheet.css
+* https://icy-moss-09ab08f10.4.azurestaticapps.net
 
 ## Build with
 * __React__: Used as MVC framework.
@@ -61,6 +62,17 @@ Craco is used to add a cofiguration layer for CRA. The primary function is to st
 * `npm run start`: Executes `craco start` and start the local server for local deployment.
 * `npm install`: Installs all the dependencies.
 
+
+## File Tree Structure
+
+File tree is based on UNDP react project template
+
+* `src/lang`: Language files for i18n.
+* `public/data`: Datasets.
+* `src/firebase`: Intergation with firebase.
+* `src/Data`: World map GeoJSON to generate map.
+
+
 ## Tooling Setup
 This project uses ESLint integrated with prettier, which verifies and formats your code so you don't have to do it manually. You should have your editor set up to display lint errors and automatically fix those which it is possible to fix. See [http://eslint.org/docs/user-guide/integrations](http://eslint.org/docs/user-guide/integrations).
 
@@ -68,4 +80,4 @@ This project is build in Visual Studio Code, therefore the project is already se
 
 ## Author
 
-Latest updates by [**Roxana Torre**](mailto:roxana.torre@undp.org)
+Latest updates by [**Anton Stepanenkov**](mailto:lenseg1@gmail.com)
