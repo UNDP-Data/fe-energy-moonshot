@@ -32,6 +32,17 @@ export const MainText = () => {
     return groupingText;
   }, '');
 
+  const getCountryTextLabel = (taxonomyObj:Taxonomy[], value:string) => taxonomyObj.reduce((groupingText, group) => {
+    if (group.value === value) return t(group.label);
+    if (group.options) {
+      const validOption = group.options.find((o) => o.value === value);
+      if (validOption) {
+        return `${t(validOption.label)}`;
+      }
+    }
+    return value === 'all' ? groupingText : t(value);
+  }, '');
+
   const getCategoryLabel = (taxonomyObj:OutputsTaxonomy[], category:string, subcategory:string) => taxonomyObj.reduce((groupingText, group) => {
     if (group.value === category && category !== 'all') {
       const validOption = group.subcategories.find((o) => o.value === subcategory);
@@ -41,7 +52,7 @@ export const MainText = () => {
     return groupingText;
   }, 'all output types');
 
-  const countryGroupings = getTextLabel(countryGroupingsTaxonomy, selectedRegions);
+  const countryGroupings = getCountryTextLabel(countryGroupingsTaxonomy, selectedRegions);
   const fundingSources = getTextLabel(fundingTaxonomy, selectedFunding);
   const taxonomy = getGenderLabel(genderMarkers, selectedGenderMarker);
   const outputCategory = getCategoryLabel(outputsTaxonomy, selectedCategory, selectedSubCategory);
@@ -58,7 +69,7 @@ export const MainText = () => {
             })
         }
         {' '}
-        target the following benefits.
+        target the following benefits:
       </p>
     </div>
   );

@@ -1,7 +1,7 @@
 {
   "world-overview":"world overview",
   "country-profiles":"country profiles",
-  "main-text":"During the period of the Strategic Plan 2022-2025, UNDP projects in {{countryGroupings}} funded through {{fundingSources}} within outputs of {{outputCategory}}, {{taxonomy}}",
+  "main-text":"During the period of the Strategic Plan 2022-2025, UNDP projects in {{countryGroupings}} funded through {{fundingSources}} within outputs of {{outputCategory}} {{taxonomy}}",
   "output-data-text": "<strong>{{nBeneficaries}}</strong> beneficiaries from <strong>{{outputType}}, {{outputCategory}}</strong>",
   "output-gender-data": " including <strong>{{nFemaleBeneficaries}} women</strong> ({{percent}}%)",
   "output-gender-data-indirect": " including <strong>{{percent}}% women</strong> ",
