@@ -10,7 +10,7 @@ Visualization of UNDP energy related projects.
 <!-- * It includes country profiles with a dashboard showing different indicators -->
 
 __Link for the visualization__
-[https://lenseg.github.io/Energy-Hub-Dashboard/](https://lenseg.github.io/Energy-Hub-Dashboard/)
+[https://://undp-data.github.io/fe-energy-moonshot/](https://://undp-data.github.io/fe-energy-moonshot/)
 
 __Pages Where the Visualization is Used__
 The visualization is in development at this moment and it's therefore not being used
@@ -36,8 +36,8 @@ To install the project, sinply clone the the repo and them run `npm install` in 
 Run the terminal or command prompt and then run the following
 
 ```
-git clone https://github.com/UNDP-Data/Energy-Hub-Dashboard/
-cd Energy-Hub-Dashboard
+git clone https://github.com/UNDP-Data/fe-energy-moonshot/
+cd fe-energy-moonshot
 npm install
 ```
 
