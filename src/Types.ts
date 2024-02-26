@@ -125,6 +125,8 @@ export interface ProjectLevelDataType{
   countryCode: string,
   projectTitle: string,
   country: string,
+  link:string,
+  donors:string[] | null,
   region: string,
   verticalFunded: boolean,
   flagship: string,
