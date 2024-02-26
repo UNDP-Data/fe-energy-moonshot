@@ -259,7 +259,12 @@ const Project = (props:ProjectProps) => {
             <p className='undp-typography'>
               {
                 (project.donors) ? (
-                  project.donors.join(', ')
+                  <>
+                    {'Donors - '}
+                    <b>
+                      {project.donors.join(', ')}
+                    </b>
+                  </>
                 ) : (
                   <>
                     {'Donors - '}
