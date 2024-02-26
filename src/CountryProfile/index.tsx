@@ -17,8 +17,6 @@ import {
 import { ScaledSquare } from './ScaledSquare';
 import { ScaledHalfCircles } from './ScaledHalfCircles';
 
-import '../styles/style.css';
-
 interface Props {
   projectsData: ProjectLevelDataType[];
   countries: string[];
@@ -99,25 +97,25 @@ export const CountryProfile = (props: Props) => {
   const [text1Values, setText1Values] = useState<Object | undefined>(undefined);
   const [text2Values, setText2Values] = useState<Object | undefined>(undefined);
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType>(data[0]);
-  const projectsDataSorted = sortBy(projectsData, 'Lead Country');
+  const projectsDataSorted = sortBy(projectsData, 'country');
   const indValue = (ind:string) => countryDataValues.filter((d) => d.indicator === ind)[0].value;
   // translation
   const { t } = useTranslation();
   useEffect(() => {
     if (queryCountry)setSelectedCountry(queryCountry);
 
-    const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d['Lead Country'] === selectedCountry);
+    const dataByCountry = selectedCountry === undefined || selectedCountry === 'All' ? projectsDataSorted : projectsDataSorted.filter((d) => d.country === selectedCountry);
     setTableData(dataByCountry);
 
     const indicatorsByCountry = selectedCountry === undefined || selectedCountry === 'All' ? [] : countriesData.filter((d) => d.country === selectedCountry)[0].values;
     setCountryDataValues(indicatorsByCountry);
 
     const relevantData = selectedCountry !== undefined || selectedCountry === 'All'
-      ? projectsData.filter((d) => d['Lead Country'] === selectedCountry)
+      ? projectsData.filter((d) => d.country === selectedCountry)
       : projectsData;
     const cardDataValues = {
-      peopleBenefiting: sumBy(relevantData, 'target_total'),
-      grantAmount: sumBy(relevantData, 'Grant amount'),
+      peopleBenefiting: sumBy(relevantData, 'directBeneficiaries'),
+      grantAmount: sumBy(relevantData, 'budget'),
       numberProjects: relevantData.length,
     };
     setCardData(cardDataValues);
@@ -373,10 +371,10 @@ export const CountryProfile = (props: Props) => {
                   tableData.map((d, i) => (
                     <div key={i} className='undp-table-row' style={{ minWidth: '67.5rem' }}>
                       <CellEl width='8%' className='undp-table-row-cell-small'>
-                        {d['Lead Country']}
+                        {d.country}
                       </CellEl>
                       <CellEl width='12%' className='undp-table-row-cell-small'>
-                        {d['Short Title']}
+                        {d.title}
                       </CellEl>
                       <CellEl width='40%' className='undp-table-row-cell-small'>
                         {d['Project Description'] !== undefined
@@ -386,7 +384,7 @@ export const CountryProfile = (props: Props) => {
                         {d['Source of Funds']}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small' style={{ whiteSpace: 'nowrap' }}>
-                        {formatData(parseFloat(d['Grant amount'].toFixed(0)))}
+                        {formatData(parseFloat(d.budget.toFixed(0)))}
                       </CellEl>
                       <CellEl width='10%' className='undp-table-row-cell-small'>
                         <a href={d.Source_documentation} className='undp-style' target='_blank' rel='noreferrer'>{d.Source_documentation}</a>

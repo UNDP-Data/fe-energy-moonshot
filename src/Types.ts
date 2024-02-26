@@ -50,6 +50,7 @@ export interface IndicatorMetaDataType {
   IndicatorDescription: string;
   TranslationKey: string;
   DataKey: string;
+  AggregationLevel: string,
   BinningRangeLarge: number[];
 }
 
@@ -62,6 +63,10 @@ export interface HoverDataType {
   continent: string;
   peopleDirectlyBenefiting?: number;
   grantAmount?: number;
+  outputCategory?: string;
+  energySaved?: number;
+  mwAdded?: number;
+  ghgEmissions?: number;
   numberProjects?: number;
   xPosition: number;
   yPosition: number;
@@ -79,15 +84,21 @@ export interface CtxDataType {
   selectedRegions: string;
   selectedCountries: string;
   selectedProjects: string;
+  selectedCategory: string;
+  selectedSubCategory: string;
   xAxisIndicator: string;
-  showProjectLocations: boolean;
   selectedTaxonomy: string;
+  selectedGenderMarker: string;
+  selectedFunding: string;
   updateSelectedRegions: (_d: string) => void;
   updateSelectedCountries: (_d: string) => void;
   updateSelectedProjects: (_d: string) => void;
   updateXAxisIndicator: (_d: string) => void;
-  updateShowProjectLocations: (_d: boolean) => void;
   updateSelectedTaxonomy: (_d: string) => void;
+  updateSelectedGenderMarker: (_d: string) => void;
+  updateSelectedFunding: (_d: string) => void;
+  updateSelectedCategory: (_d: string) => void;
+  updateSelectedSubCategory: (_d: string) => void;
 }
 
 export interface CountryIndicatorMetaDataType {
@@ -107,6 +118,31 @@ export interface CountryData{
   values: CountryIndicatorDataType[];
 }
 export interface ProjectLevelDataType{
+  id: string,
+  title: string,
+  description: string,
+  countryName: string,
+  countryCode: string,
+  projectTitle: string,
+  country: string,
+  region: string,
+  verticalFunded: boolean,
+  flagship: string,
+  budget: number,
+  outputCount: number,
+  genderMarker: string,
+  dirBeneficiaries: number,
+  indirBeneficiaries: number,
+  energySaved: number,
+  ghgEmissions:number,
+  fundingSources: string,
+  hdiTier: string,
+  projectDescription:string,
+  outputs:any[],
+  thematics:string[],
+  incomeGroup: string,
+  specialGroupings: string[],
+  regionBureau: string,
   'projectID_PIMS+': number,
   'projectID_Atlas': number,
   'Short Title': string,
@@ -114,7 +150,6 @@ export interface ProjectLevelDataType{
   'Lead Country': string,
   'Regional Bureau': string,
   'Source of Funds': string,
-  VF: string,
   taxonomy_level3?: string,
   'Grant amount': number,
   'target_Electricity access'?: number,
@@ -141,5 +176,27 @@ export interface DashboardDataType{
   grantAmount: number;
   numberProjects: number;
 }
+
+interface LowLevelTaxonomy {
+    label: string,
+    value:string,
+}
+
+export interface Taxonomy {
+  label: string,
+  value?:string,
+  key?:string,
+  options?: LowLevelTaxonomy[]
+}
+
+export interface OutputsTaxonomy {
+  label: string,
+  value: string,
+  subcategories: LowLevelTaxonomy[]
+}
+
+export interface IndicatorRange {
+  [key: string]: number[],
+}
 // export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
-export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '.';
+export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/Lenseg/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '/Energy-Hub-Dashboard/';

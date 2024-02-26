@@ -1,65 +1,82 @@
 import { useContext } from 'react';
 import { nest } from 'd3-collection';
 import sumBy from 'lodash.sumby';
-import { useTranslation } from 'react-i18next';
 import {
   CountryGroupDataType,
   CtxDataType,
   IndicatorMetaDataType,
-  RegionDataType,
   ProjectLevelDataType,
-  ProjectCoordsDataType,
+  IndicatorRange,
 } from '../Types';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
 import { UnivariateMap } from './UnivariateMap';
+import { DataTable } from './DataTable';
+import { MainText } from './MainText';
 
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
-  regions: RegionDataType[];
-  countries: string[];
+  countryLinkDict:any;
   projectLevelData: ProjectLevelDataType[];
-  projectCoordsData: ProjectCoordsDataType[];
 }
-
-const regionList = [
-  { value: 'RBA', label: 'Regional Bureau for Africa (RBA)' },
-  { value: 'RBAP', label: 'Regional Bureau for Asia and the Pacific (RBAP)' },
-  { value: 'RBAS', label: 'Regional Bureau for Arab States (RBAS)' },
-  { value: 'RBEC', label: 'Regional Bureau for Europe and the Commonwealth of Independent States (RBEC)' },
-  { value: 'RBLAC', label: 'Regional Bureau on Latin America and the Caribbean (RBLAC)' },
-];
 
 export const Global = (props: Props) => {
   const {
     countryGroupData,
     indicators,
-    regions,
-    countries,
     projectLevelData,
-    projectCoordsData,
+    countryLinkDict,
   } = props;
   const {
-    selectedTaxonomy,
+    selectedRegions,
+    selectedFunding,
+    selectedCategory,
+    selectedSubCategory,
+    selectedGenderMarker,
   } = useContext(Context) as CtxDataType;
-  const queryParams = new URLSearchParams(window.location.search);
-  const queryRegion = queryParams.get('region');
-  const filteredProjectData = projectLevelData.filter((d) => selectedTaxonomy === 'All' || d.taxonomy_level3 === selectedTaxonomy);
-  const { t } = useTranslation();
+  let filteredProjectData = [...projectLevelData];
+
+  filteredProjectData = filteredProjectData.filter((d) => (
+    (selectedFunding === 'all' || d.verticalFunded === (selectedFunding === 'vf'))
+    && (selectedGenderMarker === 'all' || d.genderMarker === selectedGenderMarker)
+    && d.outputs.some((o) => (
+      (selectedCategory === 'all' || o.outputCategory === selectedCategory)
+      && (selectedSubCategory === 'all' || o.beneficiaryCategory === selectedSubCategory)
+      && (selectedSubCategory === 'all' || o.beneficiaryCategory === selectedSubCategory)
+    ))
+  ));
+  const avaliableCountryList = Array.from(new Set(filteredProjectData.map((p) => p.countryCode)));
+  if (selectedRegions !== 'all') {
+    filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
+    || d.hdiTier === selectedRegions || d.countryCode === selectedRegions || d.specialGroupings.includes(selectedRegions));
+  }
+
   function calculateCountryTotals() {
     const groupedData = nest()
-      .key((d: any) => d['Lead Country'])
+      .key((d: any) => d.countryCode)
       .entries(filteredProjectData);
-
     const countryData = groupedData.map((country) => {
-      const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Country or Area'] === country.key)];
-      const region = country.values[0]['Regional Bureau'];
+      const countryGroup = countryGroupData[countryGroupData.findIndex((el) => el['Alpha-3 code'] === country.key)];
+      const { region } = country.values[0];
       const numberOfProjects = country.values.length;
       const indTemp = indicators.map((indicator) => {
         const indicatorName = indicator.DataKey;
-        const value = sumBy(country.values, (project:any) => project[indicatorName]);
+        let value;
+        if (indicator.AggregationLevel === 'outputs') {
+          value = sumBy(country.values, (project:any) => sumBy(project.outputs, (output:any) => {
+            if (selectedCategory === 'all' || output.outputCategory === selectedCategory) {
+              if (selectedSubCategory === 'all' || output.beneficiaryCategory === selectedSubCategory) {
+                return output[indicatorName] || 0;
+              }
+              return 0;
+            }
+            return 0;
+          }));
+        } else {
+          value = sumBy(country.values, (project:any) => project[indicatorName]) || 0;
+        }
         return (
           {
             indicator: indicatorName,
@@ -67,6 +84,7 @@ export const Global = (props: Props) => {
           }
         );
       });
+      indTemp[6].value = numberOfProjects;
       return ({
         ...countryGroup,
         region,
@@ -78,50 +96,87 @@ export const Global = (props: Props) => {
     return (countryData);
   }
   const mapData = calculateCountryTotals();
-  const rbaPercentProjects = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.numberProjects) / projectLevelData.length;
-  const rbaTotalGrant = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'Grant amount')[0].value);
-  const rbaTargetTotal = sumBy(mapData.filter((d) => d.region === 'RBA'), (project:any) => project.indicators.filter((ind:any) => ind.indicator === 'target_total')[0].value);
-  // - variables for text
-  const nrCountries = countries.length;
-  const totalProjectsAmount = Math.round(sumBy(projectLevelData, (project:any) => project['Grant amount']) / 1000000);
-  const targetTotal = Math.round(sumBy(projectLevelData, (project:any) => project.target_total) / 1000000);
-  const percentProjectsSubSah = Math.round(rbaPercentProjects * 100);
-  const nrProjects = projectLevelData.length;
-  const amountSubSah = Math.round(rbaTotalGrant / 1000000);
-  const peopleSubSah = Math.round(rbaTargetTotal / 1000000);
+  const countryList = projectLevelData.reduce((acum:string[], projectData) => {
+    if (!acum.includes(projectData.countryCode)) {
+      acum.push(projectData.countryCode);
+    }
+    return acum;
+  }, []);
+  function calculateRanges() {
+    const ranges:IndicatorRange = mapData.reduce((acum:IndicatorRange, country) => {
+      country.indicatorsAvailable.forEach((indAva:string) => {
+        const value = country.indicators.find((ind) => ind.indicator === indAva);
+        if (value) {
+          acum[indAva].push(value.value);
+        }
+      });
+      return acum;
+    }, indicators.reduce((acum, indi:IndicatorMetaDataType) => ({
+      ...acum,
+      [indi.DataKey]: [],
+    }), {}));
+    indicators.forEach((indi:IndicatorMetaDataType) => {
+      ranges[indi.DataKey].sort((a:number, b:number) => a - b);
+      const q = Math.ceil((ranges[indi.DataKey].length - 1) / 9);
+      let i = 1;
+      const legendArray = [];
+      do {
+        const numstr = Math.ceil(ranges[indi.DataKey][i * q]).toString();
+        const num = parseInt(numstr[0] + '0'.repeat(numstr.length - 1), 10);
+        legendArray.push(num);
+        i += 1;
+      } while (i * q < ranges[indi.DataKey].length - 1);
+      ranges[indi.DataKey] = Array.from(new Set(legendArray));
+    });
+    return ranges;
+  }
 
+  const binningRangeLarge = calculateRanges();
   return (
     <>
-      {queryRegion ? ` for ${regionList[regionList.findIndex((d) => d.value === queryRegion)].label}` : null}
-      <div className='margin-bottom-05'>
-        <p className='undp-typography'>
-          {
-            t('main-text',
-              {
-                nrCountries,
-                totalProjectsAmount,
-                targetTotal,
-                percentProjectsSubSah,
-                nrProjects,
-                amountSubSah,
-                peopleSubSah,
-              })
-          }
-        </p>
-        <i className='small-font'>Note: The values within the text are dynamically calculated according to the data available at the moment. New values will appear once the SEH team data is being used.</i>
+      <div id='tracker' className='flex-div flex-wrap padding-top-06'>
+        <div style={{ maxWidth: '100%', width: '100%' }}>
+          <h2 className='undp-typography margin-bottom-05 page-title'>
+            <span style={{ color: 'var(--dark-yellow)' }}>
+              Energy Moonshot
+            </span>
+            {' '}
+            Tracker
+          </h2>
+          <h5 className='undp-typography'>
+            Select filters to analyze beneficiary targets of
+            {' '}
+            <b>
+              UNDP energy-related projects
+            </b>
+            {' '}
+            active during the Strategic Plan
+            {' '}
+            <b>
+              2022-2025:
+            </b>
+            {' '}
+          </h5>
+          <Settings
+            countryList={countryList}
+          />
+          <MainText />
+          <Cards
+            data={mapData}
+          />
+          <div style={{ backgroundColor: 'var(--gray-200)' }}>
+            <UnivariateMap
+              avaliableCountryList={avaliableCountryList}
+              data={mapData}
+              indicators={indicators}
+              binningRangeLarge={binningRangeLarge}
+            />
+          </div>
+        </div>
       </div>
-      <Settings
-        regions={regions}
-      />
-      <Cards
-        data={mapData}
-      />
-      <div style={{ backgroundColor: 'var(--gray-200)' }}>
-        <UnivariateMap
-          data={mapData}
-          indicators={indicators}
-          projectCoordsData={projectCoordsData}
-        />
+      <hr className='undp-style light' />
+      <div>
+        <DataTable countryLinkDict={countryLinkDict} projects={filteredProjectData} />
       </div>
     </>
   );

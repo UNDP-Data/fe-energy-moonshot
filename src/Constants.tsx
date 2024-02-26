@@ -5,7 +5,7 @@ export const MAX_TEXT_LENGTH = 100;
 export const TRUNCATE_MAX_TEXT_LENGTH = 125;
 
 export const DEFAULT_VALUES = {
-  firstMetric: 'Grant Amount',
+  firstMetric: 'Direct Beneficiaries',
   secondMetric: 'Tonnes of CO2 emissions reduced',
   colorMetric: 'Continents',
 };
@@ -158,3 +158,281 @@ export const COLOR_SCALES = {
     ['#F782A5', '#D180B3', '#9F7DC5', '#727AD4', '#4978E3'],
   ],
 };
+
+export const outputsTaxonomy = [
+  {
+    value: 'all',
+    label: 'all',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'Access',
+        label: 'access',
+      },
+      {
+        value: 'Transition',
+        label: 'transition',
+      },
+      {
+        value: 'Productive Use',
+        label: 'productive-use',
+      },
+      {
+        value: 'Policy',
+        label: 'policy',
+      },
+      {
+        value: 'Finance',
+        label: 'finance',
+      },
+    ],
+  },
+  {
+    value: 'Energy Access',
+    label: 'access',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'Clean Electricity',
+        label: 'clean-electricity',
+      },
+      {
+        value: 'Clean Cooking',
+        label: 'clean-cooking',
+      },
+      {
+        value: 'Health',
+        label: 'health',
+      },
+      {
+        value: 'Water',
+        label: 'water',
+      },
+      {
+        value: 'Agriculture',
+        label: 'agriculture',
+      },
+      {
+        value: 'Transport',
+        label: 'transport',
+      },
+      {
+        value: 'Energy Infrastructure Services',
+        label: 'infrastructure',
+      },
+    ],
+  },
+  {
+    value: 'Energy Transition',
+    label: 'transition',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'Solar',
+        label: 'solar',
+      },
+      {
+        value: 'Hydro',
+        label: 'hydro',
+      },
+      {
+        value: 'Wind',
+        label: 'wind',
+      },
+      {
+        value: 'Geothermal',
+        label: 'geothermal',
+      },
+      {
+        value: 'Bioenergy',
+        label: 'biomass',
+      },
+      {
+        value: 'Efficiency',
+        label: 'energy-efficiency',
+      },
+    ],
+  },
+  {
+    label: 'policy',
+    value: 'Policy',
+    subcategories: [
+      {
+        value: 'all',
+        label: 'all',
+      },
+      {
+        value: 'Electricity Access',
+        label: 'energy-access',
+      },
+      {
+        value: 'Renewable Energy',
+        label: 'renewable-energy',
+      },
+      {
+        value: 'Clean Cooking',
+        label: 'clean-cooking',
+      },
+      {
+        value: 'Energy Efficiency',
+        label: 'energy-efficiency',
+      },
+    ],
+  },
+  // {
+  //   label: 'finance',
+  //   value: 'Market Development',
+  //   subcategories: [
+  //     {
+  //       value: 'all',
+  //       label: 'all',
+  //     },
+  //   ],
+  // },
+];
+
+export const countryGroupingsTaxonomy = [
+  {
+    label: 'all-country-groupings',
+    value: 'all',
+  },
+  {
+    label: 'regional-bureaus',
+    key: 'region',
+    options: [
+      {
+        label: 'RBLAC',
+        value: 'RBLAC',
+      },
+      {
+        label: 'RBA',
+        value: 'RBA',
+      },
+      {
+        label: 'RBAP',
+        value: 'RBAP',
+      },
+      {
+        label: 'RBEC',
+        value: 'RBEC',
+      },
+      {
+        label: 'RBAS',
+        value: 'RBAS',
+      },
+    ],
+  },
+  {
+    label: 'income-groups',
+    key: 'incomeGrouping',
+    options: [
+      {
+        label: 'high-income',
+        value: 'High income',
+      },
+      {
+        label: 'upper-middle-income',
+        value: 'Upper middle income',
+      },
+      {
+        label: 'lower-middle-income',
+        value: 'Lower middle income',
+      },
+      {
+        label: 'low-income',
+        value: 'Low income',
+      },
+    ],
+  },
+  {
+    label: 'hdi-tiers',
+    key: 'hdiTier',
+    options: [
+      {
+        label: 'very-high',
+        value: 'Very High',
+      },
+      {
+        label: 'high',
+        value: 'High',
+      },
+      {
+        label: 'medium',
+        value: 'Medium',
+      },
+      {
+        label: 'low',
+        value: 'Low',
+      },
+    ],
+  },
+  {
+    label: 'special-groupings',
+    key: 'specialGroupings',
+    options: [
+      {
+        label: 'sids',
+        value: 'SIDS',
+      },
+      {
+        label: 'lldcs',
+        value: 'LLDC',
+      },
+      {
+        label: 'ldcs',
+        value: 'LDC',
+      },
+    ],
+  },
+];
+
+export const genderMarkers = [
+  {
+    label: 'all',
+    value: 'all',
+  },
+  {
+    label: 'GEN0',
+    value: 'GEN0',
+    tooltip: 'GEN0-tooltip',
+  },
+  {
+    label: 'GEN1',
+    value: 'GEN1',
+    tooltip: 'GEN1-tooltip',
+  },
+  {
+    label: 'GEN2',
+    value: 'GEN2',
+    tooltip: 'GEN2-tooltip',
+  },
+  {
+    label: 'GEN3',
+    value: 'GEN3',
+    tooltip: 'GEN3-tooltip',
+  },
+];
+
+export const fundingTaxonomy = [
+  {
+    value: 'all',
+    label: 'all-funding-sources',
+  },
+  {
+    value: 'vf',
+    label: 'vf',
+  },
+  {
+    value: 'nonvf',
+    label: 'non-vf',
+  },
+];

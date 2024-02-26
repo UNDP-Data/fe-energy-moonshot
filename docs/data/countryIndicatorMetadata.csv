@@ -1,0 +1,43 @@
+Indicator,IndicatorLabelTable,IndicatorDescription,Unit,FileNumber
+electricityAccess_sharet,ElectricityAccess_sharet,Share of total population with access to electricity (%),%,1
+electricityAccess_popt,ElectricityAccess_popt,Population without access to electricity (#),,1
+electricityAccess_shareu,ElectricityAccess_shareu,Share of urban population with access to electricity (%),%,1
+electricityAccess_popu,ElectricityAccess_popu,Urban Population without access to electricity (#),,1
+electricityAccess_sharer,ElectricityAccess_sharer,Share of rural population with access to electricity (%),%,1
+electricityAccess_popr,ElectricityAccess_popr,Rural Population without access to electricity (#),,1
+cleancooking_sharet,Cleancooking_sharet,Total clean cooking access rate (%),%,2
+cleancooking_sharer,Cleancooking_sharer,Rural clean cooking access rate (%),%,2
+cleancooking_shareu,Cleancooking_shareu,Urban clean cooking access rate (%),%,2
+poverty_headcount,poverty_headcount,Poverty headcount ratio at $2.15 a day (2017 PPP) (% of population). Source: WB,%,3
+multidimensional_poverty,multidimensional_poverty,Multidimensional poverty,%,4
+investment_gap_total,investment_gap_total,Investment gap total,Bi USD,5
+investment_gap_rural,investment_gap_rural,Investment gap rural,Bi USD,5
+investment_gap_urban,investment_gap_urban,Investment gap urban,Bi USD,5
+hdi,hdi,Human Development Index,,6
+life_exp,life_exp,Life Expectancy,years,6
+schooling,schooling,Mean years of schooling,years,6
+income,income,Gross national income (GNI) per capita,2017 PPP USD,6
+poverty_reduction_2030_%,poverty_reduction_2030_%,% of people in extreme poverty in 2030,%,7
+poverty_reduction_2050_%,poverty_reduction_2050_%,% of people in extreme poverty in 2050,%,7
+poverty_reduction_2030_million,poverty_reduction_2030_million,number of people (in million) in extreme poverty in 2030,million,7
+poverty_reduction_2050_million,poverty_reduction_2050_million,number of people (in million) in extreme poverty in 2050,million,7
+cum_averteddeaths_2030,cum_averteddeaths_2030,Cummulative averted number of deaths from respiratory diseases and infections in 2030 (obtained by subtracting the number of deaths caused by respiratory diseases and infections generated with the use of traditional cookstoves in the Universal Access scenario to the ones of the Current Path scenario in 2030),,7
+cum_averteddeaths_2050,cum_averteddeaths_2050,Cummulative averted number of deaths from respiratory diseases and infections in 2050 (obtained by subtracting the number of deaths caused by respiratory diseases and infections generated with the use of traditional cookstoves in the Universal Access scenario to the ones of the Current Path scenario in 2050),,7
+GDPgains_2030_bi,GDPgains_2030_bi,GPD gains (in USD bi) in 2030,Bi USD,7
+GDPgains_2050_bi,GDPgains_2050_bi,GPD gains (in USD bi) in 2050,Bi USD,7
+GDPgains_cum2030_bi,GDPgains_cum2030_bi,Cumulative (2022-2030) difference between Gross Domestic Product (at Market Exchange Rates in 2011 billion US$) in the UA and the CP scenarios,Bi USD,7
+GDPgains_cum2050_bi,GDPgains_cum2050_bi,Cumulative (2022-2050) difference between Gross Domestic Product (at Market Exchange Rates in 2011 billion US$) in the UA and the CP scenarios,Bi USD,7
+InvRural_cum2030_bi,InvRural_cum2030_bi,Cumulative (2022-2030) difference between Total spending for rural electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+InvRural_cum2050_bi,InvRural_cum2050_bi,Cumulative (2022-2050) difference between Total spending for rural electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+InvUrban_cum2030_bi,InvUrban_cum2030_bi,Cumulative (2022-2030) difference between Total spending for urban electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+InvUrban_cum2050_bi,InvUrban_cum2050_bi,Cumulative (2022-2050) difference between Total spending for urban electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+InvRural_2030_bi,InvRural_2030_bi,Total spending for rural electricity infrastructure in 2030 (in billion USD) - difference of UA and CP,Bi USD,7
+InvRural_2050_bi,InvRural_2050_bi,Total spending for rural electricity infrastructure in 2050 (in billion USD) - difference of UA and CP,Bi USD,7
+InvUrban_2030_bi,InvUrban_2030_bi,Total spending for urban electricity infrastructure in 2030 (in billion USD) -  difference of UA and CP,Bi USD,7
+InvUrban_2050_bi,InvUrban_2050_bi,Total spending for urban electricity infrastructure in 2050 (in billion USD) - difference of UA and CP,Bi USD,7
+InvTotal_cum_2030_bi,InvTotal_cum_2030_bi,Cumulative (2022-2030) difference between Total spending for rural and urbanl electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+InvTotal_cum_2050_bi,InvTotal_cum_2050_bi,Cumulative (2022-2050) difference between Total spending for rural and urbanl electricity infrastructure (in billion USD) in the UA and the CP scenarios,Bi USD,7
+pop_hrea_2020,pop_hrea_2020,Population with access to electricity (HREA),,8
+pop_no_hrea_2020,pop_no_hrea_2020,Population with no access to electricity (HREA),,8
+hrea_2020,hrea_2020,Percentage population with access to electricity,,8
+pop,pop,Total population,,8

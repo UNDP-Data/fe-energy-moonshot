@@ -1,0 +1,58 @@
+[
+    {
+        "Indicator": "Direct Beneficiaries",
+        "IndicatorDescription": "The total number of people directly benefiting",
+        "DataKey": "directBeneficiaries",
+        "TranslationKey": "direct-beneficiaries",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"outputs"
+    },
+    {
+        "Indicator": "Project Budget Totals",
+        "IndicatorDescription": "Project Budget Totals (US)",
+        "DataKey": "budget",
+        "TranslationKey": "project-budget-totals",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"projects"
+    },
+    {
+        "Indicator": "Energy Saved (MJ)",
+        "IndicatorDescription": "Energy Saved (MJ)",
+        "DataKey": "energySaved",
+        "TranslationKey": "energy-saved-mj",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"outputs"
+    },
+    {
+        "Indicator": "MW Added",
+        "IndicatorDescription": "MW Added",
+        "DataKey": "mwAdded",
+        "TranslationKey": "mw-added",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"outputs"
+    },
+    {
+        "Indicator": "GHG Emissions Reduction",
+        "IndicatorDescription": "GHG Emissions Reduction (tonnes CO2)",
+        "DataKey": "ghgEmissions",
+        "TranslationKey": "ghg-emissions-reduction",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"projects"
+    },
+    {
+        "Indicator": "Number of Policies",
+        "IndicatorDescription": "Number of Policies",
+        "DataKey": "policies",
+        "TranslationKey": "number-of-policies",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"outputs"
+    },
+    {
+        "Indicator": "Number of Projects",
+        "IndicatorDescription": "Number or Projects",
+        "DataKey": "nProj",
+        "TranslationKey": "number-of-projects",
+        "BinningRangeLarge": [100, 500, 1000, 10000, 50000, 100000, 1000000],
+        "AggregationLevel":"projects"
+    }
+]

@@ -7,22 +7,23 @@ import { geoEqualEarth } from 'd3-geo';
 import { zoom } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
+import { Select } from 'antd';
 import { scaleThreshold } from 'd3-scale';
 import { useTranslation } from 'react-i18next';
 import UNDPColorModule from 'undp-viz-colors';
 import {
-  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, ProjectHoverDataType, ProjectCoordsDataType,
+  CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, IndicatorRange,
 } from '../../Types';
 import Context from '../../Context/Context';
 import World from '../../Data/worldMap.json';
-import { COLOR_SCALES } from '../../Constants';
+import { COLOR_SCALES, DEFAULT_VALUES } from '../../Constants';
 import { Tooltip } from '../../Components/Tooltip';
-import { ProjectTooltip } from '../../Components/ProjectTooltip';
 
 interface Props {
   data: DataType[];
   indicators: IndicatorMetaDataType[];
-  projectCoordsData: ProjectCoordsDataType[];
+  avaliableCountryList: string[];
+  binningRangeLarge: IndicatorRange;
 }
 
 const LegendEl = styled.div`
@@ -49,20 +50,17 @@ export const Map = (props: Props) => {
   const {
     data,
     indicators,
-    projectCoordsData,
+    avaliableCountryList,
+    binningRangeLarge,
   } = props;
   const {
     xAxisIndicator,
-    selectedCountries,
     selectedRegions,
-    selectedProjects,
-    showProjectLocations,
-    selectedTaxonomy,
-    updateSelectedProjects,
+    updateSelectedRegions,
+    updateXAxisIndicator,
   } = useContext(Context) as CtxDataType;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(undefined);
-  const [projectHoverData, setProjectHoverData] = useState<ProjectHoverDataType | undefined>(undefined);
   const [zoomLevel, setZoomLevel] = useState(1);
   const queryParams = new URLSearchParams(window.location.search);
   const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960 ? 1280 : 960;
@@ -74,11 +72,20 @@ export const Map = (props: Props) => {
     .scale(200)
     .translate([svgWidth / 2 - 50, svgHeight / 2 + 25]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
-  const valueArray = xIndicatorMetaData.BinningRangeLarge;
+  const valueArray = binningRangeLarge[xIndicatorMetaData.DataKey];
   const colorArray = (valueArray.length === 5) ? UNDPColorModule.sequentialColors.neutralColorsx06 : UNDPColorModule.sequentialColors.neutralColorsx08;
   const colorScale = scaleThreshold<number, string>().domain(valueArray).range(colorArray);
   // translation
   const { t } = useTranslation();
+
+  const options = indicators.map((d) => d.Indicator);
+
+  useEffect(() => {
+    if (options.findIndex((d) => d === xAxisIndicator) === -1) {
+      updateXAxisIndicator(options[0]);
+    }
+  }, [options]);
+
   useEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
@@ -98,19 +105,27 @@ export const Map = (props: Props) => {
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         ref={mapSvg}
       >
-        <rect y='-20' width={svgWidth} height={svgHeight + 40} fill='#f7f7f7' />
+        <rect
+          y='-20'
+          width={svgWidth}
+          height={svgHeight + 40}
+          fill='#f7f7f7'
+          onClick={() => {
+            updateSelectedRegions('all');
+          }}
+        />
         <g ref={mapG}>
           {
             (World as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code'] === d.properties.ISO3);
-              const regionOpacity = selectedRegions === 'All' || selectedRegions.indexOf(d.region) !== -1;
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
+              // const regionOpacity = selectedRegions === 'all' || selectedRegions.indexOf(d.region) !== -1;
+              // const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
               if ((index !== -1) || d.properties.NAME === 'Antarctica') return null;
               return (
                 <g
                   key={i}
-                  opacity={regionOpacity && countryOpacity && !selectedColor ? 1 : 0.5}
+                  opacity={selectedColor ? 0.5 : 1}
                 >
                   {
                   d.geometry.type === 'MultiPolygon' ? d.geometry.coordinates.map((el:any, j: any) => {
@@ -130,6 +145,13 @@ export const Map = (props: Props) => {
                         d={masterPath}
                         stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
+                        onClick={() => {
+                          if (avaliableCountryList.includes(d.properties.ISO3)) {
+                            updateSelectedRegions(d.properties.ISO3);
+                          } else {
+                            updateSelectedRegions('all');
+                          }
+                        }}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -146,6 +168,13 @@ export const Map = (props: Props) => {
                         d={path}
                         stroke='#fff'
                         strokeWidth={0.2 / zoomLevel}
+                        onClick={() => {
+                          if (avaliableCountryList.includes(d.properties.ISO3)) {
+                            updateSelectedRegions(d.properties.ISO3);
+                          } else {
+                            updateSelectedRegions('all');
+                          }
+                        }}
                         fill={COLOR_SCALES.Null}
                       />
                     );
@@ -161,42 +190,47 @@ export const Map = (props: Props) => {
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
               const val = indicatorIndex === -1 ? undefined : d.indicators[indicatorIndex].value;
               const color = val !== undefined ? colorScale(val) : '#f5f9fe';
-
-              const regionOpacity = selectedRegions === 'All' || selectedRegions === d.region;
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
+              // const regionOpacity = selectedRegions === 'all' || selectedRegions === d.region;
+              // const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
 
               return (
                 <g
                   key={i}
-                  opacity={
-                    selectedColor
-                      ? selectedColor === color ? 1 : 0.1
-                      : regionOpacity && countryOpacity ? 1 : 0.1
-                  }
+                  opacity={selectedColor && selectedColor !== color ? 0.1 : 1}
                   onMouseEnter={(event) => {
-                    if (regionOpacity) {
-                      setHoverData({
-                        country: d['Country or Area'],
-                        continent: d.region,
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
-                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
-                        numberProjects: d.numberProjects,
-                        xPosition: event.clientX,
-                        yPosition: event.clientY,
-                      });
-                    }
+                    setHoverData({
+                      country: d['Country or Area'],
+                      continent: d.region,
+                      // outputCategory: d.outputCategory,
+                      peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'directBeneficiaries')[0].value,
+                      grantAmount: d.indicators.filter((ind) => ind.indicator === 'budget')[0].value,
+                      energySaved: d.indicators.filter((ind) => ind.indicator === 'energySaved')[0].value,
+                      mwAdded: d.indicators.filter((ind) => ind.indicator === 'mwAdded')[0].value,
+                      ghgEmissions: d.indicators.filter((ind) => ind.indicator === 'ghgEmissions')[0].value,
+                      numberProjects: d.numberProjects,
+                      xPosition: event.clientX,
+                      yPosition: event.clientY,
+                    });
                   }}
                   onMouseMove={(event) => {
-                    if (regionOpacity) {
-                      setHoverData({
-                        country: d['Country or Area'],
-                        continent: d.region,
-                        peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'target_total')[0].value,
-                        grantAmount: d.indicators.filter((ind) => ind.indicator === 'Grant amount')[0].value,
-                        numberProjects: d.numberProjects,
-                        xPosition: event.clientX,
-                        yPosition: event.clientY,
-                      });
+                    setHoverData({
+                      country: d['Country or Area'],
+                      continent: d.region,
+                      peopleDirectlyBenefiting: d.indicators.filter((ind) => ind.indicator === 'directBeneficiaries')[0].value,
+                      grantAmount: d.indicators.filter((ind) => ind.indicator === 'budget')[0].value,
+                      energySaved: d.indicators.filter((ind) => ind.indicator === 'energySaved')[0].value,
+                      mwAdded: d.indicators.filter((ind) => ind.indicator === 'mwAdded')[0].value,
+                      ghgEmissions: d.indicators.filter((ind) => ind.indicator === 'ghgEmissions')[0].value,
+                      numberProjects: d.numberProjects,
+                      xPosition: event.clientX,
+                      yPosition: event.clientY,
+                    });
+                  }}
+                  onClick={() => {
+                    if (d['Alpha-3 code'] === selectedRegions) {
+                      updateSelectedRegions('all');
+                    } else {
+                      updateSelectedRegions(d['Alpha-3 code']);
                     }
                   }}
                   onMouseLeave={() => {
@@ -251,7 +285,7 @@ export const Map = (props: Props) => {
             hoverData
               ? (World as any).features.filter((d: any) => d.properties.ISO3 === data[data.findIndex((el: DataType) => el['Country or Area'] === hoverData?.country)]['Alpha-3 code']).map((d: any, i: number) => (
                 <G
-                  opacity={!selectedColor ? 1 : 0}
+                  opacity={selectedColor ? 0 : 1}
                   key={i}
                 >
                   {
@@ -300,60 +334,25 @@ export const Map = (props: Props) => {
                 </G>
               )) : null
           }
-          {
-            showProjectLocations
-            && projectCoordsData.filter((d) => selectedTaxonomy === 'All' || d.projectData.taxonomy_level3 === selectedTaxonomy).map((d, i: number) => {
-              const regionOpacity = selectedRegions === 'All' || selectedRegions === d.projectData['Regional Bureau'];
-              const countryOpacity = selectedCountries.length === 0 || selectedCountries === d.projectData['Lead Country'];
-              const projectOpacity = selectedProjects === '' || selectedProjects === d.projectData['projectID_PIMS+'].toString();
-
-              const point = projection([d.Longitude, d.Latitude]) as [number, number];
-              return (
-                <g
-                  key={i}
-                  opacity={projectOpacity && countryOpacity && regionOpacity ? 0.9 : 0.01}
-                  onMouseEnter={(event) => {
-                    updateSelectedProjects(d['projectID_PIMS+'].toString());
-                    setProjectHoverData({
-                      name: d.projectData['Short Title'],
-                      donor: d.projectData['Source of Funds'],
-                      grantAmount: d.projectData['Grant amount'],
-                      xPosition: event.clientX,
-                      yPosition: event.clientY,
-                    });
-                  }}
-                  onMouseMove={(event) => {
-                    updateSelectedProjects(d['projectID_PIMS+'].toString());
-                    setProjectHoverData({
-                      name: d.projectData['Short Title'],
-                      donor: d.projectData['Source of Funds'],
-                      grantAmount: d.projectData['Grant amount'],
-                      xPosition: event.clientX,
-                      yPosition: event.clientY,
-                    });
-                  }}
-                  onMouseLeave={() => {
-                    updateSelectedProjects('');
-                    setProjectHoverData(undefined);
-                  }}
-                >
-                  <circle
-                    key={i}
-                    cx={point[0]}
-                    cy={point[1]}
-                    r={(zoomLevel < 3) ? 3 / zoomLevel : 4 / zoomLevel}
-                    fill='#FFF'
-                    stroke='#006EB5'
-                    strokeWidth={1 / zoomLevel}
-                  />
-                </g>
-              );
-            })
-          }
         </g>
       </svg>
       <LegendEl>
-        <h6 className='undp-typography'>{ t(xIndicatorMetaData.TranslationKey) }</h6>
+        <div className='margin-bottom-05' style={{ width: '100%', minWidth: '19rem' }}>
+          <p className='label'>{t('select-indicator')}</p>
+          <Select
+            className='undp-select'
+            placeholder='Please select'
+            value={xAxisIndicator}
+            onChange={(d) => { updateXAxisIndicator(d); }}
+            defaultValue={DEFAULT_VALUES.firstMetric}
+          >
+            {
+              options.map((d) => (
+                <Select.Option className='undp-select-option' key={d}>{t(indicators.filter((k) => k.Indicator === d)[0].TranslationKey)}</Select.Option>
+              ))
+            }
+          </Select>
+        </div>
         <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {
@@ -365,15 +364,15 @@ export const Map = (props: Props) => {
                   style={{ cursor: 'pointer' }}
                 >
                   <rect
-                    x={(i * 320) / colorArray.length + 1}
+                    x={(i * 320) / valueArray.length + 1}
                     y={1}
-                    width={(320 / colorArray.length) - 2}
+                    width={(320 / valueArray.length) - 2}
                     height={8}
                     fill={colorArray[i]}
                     stroke={selectedColor === colorArray[i] ? '#212121' : colorArray[i]}
                   />
                   <text
-                    x={((i + 1) * 320) / colorArray.length}
+                    x={((i + 1) * 320) / valueArray.length}
                     y={25}
                     textAnchor='middle'
                     fontSize={12}
@@ -388,9 +387,9 @@ export const Map = (props: Props) => {
               <rect
                 onMouseOver={() => { setSelectedColor(colorArray[valueArray.length]); }}
                 onMouseLeave={() => { setSelectedColor(undefined); }}
-                x={((valueArray.length * 320) / colorArray.length) + 1}
+                x={((valueArray.length * 320) / valueArray.length) + 1}
                 y={1}
-                width={(320 / colorArray.length) - 2}
+                width={(320 / valueArray.length) - 2}
                 height={8}
                 fill={colorArray[valueArray.length]}
                 stroke={selectedColor === colorArray[valueArray.length] ? '#212121' : colorArray[valueArray.length]}
@@ -403,9 +402,6 @@ export const Map = (props: Props) => {
       </LegendEl>
       {
         hoverData ? <Tooltip data={hoverData} /> : null
-      }
-      {
-        projectHoverData ? <ProjectTooltip data={projectHoverData} /> : null
       }
     </div>
   );
