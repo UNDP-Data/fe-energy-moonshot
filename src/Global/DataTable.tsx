@@ -40,14 +40,19 @@ const Cell = (props:CellProps) => {
   } = props;
 
   return (
-    <p className='undp-typography'>
-      <>
-        {
-          text && value ? (`${text} - `) : ('')
-        }
-        {value || ''}
-      </>
-    </p>
+    <>
+      {
+        text && value ? (`${text} - `) : ('')
+      }
+      {
+        text && value ? (
+          <b>
+            {value || ''}
+          </b>
+        ) : ('')
+      }
+      {(!text && value) || ''}
+    </>
   );
 };
 
@@ -126,29 +131,31 @@ const Project = (props:ProjectProps) => {
         <div style={{ width: '30%', background: 'transparent' }} className='undp-table-row-cell'>
           <div className='padding-left-05 padding-right-05'>
             <h6 className='undp-typography'>
-              <EditableCell
-                text={project.title}
-                fieldName='title'
-                sendUpdate={sendUpdateCallback}
+              <Cell
+                value={project.title}
               />
               {' - '}
-              <EditableCell
-                text={project.id}
-                fieldName='id'
-                sendUpdate={sendUpdateCallback}
-              />
-              {' - '}
-              <EditableCell
-                text={project.genderMarker !== null ? `${project.genderMarker}` : '__'}
-                fieldName='genderMarker'
-                sendUpdate={sendUpdateCallback}
+              {
+                (project.id) ? (
+                  <Cell
+                    value={project.id}
+                  />
+                ) : (
+                  <EditableCell
+                    text='__'
+                    fieldName='id'
+                    sendUpdate={sendUpdateCallback}
+                  />
+                )
+              }
+              {project.genderMarker && ' - '}
+              <Cell
+                value={project.genderMarker}
               />
             </h6>
             <p className='undp-typography'>
-              <EditableCell
-                text={project.description}
-                fieldName='description'
-                sendUpdate={sendUpdateCallback}
+              <Cell
+                value={project.description}
               />
             </p>
           </div>
@@ -175,48 +182,95 @@ const Project = (props:ProjectProps) => {
               </b>
             </p>
             <p className='undp-typography'>
-              {t('budget')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B')}
-                  fieldName='budget'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
+              {
+                (project.budget) ? (
+                  <Cell
+                    value={Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B')}
+                    text={t('budget')}
+                  />
+                ) : (
+                  <>
+                    {t('budget')}
+                    {' - '}
+                    <EditableCell
+                      text='__'
+                      fieldName='budget'
+                      sendUpdate={sendUpdateCallback}
+                    />
+                  </>
+                )
+              }
             </p>
             <p className='undp-typography'>
-              {t('type')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={t(project.verticalFunded ? 'vf' : 'non-vf')}
-                  fieldName='verticalFunded'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
+              <Cell
+                text={t('type')}
+                value={t(project.verticalFunded ? 'vf' : 'non-vf')}
+              />
             </p>
             <p className='undp-typography'>
-              {t('gender-equality')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={project.genderMarker !== null ? `${project.genderMarker}` : '__'}
-                  fieldName='genderMarker'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
+              <Cell
+                text={t('gender-equality')}
+                value={project.genderMarker}
+              />
+            </p>
+
+            <p className='undp-typography'>
+              {
+                (project.ghgEmissions) ? (
+                  <Cell
+                    value={project.ghgEmissions === 0 ? '0' : `${project.ghgEmissions}M ${t('tonnes')}`}
+                    text={t('ghg-emissions-reduction')}
+                  />
+                ) : (
+                  <>
+                    {t('ghg-emissions-reduction')}
+                    {' - '}
+                    <EditableCell
+                      text='__'
+                      fieldName='ghgEmissions'
+                      sendUpdate={sendUpdateCallback}
+                    />
+                  </>
+                )
+              }
             </p>
             <p className='undp-typography'>
-              {t('ghg-emissions-reduction')}
-              {' - '}
-              <b>
-                <EditableCell
-                  text={project.ghgEmissions === null ? '__' : project.ghgEmissions === 0 ? '0' : `${project.ghgEmissions}M ${t('tonnes')}`}
-                  fieldName='ghgEmissions'
-                  sendUpdate={sendUpdateCallback}
-                />
-              </b>
+              {
+                (project.link) ? (
+                  <a
+                    href={project.link}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    Link
+                  </a>
+                ) : (
+                  <>
+                    {'Link - '}
+                    <EditableCell
+                      text='__'
+                      fieldName='link'
+                      sendUpdate={sendUpdateCallback}
+                    />
+                  </>
+                )
+              }
+            </p>
+            <p className='undp-typography'>
+              {
+                (project.donors) ? (
+                  project.donors.join(', ')
+                ) : (
+                  <>
+                    {'Donors - '}
+                    <EditableCell
+                      text='__'
+                      fieldName='donors'
+                      sendUpdate={sendUpdateCallback}
+                    />
+                  </>
+                )
+              }
             </p>
           </div>
         </div>
@@ -228,24 +282,18 @@ const Project = (props:ProjectProps) => {
                   style={{ width: '40%', background: 'transparent' }}
                   className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
                 >
-                  { o.directBeneficiaries !== 0 ? (
+                  { o.directBeneficiaries ? (
                     <p className='undp-typography'>
-                      {t('direct-beneficiaries')}
-                      {' - '}
-                      <b>
-                        <EditableCell
-                          text={format('~s')(o.directBeneficiaries).replace('G', 'B')}
-                          fieldName='beneficiaries'
-                          outputId={o.id}
-                          sendUpdate={sendUpdateCallback}
-                        />
-                      </b>
+                      <Cell
+                        value={format('~s')(o.directBeneficiaries).replace('G', 'B')}
+                        text={t('direct-beneficiaries')}
+                      />
                     </p>
                   ) : (
                     <p className='undp-typography'>
                       <b>
                         <EditableCell
-                          text={t('indirect-beneficiaries')}
+                          text='Indirect beneficiaries'
                           fieldName='beneficiaries'
                           outputId={o.id}
                           sendUpdate={sendUpdateCallback}
@@ -254,55 +302,44 @@ const Project = (props:ProjectProps) => {
                     </p>
                   )}
                   <p className='undp-typography'>
-                    {t('select-output-type')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={o.outputCategory}
-                        fieldName='beneficiaries'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
+                    <Cell
+                      value={o.outputCategory}
+                      text={t('select-output-type')}
+                    />
                   </p>
                   <p className='undp-typography'>
-                    {t('select-output-sub-type')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={o.beneficiaryCategory}
-                        fieldName='beneficiaries'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
+                    <Cell
+                      value={o.beneficiaryCategory}
+                      text={t('select-output-sub-type')}
+                    />
                   </p>
-                  <p className='undp-typography'>
-                    {t('female-percent')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={
-                          o.percentFemale === null ? '__'
-                            : `${!(o.percentFemale % 1) ? (o.percentFemale) : format(',.2f')(o.percentFemale)}%`
-                        }
-                        fieldName='percentFemale'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
+                  { o.percentFemale !== null ? (
+                    <p className='undp-typography'>
+                      <Cell
+                        value={`${o.percentFemale}%`}
+                        text={t('female-percent')}
                       />
-                    </b>
-                  </p>
+                    </p>
+                  ) : (
+                    <p className='undp-typography'>
+                      <>
+                        {t('female-percent')}
+                        {' - '}
+                        <EditableCell
+                          text='__'
+                          outputId={o.id}
+                          fieldName='percentFemale'
+                          sendUpdate={sendUpdateCallback}
+                        />
+                      </>
+                    </p>
+                  )}
+
                   <p className='undp-typography'>
-                    {t('energy-saved-mj')}
-                    {' - '}
-                    <b>
-                      <EditableCell
-                        text={o.energySaved ? format('~s')(o.energySaved).replace('G', 'B') : '__'}
-                        fieldName='energySaved'
-                        outputId={o.id}
-                        sendUpdate={sendUpdateCallback}
-                      />
-                    </b>
+                    <Cell
+                      value={o.energySaved ? format('~s')(o.energySaved).replace('G', 'B') : null}
+                      text={t('energy-saved-mj')}
+                    />
                   </p>
                 </div>
                 <div
