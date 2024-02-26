@@ -13,6 +13,7 @@ import { Global } from './Global';
 import Header from './Global/Header';
 import Banner from './Global/Banner';
 import Million from './Global/500million';
+import StackedChart from './Components/StackedChart';
 import Footer from './Global/Footer';
 import Reducer from './Context/Reducer';
 import Context from './Context/Context';
@@ -253,6 +254,7 @@ const App = (props: Props) => {
                 <Header />
                 <Banner />
                 <Million />
+                <StackedChart />
                 <div
                   ref={containerEl}
                   className='bodyEl padding-top-04 padding-bottom-01 padding-right-05 padding-left-05'
