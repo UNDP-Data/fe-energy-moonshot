@@ -24,6 +24,7 @@ export const Cards = (props: Props) => {
   } = props;
   const {
     selectedCategory,
+    selectedSubCategory,
   } = useContext(Context) as CtxDataType;
 
   const formatData = (d: undefined | number) => {
@@ -40,6 +41,7 @@ export const Cards = (props: Props) => {
     numberProjects: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'nProj')[0].value),
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
     mwAdded: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'mwAdded')[0].value),
+    energySaved: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'energySaved')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
     // policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
     numberCountries: data.length,
@@ -52,12 +54,22 @@ export const Cards = (props: Props) => {
       <div className='stat-container flex-div margin-bottom-05'>
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           {
-            (selectedCategory === 'Energy Transition') && (
+            (selectedCategory === 'Energy Transition' && selectedSubCategory !== 'Efficiency') && (
               <>
                 <h3 className='undp-typography'>
                   {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
                 </h3>
                 <p>{t('mw-added')}</p>
+              </>
+            )
+          }
+          {
+            (selectedCategory === 'Energy Transition' && selectedSubCategory === 'Efficiency') && (
+              <>
+                <h3 className='undp-typography'>
+                  {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.energySaved)}
+                </h3>
+                <p>{t('energy-saved-mj')}</p>
               </>
             )
           }
