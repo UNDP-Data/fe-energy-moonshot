@@ -52,95 +52,89 @@ export const Cards = (props: Props) => {
   return (
     <>
       <div className='stat-container flex-div margin-bottom-05'>
-        <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
-          {
-            (selectedCategory === 'Energy Transition' && selectedSubCategory !== 'Efficiency') && (
-              <>
-                <h3 className='undp-typography'>
-                  {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
-                </h3>
-                <p>{t('mw-added')}</p>
-              </>
-            )
-          }
-          {
-            (selectedCategory === 'Energy Transition' && selectedSubCategory === 'Efficiency') && (
-              <>
-                <h3 className='undp-typography'>
-                  {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.energySaved)}
-                </h3>
-                <p>{t('energy-saved-mj')}</p>
-              </>
-            )
-          }
-          {
-            (selectedCategory === 'Energy Access') && (
-              <>
-                <h3 className='undp-typography'>
-                  {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
-                </h3>
-                <p>{t('people-benefiting')}</p>
-              </>
-            )
-          }
-          {
-            // (
-              // selectedCategory === 'Policy') && (
-              // <>
-              //   <h3 className='undp-typography'>
-              //     {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
-              //   </h3>
-              //   <p>{t('number-of-policies')}</p>
-              // </>
-            // )
-          }
-          {
-            (selectedCategory === 'Market Development' || selectedCategory === 'Policy') && (
-              <>
-                <h3 className='undp-typography'>
-                  N/A
-                </h3>
-              </>
-            )
-          }
-          {
-            (selectedCategory === 'all') && (
-              ((cardData.peopleBenefiting) && (
-                <>
-                  <h3 className='undp-typography'>
-                    {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
-                  </h3>
-                  <p>{t('people-benefiting')}</p>
-                </>
-              ))
-              || ((cardData.mwAdded) && (
-                <>
-                  <h3 className='undp-typography'>
-                    {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
-                  </h3>
-                  <p>{t('mw-added')}</p>
-                </>
-              ))
-              // || (
-              //   (cardData.policies) && (
-              //   <>
-              //     <h3 className='undp-typography'>
-              //       {cardData.policies === undefined ? 'N/A' : formatData(cardData.policies)}
-              //     </h3>
-              //     <p>{t('number-of-policies')}</p>
-              //   </>
-              // )
-              // )
-              || (
-                <>
-                  <h3 className='undp-typography'>
-                    N/A
-                  </h3>
-                </>
-              )
-            )
-          }
-        </StatCardsDiv>
+        {
+          (selectedCategory !== 'Policy') && (
+            <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
+              {
+                (selectedCategory === 'Energy Transition' && selectedSubCategory !== 'Efficiency') && (
+                  <>
+                    <h3 className='undp-typography'>
+                      {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
+                    </h3>
+                    <p>{t('mw-added')}</p>
+                  </>
+                )
+              }
+              {
+                (selectedCategory === 'Energy Transition' && selectedSubCategory === 'Efficiency') && (
+                  <>
+                    <h3 className='undp-typography'>
+                      {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.energySaved)}
+                    </h3>
+                    <p>{t('energy-saved-mj')}</p>
+                  </>
+                )
+              }
+              {
+                (selectedCategory === 'Energy Access') && (
+                  <>
+                    <h3 className='undp-typography'>
+                      {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
+                    </h3>
+                    <p>{t('people-benefiting')}</p>
+                  </>
+                )
+              }
+              {
+                // (
+                  // selectedCategory === 'Policy') && (
+                  // <>
+                  //   <h3 className='undp-typography'>
+                  //     {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
+                  //   </h3>
+                  //   <p>{t('number-of-policies')}</p>
+                  // </>
+                // )
+              }
+              {
+                (selectedCategory === 'Market Development' || selectedCategory === 'Policy') && (
+                  <>
+                    <h3 className='undp-typography'>
+                      N/A
+                    </h3>
+                  </>
+                )
+              }
+              {
+                (selectedCategory === 'all') && (
+                  ((cardData.peopleBenefiting) && (
+                    <>
+                      <h3 className='undp-typography'>
+                        {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
+                      </h3>
+                      <p>{t('people-benefiting')}</p>
+                    </>
+                  ))
+                  || ((cardData.mwAdded) && (
+                    <>
+                      <h3 className='undp-typography'>
+                        {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
+                      </h3>
+                      <p>{t('mw-added')}</p>
+                    </>
+                  ))
+                  || (
+                    <>
+                      <h3 className='undp-typography'>
+                        N/A
+                      </h3>
+                    </>
+                  )
+                )
+              }
+            </StatCardsDiv>
+          )
+        }
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
           <h3 className='undp-typography'>{formatData(cardData.numberProjects)}</h3>
           <p>{t('number-projects')}</p>
