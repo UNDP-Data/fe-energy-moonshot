@@ -15,12 +15,12 @@ import {
   CtxDataType, DataType, HoverDataType, IndicatorMetaDataType, IndicatorRange,
 } from '../../Types';
 import Context from '../../Context/Context';
-import World from '../../Data/worldMap.json';
 import { COLOR_SCALES, DEFAULT_VALUES } from '../../Constants';
 import { Tooltip } from '../../Components/Tooltip';
 
 interface Props {
   data: DataType[];
+  geojsonMapData: any[];
   indicators: IndicatorMetaDataType[];
   avaliableCountryList: string[];
   binningRangeLarge: IndicatorRange;
@@ -49,6 +49,7 @@ const G = styled.g`
 export const Map = (props: Props) => {
   const {
     data,
+    geojsonMapData,
     indicators,
     avaliableCountryList,
     binningRangeLarge,
@@ -116,7 +117,7 @@ export const Map = (props: Props) => {
         />
         <g ref={mapG}>
           {
-            (World as any).features.map((d: any, i: number) => {
+            (geojsonMapData as any).features.map((d: any, i: number) => {
               const index = data.findIndex((el: any) => el['Alpha-3 code'] === d.properties.ISO3);
               // const regionOpacity = selectedRegions === 'all' || selectedRegions.indexOf(d.region) !== -1;
               // const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
@@ -186,7 +187,7 @@ export const Map = (props: Props) => {
           }
           {
             data.map((d, i: number) => {
-              const index = (World as any).features.findIndex((el: any) => d['Alpha-3 code'] === el.properties.ISO3);
+              const index = (geojsonMapData as any).features.findIndex((el: any) => d['Alpha-3 code'] === el.properties.ISO3);
               const indicatorIndex = d.indicators.findIndex((el) => xIndicatorMetaData.DataKey === el.indicator);
               const val = indicatorIndex === -1 ? undefined : d.indicators[indicatorIndex].value;
               const color = val !== undefined ? colorScale(val) : '#f5f9fe';
@@ -239,7 +240,7 @@ export const Map = (props: Props) => {
                 >
                   {
                     index === -1 ? null
-                      : (World as any).features[index].geometry.type === 'MultiPolygon' ? (World as any).features[index].geometry.coordinates.map((el:any, j: any) => {
+                      : (geojsonMapData as any).features[index].geometry.type === 'MultiPolygon' ? (geojsonMapData as any).features[index].geometry.coordinates.map((el:any, j: any) => {
                         let masterPath = '';
                         el.forEach((geo: number[][]) => {
                           let path = ' M';
@@ -259,7 +260,7 @@ export const Map = (props: Props) => {
                             fill={color}
                           />
                         );
-                      }) : (World as any).features[index].geometry.coordinates.map((el:any, j: number) => {
+                      }) : (geojsonMapData as any).features[index].geometry.coordinates.map((el:any, j: number) => {
                         let path = 'M';
                         el.forEach((c: number[], k: number) => {
                           const point = projection([c[0], c[1]]) as [number, number];
@@ -283,7 +284,7 @@ export const Map = (props: Props) => {
           }
           {
             hoverData
-              ? (World as any).features.filter((d: any) => d.properties.ISO3 === data[data.findIndex((el: DataType) => el['Country or Area'] === hoverData?.country)]['Alpha-3 code']).map((d: any, i: number) => (
+              ? (geojsonMapData as any).features.filter((d: any) => d.properties.ISO3 === data[data.findIndex((el: DataType) => el['Country or Area'] === hoverData?.country)]['Alpha-3 code']).map((d: any, i: number) => (
                 <G
                   opacity={selectedColor ? 0 : 1}
                   key={i}
