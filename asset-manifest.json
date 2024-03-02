@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/fe-energy-moonshot/static/css/main.css",
+    "main.js": "/fe-energy-moonshot/static/js/main.js",
+    "static/js/453.802bb778.chunk.js": "/fe-energy-moonshot/static/js/453.802bb778.chunk.js",
+    "static/media/header-bg.jpg": "/fe-energy-moonshot/static/media/header-bg.b0531c215105fd0d4b3d.jpg",
+    "static/media/million-bg-left.png": "/fe-energy-moonshot/static/media/million-bg-left.3360df7136643708285b.png",
+    "static/media/million-bg-right.png": "/fe-energy-moonshot/static/media/million-bg-right.0d3f52accaaf4a58fca6.png",
+    "index.html": "/fe-energy-moonshot/index.html",
+    "main.css.map": "/fe-energy-moonshot/static/css/main.css.map",
+    "main.js.map": "/fe-energy-moonshot/static/js/main.js.map",
+    "453.802bb778.chunk.js.map": "/fe-energy-moonshot/static/js/453.802bb778.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.css",
+    "static/js/main.js"
+  ]
+}
