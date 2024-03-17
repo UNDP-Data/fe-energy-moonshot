@@ -312,22 +312,27 @@ export const countryGroupingsTaxonomy = [
       {
         label: 'RBLAC',
         value: 'RBLAC',
+        color: '#00CAE5',
       },
       {
         label: 'RBA',
         value: 'RBA',
+        color: '#00E6CA',
       },
       {
         label: 'RBAP',
         value: 'RBAP',
+        color: '#6AE0FF',
       },
       {
         label: 'RBEC',
         value: 'RBEC',
+        color: '#00C60F',
       },
       {
         label: 'RBAS',
         value: 'RBAS',
+        color: '#00DD66',
       },
     ],
   },
@@ -360,18 +365,22 @@ export const countryGroupingsTaxonomy = [
       {
         label: 'very-high',
         value: 'Very High',
+        color: '#FFA43A',
       },
       {
         label: 'high',
         value: 'High',
+        color: '#FFB800',
       },
       {
         label: 'medium',
         value: 'Medium',
+        color: '#FFD600',
       },
       {
         label: 'low',
         value: 'Low',
+        color: '#FFDF8B',
       },
     ],
   },
@@ -382,14 +391,17 @@ export const countryGroupingsTaxonomy = [
       {
         label: 'sids',
         value: 'SIDS',
+        color: '#00F8E9',
       },
       {
         label: 'lldcs',
         value: 'LLDC',
+        color: '#FCB500',
       },
       {
         label: 'ldcs',
         value: 'LDC',
+        color: '#F89234',
       },
     ],
   },
@@ -403,21 +415,25 @@ export const genderMarkers = [
   {
     label: 'GEN0',
     value: 'GEN0',
+    color: '#AEFFEC',
     tooltip: 'GEN0-tooltip',
   },
   {
     label: 'GEN1',
     value: 'GEN1',
+    color: '#55ECD1',
     tooltip: 'GEN1-tooltip',
   },
   {
     label: 'GEN2',
     value: 'GEN2',
+    color: '#00D2E0',
     tooltip: 'GEN2-tooltip',
   },
   {
     label: 'GEN3',
     value: 'GEN3',
+    color: '#03C38A',
     tooltip: 'GEN3-tooltip',
   },
 ];
@@ -430,9 +446,11 @@ export const fundingTaxonomy = [
   {
     value: 'vf',
     label: 'vf',
+    color: '#A6F6FB',
   },
   {
     value: 'nonvf',
     label: 'non-vf',
+    color: '#FFCA10',
   },
 ];
