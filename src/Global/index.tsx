@@ -11,6 +11,7 @@ import {
 import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
+import { BarFilters } from './BarFilters'
 import { UnivariateMap } from './UnivariateMap';
 import { DataTable } from './DataTable';
 import { MainText } from './MainText';
@@ -157,20 +158,28 @@ export const Global = (props: Props) => {
             </b>
             {' '}
           </h5>
-          <Settings
-            countryList={countryList}
-          />
-          <MainText />
-          <Cards
-            data={mapData}
-          />
-          <div style={{ backgroundColor: 'var(--gray-200)' }}>
-            <UnivariateMap
-              avaliableCountryList={avaliableCountryList}
-              data={mapData}
-              indicators={indicators}
-              binningRangeLarge={binningRangeLarge}
-            />
+          <Settings />
+          <div className='flex-div'>
+            <div style={{maxWidth:'30%', width:'30%'}}>
+              <BarFilters
+                data={filteredProjectData}
+                countryList={countryList}
+              />
+            </div>
+            <div style={{maxWidth:'70%', width:'70%'}}>
+              <MainText />
+              <Cards
+                data={mapData}
+              />
+              <div style={{ backgroundColor: 'var(--gray-200)' }}>
+                <UnivariateMap
+                  avaliableCountryList={avaliableCountryList}
+                  data={mapData}
+                  indicators={indicators}
+                  binningRangeLarge={binningRangeLarge}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
