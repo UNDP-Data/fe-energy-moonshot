@@ -125,6 +125,8 @@ export interface ProjectLevelDataType{
   countryCode: string,
   projectTitle: string,
   country: string,
+  link:string,
+  donors:string[] | null,
   region: string,
   verticalFunded: boolean,
   flagship: string,
@@ -199,4 +201,4 @@ export interface IndicatorRange {
   [key: string]: number[],
 }
 // export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
-export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/Lenseg/Energy-Hub-Dashboard/versionWithCountryIndicators/public/' : '/Energy-Hub-Dashboard/';
+export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://undp-data.github.io/fe-energy-moonshot/' : '/fe-energy-moonshot/';

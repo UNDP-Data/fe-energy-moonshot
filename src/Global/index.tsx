@@ -19,6 +19,7 @@ import { MainText } from './MainText';
 interface Props {
   countryGroupData: CountryGroupDataType[];
   indicators: IndicatorMetaDataType[];
+  geojsonMapData:any[];
   countryLinkDict:any;
   projectLevelData: ProjectLevelDataType[];
 }
@@ -27,6 +28,7 @@ export const Global = (props: Props) => {
   const {
     countryGroupData,
     indicators,
+    geojsonMapData,
     projectLevelData,
     countryLinkDict,
   } = props;
@@ -174,6 +176,7 @@ export const Global = (props: Props) => {
               <div style={{ backgroundColor: 'var(--gray-200)' }}>
                 <UnivariateMap
                   avaliableCountryList={avaliableCountryList}
+                  geojsonMapData={geojsonMapData}
                   data={mapData}
                   indicators={indicators}
                   binningRangeLarge={binningRangeLarge}

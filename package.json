@@ -1,5 +1,5 @@
 {
-  "name": "energy-hub-dashboard",
+  "name": "fe-energy-moonshot",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -122,5 +122,5 @@
     "prettier": "2.4.1",
     "typescript": "^4.9.5"
   },
-  "homepage": "https://lenseg.github.io/Energy-Hub-Dashboard"
+  "homepage": "https://undp-data.github.io/fe-energy-moonshot/"
 }

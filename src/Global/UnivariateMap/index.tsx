@@ -8,6 +8,7 @@ import { Map } from './Map';
 
 interface Props {
   data: DataType[];
+  geojsonMapData: any[];
   indicators: IndicatorMetaDataType[];
   avaliableCountryList: string[];
   binningRangeLarge: IndicatorRange;
@@ -23,6 +24,7 @@ const El = styled.div`
 export const UnivariateMap = (props: Props) => {
   const {
     data,
+    geojsonMapData,
     avaliableCountryList,
     binningRangeLarge,
     indicators,
@@ -44,6 +46,7 @@ export const UnivariateMap = (props: Props) => {
     <El id='graph-node'>
       <Map
         data={data}
+        geojsonMapData={geojsonMapData}
         avaliableCountryList={avaliableCountryList}
         binningRangeLarge={binningRangeLarge}
         indicators={indicators}

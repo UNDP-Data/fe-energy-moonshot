@@ -24,6 +24,7 @@ function Footer() {
               href='https://www.undp.org/'
               target='_blank'
               rel='noreferrer'
+              aria-label='logo'
             >
               <Logo height={100} white />
             </a>
