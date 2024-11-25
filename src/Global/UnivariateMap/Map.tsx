@@ -124,7 +124,7 @@ export const Map = (props: Props) => {
           .append("circle")
           .attr("cx", x)
           .attr("cy", y)
-          .attr("r",Math.sqrt(island.Shape_Area) * 6) // Adjust the radius for visibility
+          .attr("r",2) // Adjust the radius for visibility
           .attr("fill", "none") // No fill
           .attr("stroke", "black") // Border color
           .attr("stroke-width", 0.3) // Adjust border width
