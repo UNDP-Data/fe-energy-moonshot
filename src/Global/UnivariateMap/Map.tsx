@@ -132,7 +132,6 @@ export const Map = (props: Props) => {
       });
     }
   }, [projection]);
-  
   return (
     <div style={{ overflow: 'hidden', backgroundColor: 'var(--black-100),' }}>
       <svg
