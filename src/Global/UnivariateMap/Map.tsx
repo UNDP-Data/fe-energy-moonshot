@@ -126,7 +126,7 @@ export const Map = (props: Props) => {
           .attr('fill', 'none') // No fill
           .attr('stroke', 'black') // Border color
           .attr('stroke-width', 0.3) // Adjust border width
-          .attr('pointer-events', "none"); // Prevent the circle from interfering with interactions
+          .attr('pointer-events', 'none'); // Prevent the circle from interfering with interactions
       });
     }
   }, [projection]);
