@@ -106,29 +106,27 @@ export const Map = (props: Props) => {
     coordinates: [number, number]; // Tuple type
     Shape_Area: number;
   }
-  
   const islands: Island[] = [
-    { name: "Comoros", coordinates: [43.3333, -11.6455], Shape_Area: 0.138595443196436 },
-    { name: "São Tomé and Príncipe", coordinates: [6.6131, 0.1864], Shape_Area: 0.081550074140014 },
-    { name: "Seychelles", coordinates: [55.491977, -4.6796], Shape_Area: 0.0417638689720024 },
-    {name: "Maldives", coordinates: [73.4226, 0.3406], Shape_Area: 0.0168859206897437},
+    { name: 'Comoros', coordinates: [43.3333, -11.6455], Shape_Area: 0.138595443196436 },
+    { name: 'São Tomé and Príncipe', coordinates: [6.6131, 0.1864], Shape_Area: 0.081550074140014 },
+    { name: 'Seychelles', coordinates: [55.491977, -4.6796], Shape_Area: 0.0417638689720024 },
+    { name: 'Maldives', coordinates: [73.4226, 0.3406], Shape_Area: 0.0168859206897437 },
   ];
 
   useEffect(() => {
     if (mapG.current) {
       const mapGSelect = select(mapG.current);
-  
       islands.forEach((island) => {
         const [x, y] = projection(island.coordinates) as [number, number];
         mapGSelect
-          .append("circle")
-          .attr("cx", x)
-          .attr("cy", y)
-          .attr("r",2) // Adjust the radius for visibility
-          .attr("fill", "none") // No fill
-          .attr("stroke", "black") // Border color
-          .attr("stroke-width", 0.3) // Adjust border width
-          .attr("pointer-events", "none"); // Prevent the circle from interfering with interactions
+          .append('circle')
+          .attr('cx', x)
+          .attr('cy', y)
+          .attr('r', 2) // Adjust the radius for visibility
+          .attr('fill', 'none') // No fill
+          .attr('stroke', 'black') // Border color
+          .attr('stroke-width', 0.3) // Adjust border width
+          .attr('pointer-events', "none"); // Prevent the circle from interfering with interactions
       });
     }
   }, [projection]);
