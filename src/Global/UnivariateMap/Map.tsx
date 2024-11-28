@@ -124,8 +124,6 @@ export const Map = (props: Props) => {
     { name: 'Timor-Leste', coordinates: [125.7275, -8.8742], Shape_Area: 0.056315 },
     { name: 'Trinidad & Tobago', coordinates: [-61.3151, 10.6918], Shape_Area: 0.041300 },
   ];
-  
-
   useEffect(() => {
     if (mapG.current) {
       const mapGSelect = select(mapG.current);
