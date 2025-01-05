@@ -70,7 +70,7 @@ export const Map = (props: Props) => {
   const mapG = useRef<SVGGElement>(null);
   const projection = geoEqualEarth()
     .rotate([0, 0])
-    .scale(200)
+    .scale(160)
     .translate([svgWidth / 2 - 50, svgHeight / 2 + 25]);
   const xIndicatorMetaData = indicators[indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)];
   const valueArray = binningRangeLarge[xIndicatorMetaData.DataKey];
@@ -111,8 +111,19 @@ export const Map = (props: Props) => {
     { name: 'São Tomé and Príncipe', coordinates: [6.6131, 0.1864], Shape_Area: 0.081550074140014 },
     { name: 'Seychelles', coordinates: [55.491977, -4.6796], Shape_Area: 0.0417638689720024 },
     { name: 'Maldives', coordinates: [73.4226, 0.3406], Shape_Area: 0.0168859206897437 },
+    { name: 'Nauru', coordinates: [166.9315, -0.5228], Shape_Area: 0.0002175 },
+    { name: 'Tuvalu', coordinates: [179.82, -9.35], Shape_Area: 0.00026 },
+    { name: 'Vanuatu', coordinates: [166.9592, -15.3767], Shape_Area: 0.016256 },
+    { name: 'Fiji', coordinates: [178.065, -17.7134], Shape_Area: 0.018276 },
+    { name: 'Solomon Islands', coordinates: [160.1562, -9.6457], Shape_Area: 0.030394 },
+    { name: 'Samoa', coordinates: [-172.1046, -13.759], Shape_Area: 0.002785 },
+    { name: 'Micronesia', coordinates: [158.215, 6.887], Shape_Area: 0.007403 },
+    { name: 'Cabo Verde', coordinates: [-23.6167, 16.5388], Shape_Area: 0.045612 },
+    { name: 'Barbados', coordinates: [-59.5432, 13.1939], Shape_Area: 0.001436 },
+    { name: 'Kiribati', coordinates: [174.4, -0.7851311643], Shape_Area: 0.00355 },
+    { name: 'Timor-Leste', coordinates: [125.7275, -8.8742], Shape_Area: 0.056315 },
+    { name: 'Trinidad & Tobago', coordinates: [-61.3151, 10.6918], Shape_Area: 0.041300 },
   ];
-
   useEffect(() => {
     if (mapG.current) {
       const mapGSelect = select(mapG.current);
@@ -122,10 +133,10 @@ export const Map = (props: Props) => {
           .append('circle')
           .attr('cx', x)
           .attr('cy', y)
-          .attr('r', 2) // Adjust the radius for visibility
+          .attr('r', 5) // Adjust the radius for visibility
           .attr('fill', 'none') // No fill
           .attr('stroke', 'black') // Border color
-          .attr('stroke-width', 0.3) // Adjust border width
+          .attr('stroke-width', 1) // Adjust border width
           .attr('pointer-events', 'none'); // Prevent the circle from interfering with interactions
       });
     }
