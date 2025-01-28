@@ -176,6 +176,7 @@ export const Global = (props: Props) => {
               <div style={{ backgroundColor: 'var(--gray-200)' }}>
                 <UnivariateMap
                   avaliableCountryList={avaliableCountryList}
+                  geojsonMapData={geojsonMapData}
                   data={mapData}
                   indicators={indicators}
                   binningRangeLarge={binningRangeLarge}
