@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-// @ts-ignore:next-line
-import StackedBarChart from 'stacked-barchart';
 import Label from './chartLabel';
 
 interface Props {
   data: any;
   id: string;
-  clickCallback: Funcion;
+  clickCallback: Function;
   tooltips?: any;
   useKey?: boolean;
 }
@@ -31,28 +29,6 @@ export default (props: Props) => {
     }
   }, [tooltips]);
 
-  /*
-  const [graph, setGraph] = useState();
-
-     useEffect(() => {
-    console.log('DATA', data);
-    const graph = StackedBarChart(
-      {
-        data: [data],
-      },
-      {
-        containerSelector: `#${id}`,
-        width: document.getElementById(id)?.offsetWidth,
-        height: 60,
-        margin: { left: 0, top: 0, bottom: 0 },
-      },
-    );
-    setGraph(graph);
-    graph.on('nodeClick', event => {
-      clickCallback(event.clickedNodeData.key);
-    });
-  }, [data]);
- */
   useEffect(() => {
     const array = Object.entries(data).map(([key, value]) => ({
       ...value,
