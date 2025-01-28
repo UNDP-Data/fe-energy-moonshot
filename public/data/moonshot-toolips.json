@@ -1,0 +1,135 @@
+{
+    "Select a country group": {
+        "text": "Country groupings include the UNDP Regional Bureaus (RBA, RBAS, RBAP, RBLAC, and RBEC), World Bank Income Classifications, Human Development Index (HDI) classifications, and special groupings include Small Island Developing States (SIDS), Least Developed Countries (LDCs), and Landlocked Developing Countries (LLDCs)."
+    },
+    "SIDS": {
+        "header": "SIDS: Small Island Developing States",
+        "text": "Small Island Developing States (SIDS) are a distinct group of countries that face unique social, economic and environmental vulnerabilities and development opportunities."
+    },
+    "LDC": {
+        "header": "LDC: Least Developed Countries",
+        "text": "Designated by the United Nations as the least developed countries (LDCs), this country grouping is given preferential market access, aid, special technical assistance, and capacity-building on technology among other concessions to support sustainable development."
+    },
+    "LLDC": {
+        "header": "LLDCs: Landlocked Developing Countries",
+        "text": "Landlocked developing countries (LLDCs) are a country groupings characterized by facing special trade and development challenges, arising from their lack of territorial access to the sea and geographical remoteness from international markets."
+    },
+    "Other": {
+        "header": "Other Country Grouping",
+        "text": "A country grouping defined by the UN outside of Small Island Developing States (SIDS), Least Developed Countries (LDCs), and Landlocked Developing Countries (LLDCs)."
+    },
+    "Low": {
+        "header": "Low Income Group",
+        "text": "Countries classified as low income based on gross national income per capita as defined by the United Nations."
+    },
+    "Lower-middle": {
+        "header": "Lower-Middle Income Group",
+        "text": "Countries classified as lower-middle income based on gross national income per capita as defined by the United Nations."
+    },
+    "Upper-middle": {
+        "header": "Upper-Middle Income Group",
+        "text": "Countries classified as upper-middle income based on gross national income per capita as defined by the United Nations."
+    },
+    "High": {
+        "header": "High Income Group",
+        "text": "Countries classified as high income based on gross national income per capita as defined by the United Nations."
+    },
+    "RBLAC": {
+        "header": "RBLAC: Regional Bureau for Latin America and the Caribbean",
+        "text": "A regional grouping of nations in Latin America and the Caribbean defined by shared geographic, cultural, and economic characteristics."
+    },
+    "RBA": {
+        "header": "RBA: Regional Bureau for Africa",
+        "text": "A regional grouping of nations in Africa defined by shared geographic, cultural, and economic characteristics."
+    },
+    "RBAS": {
+        "header": "RBAS: Regional Bureau for Arab States",
+        "text": "A regional grouping of Arab nations and territories in the Middle East and North Africa."
+    },
+    "RBAP": {
+        "header": "RBAP: Regional Bureau for Asia-Pacific",
+        "text": "A regional grouping of nations in Asia and the Pacific defined by shared geographic, cultural, and economic characteristics."
+    },
+    "RBEC": {
+        "header": "RBEC: Regional Bureau for Europe and CIS",
+        "text": "A regional grouping of nations in Europe and the Commonwealth of Independent States (CIS) defined by shared geographic, cultural, and economic characteristics."
+    },
+    "Select a gender marker": {
+        "text": "UNDP recognizes gender equality as one of the most important contributions to human and sustainable development, prioritizing it as one of six signature solutions in its Strategic Plan. UNDP’s work to support and accelerate countries’ energy transition is guided by the Gender Equality Strategy 2022-2025, steering efforts around: (i) promoting energy programming that unleashes women’s economic empowerment, across the energy value chain; (ii) fostering energy investments that suit women, reduce time poverty and increase development opportunities; (iii) supporting gender-responsive governance systems that include, position and elevate women as leaders, and deliver gender-inclusive policies and institutions by enhancing the capacity of public and private institutions; and, (iv) generating new data and knowledge to guide structural and social norms change, all of which are foundational to a just, affordable, inclusive and sustainable energy transition."
+    },
+    "GEN0": {
+        "header": "GEN0: No Noticeable Contribution",
+        "text": "Projects with no expected contribution to gender equality."
+    },
+    "GEN1": {
+        "header": "GEN1: Some Contribution",
+        "text": "Projects with some contribution to gender equality."
+    },
+    "GEN2": {
+        "header": "GEN2: Significant Objective",
+        "text": "Projects where gender equality is a significant objective."
+    },
+    "GEN3": {
+        "header": "GEN3: Principal Objective",
+        "text": "Projects where gender equality is a principal objective."
+    },
+    "Select a funding source": {
+        "text": "Two types of funding sources are included in this project mapping, including vertical funded projects (VF) and non-vertical funded projects (non-VF). Non-vertical funded projects make use of core funds and are tracked within the UNDP Transparency Portal at https://open.undp.org/. Vertical funded projects make use of vertical funds directed towards particular projects with defined objectives and outcomes, and are reported in PIMS+ https://dev.pims.undp.org/."
+    },
+    "Vertical Funds": {
+        "header": "Vertical Funds",
+        "text": "Vertical funds are earmarked resources allocated to specific development areas, such as health, environment, or energy, and are approved for projects through a call-for-proposals process. Examples include the Global Environment Facility (GEF) and the Green Climate Fund (GCF). These funds often require accredited agencies to provide fund-specific services, including project design, monitoring, and evaluation."
+    },
+    "Non Vertical Funds": {
+        "header": "Non-Vertical Funds",
+        "text": "Non-vertical funds include resources that are not restricted to a specific thematic area. They encompass regular (core) resources, which provide UNDP with flexibility to respond to development needs and emergencies, as well as cost-sharing arrangements with governments and contributions from other partners."
+    },
+    "Access": {
+        "header": "Energy Access: Close the gap in energy access",
+        "text": "Connecting households and businesses to clean energy, with a focus on marginalized people and communities. The number refers to direct beneficiaries from access to clean, affordable, and sustainable energy (clean electricity, cooking, and heating)."
+    },
+    "Access - Clean Electricity": {
+        "header": "Clean Electricity",
+        "text": "Number of people who gain access to clean electricity (direct access to electricity, lighting, cooling, etc.)."
+    },
+    "Access - Clean Cooking": {
+        "header": "Clean Cooking Solutions",
+        "text": "Number of people who gain access to clean cooking (direct access to clean cook stoves, clean fuels, biomass, etc.)."
+    },
+    "Access - Health": {
+        "header": "Health Services",
+        "text": "Number of people who gain access to health care facilities (direct access to electricity and heating systems for clinics, hospitals, health centers, etc.)."
+    },
+    "Access - Water": {
+        "header": "Water Services",
+        "text": "Number of people who gain access to water services (powering water pumps, water distributions, waste management, etc.)."
+    },
+    "Access - Agriculture": {
+        "header": "Agriculture and Food Systems",
+        "text": "Number of people who gain access to clean, affordable, and sustainable electricity for agricultural and food system activities (e.g., crop processing, milling, grinding, irrigation, etc.)."
+    },
+    "Access - Transport": {
+        "header": "Transportation and e-Mobility Services",
+        "text": "Number of people who benefit from transport and e-mobility interventions (e.g., electric vehicles, charging stations, etc.)."
+    },
+    "Access - Infrastructure": {
+        "header": "Energy Infrastructure Services",
+        "text": "Number of people who benefit from energy infrastructure interventions (e.g., streetlights, transmission, and distribution lines, etc.)."
+    },
+    "Transition": {
+        "header": "Energy Transition: Accelerate just energy transition",
+        "text": "System-wide changes that support a green economy by bringing together the government, business, finance, digital, communities, and civil society. The number shows an increase in Mega Watt (MW) in installed renewable energy capacity per technology and energy efficiency in Mega Joule (MJ)."
+    },
+    "Transition - Solar": {
+        "header": "Solar Photovoltaic Power",
+        "text": "Number of MW installed capacity of solar energy (PV systems, PV micro-grids, Solar home systems, CSP, etc.)."
+    },
+    "Transition - Hydro": {
+        "header": "Hydroelectric Power",
+        "text": "Number of MW installed capacity of hydroelectric power plants (micro hydro, macro hydro, storage hydro reservoir, etc.)."
+    },
+    "Transition - Wind": {
+        "header": "Wind Power"
+    }
+}
+       

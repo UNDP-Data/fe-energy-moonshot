@@ -229,6 +229,8 @@ body {
   text-align: left;
   pointer-events: none;
   transition: opacity 0.25s ease-in-out;
+  max-width: 15rem;
+  width: max-content;
 }
 
 .undp-stacked-chart-overlap {
@@ -273,6 +275,16 @@ body {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  white-space: normal;
+}
+.undp-stacked-chart-tooltip-description {
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  white-space: normal;
+  margin-bottom: 0.5rem;
 }
 .undp-stacked-chart-tooltip-value {
   color: #000;
