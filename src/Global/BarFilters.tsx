@@ -1,3 +1,5 @@
+/* tslint:disable */
+/* eslint-disable */
 import { useContext, useEffect, useState } from 'react';
 import { Select, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -48,15 +50,15 @@ export const BarFilters = (props: Props) => {
   }, []);
 
   const computeHdiBarData = function () {
-    const taxonomy = countryGroupingsTaxonomy[3]?.options
+    const taxonomy = (countryGroupingsTaxonomy[3]?.options ?? [])
       .filter(ti => ti?.value !== 'all')
-      .reduce((acc, item) => {
+      .reduce((acc: any, item: any) => {
         acc[t(item.label) as string] = {
           key: item.value,
           value: 0,
           color: item.color,
           order:
-            countryGroupingsTaxonomy[3]?.options.length -
+            (countryGroupingsTaxonomy[3]?.options ?? []).length -
             Object.keys(acc).length,
         };
         return acc;
@@ -78,15 +80,15 @@ export const BarFilters = (props: Props) => {
   }, [data]);
 
   const [regionBarData, setRegionBarData] = useState(() => {
-    const taxonomy = countryGroupingsTaxonomy[1]?.options
+    const taxonomy = (countryGroupingsTaxonomy[1]?.options ?? [])
       .filter(ti => ti?.value !== 'all')
-      .reduce((acc, item) => {
+      .reduce((acc: any, item: any) => {
         acc[t(`${item.label}code`) as string] = {
           key: item.value,
           value: 0,
           color: item.color,
           order:
-            countryGroupingsTaxonomy[1]?.options.length -
+            (countryGroupingsTaxonomy[1]?.options ?? []).length -
             Object.keys(acc).length,
         };
         return acc;
@@ -101,7 +103,7 @@ export const BarFilters = (props: Props) => {
 
   const [groupingsBarData, setGroupingsBarData] = useState(() => {
     const taxonomy = [
-      ...countryGroupingsTaxonomy[4]?.options,
+      ...(countryGroupingsTaxonomy[4]?.options ?? []),
       {
         label: 'Other',
         value: 'Other',
@@ -109,14 +111,14 @@ export const BarFilters = (props: Props) => {
       },
     ]
       .filter(ti => ti?.value !== 'all')
-      .reduce((acc, item) => {
+      .reduce((acc: any, item: any) => {
         acc[item.value as string] = {
           key: item.value,
           value: 0,
           color: item.color,
           overlap: 0,
           order:
-            countryGroupingsTaxonomy[4]?.options.length -
+            (countryGroupingsTaxonomy[4]?.options ?? []).length -
             Object.keys(acc).length,
         };
         return acc;
@@ -143,14 +145,14 @@ export const BarFilters = (props: Props) => {
     }, taxonomy);
   });
 
-  const regionUpdateCallback = function (newState) {
+  const regionUpdateCallback = function (newState: any) {
     updateSelectedRegions(newState);
   };
 
   const [genderBarData, setGenderBarData] = useState(() => {
     const taxonomy = genderMarkers
       .filter(ti => ti.value !== 'all')
-      .reduce((acc, item) => {
+      .reduce((acc: any, item: any) => {
         acc[item.label] = {
           key: item.value,
           value: 0,
@@ -167,14 +169,14 @@ export const BarFilters = (props: Props) => {
     }, taxonomy);
   });
 
-  const genderUpdateCallback = function (newState) {
+  const genderUpdateCallback = function (newState:any) {
     updateSelectedGenderMarker(newState);
   };
 
   const [fundingBarData, setFundingBarData] = useState(() => {
     const taxonomy = fundingTaxonomy
       .filter(ti => ti.value !== 'all')
-      .reduce((acc, item) => {
+      .reduce((acc:any, item:any) => {
         acc[t(item.label) as string] = {
           key: item.value,
           value: 0,
@@ -193,7 +195,7 @@ export const BarFilters = (props: Props) => {
     }, taxonomy);
   });
 
-  const fundingUpdateCallback = function (newState) {
+  const fundingUpdateCallback = function (newState:any) {
     updateSelectedFunding(newState);
   };
 

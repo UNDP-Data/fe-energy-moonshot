@@ -15,7 +15,6 @@ export const Settings = () => {
   // translation
   const { t } = useTranslation();
 
-
   const outputsTaxonomyTranslated = outputsTaxonomy.map((ot) => ({
     value: ot.value,
     label: t(ot.label),

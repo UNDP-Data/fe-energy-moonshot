@@ -207,6 +207,7 @@ body {
   font-style: normal;
   font-weight: 700;
   position: relative;
+  cursor: pointer;
 }
 
 .undp-stacked-chart-value {
