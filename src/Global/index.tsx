@@ -41,8 +41,9 @@ export const Global = (props: Props) => {
   } = useContext(Context) as CtxDataType;
   let filteredProjectData = [...projectLevelData];
 
-  filteredProjectData = filteredProjectData.filter((d) => (
-    (selectedFunding === 'all' || d.verticalFunded === (selectedFunding === 'vf'))
+  const notOtherRegions = ['SIDS', 'LDC', 'LLDC'];
+
+  filteredProjectData = filteredProjectData.filter((d) => ((selectedFunding === 'all' || d.verticalFunded === (selectedFunding === 'Vertical funds' || selectedFunding === 'vf'))
     && (selectedGenderMarker === 'all' || d.genderMarker === selectedGenderMarker)
     && d.outputs.some((o) => (
       (selectedCategory === 'all' || o.outputCategory === selectedCategory)
@@ -52,8 +53,12 @@ export const Global = (props: Props) => {
   ));
   const avaliableCountryList = Array.from(new Set(filteredProjectData.map((p) => p.countryCode)));
   if (selectedRegions !== 'all') {
-    filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
-    || d.hdiTier === selectedRegions || d.countryCode === selectedRegions || d.specialGroupings.includes(selectedRegions));
+    if (selectedRegions.toLowerCase() === 'other') {
+      filteredProjectData = filteredProjectData.filter((d) => !d.specialGroupings.some((el) => notOtherRegions.includes(el)));
+    } else {
+      filteredProjectData = filteredProjectData.filter((d) => d.region === selectedRegions || d.incomeGroup === selectedRegions
+      || d.hdiTier === selectedRegions || d.countryCode === selectedRegions || d.specialGroupings.includes(selectedRegions));
+    }
   }
 
   function calculateCountryTotals() {

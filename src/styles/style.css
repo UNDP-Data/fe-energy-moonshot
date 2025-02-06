@@ -239,7 +239,7 @@ body {
   top: 0;
   right: calc(100% - 2px);
   border-left: 2px solid #fff;
-  height: 50%;
+  height: 33%;
 }
 .undp-stacked-chart-overlap-border {
   position: absolute;
@@ -293,4 +293,16 @@ body {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.undp-stacked-chart-element {
+  transition: width 0.5s ease-out, order 0.5s ease-out;
+}
+
+.undp-stacked-chart-overlap {
+  transition: width 0.5s ease-out;
+}
+
+.undp-stacked-chart-tooltip {
+  transition: opacity 0.3s ease-out;
 }

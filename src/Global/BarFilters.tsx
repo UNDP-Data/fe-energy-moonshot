@@ -79,7 +79,7 @@ export const BarFilters = (props: Props) => {
     setHdiBarData(computeHdiBarData());
   }, [data]);
 
-  const [regionBarData, setRegionBarData] = useState(() => {
+  const computedRegionBarData = () => {
     const taxonomy = (countryGroupingsTaxonomy[1]?.options ?? [])
       .filter(ti => ti?.value !== 'all')
       .reduce((acc: any, item: any) => {
@@ -99,9 +99,23 @@ export const BarFilters = (props: Props) => {
       }
       return acc;
     }, taxonomy);
+  };
+
+  const [regionBarData, setRegionBarData] = useState(() => {
+    computedRegionBarData();
   });
 
-  const [groupingsBarData, setGroupingsBarData] = useState(() => {
+  useEffect(() => {
+    setRegionBarData(computedRegionBarData());
+  }, [data, countryGroupingsTaxonomy]);
+
+  const computedGroupingsBarData = () => {
+    const order: { [key: string]: number } = {
+      LDC: 2,
+      LLDC: 3,
+      SIDS: 1,
+      OTHER: 4,
+    };
     const taxonomy = [
       ...(countryGroupingsTaxonomy[4]?.options ?? []),
       {
@@ -117,42 +131,56 @@ export const BarFilters = (props: Props) => {
           value: 0,
           color: item.color,
           overlap: 0,
-          order:
-            (countryGroupingsTaxonomy[4]?.options ?? []).length -
-            Object.keys(acc).length,
+          order: order[item.value.toUpperCase()] ?? 0,
+          /* (countryGroupingsTaxonomy[4]?.options ?? []).length - 
+          Object.keys(acc).length */
         };
         return acc;
       }, {});
     return data.reduce((acc, item) => {
-      item.specialGroupings.map(sg => {
-        acc[sg as string].value += item.budget;
-        if (item.specialGroupings.length > 1) {
-          if (item.specialGroupings && item.specialGroupings.includes('SIDS')) {
-            acc['LDC'].overlap += item.budget;
-          }
-          if (
-            item.specialGroupings &&
-            item.specialGroupings.includes('LLDCs')
-          ) {
-            acc['LLDC'].overlap += item.budget;
-          }
+      if(selectedRegions !== 'all' && selectedRegions !== 'Other') {
+        if(item.specialGroupings.includes(selectedRegions)) {
+          acc[selectedRegions as string].value += item.budget;
         }
-      });
-      if (item.specialGroupings.length === 0 || !item.specialGroupings) {
-        acc['Other'].value += item.budget;
+      } else {
+        item.specialGroupings.map(sg => {
+          acc[sg as string].value += item.budget;
+          if (item.specialGroupings.length > 1) {
+            if (item.specialGroupings && item.specialGroupings.includes('SIDS')) {
+              acc['LDC'].overlap += item.budget;
+            }
+            if (
+              item.specialGroupings &&
+              item.specialGroupings.includes('LLDCs')
+            ) {
+              acc['LLDC'].overlap += item.budget;
+            }
+          }
+        });
+        if (item.specialGroupings.length === 0 || !item.specialGroupings) {
+          acc['Other'].value += item.budget;
+        }
       }
       return acc;
     }, taxonomy);
-  });
-
-  const regionUpdateCallback = function (newState: any) {
-    updateSelectedRegions(newState);
   };
 
-  const [genderBarData, setGenderBarData] = useState(() => {
+  const [groupingsBarData, setGroupingsBarData] = useState(() => {
+    computedGroupingsBarData();
+  });
+
+  useEffect(() => {
+    setGroupingsBarData(computedGroupingsBarData());
+  }, [data, countryGroupingsTaxonomy]);
+
+  const regionUpdateCallback = function (newState: any) {
+    updateSelectedRegions(newState === selectedRegions ? 'all' : newState);
+  };
+
+  const computedgenderBarData = () => {
     const taxonomy = genderMarkers
       .filter(ti => ti.value !== 'all')
-      .reduce((acc: any, item: any) => {
+      .reduce((acc: any, item: any, i) => {
         acc[item.label] = {
           key: item.value,
           value: 0,
@@ -167,16 +195,26 @@ export const BarFilters = (props: Props) => {
       }
       return acc;
     }, taxonomy);
-  });
-
-  const genderUpdateCallback = function (newState:any) {
-    updateSelectedGenderMarker(newState);
   };
 
-  const [fundingBarData, setFundingBarData] = useState(() => {
+  const [genderBarData, setGenderBarData] = useState(() => {
+    computedgenderBarData();
+  });
+
+  useEffect(() => {
+    setGenderBarData(computedgenderBarData());
+  }, [data, genderMarkers]);
+
+  const genderUpdateCallback = function (newState: any) {
+    updateSelectedGenderMarker(
+      newState === selectedGenderMarker ? 'all' : newState,
+    );
+  };
+
+  const computedFundingsBarData = () => {
     const taxonomy = fundingTaxonomy
       .filter(ti => ti.value !== 'all')
-      .reduce((acc:any, item:any) => {
+      .reduce((acc: any, item: any) => {
         acc[t(item.label) as string] = {
           key: item.value,
           value: 0,
@@ -193,10 +231,18 @@ export const BarFilters = (props: Props) => {
       }
       return acc;
     }, taxonomy);
+  };
+
+  const [fundingBarData, setFundingBarData] = useState(() => {
+    computedFundingsBarData();
   });
 
-  const fundingUpdateCallback = function (newState:any) {
-    updateSelectedFunding(newState);
+  useEffect(() => {
+    setFundingBarData(computedFundingsBarData());
+  }, [data, fundingTaxonomy]);
+
+  const fundingUpdateCallback = function (newState: any) {
+    updateSelectedFunding(newState === selectedFunding ? 'all' : newState);
   };
 
   const outputsTaxonomyTranslated = outputsTaxonomy.map(ot => ({
@@ -260,13 +306,13 @@ export const BarFilters = (props: Props) => {
               </Select.Option>
             ))}
           </Select>
-          <p className='undp-typography margin-bottom-04'>
+          {/*  <p className='undp-typography margin-bottom-04'>
             Select categories and filters to analyze number of beneficiaries of
             the
             <b>UNDP energy portfolio</b>
             from
             <b>2022-2025:</b>
-          </p>
+          </p> */}
           <StackedChart
             id='finance-bar-chart'
             data={fundingBarData}
@@ -292,7 +338,7 @@ export const BarFilters = (props: Props) => {
           </Tooltip>
           <Select
             showSearch
-            className='undp-select'
+            className='undp-select margin-bottom-04'
             filterOption={(input, option) =>
               (option?.label ?? '')
                 .toString()
@@ -332,16 +378,12 @@ export const BarFilters = (props: Props) => {
               );
             })}
           </Select>
-          <p className='undp-typography margin-bottom-04'>
+          {/* <p className='undp-typography margin-bottom-04'>
             Select categories and filters to analyze beneficiaries of the UNDP
             energy.
             <b>UNDP energy.</b>
-          </p>
-          <StackedChart
-            id='hdi-bar-chart'
-            data={hdiBarData}
-            clickCallback={regionUpdateCallback}
-          />
+          </p> */}
+
           <StackedChart
             id='region-bar-chart'
             data={regionBarData}
@@ -354,6 +396,11 @@ export const BarFilters = (props: Props) => {
             data={groupingsBarData}
             clickCallback={regionUpdateCallback}
             tooltips={tooltips}
+          />
+          <StackedChart
+            id='hdi-bar-chart'
+            data={hdiBarData}
+            clickCallback={regionUpdateCallback}
           />
         </div>
         <div style={{ width: '100%' }}>
@@ -374,7 +421,7 @@ export const BarFilters = (props: Props) => {
           </Tooltip>
           <Select
             showSearch
-            className='undp-select'
+            className='undp-select margin-bottom-04'
             filterOption={(input, option) =>
               (option?.label ?? '')
                 .toString()
@@ -401,10 +448,10 @@ export const BarFilters = (props: Props) => {
               </Select.Option>
             ))}
           </Select>
-          <p className='undp-typography margin-bottom-04'>
+          {/* <p className='undp-typography margin-bottom-04'>
             Text explaining gender markers here - Text explaining gender markers
             here - Text explaining gender markers here
-          </p>
+          </p> */}
           <StackedChart
             id='gender-bar-chart'
             data={genderBarData}
