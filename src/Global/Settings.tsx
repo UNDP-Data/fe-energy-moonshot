@@ -41,7 +41,7 @@ export const Settings = () => {
     <div>
       <div
         style={{
-          maxWidth: '1200px',
+        /*   maxWidth: '1200px', */
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
@@ -58,7 +58,7 @@ export const Settings = () => {
       </div>
       <div
         style={{
-          maxWidth: '1200px',
+          /* maxWidth: '1200px', */
           marginLeft: 'auto',
           marginRight: 'auto',
         }}

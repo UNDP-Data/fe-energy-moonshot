@@ -43,7 +43,7 @@ export const Cards = (props: Props) => {
     mwAdded: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'mwAdded')[0].value),
     energySaved: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'energySaved')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
-    // policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
+    policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
     numberCountries: data.length,
   };
   // translation
@@ -53,7 +53,7 @@ export const Cards = (props: Props) => {
     <>
       <div className='stat-container flex-div margin-bottom-05'>
         {
-          (selectedCategory !== 'Policy') && (
+          selectedCategory && (
             <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
               {
                 (selectedCategory === 'Energy Transition' && selectedSubCategory !== 'Efficiency') && (
@@ -86,18 +86,18 @@ export const Cards = (props: Props) => {
                 )
               }
               {
-                // (
-                  // selectedCategory === 'Policy') && (
-                  // <>
-                  //   <h3 className='undp-typography'>
-                  //     {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
-                  //   </h3>
-                  //   <p>{t('number-of-policies')}</p>
-                  // </>
-                // )
+                (
+                  selectedCategory === 'Policy') && (
+                  <>
+                    <h3 className='undp-typography'>
+                      {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
+                    </h3>
+                    <p>{t('number-of-policies')}</p>
+                  </>
+                )
               }
               {
-                (selectedCategory === 'Market Development' || selectedCategory === 'Policy') && (
+                (selectedCategory === 'Market Development' /* || selectedCategory === 'Policy' */) && (
                   <>
                     <h3 className='undp-typography'>
                       N/A

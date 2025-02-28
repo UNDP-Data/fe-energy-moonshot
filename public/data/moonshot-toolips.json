@@ -22,15 +22,15 @@
         "header": "Low Income Group",
         "text": "Countries classified as low income based on gross national income per capita as defined by the United Nations."
     },
-    "Lower-middle": {
+    "Medium": {
         "header": "Lower-Middle Income Group",
         "text": "Countries classified as lower-middle income based on gross national income per capita as defined by the United Nations."
     },
-    "Upper-middle": {
+    "High": {
         "header": "Upper-Middle Income Group",
         "text": "Countries classified as upper-middle income based on gross national income per capita as defined by the United Nations."
     },
-    "High": {
+    "Very High": {
         "header": "High Income Group",
         "text": "Countries classified as high income based on gross national income per capita as defined by the United Nations."
     },

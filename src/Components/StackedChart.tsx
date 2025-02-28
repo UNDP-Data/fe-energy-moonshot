@@ -26,6 +26,31 @@ export default (props: Props) => {
   const elementRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timeoutId = useRef<any>(0)
 
+  function formatBigNumber(num: number) {
+    // If the number is less than 1000, just return it as a string
+    if (num < 1e3) return num.toString();
+  
+    // Define the scales and their corresponding suffixes
+    const scales = [
+      { value: 1e9, suffix: "B" },
+      { value: 1e6, suffix: "M" },
+      { value: 1e3, suffix: "K" }
+    ];
+  
+    // Loop over each scale
+    for (let scale of scales) {
+      if (num >= scale.value) {
+        let quotient = num / scale.value;
+        // Count digits in the integer part of quotient
+        let intDigits = Math.floor(quotient).toString().length;
+        // Determine factor for truncating to 3 significant digits
+        let factor = Math.pow(10, Math.max(0, 3 - intDigits));
+        let truncated = Math.floor(quotient * factor) / factor;
+        return truncated + scale.suffix;
+      }
+    }
+  }
+
   // After every render when dataArray changes, measure the widths of each chart element
   useEffect(() => {
     function checkWidth() {
@@ -203,7 +228,7 @@ export default (props: Props) => {
                     </div>
 
                     <Label
-                      text={`${Math.round(value / 1000000)}M`}
+                      text={`${formatBigNumber(value)}`}
                       className='undp-stacked-chart-value'
                     />
                   </div>

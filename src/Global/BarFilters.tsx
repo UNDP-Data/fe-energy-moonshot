@@ -30,9 +30,10 @@ export const BarFilters = (props: Props) => {
   // translation
   const { t } = useTranslation();
   const [tooltips, setTooltips] = useState({});
+  const [showSelectTooltip, setShowSelectTooltip] = useState([false, false, false]);
+  const [isSelectOpen, setIsSelectOpen] = useState([false, false, false]);
 
   const { countryList, data } = props;
-
   useEffect(() => {
     fetch(`${ROOT_DIR}/data/moonshot-toolips.json`)
       .then(response => {
@@ -268,7 +269,7 @@ export const BarFilters = (props: Props) => {
     <div>
       <div className='margin-bottom-07'>
         <div style={{ width: '100%' }}>
-          <Tooltip
+          {/* <Tooltip
             title={
               <div
                 dangerouslySetInnerHTML={{ __html: t('funding-tooltip') || '' }}
@@ -280,39 +281,39 @@ export const BarFilters = (props: Props) => {
             }}
           >
             <p className='label underline'>{t('select-funding')}</p>
-          </Tooltip>
-          <Select
-            showSearch
-            filterOption={(input, option) =>
-              (option?.label ?? '')
-                .toString()
-                .toLowerCase()
-                .includes(input?.toLowerCase())
-            }
-            className='undp-select margin-bottom-04'
-            placeholder={t('select-funding')}
-            value={selectedFunding}
-            onChange={(d: string) => {
-              updateSelectedFunding(d === undefined ? 'all' : d);
-            }}
-          >
-            {fundingTaxonomy.map(d => (
-              <Select.Option
-                className='undp-select-option'
-                label={t(d.label)}
-                key={d.value}
-              >
-                {t(d.label)}
-              </Select.Option>
-            ))}
-          </Select>
-          {/*  <p className='undp-typography margin-bottom-04'>
-            Select categories and filters to analyze number of beneficiaries of
-            the
-            <b>UNDP energy portfolio</b>
-            from
-            <b>2022-2025:</b>
-          </p> */}
+          </Tooltip> */}
+          <div className='select-wrapper margin-bottom-04'>
+            <Select
+              onDropdownVisibleChange={(open) => {setIsSelectOpen([open, isSelectOpen[1], isSelectOpen[2]])}}
+              showSearch
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toString()
+                  .toLowerCase()
+                  .includes(input?.toLowerCase())
+              }
+              className='undp-select'
+              placeholder={t('select-funding')}
+              value={selectedFunding}
+              onChange={(d: string) => {
+                updateSelectedFunding(d === undefined ? 'all' : d);
+              }}
+              onMouseEnter={() => {setShowSelectTooltip([true, false, false])}}
+              onMouseLeave={() => {setShowSelectTooltip([false, false, false])}}
+            >
+              {fundingTaxonomy.map(d => (
+                <Select.Option
+                  className='undp-select-option'
+                  label={t(d.label)}
+                  key={d.value}
+                >
+                  {t(d.label)}
+                </Select.Option>
+              ))}
+            </Select>
+            <p dangerouslySetInnerHTML={{__html: t('funding-tooltip') || ''}} className='select-tooltip' style={{opacity: showSelectTooltip[0] && !isSelectOpen[0] ? 1 : 0}}>
+            </p>
+          </div>
           <StackedChart
             id='finance-bar-chart'
             data={fundingBarData}
@@ -321,7 +322,7 @@ export const BarFilters = (props: Props) => {
           />
         </div>
         <div style={{ width: '100%' }}>
-          <Tooltip
+          {/* <Tooltip
             title={
               <div
                 dangerouslySetInnerHTML={{
@@ -335,55 +336,56 @@ export const BarFilters = (props: Props) => {
             }}
           >
             <p className='label underline'>{t('select-country-group')}</p>
-          </Tooltip>
-          <Select
-            showSearch
-            className='undp-select margin-bottom-04'
-            filterOption={(input, option) =>
-              (option?.label ?? '')
-                .toString()
-                .toLowerCase()
-                .includes(input?.toLowerCase())
-            }
-            placeholder={t('select-country-group')}
-            value={selectedRegions}
-            onChange={(d: string) => {
-              updateSelectedRegions(d === undefined ? 'all' : d);
-            }}
-          >
-            {countryGroupingsMerged.map(d => {
-              if (d.options) {
-                return (
-                  <Select.OptGroup key={d.key} label={t(d.label)}>
-                    {d.options.map(o => (
-                      <Select.Option
-                        className='undp-select-option'
-                        label={t(o.label)}
-                        key={o.value}
-                      >
-                        {t(o.label)}
-                      </Select.Option>
-                    ))}
-                  </Select.OptGroup>
-                );
+          </Tooltip> */}
+          <div className='select-wrapper margin-bottom-04'>
+            <Select
+              onDropdownVisibleChange={(open) => {setIsSelectOpen([isSelectOpen[0], open, isSelectOpen[2]])}}
+              showSearch
+              className='undp-select'
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toString()
+                  .toLowerCase()
+                  .includes(input?.toLowerCase())
               }
-              return (
-                <Select.Option
-                  className='undp-select-option'
-                  label={t(d.label)}
-                  key={d.value}
-                >
-                  {t(d.label)}
-                </Select.Option>
-              );
-            })}
-          </Select>
-          {/* <p className='undp-typography margin-bottom-04'>
-            Select categories and filters to analyze beneficiaries of the UNDP
-            energy.
-            <b>UNDP energy.</b>
-          </p> */}
-
+              placeholder={t('select-country-group')}
+              value={selectedRegions}
+              onChange={(d: string) => {
+                updateSelectedRegions(d === undefined ? 'all' : d);
+              }}
+              onMouseEnter={() => {setShowSelectTooltip([false, true, false])}}
+              onMouseLeave={() => {setShowSelectTooltip([false, false, false])}}
+            >
+              {countryGroupingsMerged.map(d => {
+                if (d.options) {
+                  return (
+                    <Select.OptGroup key={d.key} label={t(d.label)}>
+                      {d.options.map(o => (
+                        <Select.Option
+                          className='undp-select-option'
+                          label={t(o.label)}
+                          key={o.value}
+                        >
+                          {t(o.label)}
+                        </Select.Option>
+                      ))}
+                    </Select.OptGroup>
+                  );
+                }
+                return (
+                  <Select.Option
+                    className='undp-select-option'
+                    label={t(d.label)}
+                    key={d.value}
+                  >
+                    {t(d.label)}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+            <p dangerouslySetInnerHTML={{__html: t('country-group-tooltip') || ''}} className='select-tooltip' style={{opacity: showSelectTooltip[1] && !isSelectOpen[1] ? 1 : 0}}>
+            </p>
+          </div>
           <StackedChart
             id='region-bar-chart'
             data={regionBarData}
@@ -401,57 +403,47 @@ export const BarFilters = (props: Props) => {
             id='hdi-bar-chart'
             data={hdiBarData}
             clickCallback={regionUpdateCallback}
+            tooltips={tooltips}
           />
         </div>
         <div style={{ width: '100%' }}>
-          <Tooltip
-            title={
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: t('gender-marker-tooltip') || '',
-                }}
-              />
-            }
-            placement='top'
-            overlayStyle={{
-              maxWidth: '550px',
-            }}
-          >
-            <p className='label underline'>{t('select-gender-marker')}</p>
-          </Tooltip>
-          <Select
-            showSearch
-            className='undp-select margin-bottom-04'
-            filterOption={(input, option) =>
-              (option?.label ?? '')
-                .toString()
-                .toLowerCase()
-                .includes(input?.toLowerCase())
-            }
-            placeholder={t('select-taxonomy')}
-            value={selectedGenderMarker}
-            onChange={(d: string) => {
-              updateSelectedGenderMarker(d === undefined ? 'all' : d);
-            }}
-          >
-            {genderMarkers.map(d => (
-              <Select.Option
-                className='undp-select-option'
-                label={t(d.label)}
-                key={d.value}
-              >
-                {d.tooltip ? (
-                  <Tooltip title={t(d.tooltip)}>{t(d.label)}</Tooltip>
-                ) : (
-                  t(d.label)
-                )}
-              </Select.Option>
-            ))}
-          </Select>
-          {/* <p className='undp-typography margin-bottom-04'>
-            Text explaining gender markers here - Text explaining gender markers
-            here - Text explaining gender markers here
-          </p> */}
+          <div className='select-wrapper margin-bottom-04'>
+            <Select
+              onDropdownVisibleChange={(open) => {setIsSelectOpen([isSelectOpen[0], isSelectOpen[1], open])}}
+              showSearch
+              className='undp-select'
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toString()
+                  .toLowerCase()
+                  .includes(input?.toLowerCase())
+              }
+              placeholder={t('select-taxonomy')}
+              value={selectedGenderMarker}
+              onChange={(d: string) => {
+                updateSelectedGenderMarker(d === undefined ? 'all' : d);
+              }}
+              onMouseEnter={() => {setShowSelectTooltip([false, false, true])}}
+              onMouseLeave={() => {setShowSelectTooltip([false, false, false])}}
+            >
+              {genderMarkers.map(d => {
+                return (
+                <Select.Option
+                  className='undp-select-option'
+                  label={t(d.label)}
+                  key={d.value}
+                >
+                  {d.tooltip ? (
+                    <Tooltip title={t(d.tooltip)}>{t(d.label)}</Tooltip>
+                  ) : (
+                    t(d.label)
+                  )}
+                </Select.Option>
+              )})}
+            </Select>
+            <p dangerouslySetInnerHTML={{__html: t('gender-marker-tooltip') || ''}} className='select-tooltip' style={{opacity: showSelectTooltip[2] && !isSelectOpen[2] ? 1 : 0}}>
+            </p>
+          </div>
           <StackedChart
             id='gender-bar-chart'
             data={genderBarData}

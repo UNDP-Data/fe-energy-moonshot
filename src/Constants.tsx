@@ -271,19 +271,19 @@ export const outputsTaxonomy = [
         label: 'all',
       },
       {
-        value: 'Electricity Access',
+        value: 'Policy - Electricity Access',
         label: 'energy-access',
       },
       {
-        value: 'Renewable Energy',
+        value: 'Policy - Renewable Energy',
         label: 'renewable-energy',
       },
       {
-        value: 'Clean Cooking',
+        value: 'Policy - Clean Cooking',
         label: 'clean-cooking',
       },
       {
-        value: 'Energy Efficiency',
+        value: 'Policy - Energy Efficiency',
         label: 'energy-efficiency',
       },
     ],
@@ -409,7 +409,7 @@ export const countryGroupingsTaxonomy = [
 
 export const genderMarkers = [
   {
-    label: 'all',
+    label: 'All Gender Markers”',
     value: 'all',
   },
   {

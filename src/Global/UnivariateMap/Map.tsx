@@ -97,7 +97,6 @@ export const Map = (props: Props) => {
   // translation
   const { t } = useTranslation();
   const zoomBehaviourRef = useRef<any>();
-
   const options = indicators.map((d) => d.Indicator);
 
   useEffect(() => {
@@ -178,7 +177,7 @@ export const Map = (props: Props) => {
       coordinates: [158.215, 6.887],
       Shape_Area: 0.007403,
     },
-    /*  {
+    /* {
       name: 'Cabo Verde',
       coordinates: [-23.6167, 16.5388],
       Shape_Area: 0.045612,
@@ -585,7 +584,7 @@ export const Map = (props: Props) => {
               ))
             : null}
 
-          {islands.map((island) => {
+          {islands.filter((island) => data.some((d) => island.name === d['Country or Area'])).map((island) => {
             const [x, y] = projection(island.coordinates) as [number, number];
             return (
               <circle

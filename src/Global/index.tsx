@@ -14,7 +14,7 @@ import { Settings } from './Settings';
 import { BarFilters } from './BarFilters';
 import { UnivariateMap } from './UnivariateMap';
 import { DataTable } from './DataTable';
-import { MainText } from './MainText';
+/* import { MainText } from './MainText'; */
 
 interface Props {
   countryGroupData: CountryGroupDataType[];
@@ -166,6 +166,12 @@ export const Global = (props: Props) => {
             {' '}
           </h5>
           <Settings />
+          <div>
+            {/* <MainText /> */}
+            <Cards
+              data={mapData}
+            />
+          </div>
           <div className='flex-div'>
             <div style={{ maxWidth: '30%', width: '30%' }}>
               <BarFilters
@@ -174,10 +180,6 @@ export const Global = (props: Props) => {
               />
             </div>
             <div style={{ maxWidth: '70%', width: '70%' }}>
-              <MainText />
-              <Cards
-                data={mapData}
-              />
               <div style={{ backgroundColor: 'var(--gray-200)' }}>
                 <UnivariateMap
                   avaliableCountryList={avaliableCountryList}
