@@ -18,6 +18,13 @@ const Label: React.FC<LabelProps> = ({
   const [isOverflow, setIsOverflow] = useState(false);
   const timeoutId = useRef<any>(-1);
 
+  const converter = (string: string) => {
+    if (string === 'Medium') return 'Lower-Middle';
+    if (string === 'High') return 'Upper-Middle';
+    if (string === 'Very High') return 'High';
+    return string;
+  };
+
   useEffect(() => {
     const checkOverflow = () => {
       clearTimeout(timeoutId.current);
@@ -55,7 +62,7 @@ const Label: React.FC<LabelProps> = ({
         }}
         ref={textRef}
       >
-        {text}
+        {converter(text)}
       </div>
     </div>
   );
