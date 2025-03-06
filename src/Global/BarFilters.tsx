@@ -30,7 +30,11 @@ export const BarFilters = (props: Props) => {
   // translation
   const { t } = useTranslation();
   const [tooltips, setTooltips] = useState({});
-  const [showSelectTooltip, setShowSelectTooltip] = useState([false, false, false]);
+  const [showSelectTooltip, setShowSelectTooltip] = useState([
+    false,
+    false,
+    false,
+  ]);
   const [isSelectOpen, setIsSelectOpen] = useState([false, false, false]);
 
   const { countryList, data } = props;
@@ -138,16 +142,20 @@ export const BarFilters = (props: Props) => {
         };
         return acc;
       }, {});
-    return data.reduce((acc, item) => {
-      if(selectedRegions !== 'all' && selectedRegions !== 'Other') {
-        if(item.specialGroupings.includes(selectedRegions)) {
+    const result = data.reduce((acc, item) => {
+      /* if (selectedRegions !== 'all' && selectedRegions !== 'Other') {
+        console.log(item.specialGroupings, selectedRegions);
+        if (item.specialGroupings.includes(selectedRegions)) {
           acc[selectedRegions as string].value += item.budget;
         }
-      } else {
+      } else { */
         item.specialGroupings.map(sg => {
           acc[sg as string].value += item.budget;
           if (item.specialGroupings.length > 1) {
-            if (item.specialGroupings && item.specialGroupings.includes('SIDS')) {
+            if (
+              item.specialGroupings &&
+              item.specialGroupings.includes('SIDS')
+            ) {
               acc['LDC'].overlap += item.budget;
             }
             if (
@@ -161,9 +169,11 @@ export const BarFilters = (props: Props) => {
         if (item.specialGroupings.length === 0 || !item.specialGroupings) {
           acc['Other'].value += item.budget;
         }
-      }
+   /*    } */
       return acc;
     }, taxonomy);
+    console.log(result, data);
+    return result;
   };
 
   const [groupingsBarData, setGroupingsBarData] = useState(() => {
@@ -284,7 +294,9 @@ export const BarFilters = (props: Props) => {
           </Tooltip> */}
           <div className='select-wrapper margin-bottom-04'>
             <Select
-              onDropdownVisibleChange={(open) => {setIsSelectOpen([open, isSelectOpen[1], isSelectOpen[2]])}}
+              onDropdownVisibleChange={open => {
+                setIsSelectOpen([open, isSelectOpen[1], isSelectOpen[2]]);
+              }}
               showSearch
               filterOption={(input, option) =>
                 (option?.label ?? '')
@@ -298,8 +310,12 @@ export const BarFilters = (props: Props) => {
               onChange={(d: string) => {
                 updateSelectedFunding(d === undefined ? 'all' : d);
               }}
-              onMouseEnter={() => {setShowSelectTooltip([true, false, false])}}
-              onMouseLeave={() => {setShowSelectTooltip([false, false, false])}}
+              onMouseEnter={() => {
+                setShowSelectTooltip([true, false, false]);
+              }}
+              onMouseLeave={() => {
+                setShowSelectTooltip([false, false, false]);
+              }}
             >
               {fundingTaxonomy.map(d => (
                 <Select.Option
@@ -311,8 +327,13 @@ export const BarFilters = (props: Props) => {
                 </Select.Option>
               ))}
             </Select>
-            <p dangerouslySetInnerHTML={{__html: t('funding-tooltip') || ''}} className='select-tooltip' style={{opacity: showSelectTooltip[0] && !isSelectOpen[0] ? 1 : 0}}>
-            </p>
+            <p
+              dangerouslySetInnerHTML={{ __html: t('funding-tooltip') || '' }}
+              className='select-tooltip'
+              style={{
+                opacity: showSelectTooltip[0] && !isSelectOpen[0] ? 1 : 0,
+              }}
+            ></p>
           </div>
           <StackedChart
             id='finance-bar-chart'
@@ -339,7 +360,9 @@ export const BarFilters = (props: Props) => {
           </Tooltip> */}
           <div className='select-wrapper margin-bottom-04'>
             <Select
-              onDropdownVisibleChange={(open) => {setIsSelectOpen([isSelectOpen[0], open, isSelectOpen[2]])}}
+              onDropdownVisibleChange={open => {
+                setIsSelectOpen([isSelectOpen[0], open, isSelectOpen[2]]);
+              }}
               showSearch
               className='undp-select'
               filterOption={(input, option) =>
@@ -353,8 +376,12 @@ export const BarFilters = (props: Props) => {
               onChange={(d: string) => {
                 updateSelectedRegions(d === undefined ? 'all' : d);
               }}
-              onMouseEnter={() => {setShowSelectTooltip([false, true, false])}}
-              onMouseLeave={() => {setShowSelectTooltip([false, false, false])}}
+              onMouseEnter={() => {
+                setShowSelectTooltip([false, true, false]);
+              }}
+              onMouseLeave={() => {
+                setShowSelectTooltip([false, false, false]);
+              }}
             >
               {countryGroupingsMerged.map(d => {
                 if (d.options) {
@@ -383,8 +410,15 @@ export const BarFilters = (props: Props) => {
                 );
               })}
             </Select>
-            <p dangerouslySetInnerHTML={{__html: t('country-group-tooltip') || ''}} className='select-tooltip' style={{opacity: showSelectTooltip[1] && !isSelectOpen[1] ? 1 : 0}}>
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t('country-group-tooltip') || '',
+              }}
+              className='select-tooltip'
+              style={{
+                opacity: showSelectTooltip[1] && !isSelectOpen[1] ? 1 : 0,
+              }}
+            ></p>
           </div>
           <StackedChart
             id='region-bar-chart'
@@ -409,7 +443,9 @@ export const BarFilters = (props: Props) => {
         <div style={{ width: '100%' }}>
           <div className='select-wrapper margin-bottom-04'>
             <Select
-              onDropdownVisibleChange={(open) => {setIsSelectOpen([isSelectOpen[0], isSelectOpen[1], open])}}
+              onDropdownVisibleChange={open => {
+                setIsSelectOpen([isSelectOpen[0], isSelectOpen[1], open]);
+              }}
               showSearch
               className='undp-select'
               filterOption={(input, option) =>
@@ -423,26 +459,38 @@ export const BarFilters = (props: Props) => {
               onChange={(d: string) => {
                 updateSelectedGenderMarker(d === undefined ? 'all' : d);
               }}
-              onMouseEnter={() => {setShowSelectTooltip([false, false, true])}}
-              onMouseLeave={() => {setShowSelectTooltip([false, false, false])}}
+              onMouseEnter={() => {
+                setShowSelectTooltip([false, false, true]);
+              }}
+              onMouseLeave={() => {
+                setShowSelectTooltip([false, false, false]);
+              }}
             >
               {genderMarkers.map(d => {
                 return (
-                <Select.Option
-                  className='undp-select-option'
-                  label={t(d.label)}
-                  key={d.value}
-                >
-                  {d.tooltip ? (
-                    <Tooltip title={t(d.tooltip)}>{t(d.label)}</Tooltip>
-                  ) : (
-                    t(d.label)
-                  )}
-                </Select.Option>
-              )})}
+                  <Select.Option
+                    className='undp-select-option'
+                    label={t(d.label)}
+                    key={d.value}
+                  >
+                    {d.tooltip ? (
+                      <Tooltip title={t(d.tooltip)}>{t(d.label)}</Tooltip>
+                    ) : (
+                      t(d.label)
+                    )}
+                  </Select.Option>
+                );
+              })}
             </Select>
-            <p dangerouslySetInnerHTML={{__html: t('gender-marker-tooltip') || ''}} className='select-tooltip' style={{opacity: showSelectTooltip[2] && !isSelectOpen[2] ? 1 : 0}}>
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t('gender-marker-tooltip') || '',
+              }}
+              className='select-tooltip'
+              style={{
+                opacity: showSelectTooltip[2] && !isSelectOpen[2] ? 1 : 0,
+              }}
+            ></p>
           </div>
           <StackedChart
             id='gender-bar-chart'
