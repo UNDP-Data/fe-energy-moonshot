@@ -436,6 +436,12 @@ export const genderMarkers = [
     color: '#03C38A',
     tooltip: 'GEN3-tooltip',
   },
+  // {
+  //   label: 'no-marker',
+  //   value: null,
+  //   color: '#DADADA',
+  //   tooltip: 'no-marker-tooltip',
+  // },
 ];
 
 export const fundingTaxonomy = [

@@ -29,14 +29,14 @@ export default (props: Props) => {
   function formatBigNumber(num: number) {
     // If the number is less than 1000, just return it as a string
     if (num < 1e3) return num.toString();
-  
+
     // Define the scales and their corresponding suffixes
     const scales = [
       { value: 1e9, suffix: "B" },
       { value: 1e6, suffix: "M" },
       { value: 1e3, suffix: "K" }
     ];
-  
+
     // Loop over each scale
     for (let scale of scales) {
       if (num >= scale.value) {
@@ -88,7 +88,7 @@ export default (props: Props) => {
         ...(typeof value === 'object' && value !== null ? value : {}),
         label: key,
       }));
-
+      //console.log(array);
       setDataArray(array);
       setValuesSum(array.reduce((acc: any, item: any) => acc + item.value, 0));
     }
@@ -153,9 +153,8 @@ export default (props: Props) => {
                       width:
                         value === 0
                           ? '0%'
-                          : `calc(${
-                              valuesSum > 0 ? (value / valuesSum) * 100 : 0
-                            }% - ${order == 1 ? 0 : 2}px)`,
+                          : `calc(${valuesSum > 0 ? (value / valuesSum) * 100 : 0
+                          }% - ${order == 1 ? 0 : 2}px)`,
                       order,
                     }}
                   >

@@ -202,15 +202,6 @@ const Project = (props:ProjectProps) => {
             </p>
 
             <p className='undp-typography'>
-              {t('ghg-emissions-reduction')}
-              {' - '}
-              <EditableCell
-                text={project.ghgEmissions === null ? '__' : `${project.ghgEmissions}M ${t('tonnes')}`}
-                fieldName='ghgEmissions'
-                sendUpdate={sendUpdateCallback}
-              />
-            </p>
-            <p className='undp-typography'>
               {
                 (project.link) ? (
                   <a
@@ -309,22 +300,6 @@ const Project = (props:ProjectProps) => {
                       outputId={o.id}
                       sendUpdate={sendUpdateCallback}
                     />
-                  </p>
-                  <p className='undp-typography'>
-                    {
-                      (o.energySaved) ? (
-                        <>
-                          {t('energy-saved-mj')}
-                          {' - '}
-                          <EditableCell
-                            text={format('~s')(o.energySaved).replace('G', 'B')}
-                            outputId={o.id}
-                            fieldName='energySaved'
-                            sendUpdate={sendUpdateCallback}
-                          />
-                        </>
-                      ) : ('')
-                    }
                   </p>
                 </div>
                 <div

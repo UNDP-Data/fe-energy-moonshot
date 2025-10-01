@@ -70,7 +70,8 @@ export const BarFilters = (props: Props) => {
       }, {});
     return data.reduce((acc, item) => {
       if (item.hdiTier && acc[item.hdiTier]) {
-        acc[item.hdiTier].value += item.budget;
+        const totalDirectBeneficiaries = item.outputs?.reduce((sum: number, output: any) => sum + (output.directBeneficiaries || 0), 0) || 0;
+        acc[item.hdiTier].value += totalDirectBeneficiaries;
       }
       return acc;
     }, taxonomy);
@@ -100,7 +101,8 @@ export const BarFilters = (props: Props) => {
       }, {});
     return data.reduce((acc, item) => {
       if (item.region && acc[t(`${item.region}code`)]) {
-        acc[t(`${item.region}code`) as string].value += item.budget;
+        const totalDirectBeneficiaries = item.outputs?.reduce((sum: number, output: any) => sum + (output.directBeneficiaries || 0), 0) || 0;
+        acc[t(`${item.region}code`) as string].value += totalDirectBeneficiaries;
       }
       return acc;
     }, taxonomy);
@@ -149,30 +151,31 @@ export const BarFilters = (props: Props) => {
           acc[selectedRegions as string].value += item.budget;
         }
       } else { */
-        item.specialGroupings.map(sg => {
-          acc[sg as string].value += item.budget;
-          if (item.specialGroupings.length > 1) {
-            if (
-              item.specialGroupings &&
-              item.specialGroupings.includes('SIDS')
-            ) {
-              acc['LDC'].overlap += item.budget;
-            }
-            if (
-              item.specialGroupings &&
-              item.specialGroupings.includes('LLDCs')
-            ) {
-              acc['LLDC'].overlap += item.budget;
-            }
+      const totalDirectBeneficiaries = item.outputs?.reduce((sum: number, output: any) => sum + (output.directBeneficiaries || 0), 0) || 0;
+      item.specialGroupings.map(sg => {
+        acc[sg as string].value += totalDirectBeneficiaries;
+        if (item.specialGroupings.length > 1) {
+          if (
+            item.specialGroupings &&
+            item.specialGroupings.includes('SIDS')
+          ) {
+            acc['LDC'].overlap += totalDirectBeneficiaries;
           }
-        });
-        if (item.specialGroupings.length === 0 || !item.specialGroupings) {
-          acc['Other'].value += item.budget;
+          if (
+            item.specialGroupings &&
+            item.specialGroupings.includes('LLDCs')
+          ) {
+            acc['LLDC'].overlap += totalDirectBeneficiaries;
+          }
         }
-   /*    } */
+      });
+      if (item.specialGroupings.length === 0 || !item.specialGroupings) {
+        acc['Other'].value += totalDirectBeneficiaries;
+      }
+      /*    } */
       return acc;
     }, taxonomy);
-    console.log(result, data);
+    //console.log(result, data);
     return result;
   };
 
@@ -200,9 +203,21 @@ export const BarFilters = (props: Props) => {
         };
         return acc;
       }, {});
+
+    taxonomy['No marker'] = {
+      key: 'no-marker',
+      value: 0,
+      color: '#DADADA',
+      order: Object.keys(taxonomy).length + 1,
+    };
+
     return data.reduce((acc, item) => {
+      const totalDirectBeneficiaries = item.outputs?.reduce((sum: number, output: any) => sum + (output.directBeneficiaries || 0), 0) || 0;
+
       if (item.genderMarker && acc[item.genderMarker]) {
-        acc[item.genderMarker].value += item.budget;
+        acc[item.genderMarker].value += totalDirectBeneficiaries;
+      } else if (!item.genderMarker) {
+        acc['No marker'].value += totalDirectBeneficiaries;
       }
       return acc;
     }, taxonomy);
@@ -235,10 +250,11 @@ export const BarFilters = (props: Props) => {
         return acc;
       }, {});
     return data.reduce((acc, item) => {
+      const totalDirectBeneficiaries = item.outputs?.reduce((sum: number, output: any) => sum + (output.directBeneficiaries || 0), 0) || 0;
       if (item.verticalFunded) {
-        acc[t(fundingTaxonomy[1].label)].value += item.budget;
+        acc[t(fundingTaxonomy[1].label)].value += totalDirectBeneficiaries;
       } else {
-        acc[t(fundingTaxonomy[2].label)].value += item.budget;
+        acc[t(fundingTaxonomy[2].label)].value += totalDirectBeneficiaries;
       }
       return acc;
     }, taxonomy);
@@ -481,6 +497,13 @@ export const BarFilters = (props: Props) => {
                   </Select.Option>
                 );
               })}
+              <Select.Option
+                className='undp-select-option'
+                label='No marker'
+                key='no-marker'
+              >
+                No marker
+              </Select.Option>
             </Select>
             <p
               dangerouslySetInnerHTML={{

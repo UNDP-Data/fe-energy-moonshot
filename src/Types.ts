@@ -64,9 +64,6 @@ export interface HoverDataType {
   peopleDirectlyBenefiting?: number;
   grantAmount?: number;
   outputCategory?: string;
-  energySaved?: number;
-  mwAdded?: number;
-  ghgEmissions?: number;
   numberProjects?: number;
   xPosition: number;
   yPosition: number;
@@ -113,11 +110,11 @@ export interface CountryIndicatorDataType {
   value: any;
   year: any;
 }
-export interface CountryData{
+export interface CountryData {
   country: string;
   values: CountryIndicatorDataType[];
 }
-export interface ProjectLevelDataType{
+export interface ProjectLevelDataType {
   id: string,
   title: string,
   description: string,
@@ -125,8 +122,8 @@ export interface ProjectLevelDataType{
   countryCode: string,
   projectTitle: string,
   country: string,
-  link:string,
-  donors:string[] | null,
+  link: string,
+  donors: string[] | null,
   region: string,
   verticalFunded: boolean,
   flagship: string,
@@ -135,13 +132,11 @@ export interface ProjectLevelDataType{
   genderMarker: string,
   dirBeneficiaries: number,
   indirBeneficiaries: number,
-  energySaved: number,
-  ghgEmissions:number,
   fundingSources: string,
   hdiTier: string,
-  projectDescription:string,
-  outputs:any[],
-  thematics:string[],
+  projectDescription: string,
+  outputs: any[],
+  thematics: string[],
   incomeGroup: string,
   specialGroupings: string[],
   regionBureau: string,
@@ -166,28 +161,28 @@ export interface ProjectLevelDataType{
   'Partners': string,
   Source_documentation: string,
 }
-export interface ProjectCoordsDataType{
+export interface ProjectCoordsDataType {
   'projectID_PIMS+': number,
   'projectID_Atlas': number,
   projectData: ProjectLevelDataType,
   Latitude: number,
   Longitude: number,
 }
-export interface DashboardDataType{
+export interface DashboardDataType {
   peopleBenefiting: number;
   grantAmount: number;
   numberProjects: number;
 }
 
 interface LowLevelTaxonomy {
-    label: string,
-    value:string,
+  label: string,
+  value: string,
 }
 
 export interface Taxonomy {
   label: string,
-  value?:string,
-  key?:string,
+  value?: string | null,
+  key?: string,
   options?: LowLevelTaxonomy[]
 }
 

@@ -253,15 +253,6 @@ export const Map = (props: Props) => {
                 grantAmount: d.indicators.filter(
                   (ind: any) => ind.indicator === 'budget',
                 )[0].value,
-                energySaved: d.indicators.filter(
-                  (ind: any) => ind.indicator === 'energySaved',
-                )[0].value,
-                mwAdded: d.indicators.filter(
-                  (ind: any) => ind.indicator === 'mwAdded',
-                )[0].value,
-                ghgEmissions: d.indicators.filter(
-                  (ind: any) => ind.indicator === 'ghgEmissions',
-                )[0].value,
                 numberProjects: d.numberProjects,
                 xPosition: event.clientX,
                 yPosition: event.clientY,
@@ -389,15 +380,6 @@ export const Map = (props: Props) => {
                     grantAmount: d.indicators.filter(
                       (ind) => ind.indicator === 'budget',
                     )[0].value,
-                    energySaved: d.indicators.filter(
-                      (ind) => ind.indicator === 'energySaved',
-                    )[0].value,
-                    mwAdded: d.indicators.filter(
-                      (ind) => ind.indicator === 'mwAdded',
-                    )[0].value,
-                    ghgEmissions: d.indicators.filter(
-                      (ind) => ind.indicator === 'ghgEmissions',
-                    )[0].value,
                     numberProjects: d.numberProjects,
                     xPosition: event.clientX,
                     yPosition: event.clientY,
@@ -412,15 +394,6 @@ export const Map = (props: Props) => {
                     )[0].value,
                     grantAmount: d.indicators.filter(
                       (ind) => ind.indicator === 'budget',
-                    )[0].value,
-                    energySaved: d.indicators.filter(
-                      (ind) => ind.indicator === 'energySaved',
-                    )[0].value,
-                    mwAdded: d.indicators.filter(
-                      (ind) => ind.indicator === 'mwAdded',
-                    )[0].value,
-                    ghgEmissions: d.indicators.filter(
-                      (ind) => ind.indicator === 'ghgEmissions',
                     )[0].value,
                     numberProjects: d.numberProjects,
                     xPosition: event.clientX,
@@ -612,15 +585,6 @@ export const Map = (props: Props) => {
                       grantAmount: d.indicators.filter(
                         (ind: any) => ind.indicator === 'budget',
                       )[0].value,
-                      energySaved: d.indicators.filter(
-                        (ind: any) => ind.indicator === 'energySaved',
-                      )[0].value,
-                      mwAdded: d.indicators.filter(
-                        (ind: any) => ind.indicator === 'mwAdded',
-                      )[0].value,
-                      ghgEmissions: d.indicators.filter(
-                        (ind: any) => ind.indicator === 'ghgEmissions',
-                      )[0].value,
                       numberProjects: d.numberProjects,
                       xPosition: event.clientX,
                       yPosition: event.clientY,
@@ -641,15 +605,6 @@ export const Map = (props: Props) => {
                       )[0].value,
                       grantAmount: d.indicators.filter(
                         (ind: any) => ind.indicator === 'budget',
-                      )[0].value,
-                      energySaved: d.indicators.filter(
-                        (ind: any) => ind.indicator === 'energySaved',
-                      )[0].value,
-                      mwAdded: d.indicators.filter(
-                        (ind: any) => ind.indicator === 'mwAdded',
-                      )[0].value,
-                      ghgEmissions: d.indicators.filter(
-                        (ind: any) => ind.indicator === 'ghgEmissions',
                       )[0].value,
                       numberProjects: d.numberProjects,
                       xPosition: event.clientX,
