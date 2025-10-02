@@ -24,7 +24,6 @@ export const Cards = (props: Props) => {
   } = props;
   const {
     selectedCategory,
-    selectedSubCategory,
   } = useContext(Context) as CtxDataType;
 
   const formatData = (d: undefined | number) => {
@@ -40,11 +39,9 @@ export const Cards = (props: Props) => {
   const cardData = {
     numberProjects: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'nProj')[0].value),
     peopleBenefiting: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'directBeneficiaries')[0].value),
-    mwAdded: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'mwAdded')[0].value),
-    energySaved: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'energySaved')[0].value),
     grantAmount: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'budget')[0].value),
-    // policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
-    numberCountries: data.length,
+    policies: sumBy(data, (d:any) => d.indicators.filter((i:any) => i.indicator === 'policies')[0].value),
+    numberCountries: data.filter((d) => d['Alpha-3 code'] && d['Alpha-3 code'] !== '' && d['Alpha-3 code'] !== null && d['Alpha-3 code'] !== undefined).length,
   };
   // translation
   const { t } = useTranslation();
@@ -53,25 +50,14 @@ export const Cards = (props: Props) => {
     <>
       <div className='stat-container flex-div margin-bottom-05'>
         {
-          (selectedCategory !== 'Policy') && (
+          selectedCategory && (
             <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
               {
-                (selectedCategory === 'Energy Transition' && selectedSubCategory !== 'Efficiency') && (
+                (selectedCategory === 'Energy Transition') && (
                   <>
                     <h3 className='undp-typography'>
-                      {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
+                      N/A
                     </h3>
-                    <p>{t('mw-added')}</p>
-                  </>
-                )
-              }
-              {
-                (selectedCategory === 'Energy Transition' && selectedSubCategory === 'Efficiency') && (
-                  <>
-                    <h3 className='undp-typography'>
-                      {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.energySaved)}
-                    </h3>
-                    <p>{t('energy-saved-mj')}</p>
                   </>
                 )
               }
@@ -86,18 +72,18 @@ export const Cards = (props: Props) => {
                 )
               }
               {
-                // (
-                  // selectedCategory === 'Policy') && (
-                  // <>
-                  //   <h3 className='undp-typography'>
-                  //     {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
-                  //   </h3>
-                  //   <p>{t('number-of-policies')}</p>
-                  // </>
-                // )
+                (
+                  selectedCategory === 'Policy') && (
+                  <>
+                    <h3 className='undp-typography'>
+                      {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
+                    </h3>
+                    <p>{t('number-of-policies')}</p>
+                  </>
+                )
               }
               {
-                (selectedCategory === 'Market Development' || selectedCategory === 'Policy') && (
+                (selectedCategory === 'Market Development') && (
                   <>
                     <h3 className='undp-typography'>
                       N/A
@@ -113,14 +99,6 @@ export const Cards = (props: Props) => {
                         {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
                       </h3>
                       <p>{t('people-benefiting')}</p>
-                    </>
-                  ))
-                  || ((cardData.mwAdded) && (
-                    <>
-                      <h3 className='undp-typography'>
-                        {cardData.mwAdded === undefined ? 'N/A' : formatData(cardData.mwAdded)}
-                      </h3>
-                      <p>{t('mw-added')}</p>
                     </>
                   ))
                   || (

@@ -85,36 +85,6 @@ export const Tooltip = (props: Props) => {
               </span>
             </p>
           ) : ''}
-        { data.energySaved !== 0
-          ? (
-            <p className='small-font margin-bottom-00'>
-              {`${t('energy-saved-mj')}:`}
-              {' '}
-              <span className='bold'>
-                {formatData(data.energySaved)}
-              </span>
-            </p>
-          ) : ''}
-        { data.mwAdded !== 0
-          ? (
-            <p className='small-font margin-bottom-00'>
-              {`${t('mw-added')}:`}
-              {' '}
-              <span className='bold'>
-                {formatData(data.mwAdded)}
-              </span>
-            </p>
-          ) : ''}
-        { data.ghgEmissions !== 0
-          ? (
-            <p className='small-font margin-bottom-00'>
-              {`${t('ghg-emissions-reduction')}:`}
-              {' '}
-              <span className='bold'>
-                {formatData(data.ghgEmissions)}
-              </span>
-            </p>
-          ) : ''}
         <p className='small-font margin-bottom-00'>
           {`${t('number-projects')}:`}
           {' '}
