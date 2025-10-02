@@ -51,6 +51,17 @@ export const UnivariateMap = (props: Props) => {
         binningRangeLarge={binningRangeLarge}
         indicators={indicators}
       />
+      <div
+        style={{
+          marginTop: '1rem',
+          fontSize: '0.75rem',
+          color: '#666',
+          fontStyle: 'italic',
+          padding: '0 1rem',
+        }}
+      >
+        The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.
+      </div>
     </El>
   );
 };
