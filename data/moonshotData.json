@@ -1400,12 +1400,12 @@
         "outputs": [
             {
                 "outputCategory": "Energy Transition",
-                "beneficiaryCategory": "Waste",
-                "mwAdded": 1875405.0,
+                "beneficiaryCategory": "Other Energy Services",
+                "mwAdded": 0,
                 "energySaved": 0.0,
                 "policies": 0,
                 "finance": 0,
-                "directBeneficiaries": 32819587500.0,
+                "directBeneficiaries": 750000.0,
                 "percentFemale": 49.5,
                 "description": "Generate 2 MW of electricity through solid waste processing, reducing waste volume and promoting recycling activities in Algeria.",
                 "id": "DZA-6163-Waste-0"
