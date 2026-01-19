@@ -23185,13 +23185,13 @@
         "specialGroupings": [],
         "outputs": [
             {
-                "outputCategory": "Energy Transition",
-                "beneficiaryCategory": "Solar",
-                "mwAdded": 4130.0,
+                "outputCategory": "Energy Access",
+                "beneficiaryCategory": "Clean Electricity",
+                "mwAdded": 0,
                 "energySaved": 0.0,
                 "policies": 0,
                 "finance": 0,
-                "directBeneficiaries": 72275000.0,
+                "directBeneficiaries": 4130.0,
                 "percentFemale": null,
                 "description": "Shifted 18 MW of electricity generation capacity from fossil fuel to solar energy through the implementation of grid-connected small-scale photovoltaic systems, opening markets for rooftop solar power stations at the national level.",
                 "id": "EGY-4998-Solar-0"
