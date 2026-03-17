@@ -355,6 +355,44 @@
         ]
     },
     {
+        "id": "10004069",
+        "title": "Smart Health Systems Zambia",
+        "link": "https://www.undp.org/zambia/projects/smart-health-systems",
+        "budget": 8902527.0,
+        "countryCode": "ZMB",
+        "countryName": "Zambia",
+        "ghgEmissions": null,
+        "verticalFunded": true,
+        "description": "add project description",
+        "genderMarker": null,
+        "donors": [
+            "Global Fund"
+        ],
+        "region": "RBA",
+        "thematics": [],
+        "flagship": "Solar4Health",
+        "hdiTier": "Medium",
+        "incomeGroup": "Low income",
+        "specialGroupings": [
+            "LLDC",
+            "LDC"
+        ],
+        "outputs": [
+            {
+                "outputCategory": "Energy Access",
+                "beneficiaryCategory": "Health",
+                "mwAdded": 0.0,
+                "energySaved": 0.0,
+                "policies": 0,
+                "finance": 0,
+                "directBeneficiaries": 5000000.0,
+                "percentFemale": null,
+                "description": null,
+                "id": "ZMB-10004069-Health-0"
+            }
+        ]
+    },
+    {
         "id": "126170",
         "title": "Access to Clean and Renewable Energy",
         "link": "http://open.undp.org/projects/00126170",
@@ -1399,16 +1437,16 @@
         "specialGroupings": [],
         "outputs": [
             {
-                "outputCategory": "Energy Transition",
+                "outputCategory": "Energy Access",
                 "beneficiaryCategory": "Other Energy Services",
-                "mwAdded": 0,
+                "mwAdded": 0.0,
                 "energySaved": 0.0,
                 "policies": 0,
                 "finance": 0,
                 "directBeneficiaries": 750000.0,
                 "percentFemale": 49.5,
                 "description": "Generate 2 MW of electricity through solid waste processing, reducing waste volume and promoting recycling activities in Algeria.",
-                "id": "DZA-6163-Waste-0"
+                "id": "DZA-6163-OtherEnergyServices-0"
             }
         ]
     },
@@ -14076,7 +14114,7 @@
         "id": "144270",
         "title": "Green Finance Facility to Improve Air Quality and Combat Climate Change in North Macedonia",
         "link": "https://open.undp.org/projects/00144270",
-        "budget": 44400000.0,
+        "budget": 6380000.0,
         "countryCode": "MKD",
         "countryName": "North Macedonia",
         "ghgEmissions": null,
@@ -23187,14 +23225,14 @@
             {
                 "outputCategory": "Energy Access",
                 "beneficiaryCategory": "Clean Electricity",
-                "mwAdded": 0,
+                "mwAdded": 0.0,
                 "energySaved": 0.0,
                 "policies": 0,
                 "finance": 0,
                 "directBeneficiaries": 4130.0,
                 "percentFemale": null,
                 "description": "Shifted 18 MW of electricity generation capacity from fossil fuel to solar energy through the implementation of grid-connected small-scale photovoltaic systems, opening markets for rooftop solar power stations at the national level.",
-                "id": "EGY-4998-Solar-0"
+                "id": "EGY-4998-CleanElectricity-0"
             }
         ]
     },
