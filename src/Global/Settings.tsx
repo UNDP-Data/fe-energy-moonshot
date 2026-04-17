@@ -31,8 +31,10 @@ export const Settings = () => {
   }, [outputsTaxonomyTranslated, selectedCategory]);
 
   useEffect(() => {
-    updateDashboardFilter('subCategory', 'all');
-  }, [selectedCategory, updateDashboardFilter]);
+    if (selectedSubCategory !== 'all') {
+      updateDashboardFilter('subCategory', 'all');
+    }
+  }, [selectedCategory, selectedSubCategory, updateDashboardFilter]);
 
   return (
     <div>

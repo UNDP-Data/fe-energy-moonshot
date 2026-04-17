@@ -1,5 +1,5 @@
 import {
-  useState, useEffect, useReducer, useRef,
+  useState, useEffect, useReducer, useRef, useCallback, useMemo,
 } from 'react';
 import styled from 'styled-components';
 import { json, csv } from 'd3-request';
@@ -80,7 +80,7 @@ const App = (props: Props) => {
 
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const updateDashboardFilter = (key: DashboardFilterKey, value: string) => {
+  const updateDashboardFilter = useCallback((key: DashboardFilterKey, value: string) => {
     dispatch({
       type: 'UPDATE_DASHBOARD_FILTER',
       payload: {
@@ -88,28 +88,28 @@ const App = (props: Props) => {
         value,
       },
     });
-  };
+  }, []);
 
-  const applyDashboardFilters = (filters: Partial<DashboardFilters>) => {
+  const applyDashboardFilters = useCallback((filters: Partial<DashboardFilters>) => {
     dispatch({
       type: 'APPLY_DASHBOARD_FILTERS',
       payload: filters,
     });
-  };
+  }, []);
 
-  const resetDashboardFilters = () => {
+  const resetDashboardFilters = useCallback(() => {
     dispatch({
       type: 'RESET_DASHBOARD_FILTERS',
       payload: DEFAULT_DASHBOARD_FILTERS,
     });
-  };
+  }, []);
 
-  const updateXAxisIndicator = (xAxisIndicator: string) => {
+  const updateXAxisIndicator = useCallback((xAxisIndicator: string) => {
     dispatch({
       type: 'UPDATE_X_AXIS_INDICATOR',
       payload: xAxisIndicator,
     });
-  };
+  }, []);
 
   // translation
   const { i18n } = useTranslation();
@@ -172,6 +172,20 @@ const App = (props: Props) => {
         setIndicatorsList(indicatorMetaData);
       });
   }, []);
+
+  const contextValue = useMemo(() => ({
+    ...state,
+    updateDashboardFilter,
+    applyDashboardFilters,
+    resetDashboardFilters,
+    updateXAxisIndicator,
+  }), [
+    applyDashboardFilters,
+    resetDashboardFilters,
+    state,
+    updateDashboardFilter,
+    updateXAxisIndicator,
+  ]);
   return (
     <div className='undp-container'>
       {
@@ -179,13 +193,7 @@ const App = (props: Props) => {
           ? (
             <>
               <Context.Provider
-                value={{
-                  ...state,
-                  updateDashboardFilter,
-                  applyDashboardFilters,
-                  resetDashboardFilters,
-                  updateXAxisIndicator,
-                }}
+                value={contextValue}
               >
                 <Header
                   language={currentLanguage}

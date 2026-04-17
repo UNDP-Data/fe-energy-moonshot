@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Label from './chartLabel';
 
 interface Props {
@@ -11,17 +11,37 @@ interface Props {
 
 const StackedChart = (props: Props) => {
   const { data, id, clickCallback, tooltips, useKey } = props;
-  const [dataArray, setDataArray] = useState<any[]>([]);
-  const [valuesSum, setValuesSum] = useState(0);
   const [tooltipShown, setTooltipShown] = useState(-1);
-  const [normalizedTooltips, setNormalizedTooltips] = useState<Record<string, { header?: string; text?: string }>>({});
-  const [refresh, setRefresh] = useState(0);
-  // To store measured widths of each chart element
   const [elementWidths, setElementWidths] = useState<number[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
-  // Create an array of refs for each chart element
   const elementRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const timeoutId = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  const normalizedTooltips = useMemo(() => {
+    if (!tooltips || !data) {
+      return {};
+    }
+
+    return Object.entries(tooltips).reduce(
+      (accumulator: Record<string, { header?: string; text?: string }>, [key, value]) => {
+        const lowerKey = key.toLowerCase();
+        accumulator[lowerKey] = value;
+        return accumulator;
+      },
+      {},
+    );
+  }, [data, tooltips]);
+
+  const dataArray = useMemo(() => (
+    Object.entries(data || {}).map(([key, value]) => ({
+      ...(typeof value === 'object' && value !== null ? value : {}),
+      label: key,
+    }))
+  ), [data]);
+
+  const valuesSum = useMemo(
+    () => dataArray.reduce((acc, item) => acc + item.value, 0),
+    [dataArray],
+  );
 
   function formatBigNumber(num: number) {
     // If the number is less than 1000, just return it as a string
@@ -50,46 +70,36 @@ const StackedChart = (props: Props) => {
     return num.toString();
   }
 
-  // After every render when dataArray changes, measure the widths of each chart element
-  useEffect(() => {
-    function checkWidth() {
-      clearTimeout(timeoutId.current);
-      if (elementRefs.current.length > 0) {
-        const widths = elementRefs.current.map((el) => (el ? el.offsetWidth : 0));
-        setElementWidths(widths);
+  const measureWidths = useCallback(() => {
+    if (!elementRefs.current.length) return;
+
+    const widths = elementRefs.current.map((el) => (el ? el.offsetWidth : 0));
+    setElementWidths((currentWidths) => {
+      if (
+        currentWidths.length === widths.length
+        && currentWidths.every((width, index) => width === widths[index])
+      ) {
+        return currentWidths;
       }
-    }
-    timeoutId.current = setTimeout(() => {
-      checkWidth();
-    }, 500);
-  }, [dataArray]);
+
+      return widths;
+    });
+  }, []);
 
   useEffect(() => {
-    if (tooltips && data) {
-      setNormalizedTooltips(
-        Object.entries(tooltips).reduce(
-          (accumulator: Record<string, { header?: string; text?: string }>, [key, value]) => {
-            const lowerKey = key.toLowerCase();
-            accumulator[lowerKey] = value;
-            return accumulator;
-          },
-          {},
-        ),
-      );
-    }
-    setRefresh(prev => prev + 1);
-  }, [tooltips, data]);
+    const frameId = window.requestAnimationFrame(measureWidths);
+    let resizeObserver: ResizeObserver | undefined;
 
-  useEffect(() => {
-    if (data) {
-      const array = Object.entries(data).map(([key, value]) => ({
-        ...(typeof value === 'object' && value !== null ? value : {}),
-        label: key,
-      }));
-      setDataArray(array);
-      setValuesSum(array.reduce((acc, item) => acc + item.value, 0));
+    if (typeof ResizeObserver !== 'undefined' && chartRef.current) {
+      resizeObserver = new ResizeObserver(measureWidths);
+      resizeObserver.observe(chartRef.current);
     }
-  }, [data]);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      resizeObserver?.disconnect();
+    };
+  }, [dataArray, measureWidths]);
 
   return (
     <>
@@ -172,8 +182,6 @@ const StackedChart = (props: Props) => {
                       tabIndex={0}
                     >
                       <Label
-                        /*  backgroundColor={color} */
-                        refresh={refresh}
                         text={useKey ? key : label}
                         className='undp-stacked-chart-label-child'
                       />

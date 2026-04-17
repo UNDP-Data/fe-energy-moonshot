@@ -4,19 +4,16 @@ interface LabelProps {
   text: string;
   backgroundColor?: string;
   className?: string;
-  refresh?: number;
 }
 
 const Label: React.FC<LabelProps> = ({
   className = '',
   backgroundColor = 'transparent',
   text,
-  refresh,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [isOverflow, setIsOverflow] = useState(false);
-  const timeoutId = useRef<any>(-1);
 
   const converter = (string: string) => {
     if (string === 'Medium') return 'Lower-Middle';
@@ -27,22 +24,34 @@ const Label: React.FC<LabelProps> = ({
 
   useEffect(() => {
     const checkOverflow = () => {
-      clearTimeout(timeoutId.current);
       const container = containerRef.current;
       const textElement = textRef.current;
       if (container && textElement) {
-        setIsOverflow(textElement.scrollWidth > container.clientWidth);
+        const nextIsOverflow = textElement.scrollWidth > container.clientWidth;
+        setIsOverflow((currentValue) => (
+          currentValue === nextIsOverflow ? currentValue : nextIsOverflow
+        ));
       }
     };
 
-    checkOverflow();
+    const frameId = window.requestAnimationFrame(checkOverflow);
+    let resizeObserver: ResizeObserver | undefined;
 
-    timeoutId.current = setTimeout(checkOverflow, 500); // Delayed check to ensure correct width
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(checkOverflow);
+      if (containerRef.current) {
+        resizeObserver.observe(containerRef.current);
+      }
+      if (textRef.current) {
+        resizeObserver.observe(textRef.current);
+      }
+    }
 
-    // Optional: Re-check on window resize
-    window.addEventListener('resize', checkOverflow);
-    return () => window.removeEventListener('resize', checkOverflow);
-  }, [text, refresh]);
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      resizeObserver?.disconnect();
+    };
+  }, [text]);
 
   return (
     <div
