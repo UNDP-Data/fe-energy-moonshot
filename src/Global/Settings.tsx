@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { Segmented } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { CtxDataType } from '../Types';
@@ -15,27 +15,24 @@ export const Settings = () => {
   // translation
   const { t } = useTranslation();
 
-  const outputsTaxonomyTranslated = outputsTaxonomy.map((ot) => ({
+  const outputsTaxonomyTranslated = useMemo(() => outputsTaxonomy.map((ot) => ({
     value: ot.value,
     label: t(ot.label),
     subcategories: ot.subcategories.map((ots) => ({
       value: ots.value,
       label: t(ots.label),
     })),
-  }));
+  })), [t]);
 
-  const [subCategoriesTaxonomy, setSubCategoriesTaxonomy] = useState(() => {
+  const subCategoriesTaxonomy = useMemo(() => {
     const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory)
       || outputsTaxonomyTranslated[0];
     return activeOutputsTaxonomy?.subcategories;
-  });
+  }, [outputsTaxonomyTranslated, selectedCategory]);
 
   useEffect(() => {
     updateDashboardFilter('subCategory', 'all');
-    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory)
-      || outputsTaxonomyTranslated[0];
-    setSubCategoriesTaxonomy(activeOutputsTaxonomy.subcategories);
-  }, [selectedCategory]);
+  }, [selectedCategory, updateDashboardFilter]);
 
   return (
     <div>
@@ -50,8 +47,7 @@ export const Settings = () => {
         <Segmented
           className='undp-segmented-small padding-bottom-00 padding-left-00 padding-right-00 data-platform-segmented'
           block
-          // @ts-ignore
-          onChange={(d:string) => { updateDashboardFilter('category', d); }}
+          onChange={(value) => { updateDashboardFilter('category', String(value)); }}
           value={selectedCategory}
           options={outputsTaxonomyTranslated}
         />
@@ -70,8 +66,7 @@ export const Settings = () => {
             block
             style={{ width: '100%' }}
             disabled={selectedCategory === 'all'}
-            // @ts-ignore
-            onChange={(d:string) => { updateDashboardFilter('subCategory', d); }}
+            onChange={(value) => { updateDashboardFilter('subCategory', String(value)); }}
             value={selectedSubCategory}
             options={subCategoriesTaxonomy}
           />

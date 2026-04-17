@@ -1,4 +1,5 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Context from '../../Context/Context';
 import {
@@ -34,13 +35,14 @@ export const UnivariateMap = (props: Props) => {
     xAxisIndicator,
     updateXAxisIndicator,
   } = useContext(Context) as CtxDataType;
-  const options = indicators.map((d) => d.Indicator);
+  const { t } = useTranslation();
+  const options = useMemo(() => indicators.map((d) => d.Indicator), [indicators]);
 
   useEffect(() => {
     if (options.findIndex((d) => d === xAxisIndicator) === -1) {
       updateXAxisIndicator(options[0]);
     }
-  }, [options]);
+  }, [options, updateXAxisIndicator, xAxisIndicator]);
 
   return (
     <El id='graph-node'>
@@ -60,7 +62,7 @@ export const UnivariateMap = (props: Props) => {
           padding: '0 1rem',
         }}
       >
-        The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.
+        {t('map-disclaimer')}
       </div>
     </El>
   );

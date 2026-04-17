@@ -1,16 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LANGUAGE_OPTIONS, SupportedLanguage } from '../i18nConfig';
 
 interface Props {
-  language: string;
-  onLanguageChange: (language: string) => void;
+  language: SupportedLanguage;
+  onLanguageChange: (language: SupportedLanguage) => void;
 }
-
-const LANGUAGE_OPTIONS = [
-  { value: 'en', label: 'English' },
-  { value: 'es', label: 'Español' },
-  { value: 'fr', label: 'Français' },
-];
 
 function Header(props: Props) {
   const { language, onLanguageChange } = props;
@@ -28,7 +23,7 @@ function Header(props: Props) {
           >
             <img
               src='https://design.undp.org/static/media/undp-logo-blue.4f32e17f.svg'
-              alt='UNDP Logo'
+              alt={t('undp-logo-alt')}
               width='60'
               height='122'
             />
@@ -40,9 +35,7 @@ function Header(props: Props) {
                   lineHeight: 1.25,
                 }}
               >
-                Sustainable
-                <br />
-                Energy Hub
+                {t('header-sustainable-energy-hub')}
               </span>
             </div>
           </a>
@@ -56,7 +49,7 @@ function Header(props: Props) {
             style={{ flexGrow: 1, justifyContent: 'center' }}
           >
             <a href='#million' className='header-link'>
-              500 MILLION
+              {t('header-500-million')}
             </a>
           </div>
           <div
@@ -64,7 +57,7 @@ function Header(props: Props) {
             style={{ flexGrow: 1, justifyContent: 'center' }}
           >
             <a href='#tracker' className='header-link'>
-              MOONSHOT TRACKER
+              {t('header-moonshot-tracker')}
             </a>
           </div>
           <div
@@ -72,7 +65,7 @@ function Header(props: Props) {
             style={{ flexGrow: 1, justifyContent: 'center' }}
           >
             <a href='#resources' className='header-link'>
-              RESOURCES
+              {t('header-resources')}
             </a>
           </div>
           <div />
@@ -88,7 +81,7 @@ function Header(props: Props) {
               className='undp-language-select'
               value={language}
               onChange={(event) => {
-                onLanguageChange(event.target.value);
+                onLanguageChange(event.target.value as SupportedLanguage);
               }}
               aria-label={t('language')}
             >
@@ -103,7 +96,7 @@ function Header(props: Props) {
         <button
           type='button'
           className={showMenu ? 'undp-menu-hamburger is-active' : 'undp-menu-hamburger'}
-          aria-label='menu-icon'
+          aria-label={t('menu-icon-label')}
           onClick={() => {
             setShowMenu(!showMenu);
           }}
@@ -111,7 +104,7 @@ function Header(props: Props) {
           <span className='undp-hamburger-line undp-line-top' />
           <span className='undp-hamburger-line undp-line-middle' />
           <span className='undp-hamburger-line undp-line-bottom' />
-          Nav Toggle
+          {t('nav-toggle')}
         </button>
       </div>
       <div
@@ -119,12 +112,12 @@ function Header(props: Props) {
       >
         <div>
           <a href='#million' className='header-link'>
-            500 MILLION
+            {t('header-500-million')}
           </a>
         </div>
         <div>
           <a href='#tracker' className='header-link'>
-            MOONSHOT TRACKER
+            {t('header-moonshot-tracker')}
           </a>
         </div>
         <div className='undp-mobile-language-control'>
@@ -135,7 +128,7 @@ function Header(props: Props) {
               className='undp-language-select'
               value={language}
               onChange={(event) => {
-                onLanguageChange(event.target.value);
+                onLanguageChange(event.target.value as SupportedLanguage);
               }}
               aria-label={t('language')}
             >

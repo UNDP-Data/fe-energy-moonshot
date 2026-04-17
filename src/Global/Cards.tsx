@@ -46,6 +46,7 @@ export const Cards = (props: Props) => {
   };
   // translation
   const { t } = useTranslation();
+  const notAvailable = t('not-available');
 
   return (
     <>
@@ -57,7 +58,7 @@ export const Cards = (props: Props) => {
                 (selectedCategory === 'Energy Transition') && (
                   <>
                     <h3 className='undp-typography'>
-                      N/A
+                      {notAvailable}
                     </h3>
                   </>
                 )
@@ -66,7 +67,7 @@ export const Cards = (props: Props) => {
                 (selectedCategory === 'Energy Access') && (
                   <>
                     <h3 className='undp-typography'>
-                      {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
+                      {cardData.peopleBenefiting === undefined ? notAvailable : formatData(cardData.peopleBenefiting)}
                     </h3>
                     <p>{t('people-benefiting')}</p>
                   </>
@@ -77,7 +78,7 @@ export const Cards = (props: Props) => {
                   selectedCategory === 'Policy') && (
                   <>
                     <h3 className='undp-typography'>
-                      {!cardData.policies ? 'N/A' : formatData(cardData.policies)}
+                      {!cardData.policies ? notAvailable : formatData(cardData.policies)}
                     </h3>
                     <p>{t('number-of-policies')}</p>
                   </>
@@ -87,7 +88,7 @@ export const Cards = (props: Props) => {
                 (selectedCategory === 'Market Development') && (
                   <>
                     <h3 className='undp-typography'>
-                      N/A
+                      {notAvailable}
                     </h3>
                   </>
                 )
@@ -97,7 +98,7 @@ export const Cards = (props: Props) => {
                   ((cardData.peopleBenefiting) && (
                     <>
                       <h3 className='undp-typography'>
-                        {cardData.peopleBenefiting === undefined ? 'N/A' : formatData(cardData.peopleBenefiting)}
+                        {cardData.peopleBenefiting === undefined ? notAvailable : formatData(cardData.peopleBenefiting)}
                       </h3>
                       <p>{t('people-benefiting')}</p>
                     </>
@@ -105,7 +106,7 @@ export const Cards = (props: Props) => {
                   || (
                     <>
                       <h3 className='undp-typography'>
-                        N/A
+                        {notAvailable}
                       </h3>
                     </>
                   )
@@ -123,7 +124,7 @@ export const Cards = (props: Props) => {
           <p>{t('number-countries')}</p>
         </StatCardsDiv>
         <StatCardsDiv className='stat-card' width='calc(25% - 1.334rem)'>
-          <h3 className='undp-typography'>{cardData.grantAmount === undefined ? 'N/A' : formatData(cardData.grantAmount)}</h3>
+          <h3 className='undp-typography'>{cardData.grantAmount === undefined ? notAvailable : formatData(cardData.grantAmount)}</h3>
           <p>{t('total-grant-usd')}</p>
         </StatCardsDiv>
       </div>

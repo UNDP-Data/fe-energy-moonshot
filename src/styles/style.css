@@ -123,6 +123,10 @@ body {
   gap: 0.25rem;
 }
 
+html[dir='rtl'] .undp-language-control {
+  align-items: flex-end;
+}
+
 .undp-language-label {
   color: var(--gray-600);
   font-size: 0.75rem;
@@ -149,6 +153,11 @@ body {
 
 .undp-mobile-language-control {
   margin-top: 1rem;
+}
+
+html[dir='rtl'] .select-tooltip,
+html[dir='rtl'] .undp-stacked-chart-tooltip {
+  text-align: right;
 }
 
 .undp-segmented-small.data-platform-segmented.ant-segmented {

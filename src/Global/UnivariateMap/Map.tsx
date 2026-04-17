@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   useContext, useEffect, useRef, useState,
 } from 'react';
@@ -59,10 +58,10 @@ export const Map = (props: Props) => {
     binningRangeLarge,
   } = props;
   const {
-    xAxisIndicator,
     filters,
     updateDashboardFilter,
     updateXAxisIndicator,
+    xAxisIndicator,
   } = useContext(Context) as CtxDataType;
   const selectedCountryCode = filters.countryCode;
   const [selectedColor, setSelectedColor] = useState<string | undefined>(
@@ -107,13 +106,7 @@ export const Map = (props: Props) => {
         .duration(750)
         .call(zoomBehaviourRef.current.transform, zoomIdentity);
     }
-  }, [selectedCountryCode]);
-
-  useEffect(() => {
-    if (options.findIndex((d) => d === xAxisIndicator) === -1) {
-      updateXAxisIndicator(options[0]);
-    }
-  }, [options]);
+  }, [data, selectedCountryCode]);
 
   useEffect(() => {
     const mapGSelect = select(mapG.current);
@@ -130,139 +123,28 @@ export const Map = (props: Props) => {
       });
     zoomBehaviourRef.current = zoomBehaviour;
     mapSvgSelect.call(zoomBehaviour as any);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, [svgHeight, svgWidth]);
 
   interface Island {
     name: string;
-    coordinates: [number, number]; // Tuple type
-    Shape_Area: number;
+    coordinates: [number, number];
   }
+
   const islands: Island[] = [
-    {
-      name: 'Comoros',
-      coordinates: [43.3333, -11.6455],
-      Shape_Area: 0.138595443196436,
-    },
-    {
-      name: 'Sao Tome and Principe',
-      coordinates: [6.6131, 0.1864],
-      Shape_Area: 0.081550074140014,
-    },
-    /*  {
-      name: 'Seychelles',
-      coordinates: [55.491977, -4.6796],
-      Shape_Area: 0.0417638689720024,
-    }, */
-    {
-      name: 'Maldives',
-      coordinates: [73.4226, 0.3406],
-      Shape_Area: 0.0168859206897437,
-    },
-    { name: 'Nauru', coordinates: [166.9315, -0.5228], Shape_Area: 0.0002175 },
-    { name: 'Tuvalu', coordinates: [179.82, -9.35], Shape_Area: 0.00026 },
-    {
-      name: 'Vanuatu',
-      coordinates: [166.9592, -15.3767],
-      Shape_Area: 0.016256,
-    },
-    /*  { name: 'Fiji', coordinates: [178.065, -17.7134], Shape_Area: 0.018276 }, */
-    {
-      name: 'Solomon Islands',
-      coordinates: [160.1562, -9.6457],
-      Shape_Area: 0.030394,
-    },
-    { name: 'Samoa', coordinates: [-172.1046, -13.759], Shape_Area: 0.002785 },
-    {
-      name: 'Micronesia (Federated States of)',
-      coordinates: [158.215, 6.887],
-      Shape_Area: 0.007403,
-    },
-    /* {
-      name: 'Cabo Verde',
-      coordinates: [-23.6167, 16.5388],
-      Shape_Area: 0.045612,
-    }, */
-    {
-      name: 'Barbados',
-      coordinates: [-59.5432, 13.1939],
-      Shape_Area: 0.001436,
-    },
-    {
-      name: 'Kiribati',
-      coordinates: [174.4, -0.7851311643],
-      Shape_Area: 0.00355,
-    },
-    {
-      name: 'Timor-Leste',
-      coordinates: [125.7275, -8.8742],
-      Shape_Area: 0.056315,
-    },
-    {
-      name: 'Trinidad and Tobago',
-      coordinates: [-61.3151, 10.6918],
-      Shape_Area: 0.0413,
-    },
+    { name: 'Comoros', coordinates: [43.3333, -11.6455] },
+    { name: 'Sao Tome and Principe', coordinates: [6.6131, 0.1864] },
+    { name: 'Maldives', coordinates: [73.4226, 0.3406] },
+    { name: 'Nauru', coordinates: [166.9315, -0.5228] },
+    { name: 'Tuvalu', coordinates: [179.82, -9.35] },
+    { name: 'Vanuatu', coordinates: [166.9592, -15.3767] },
+    { name: 'Solomon Islands', coordinates: [160.1562, -9.6457] },
+    { name: 'Samoa', coordinates: [-172.1046, -13.759] },
+    { name: 'Micronesia (Federated States of)', coordinates: [158.215, 6.887] },
+    { name: 'Barbados', coordinates: [-59.5432, 13.1939] },
+    { name: 'Kiribati', coordinates: [174.4, -0.7851311643] },
+    { name: 'Timor-Leste', coordinates: [125.7275, -8.8742] },
+    { name: 'Trinidad and Tobago', coordinates: [-61.3151, 10.6918] },
   ];
-  /* useEffect(() => {
-   if (mapG.current) {
-      const mapGSelect = select(mapG.current);
-      islands.forEach((island) => {
-        const [x, y] = projection(island.coordinates) as [number, number];
-          mapGSelect
-          .append('circle')
-          .on('click', event => {
-            console.log('CLICKING');
-            event.stopPropagation();
-            const d: any = data.find((el: any) => {
-              return el['Country or Area']
-                ? el['Country or Area'].toLowerCase() ===
-                    island.name.toLowerCase()
-                : false;
-            });
-            if (!d || d['Alpha-3 code'] === selectedRegions) {
-              updateSelectedRegions('all');
-            } else {
-              updateSelectedRegions(d['Alpha-3 code']);
-            }
-          })
-          .attr('cx', x)
-          .attr('cy', y)
-          .attr('r', 5) // Adjust the radius for visibility
-          .attr('fill', 'none') // No fill
-          .attr('stroke', 'black') // Border color
-          .attr('stroke-width', 1) // Adjust border width
-          .attr('pointer-events', 'all')
-          .on('mouseleave', () => {
-            setHoverData(undefined);
-          })
-          .on('mousemove', event => {
-            const d: any = data.find((el: any) =>
-              el['Country or Area']
-                ? el['Country or Area'].toLowerCase() ===
-                  island.name.toLowerCase()
-                : false,
-            );
-            if (d) {
-              setHoverData({
-                country: d['Country or Area'],
-                continent: d.region,
-                // outputCategory: d.outputCategory,
-                peopleDirectlyBenefiting: d.indicators.filter(
-                  (ind: any) => ind.indicator === 'directBeneficiaries',
-                )[0].value,
-                grantAmount: d.indicators.filter(
-                  (ind: any) => ind.indicator === 'budget',
-                )[0].value,
-                numberProjects: d.numberProjects,
-                xPosition: event.clientX,
-                yPosition: event.clientY,
-              });
-            }
-          });
-      });
-    }
-  }, [projection]); */
   return (
     <div style={{ overflow: 'hidden', backgroundColor: 'var(--black-100),' }}>
       <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} ref={mapSvg}>
@@ -667,7 +549,7 @@ export const Map = (props: Props) => {
           <p className='label'>{t('select-indicator')}</p>
           <Select
             className='undp-select'
-            placeholder='Please select'
+            placeholder={t('please-select')}
             value={xAxisIndicator}
             onChange={(d) => {
               updateXAxisIndicator(d);

@@ -1,6 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { nest } from 'd3-collection';
 import sumBy from 'lodash.sumby';
+import { useTranslation } from 'react-i18next';
 import {
   CountryGroupDataType,
   CountryMetadataRow,
@@ -78,6 +84,7 @@ export const Global = (props: Props) => {
     countryLinkDict,
   } = props;
   const { filters } = useContext(Context) as CtxDataType;
+  const { t } = useTranslation();
   const [assistantAvailable, setAssistantAvailable] = useState(false);
 
   useEffect(() => {
@@ -97,16 +104,42 @@ export const Global = (props: Props) => {
     };
   }, []);
 
-  const countryMetadataByCode = buildCountryMetadataMap(countryMetadata);
-  const filteredProjectData = filterProjects(projectLevelData, filters, countryMetadataByCode);
+  const countryMetadataByCode = useMemo(
+    () => buildCountryMetadataMap(countryMetadata),
+    [countryMetadata],
+  );
 
-  const availableCountryList = Array.from(new Set(filteredProjectData.map((project) => project.countryCode)));
-  const rankedProjects = rankProjects(filteredProjectData, filters);
-  const summaryMetrics = buildSummaryMetrics(filteredProjectData, filters, countryMetadataByCode);
-  const summaryText = generateDeterministicSummary(summaryMetrics, filters, countryMetadataByCode);
-  const projectSynopsisContext = buildProjectSynopsisContext(filteredProjectData, filters);
+  const filteredProjectData = useMemo(
+    () => filterProjects(projectLevelData, filters, countryMetadataByCode),
+    [countryMetadataByCode, filters, projectLevelData],
+  );
 
-  const calculateCountryTotals = () => {
+  const availableCountryList = useMemo(
+    () => Array.from(new Set(filteredProjectData.map((project) => project.countryCode))),
+    [filteredProjectData],
+  );
+
+  const rankedProjects = useMemo(
+    () => rankProjects(filteredProjectData, filters),
+    [filteredProjectData, filters],
+  );
+
+  const summaryMetrics = useMemo(
+    () => buildSummaryMetrics(filteredProjectData, filters, countryMetadataByCode),
+    [countryMetadataByCode, filteredProjectData, filters],
+  );
+
+  const summaryText = useMemo(
+    () => generateDeterministicSummary(summaryMetrics, filters, countryMetadataByCode),
+    [countryMetadataByCode, filters, summaryMetrics],
+  );
+
+  const projectSynopsisContext = useMemo(
+    () => buildProjectSynopsisContext(filteredProjectData, filters),
+    [filteredProjectData, filters],
+  );
+
+  const mapData = useMemo(() => {
     const groupedData = nest()
       .key((project: any) => project.countryCode)
       .entries(filteredProjectData);
@@ -161,17 +194,22 @@ export const Global = (props: Props) => {
         numberProjects: numberOfProjects,
       } as DataType;
     });
-  };
+  }, [
+    countryGroupData,
+    countryMetadataByCode,
+    filteredProjectData,
+    filters,
+    indicators,
+  ]);
 
-  const mapData = calculateCountryTotals();
-  const countryList = projectLevelData.reduce((accum: string[], projectData) => {
+  const countryList = useMemo(() => projectLevelData.reduce((accum: string[], projectData) => {
     if (!accum.includes(projectData.countryCode)) {
       accum.push(projectData.countryCode);
     }
     return accum;
-  }, []);
+  }, []), [projectLevelData]);
 
-  const calculateRanges = () => {
+  const binningRangeLarge = useMemo(() => {
     const ranges: IndicatorRange = mapData.reduce((accum: IndicatorRange, country) => {
       country.indicatorsAvailable.forEach((indicatorName: string) => {
         const value = country.indicators.find((indicator) => indicator.indicator === indicatorName);
@@ -208,9 +246,7 @@ export const Global = (props: Props) => {
     });
 
     return ranges;
-  };
-
-  const binningRangeLarge = calculateRanges();
+  }, [indicators, mapData]);
 
   return (
     <>
@@ -218,24 +254,13 @@ export const Global = (props: Props) => {
         <div style={{ maxWidth: '100%', width: '100%' }}>
           <h2 className='undp-typography margin-bottom-05 page-title'>
             <span style={{ color: 'var(--dark-yellow)' }}>
-              Energy Moonshot
+              {t('page-title-energy-moonshot')}
             </span>
             {' '}
-            Tracker
+            {t('page-title-tracker')}
           </h2>
           <h5 className='undp-typography'>
-            Select filters to analyze beneficiary targets of
-            {' '}
-            <b>
-              UNDP energy-related projects
-            </b>
-            {' '}
-            active during the Strategic Plan
-            {' '}
-            <b>
-              2022-2025:
-            </b>
-            {' '}
+            {t('tracker-subtitle')}
           </h5>
           {assistantAvailable ? (
             <QueryAssistantPanel

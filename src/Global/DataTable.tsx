@@ -66,7 +66,7 @@ const Project = (props:ProjectProps) => {
     });
   }
 
-  async function sendUpdate(value:string, fieldName:string, outputId?:string) {
+  const sendUpdate = useCallback(async (value:string, fieldName:string, outputId?:string) => {
     if (!userRef.current) {
       setModalOpen(true);
       await requestUserData();
@@ -83,14 +83,12 @@ const Project = (props:ProjectProps) => {
 
       messageApi.open({
         type: 'success',
-        content: 'Update sent',
+        content: t('update-sent'),
         duration: 5,
         className: 'undp-message',
       });
     }
-  }
-
-  const sendUpdateCallback = useCallback(sendUpdate, []);
+  }, [messageApi, project.id, t]);
 
   return (
     <>
@@ -106,7 +104,7 @@ const Project = (props:ProjectProps) => {
                   <EditableCell
                     text={project.title}
                     fieldName='title'
-                    sendUpdate={sendUpdateCallback}
+                    sendUpdate={sendUpdate}
                   />
                 )
               }
@@ -114,7 +112,7 @@ const Project = (props:ProjectProps) => {
               <EditableCell
                 text={project.id ? project.id : '__'}
                 fieldName='id'
-                sendUpdate={sendUpdateCallback}
+                sendUpdate={sendUpdate}
               />
               {project.genderMarker && ' - '}
               {
@@ -122,7 +120,7 @@ const Project = (props:ProjectProps) => {
                   <EditableCell
                     text={project.genderMarker}
                     fieldName='genderMarker'
-                    sendUpdate={sendUpdateCallback}
+                    sendUpdate={sendUpdate}
                   />
                 )
               }
@@ -133,7 +131,7 @@ const Project = (props:ProjectProps) => {
                   <EditableCell
                     text={project.description}
                     fieldName='description'
-                    sendUpdate={sendUpdateCallback}
+                    sendUpdate={sendUpdate}
                   />
                 )
               }
@@ -167,7 +165,7 @@ const Project = (props:ProjectProps) => {
               <EditableCell
                 text={project.budget ? Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B') : '__'}
                 fieldName='budget'
-                sendUpdate={sendUpdateCallback}
+                sendUpdate={sendUpdate}
               />
             </p>
             <p className='undp-typography'>
@@ -179,7 +177,7 @@ const Project = (props:ProjectProps) => {
                     <EditableCell
                       text={t(project.verticalFunded ? 'vf' : 'non-vf')}
                       fieldName='verticalFunded'
-                      sendUpdate={sendUpdateCallback}
+                      sendUpdate={sendUpdate}
                     />
                   </>
                 )
@@ -194,7 +192,7 @@ const Project = (props:ProjectProps) => {
                     <EditableCell
                       text={project.genderMarker}
                       fieldName='genderMarker'
-                      sendUpdate={sendUpdateCallback}
+                      sendUpdate={sendUpdate}
                     />
                   </>
                 )
@@ -209,26 +207,28 @@ const Project = (props:ProjectProps) => {
                     target='_blank'
                     rel='noreferrer'
                   >
-                    Link
+                    {t('link')}
                   </a>
                 ) : (
                   <>
-                    {'Link - '}
+                    {t('link')}
+                    {' - '}
                     <EditableCell
                       text='__'
                       fieldName='link'
-                      sendUpdate={sendUpdateCallback}
+                      sendUpdate={sendUpdate}
                     />
                   </>
                 )
               }
             </p>
             <p className='undp-typography'>
-              {'Donors - '}
+              {t('donors')}
+              {' - '}
               <EditableCell
                 text={project.donors === null ? '__' : project.donors.join(', ')}
                 fieldName='donors'
-                sendUpdate={sendUpdateCallback}
+                sendUpdate={sendUpdate}
               />
             </p>
           </div>
@@ -253,10 +253,10 @@ const Project = (props:ProjectProps) => {
                       )
                     }
                     <EditableCell
-                      text={o.directBeneficiaries ? format('~s')(o.directBeneficiaries).replace('G', 'B') : 'Indirect beneficiaries'}
+                      text={o.directBeneficiaries ? format('~s')(o.directBeneficiaries).replace('G', 'B') : t('indirect-beneficiaries')}
                       fieldName='beneficiaries'
                       outputId={o.id}
-                      sendUpdate={sendUpdateCallback}
+                      sendUpdate={sendUpdate}
                     />
                   </p>
                   <p className='undp-typography'>
@@ -269,7 +269,7 @@ const Project = (props:ProjectProps) => {
                             text={o.outputCategory}
                             outputId={o.id}
                             fieldName='outputCategory'
-                            sendUpdate={sendUpdateCallback}
+                            sendUpdate={sendUpdate}
                           />
                         </>
                       )
@@ -285,7 +285,7 @@ const Project = (props:ProjectProps) => {
                             text={o.beneficiaryCategory}
                             outputId={o.id}
                             fieldName='beneficiaryCategory'
-                            sendUpdate={sendUpdateCallback}
+                            sendUpdate={sendUpdate}
                           />
                         </>
                       )
@@ -298,7 +298,7 @@ const Project = (props:ProjectProps) => {
                       text={o.percentFemale === null ? '__' : `${format('.2f')(o.percentFemale)}%`}
                       fieldName='percentFemale'
                       outputId={o.id}
-                      sendUpdate={sendUpdateCallback}
+                      sendUpdate={sendUpdate}
                     />
                   </p>
                 </div>
@@ -315,7 +315,7 @@ const Project = (props:ProjectProps) => {
                           text={o.description}
                           outputId={o.id}
                           fieldName='description'
-                          sendUpdate={sendUpdateCallback}
+                          sendUpdate={sendUpdate}
                         />
                       </>
                     )
@@ -329,7 +329,7 @@ const Project = (props:ProjectProps) => {
       <Modal
         open={modalOpen}
         className='undp-modal'
-        title='Identify yourself to propose edits'
+        title={t('edit-modal-title')}
         onCancel={hideModal}
         onOk={hideModal}
       >
@@ -342,35 +342,35 @@ const Project = (props:ProjectProps) => {
             autoComplete='off'
           >
 
-            <p className='undp-typography label'>Name</p>
+            <p className='undp-typography label'>{t('name')}</p>
             <Form.Item<FieldType>
               name='name'
-              rules={[{ required: true, message: 'Please input your name' }]}
+              rules={[{ required: true, message: t('feedback-name-required') }]}
             >
               <Input
                 className='undp-input'
-                placeholder='Please input your name'
+                placeholder={t('feedback-name-placeholder')}
               />
             </Form.Item>
 
-            <p className='undp-typography label'>Office</p>
+            <p className='undp-typography label'>{t('office')}</p>
             <Form.Item<FieldType>
               name='office'
-              rules={[{ required: true, message: 'Please input your office name' }]}
+              rules={[{ required: true, message: t('feedback-office-required') }]}
             >
               <Input
                 className='undp-input'
-                placeholder='Please input your office name'
+                placeholder={t('feedback-office-placeholder')}
               />
             </Form.Item>
-            <p className='undp-typography label'>Position</p>
+            <p className='undp-typography label'>{t('position')}</p>
             <Form.Item<FieldType>
               name='position'
-              rules={[{ required: true, message: 'Please input your position' }]}
+              rules={[{ required: true, message: t('feedback-position-required') }]}
             >
               <Input
                 className='undp-input'
-                placeholder='Please input your position'
+                placeholder={t('feedback-position-placeholder')}
               />
             </Form.Item>
 
@@ -379,7 +379,7 @@ const Project = (props:ProjectProps) => {
                 className='undp-button button-secondary'
                 type='submit'
               >
-                Submit
+                {t('submit')}
               </button>
             </Form.Item>
           </Form>

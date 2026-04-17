@@ -1,6 +1,9 @@
 import headerBg from '../assets/header-bg.jpg';
+import { useTranslation } from 'react-i18next';
 
 function Banner() {
+  const { t } = useTranslation();
+
   return (
     <section
       className='flex-div flex-column flex-hor-align-center padding-left-10'
@@ -14,7 +17,7 @@ function Banner() {
         className='undp-typography banner-heading margin-bottom-05'
         style={{ color: 'var(--white)' }}
       >
-        The UNDP Energy Moonshot
+        {t('banner-title')}
       </h1>
       <h5
         className='undp-typography'
@@ -23,37 +26,7 @@ function Banner() {
           maxWidth: '1100px',
         }}
       >
-        The
-        {' '}
-        <b>
-          UNDP Energy Moonshot
-        </b>
-        {' '}
-        is to catalyse unprecedented actions and partnerships to support provision of access to
-        {' '}
-        <b>
-          sustainable, affordable, and reliable energy
-        </b>
-        {' '}
-        to
-        {' '}
-        <b>
-          500 million more people
-        </b>
-        {' '}
-        by
-        {' '}
-        <b>
-          2025
-        </b>
-        {' '}
-        and
-        {' '}
-        <b>
-          accelerate the transition to renewable energy
-        </b>
-        {' '}
-        through systemic changes that lead to inclusive green economies.
+        <span dangerouslySetInnerHTML={{ __html: t('banner-description') }} />
       </h5>
     </section>
   );

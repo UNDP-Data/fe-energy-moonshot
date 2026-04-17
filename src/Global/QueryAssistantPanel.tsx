@@ -1,6 +1,8 @@
 import {
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -63,7 +65,7 @@ export const QueryAssistantPanel = (props: Props) => {
     updateDashboardFilter,
     resetDashboardFilters,
   } = useContext(Context) as CtxDataType;
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [query, setQuery] = useState('');
   const [lastSubmittedQuery, setLastSubmittedQuery] = useState('');
   const [parseLoading, setParseLoading] = useState(false);
@@ -77,16 +79,70 @@ export const QueryAssistantPanel = (props: Props) => {
   const [lastResolvedSignature, setLastResolvedSignature] = useState('');
   const synopsisRequestIdRef = useRef(0);
 
-  const currentSignature = buildContextSignature(filters, projectSynopsisContext);
-  const currentFilterSignature = buildFilterSignature(filters);
-  const appliedFilters = getAppliedFilterEntries(filters, filterCatalog);
-  const topProjects = rankedProjects.slice(0, 5);
+  const currentSignature = useMemo(
+    () => buildContextSignature(filters, projectSynopsisContext),
+    [filters, projectSynopsisContext],
+  );
+  const currentFilterSignature = useMemo(
+    () => buildFilterSignature(filters),
+    [filters],
+  );
+  const appliedFilters = useMemo(
+    () => getAppliedFilterEntries(filters, filterCatalog),
+    [filterCatalog, filters],
+  );
+  const topProjects = useMemo(
+    () => rankedProjects.slice(0, 5),
+    [rankedProjects],
+  );
+  const projectOverviewLoadErrorText = t('project-overview-load-error');
+  const queryParseErrorText = t('query-parse-error');
 
   useEffect(() => {
     if (lastResolvedSignature && lastResolvedSignature !== currentSignature && synopsisText) {
       setSynopsisStale(true);
     }
   }, [currentSignature, lastResolvedSignature, synopsisText]);
+
+  const runSynopsis = useCallback(async (
+    requestId: number,
+    effectiveQuery: string,
+  ) => {
+    setSynopsisLoading(true);
+    setSynopsisError('');
+
+    try {
+      const response = await fetchProjectSynopsis({
+        query: effectiveQuery,
+        locale: i18n.language,
+        filters,
+        summaryMetrics,
+        projectContext: projectSynopsisContext,
+      });
+
+      if (synopsisRequestIdRef.current !== requestId) return;
+      setSynopsisText(response.synopsis || '');
+      setSynopsisStale(false);
+      setLastResolvedSignature(currentSignature);
+    } catch (error: any) {
+      if (synopsisRequestIdRef.current !== requestId) return;
+      setSynopsisText('');
+      setSynopsisError(error?.message || projectOverviewLoadErrorText);
+    } finally {
+      if (synopsisRequestIdRef.current === requestId) {
+        setSynopsisLoading(false);
+        setPendingQuery('');
+        setPendingSignature('');
+      }
+    }
+  }, [
+    currentSignature,
+    filters,
+    i18n.language,
+    projectOverviewLoadErrorText,
+    projectSynopsisContext,
+    summaryMetrics,
+  ]);
 
   useEffect(() => {
     if (!pendingQuery || pendingSignature !== currentFilterSignature) return undefined;
@@ -104,38 +160,7 @@ export const QueryAssistantPanel = (props: Props) => {
 
     const requestId = synopsisRequestIdRef.current + 1;
     synopsisRequestIdRef.current = requestId;
-
-    const runSynopsis = async () => {
-      setSynopsisLoading(true);
-      setSynopsisError('');
-
-      try {
-        const response = await fetchProjectSynopsis({
-          query: pendingQuery,
-          locale: i18n.language,
-          filters,
-          summaryMetrics,
-          projectContext: projectSynopsisContext,
-        });
-
-        if (synopsisRequestIdRef.current !== requestId) return;
-        setSynopsisText(response.synopsis || '');
-        setSynopsisStale(false);
-        setLastResolvedSignature(currentSignature);
-      } catch (error: any) {
-        if (synopsisRequestIdRef.current !== requestId) return;
-        setSynopsisText('');
-        setSynopsisError(error?.message || 'Unable to load project overview.');
-      } finally {
-        if (synopsisRequestIdRef.current === requestId) {
-          setSynopsisLoading(false);
-          setPendingQuery('');
-          setPendingSignature('');
-        }
-      }
-    };
-
-    runSynopsis();
+    runSynopsis(requestId, pendingQuery);
 
     return () => {
       if (synopsisRequestIdRef.current === requestId) {
@@ -146,9 +171,9 @@ export const QueryAssistantPanel = (props: Props) => {
     currentSignature,
     currentFilterSignature,
     filteredProjects.length,
-    i18n.language,
     pendingQuery,
     pendingSignature,
+    runSynopsis,
   ]);
 
   const submitQuery = async () => {
@@ -177,7 +202,7 @@ export const QueryAssistantPanel = (props: Props) => {
       setPendingQuery(trimmedQuery);
       setPendingSignature(buildFilterSignature(nextFilters));
     } catch (error: any) {
-      setSynopsisError(error?.message || 'Unable to parse query.');
+      setSynopsisError(error?.message || queryParseErrorText);
     } finally {
       setParseLoading(false);
     }
@@ -203,21 +228,20 @@ export const QueryAssistantPanel = (props: Props) => {
       }}
     >
       <Title level={4} style={{ marginBottom: '0.75rem' }}>
-        Ask the dashboard
+        {t('ask-dashboard-title')}
       </Title>
       <Paragraph style={{ marginBottom: '0.75rem' }}>
-        Enter a natural-language query and the assistant will translate it into dashboard filters.
-        The summary below is deterministic and always reflects the current filter state.
+        {t('ask-dashboard-description')}
       </Paragraph>
       <TextArea
         rows={3}
-        placeholder='Example: Show non-VF clean cooking work in LDCs'
+        placeholder={t('ask-dashboard-placeholder')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
       <Space style={{ marginTop: '0.75rem', marginBottom: '0.75rem' }}>
         <Button type='primary' loading={parseLoading} onClick={submitQuery}>
-          Apply query
+          {t('apply-query')}
         </Button>
         <Button onClick={() => {
           setQuery('');
@@ -229,13 +253,13 @@ export const QueryAssistantPanel = (props: Props) => {
           resetDashboardFilters();
         }}
         >
-          Clear filters
+          {t('clear-filters')}
         </Button>
         <Button
           disabled={!lastSubmittedQuery || synopsisLoading || !filteredProjects.length}
           onClick={refreshSynopsis}
         >
-          Refresh project overview
+          {t('refresh-project-overview')}
         </Button>
       </Space>
 
@@ -248,13 +272,13 @@ export const QueryAssistantPanel = (props: Props) => {
             marginBottom: '0.75rem',
           }}
         >
-          <Text strong>Latest query:</Text>
+          <Text strong>{t('latest-query')}</Text>
           <Paragraph style={{ marginBottom: 0 }}>{lastSubmittedQuery}</Paragraph>
         </div>
       ) : null}
 
       <div className='margin-bottom-04'>
-        <Text strong>Applied filters</Text>
+        <Text strong>{t('applied-filters')}</Text>
         <div style={{ marginTop: '0.5rem' }}>
           {appliedFilters.length ? appliedFilters.map((entry) => (
             <Tag
@@ -268,7 +292,7 @@ export const QueryAssistantPanel = (props: Props) => {
             >
               {entry.label}
             </Tag>
-          )) : <Text type='secondary'>No filters applied.</Text>}
+          )) : <Text type='secondary'>{t('no-filters-applied')}</Text>}
         </div>
       </div>
 
@@ -276,7 +300,7 @@ export const QueryAssistantPanel = (props: Props) => {
         <Alert
           type='info'
           showIcon
-          message={`Ignored unsupported terms: ${unresolvedTerms.join(', ')}`}
+          message={t('ignored-unsupported-terms', { terms: unresolvedTerms.join(', ') })}
           style={{ marginBottom: '0.75rem' }}
         />
       ) : null}
@@ -295,7 +319,7 @@ export const QueryAssistantPanel = (props: Props) => {
             padding: '0.75rem',
           }}
         >
-          <Text strong>Deterministic summary</Text>
+          <Text strong>{t('deterministic-summary')}</Text>
           <Paragraph style={{ marginTop: '0.5rem', marginBottom: 0 }}>
             {summaryText}
           </Paragraph>
@@ -308,17 +332,17 @@ export const QueryAssistantPanel = (props: Props) => {
             padding: '0.75rem',
           }}
         >
-          <Text strong>Project overview</Text>
+          <Text strong>{t('project-overview')}</Text>
           <Paragraph style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
             {synopsisLoading
-              ? 'Generating project overview...'
-              : synopsisText || 'Project overview will appear here after a query is applied and the proxy endpoint is available.'}
+              ? t('generating-project-overview')
+              : synopsisText || t('project-overview-placeholder')}
           </Paragraph>
           {synopsisStale ? (
             <Alert
               type='warning'
               showIcon
-              message='Filters changed after the last project overview. Refresh to regenerate it for the current slice.'
+              message={t('project-overview-stale')}
             />
           ) : null}
           {synopsisError ? (
@@ -338,7 +362,7 @@ export const QueryAssistantPanel = (props: Props) => {
             padding: '0.75rem',
           }}
         >
-          <Text strong>Top projects</Text>
+          <Text strong>{t('top-projects')}</Text>
           <div style={{ marginTop: '0.5rem' }}>
             {topProjects.length ? topProjects.map((project, index) => (
               <Paragraph key={project.id} style={{ marginBottom: '0.5rem' }}>
@@ -354,7 +378,7 @@ export const QueryAssistantPanel = (props: Props) => {
                   )
                 </Text>
               </Paragraph>
-            )) : <Text type='secondary'>No projects match the current filters.</Text>}
+            )) : <Text type='secondary'>{t('no-projects-current-filters')}</Text>}
           </div>
         </div>
       </div>

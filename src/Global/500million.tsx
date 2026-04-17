@@ -1,7 +1,10 @@
 import bgLeft from '../assets/million-bg-left.png';
 import bgRight from '../assets/million-bg-right.png';
+import { useTranslation } from 'react-i18next';
 
 function Million() {
+  const { t } = useTranslation();
+
   return (
     <section
       id='million'
@@ -16,35 +19,18 @@ function Million() {
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
-      >
+        >
         <h2 className='undp-typography margin-bottom-05 page-title'>
-          The path to 500 million
+          {t('million-title')}
         </h2>
         <div
           className='padding-left-13 padding-right-13'
         >
           <p className='undp-typography'>
-            To enhance
-            {' '}
-            <b>
-              monitoring of collective progress
-            </b>
-            {' '}
-            towards the
-            {' '}
-            <b>
-              Energy Moonshot
-            </b>
-            {' '}
-            , this tracker aims to identify the targeted beneficiaries for all UNDP energy-related projects active during the period of the UNDP Strategic Plan 2022 – 2025. These targets are compiled from project documents and validated with UNDP Country Offices.
+            <span dangerouslySetInnerHTML={{ __html: t('million-paragraph-1') }} />
           </p>
           <p className='undp-typography'>
-            {' '}
-            <b>
-              Direct and indirect beneficiaries
-            </b>
-            {' '}
-            are estimated based on project outputs supporting:
+            <span dangerouslySetInnerHTML={{ __html: t('million-paragraph-2') }} />
           </p>
           <ul
             className='undp-typography'
@@ -53,54 +39,23 @@ function Million() {
             }}
           >
             <li>
-              {'> '}
-              <b>
-                Access to clean electricity and cooking
-              </b>
-              {' '}
-              for solar, wind, biomass, hydro, and geothermal
+              <span dangerouslySetInnerHTML={{ __html: t('million-list-1') }} />
             </li>
             <li>
-              {'> '}
-              <b>
-                Productive use of energy
-              </b>
-              {' '}
-              related to health, water, food systems, education, and transport
+              <span dangerouslySetInnerHTML={{ __html: t('million-list-2') }} />
             </li>
             <li>
-              {'> '}
-              <b>
-                Energy governance
-              </b>
-              {' '}
-              including policies, regulatory frameworks, roadmaps, and plans
+              <span dangerouslySetInnerHTML={{ __html: t('million-list-3') }} />
             </li>
             <li>
-              {'> '}
-              <b>
-                Market development
-              </b>
-              {' '}
-              by access to finance and innovative finance mechanisms
+              <span dangerouslySetInnerHTML={{ __html: t('million-list-4') }} />
             </li>
             <li>
-              {'> '}
-              <b>
-                Energy efficiency
-              </b>
-              {' '}
-              interventions to reduce energy costs and emissions
+              <span dangerouslySetInnerHTML={{ __html: t('million-list-5') }} />
             </li>
           </ul>
           <p className='undp-typography'>
-            A key priority of this effort is to advance
-            {' '}
-            <b>
-              integrating gender equality
-            </b>
-            {' '}
-            by capturing the gender marker ratings for each project and providing outputs disaggregated by sex when available.
+            <span dangerouslySetInnerHTML={{ __html: t('million-paragraph-3') }} />
           </p>
         </div>
       </div>

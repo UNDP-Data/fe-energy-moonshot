@@ -1,6 +1,4 @@
-/* tslint:disable */
-/* eslint-disable */
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Select, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -77,21 +75,21 @@ export const BarFilters = (props: Props) => {
       .then((responseData) => {
         setTooltips(responseData);
       })
-      .catch((error) => {
-        console.error('Error fetching JSON:', error);
+      .catch(() => {
+        setTooltips({});
       });
   }, []);
 
-  const getProjectBeneficiaries = (item: ProjectLevelDataType) => (
+  const getProjectBeneficiaries = useCallback((item: ProjectLevelDataType) => (
     getProjectDirectBeneficiariesForFilters(item, filters)
-  );
+  ), [filters]);
 
   const getChartSegmentKey = (chartData: Record<string, any>, label: string) => {
     const entry = Object.entries(chartData).find(([segmentLabel]) => segmentLabel === label);
     return entry ? entry[1].key || label : label;
   };
 
-  const computeHdiBarData = () => {
+  const computeHdiBarData = useCallback(() => {
     const taxonomy = (countryGroupingsTaxonomy[3]?.options ?? [])
       .filter((taxonomyItem) => taxonomyItem?.value !== 'all')
       .reduce((acc: any, item: any) => {
@@ -112,9 +110,9 @@ export const BarFilters = (props: Props) => {
       }
       return acc;
     }, taxonomy);
-  };
+  }, [data, getProjectBeneficiaries]);
 
-  const computeRegionBarData = () => {
+  const computeRegionBarData = useCallback(() => {
     const taxonomy = (countryGroupingsTaxonomy[1]?.options ?? [])
       .filter((taxonomyItem) => taxonomyItem?.value !== 'all')
       .reduce((acc: any, item: any) => {
@@ -135,9 +133,9 @@ export const BarFilters = (props: Props) => {
       }
       return acc;
     }, taxonomy);
-  };
+  }, [data, getProjectBeneficiaries, t]);
 
-  const computeGroupingsBarData = () => {
+  const computeGroupingsBarData = useCallback(() => {
     const order: { [key: string]: number } = {
       LDC: 2,
       LLDC: 3,
@@ -148,7 +146,7 @@ export const BarFilters = (props: Props) => {
     const taxonomy = [
       ...(countryGroupingsTaxonomy[4]?.options ?? []),
       {
-        label: 'Other',
+        label: 'other-grouping',
         value: 'Other',
         color: '#DADADA',
       },
@@ -190,9 +188,9 @@ export const BarFilters = (props: Props) => {
 
       return acc;
     }, taxonomy);
-  };
+  }, [data, getProjectBeneficiaries]);
 
-  const computeGenderBarData = () => {
+  const computeGenderBarData = useCallback(() => {
     const taxonomy = genderMarkers
       .filter((taxonomyItem) => taxonomyItem.value !== 'all')
       .reduce((acc: any, item: any) => {
@@ -205,7 +203,7 @@ export const BarFilters = (props: Props) => {
         return acc;
       }, {});
 
-    taxonomy['No marker'] = {
+    taxonomy[t('no-marker')] = {
       key: 'no-marker',
       value: 0,
       color: '#DADADA',
@@ -218,14 +216,14 @@ export const BarFilters = (props: Props) => {
       if (item.genderMarker && acc[item.genderMarker]) {
         acc[item.genderMarker].value += totalDirectBeneficiaries;
       } else if (!item.genderMarker) {
-        acc['No marker'].value += totalDirectBeneficiaries;
+        acc[t('no-marker')].value += totalDirectBeneficiaries;
       }
 
       return acc;
     }, taxonomy);
-  };
+  }, [data, getProjectBeneficiaries, t]);
 
-  const computeFundingBarData = () => {
+  const computeFundingBarData = useCallback(() => {
     const taxonomy = fundingTaxonomy
       .filter((taxonomyItem) => taxonomyItem.value !== 'all')
       .reduce((acc: any, item: any) => {
@@ -248,21 +246,13 @@ export const BarFilters = (props: Props) => {
       }
       return acc;
     }, taxonomy);
-  };
+  }, [data, getProjectBeneficiaries, t]);
 
-  const [hdiBarData, setHdiBarData] = useState(() => computeHdiBarData());
-  const [regionBarData, setRegionBarData] = useState(() => computeRegionBarData());
-  const [groupingsBarData, setGroupingsBarData] = useState(() => computeGroupingsBarData());
-  const [genderBarData, setGenderBarData] = useState(() => computeGenderBarData());
-  const [fundingBarData, setFundingBarData] = useState(() => computeFundingBarData());
-
-  useEffect(() => {
-    setHdiBarData(computeHdiBarData());
-    setRegionBarData(computeRegionBarData());
-    setGroupingsBarData(computeGroupingsBarData());
-    setGenderBarData(computeGenderBarData());
-    setFundingBarData(computeFundingBarData());
-  }, [data, t]);
+  const hdiBarData = useMemo(() => computeHdiBarData(), [computeHdiBarData]);
+  const regionBarData = useMemo(() => computeRegionBarData(), [computeRegionBarData]);
+  const groupingsBarData = useMemo(() => computeGroupingsBarData(), [computeGroupingsBarData]);
+  const genderBarData = useMemo(() => computeGenderBarData(), [computeGenderBarData]);
+  const fundingBarData = useMemo(() => computeFundingBarData(), [computeFundingBarData]);
 
   const regionOptions = useMemo(() => {
     const merged = [...countryGroupingsTaxonomy];
@@ -498,10 +488,10 @@ export const BarFilters = (props: Props) => {
               ))}
               <Select.Option
                 className='undp-select-option'
-                label='No marker'
+                label={t('no-marker')}
                 key='no-marker'
               >
-                No marker
+                {t('no-marker')}
               </Select.Option>
             </Select>
             <p

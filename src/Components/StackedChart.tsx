@@ -1,30 +1,27 @@
-/* tslint:disable */
-/* eslint-disable */
-
 import { useEffect, useRef, useState } from 'react';
 import Label from './chartLabel';
 
 interface Props {
-  data: any;
+  data: Record<string, any>;
   id: string;
-  clickCallback: Function;
-  tooltips?: any;
+  clickCallback: (value: string) => void;
+  tooltips?: Record<string, { header?: string; text?: string }>;
   useKey?: boolean;
 }
 
-export default (props: Props) => {
+const StackedChart = (props: Props) => {
   const { data, id, clickCallback, tooltips, useKey } = props;
   const [dataArray, setDataArray] = useState<any[]>([]);
   const [valuesSum, setValuesSum] = useState(0);
   const [tooltipShown, setTooltipShown] = useState(-1);
-  const [normalizedTooltips, setNormalizedTooltips] = useState<any>({});
+  const [normalizedTooltips, setNormalizedTooltips] = useState<Record<string, { header?: string; text?: string }>>({});
   const [refresh, setRefresh] = useState(0);
   // To store measured widths of each chart element
   const [elementWidths, setElementWidths] = useState<number[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
   // Create an array of refs for each chart element
   const elementRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const timeoutId = useRef<any>(0)
+  const timeoutId = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   function formatBigNumber(num: number) {
     // If the number is less than 1000, just return it as a string
@@ -32,45 +29,46 @@ export default (props: Props) => {
 
     // Define the scales and their corresponding suffixes
     const scales = [
-      { value: 1e9, suffix: "B" },
-      { value: 1e6, suffix: "M" },
-      { value: 1e3, suffix: "K" }
+      { value: 1e9, suffix: 'B' },
+      { value: 1e6, suffix: 'M' },
+      { value: 1e3, suffix: 'K' },
     ];
 
     // Loop over each scale
-    for (let scale of scales) {
+    for (const scale of scales) {
       if (num >= scale.value) {
-        let quotient = num / scale.value;
+        const quotient = num / scale.value;
         // Count digits in the integer part of quotient
-        let intDigits = Math.floor(quotient).toString().length;
+        const intDigits = Math.floor(quotient).toString().length;
         // Determine factor for truncating to 3 significant digits
-        let factor = Math.pow(10, Math.max(0, 3 - intDigits));
-        let truncated = Math.floor(quotient * factor) / factor;
+        const factor = Math.pow(10, Math.max(0, 3 - intDigits));
+        const truncated = Math.floor(quotient * factor) / factor;
         return truncated + scale.suffix;
       }
     }
+
+    return num.toString();
   }
 
   // After every render when dataArray changes, measure the widths of each chart element
   useEffect(() => {
     function checkWidth() {
-      clearTimeout(timeoutId.current)
+      clearTimeout(timeoutId.current);
       if (elementRefs.current.length > 0) {
-        const widths = elementRefs.current.map(el => (el ? el.offsetWidth : 0));
+        const widths = elementRefs.current.map((el) => (el ? el.offsetWidth : 0));
         setElementWidths(widths);
       }
     }
     timeoutId.current = setTimeout(() => {
-      checkWidth()
-    }, 500)
-
+      checkWidth();
+    }, 500);
   }, [dataArray]);
 
   useEffect(() => {
     if (tooltips && data) {
       setNormalizedTooltips(
         Object.entries(tooltips).reduce(
-          (accumulator: { [key: string]: any }, [key, value]) => {
+          (accumulator: Record<string, { header?: string; text?: string }>, [key, value]) => {
             const lowerKey = key.toLowerCase();
             accumulator[lowerKey] = value;
             return accumulator;
@@ -84,13 +82,12 @@ export default (props: Props) => {
 
   useEffect(() => {
     if (data) {
-      const array: any = Object.entries(data).map(([key, value]) => ({
+      const array = Object.entries(data).map(([key, value]) => ({
         ...(typeof value === 'object' && value !== null ? value : {}),
         label: key,
       }));
-      //console.log(array);
       setDataArray(array);
-      setValuesSum(array.reduce((acc: any, item: any) => acc + item.value, 0));
+      setValuesSum(array.reduce((acc, item) => acc + item.value, 0));
     }
   }, [data]);
 
@@ -154,7 +151,7 @@ export default (props: Props) => {
                         value === 0
                           ? '0%'
                           : `calc(${valuesSum > 0 ? (value / valuesSum) * 100 : 0
-                          }% - ${order == 1 ? 0 : 2}px)`,
+                          }% - ${order === 1 ? 0 : 2}px)`,
                       order,
                     }}
                   >
@@ -166,9 +163,9 @@ export default (props: Props) => {
                       onClick={() => {
                         clickCallback(useKey ? key : label);
                       }}
-                      onKeyDown={e => {
+                      onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          clickCallback(label);
+                          clickCallback(useKey ? key : label);
                         }
                       }}
                       role='button'
@@ -191,11 +188,11 @@ export default (props: Props) => {
                               finalOverlapWidth > 0
                                 ? `min(${finalOverlapWidth}px, calc(50% + 2px))`
                                 : 0,
-                            transition: `all 0.5s ease-in-out`,
+                            transition: 'all 0.5s ease-in-out',
                             borderLeft:
                               finalOverlapWidth > 0
-                                ? `2px solid #fff`
-                                : `2px solid transparent`,
+                                ? '2px solid #fff'
+                                : '2px solid transparent',
                           }}
                         >
                           <div className='undp-stacked-chart-overlap-border' />
@@ -239,3 +236,5 @@ export default (props: Props) => {
     </>
   );
 };
+
+export default StackedChart;

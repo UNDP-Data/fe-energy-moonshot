@@ -1,6 +1,9 @@
 import { Logo } from '../Icons';
+import { useTranslation } from 'react-i18next';
 
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer>
       <div
@@ -24,14 +27,14 @@ function Footer() {
               href='https://www.undp.org/'
               target='_blank'
               rel='noreferrer'
-              aria-label='logo'
+              aria-label={t('footer-logo-label')}
             >
               <Logo height={100} white />
             </a>
             <h5 className='undp-typography margin-bottom-00'>
-              United Nations
+              {t('footer-org-line-1')}
               <br />
-              Development Programme
+              {t('footer-org-line-2')}
             </h5>
           </div>
         </div>
@@ -41,7 +44,7 @@ function Footer() {
               className='undp-typography margin-top-05 margin-bottom-00'
               style={{ padding: '0 0.75rem', fontSize: '1rem' }}
             >
-              © 2023 United Nations Development Programme
+              {t('footer-copyright')}
             </p>
           </div>
           <a
@@ -51,7 +54,7 @@ function Footer() {
             style={{ textDecoration: 'none' }}
           >
             <p className='undp-typography margin-top-05 undp-footer-link undp-footer-right-link'>
-              Terms Of Use
+              {t('footer-terms')}
             </p>
           </a>
         </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { json } from 'd3-request';
 import { queue } from 'd3-queue';
+import { useTranslation } from 'react-i18next';
 import { getAssetPath, ROOT_DIR } from '../Types';
 
 interface ResourceInterface {
@@ -16,6 +17,7 @@ interface ResourceProps {
 
 function Resource(props: ResourceProps) {
   const { resource } = props;
+  const { t } = useTranslation();
   return (
     <div style={{ minWidth: 'calc(33.333vw - 1.6rem)' }}>
       <img
@@ -38,7 +40,7 @@ function Resource(props: ResourceProps) {
             textDecoration: 'none',
           }}
         >
-          Explore
+          {t('resources-explore')}
         </a>
       </div>
     </div>
@@ -46,6 +48,7 @@ function Resource(props: ResourceProps) {
 }
 
 function Resources() {
+  const { t } = useTranslation();
   const [resources, setResources] = useState<ResourceInterface[]>([]);
   useEffect(() => {
     queue()
@@ -57,10 +60,10 @@ function Resources() {
   return (
     <section id='resources'>
       <h2 className='undp-typography margin-bottom-03 page-title'>
-        Resources
+        {t('resources-title')}
       </h2>
       <p className='undp-typography margin-bottom-08' style={{ maxWidth: 'calc(75vw - 3.2rem)' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        {t('resources-description')}
       </p>
       <div
         className='undp-scrollbar'

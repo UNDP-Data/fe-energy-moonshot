@@ -59,7 +59,7 @@ export const MainText = () => {
       return `${t(group.value)}`;
     }
     return groupingText;
-  }, 'all output types');
+  }, t('all-output-types'));
 
   const countryGroupings = getCountryTextLabel(countryGroupingsTaxonomy, selectedRegion || 'all');
   const fundingSources = getTextLabel(fundingTaxonomy, selectedFunding);
@@ -78,7 +78,7 @@ export const MainText = () => {
             })
         }
         {' '}
-        target the following benefits:
+        {t('target-following-benefits')}
       </p>
     </div>
   );

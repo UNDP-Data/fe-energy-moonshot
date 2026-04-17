@@ -26,14 +26,14 @@ export const CommentForm = () => {
       });
       messageApi.open({
         type: 'success',
-        content: 'Feedback sent',
+        content: t('feedback-sent'),
         duration: 5,
         className: 'undp-message',
       });
     } catch (error) {
       messageApi.open({
         type: 'error',
-        content: 'An error occuried, please try again later.',
+        content: t('feedback-error'),
         duration: 5,
         className: 'undp-message',
       });
@@ -45,7 +45,7 @@ export const CommentForm = () => {
     <div>
       {contextHolder}
       <h4>
-        Give your feedback
+        {t('feedback-title')}
       </h4>
       <Form
         name='userData'
@@ -59,47 +59,47 @@ export const CommentForm = () => {
             <p className='undp-typography label'>{t('name')}</p>
             <Form.Item<FieldType>
               name='name'
-              rules={[{ required: true, message: 'Please input your name' }]}
+              rules={[{ required: true, message: t('feedback-name-required') }]}
             >
               <Input
                 className='undp-input'
-                placeholder='Please input your name'
+                placeholder={t('feedback-name-placeholder')}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <p className='undp-typography label'>Office</p>
+            <p className='undp-typography label'>{t('office')}</p>
             <Form.Item<FieldType>
               name='office'
-              rules={[{ required: true, message: 'Please input your office name' }]}
+              rules={[{ required: true, message: t('feedback-office-required') }]}
             >
               <Input
                 className='undp-input'
-                placeholder='Please input your office name'
+                placeholder={t('feedback-office-placeholder')}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <p className='undp-typography label'>Email</p>
+            <p className='undp-typography label'>{t('email')}</p>
             <Form.Item<FieldType>
               name='email'
-              rules={[{ required: true, type: 'email', message: 'Please input your email' }]}
+              rules={[{ required: true, type: 'email', message: t('feedback-email-required') }]}
             >
               <Input
                 className='undp-input'
-                placeholder='Please input your position'
+                placeholder={t('feedback-email-placeholder')}
               />
             </Form.Item>
           </Col>
         </Row>
-        <p className='undp-typography label'>Message</p>
+        <p className='undp-typography label'>{t('message')}</p>
         <Form.Item<FieldType>
           name='message'
-          rules={[{ required: true, message: 'Please input your position' }]}
+          rules={[{ required: true, message: t('feedback-message-required') }]}
         >
           <Input.TextArea
             className='undp-input'
-            placeholder='Please input your message'
+            placeholder={t('feedback-message-placeholder')}
           />
         </Form.Item>
 
@@ -109,7 +109,7 @@ export const CommentForm = () => {
               className='undp-button button-secondary'
               type='submit'
             >
-              Submit
+              {t('submit')}
             </button>
             {loadingMessage ? <Spin /> : ''}
           </div>

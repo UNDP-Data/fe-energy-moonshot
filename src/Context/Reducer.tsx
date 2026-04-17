@@ -1,4 +1,4 @@
-export default (state: any, action: any) => {
+const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'UPDATE_DASHBOARD_FILTER':
       return {
@@ -27,3 +27,5 @@ export default (state: any, action: any) => {
       return { ...state };
   }
 };
+
+export default reducer;

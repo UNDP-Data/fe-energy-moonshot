@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
 import {
   useState, useEffect, useReducer, useRef,
 } from 'react';
@@ -32,28 +31,15 @@ import {
   normalizeCountryMetadata,
   normalizeProjectLevelData,
 } from './utils/dashboardFilters';
+import {
+  getInitialLanguage,
+  getLanguageDirection,
+  isSupportedLanguage,
+} from './i18nConfig';
 
 import './styles/style.css';
 
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
-
-const SUPPORTED_LANGUAGES = ['en', 'es', 'fr'];
-
-const getInitialLanguage = (preferredLanguage: string) => {
-  const normalizedPreferredLanguage = preferredLanguage?.toLowerCase();
-  if (SUPPORTED_LANGUAGES.includes(normalizedPreferredLanguage)) {
-    return normalizedPreferredLanguage;
-  }
-
-  if (typeof window !== 'undefined') {
-    const storedLanguage = window.localStorage.getItem('moonshot-language')?.toLowerCase();
-    if (storedLanguage && SUPPORTED_LANGUAGES.includes(storedLanguage)) {
-      return storedLanguage;
-    }
-  }
-
-  return 'en';
-};
 
 const VizAreaEl = styled.div`
   display: flex;
@@ -71,7 +57,14 @@ interface Props {
 const App = (props: Props) => {
   const { language } = props;
   const containerEl = useRef(null);
-  const [currentLanguage, setCurrentLanguage] = useState(() => getInitialLanguage(language));
+  const [currentLanguage, setCurrentLanguage] = useState(() => (
+    getInitialLanguage(
+      language,
+      typeof window !== 'undefined'
+        ? window.localStorage.getItem('moonshot-language') || undefined
+        : undefined,
+    )
+  ));
   const [countryGroupData, setCountryGroupData] = useState<CountryGroupDataType[] | undefined>(undefined);
   const [indicatorsList, setIndicatorsList] = useState<IndicatorMetaDataType[] | undefined>(undefined);
   const [countryLinkDict, setCountryLinkDict] = useState<any>({});
@@ -125,13 +118,19 @@ const App = (props: Props) => {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('moonshot-language', currentLanguage);
     }
+
+    if (typeof document !== 'undefined') {
+      const direction = getLanguageDirection(currentLanguage);
+      document.documentElement.lang = currentLanguage;
+      document.documentElement.dir = direction;
+      document.body.dir = direction;
+    }
   }, [currentLanguage, i18n]);
 
   useEffect(() => {
     const normalizedPreferredLanguage = language?.toLowerCase();
     if (
-      normalizedPreferredLanguage
-      && SUPPORTED_LANGUAGES.includes(normalizedPreferredLanguage)
+      isSupportedLanguage(normalizedPreferredLanguage)
       && normalizedPreferredLanguage !== currentLanguage
     ) {
       setCurrentLanguage(normalizedPreferredLanguage);

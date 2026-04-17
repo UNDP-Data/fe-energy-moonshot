@@ -70,7 +70,7 @@ export const Tooltip = (props: Props) => {
             </p>
           ) : (
             <p className='small-font margin-bottom-00'>
-              Indirect beneficiaries
+              {t('indirect-beneficiaries')}
             </p>
           )}
         { data.grantAmount !== 0
@@ -89,7 +89,7 @@ export const Tooltip = (props: Props) => {
           {`${t('number-projects')}:`}
           {' '}
           <span className='bold'>
-            {data.numberProjects === undefined ? 'N/A' : formatData(data.numberProjects)}
+            {data.numberProjects === undefined ? t('not-available') : formatData(data.numberProjects)}
           </span>
         </p>
       </div>
