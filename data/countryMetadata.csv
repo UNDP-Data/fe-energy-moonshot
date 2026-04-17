@@ -1,0 +1,250 @@
+,Country Name,Country Code,m49,continent-region,sub-region,sids-region,un-member,undp-sids,un-region,Region,Economy,LDC,SIDS,LLDC,HDI,Sahel,Crisis,Unnamed: 17,Project Count,Output Count,Budget Total,Direct Beneficiaries
+0,Afghanistan,AFG,4,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Upper middle income,LDC,,LLDC,Low,,Crisis,,7,8,141767709.0,4011027.0
+1,Åland Islands,ALA,248,Europe,Northern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+2,Albania,ALB,8,Europe,Southern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,,High,,,,5,8,158868775.77999997,8942.0
+3,Algeria,DZA,12,Africa,Northern Africa,,yes,,African Group,RBAS,Lower middle income,,,,High,,,,3,3,4936210.0,750000.0
+4,American Samoa,ASM,16,Oceania,Polynesia,Pacific,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+5,Andorra,AND,20,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+6,Angola,AGO,24,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,LDC,,,Medium,,,,3,6,24640468.0,83444.0
+7,Anguilla,AIA,660,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+8,Antarctica,ATA,10,,,,,,,,,,,,,,,,0,0,0.0,0.0
+9,Antigua and Barbuda,ATG,28,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+10,Argentina,ARG,32,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,Very High,,,,3,7,20452042.0,4025.0
+11,Armenia,ARM,51,Asia,Western Asia,,yes,,Eastern European Group,RBEC,Upper middle income,,,LLDC,High,,,,5,5,23361327.0,339000.0
+12,Aruba,ABW,533,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+13,Australia,AUS,36,Oceania,Australia and New Zealand,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+14,Austria,AUT,40,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+15,Azerbaijan,AZE,31,Asia,Western Asia,,yes,,Eastern European Group,RBEC,Upper middle income,,,LLDC,High,,,,2,3,6292549.0,120.0
+16,Bahamas,BHS,44,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+17,Bahrain,BHR,48,Asia,Western Asia,AIS,yes,yes,Asia-Pacific Group,RBAS,High income,,SIDS,,Very High,,,,1,1,7254715.0,0.0
+18,Bangladesh,BGD,50,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,LDC,,,Medium,,,,8,24,174834416.0,820768.486
+19,Barbados,BRB,52,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,High income,,SIDS,,High,,,,1,4,6375344.0,28175.0
+20,Belarus,BLR,112,Europe,Eastern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,,Very High,,,,1,2,1680000.0,136600.0
+21,Belgium,BEL,56,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+22,Belize,BLZ,84,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Upper middle income,,SIDS,,Medium,,,,3,10,26541634.55,1981.25
+23,Benin,BEN,204,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,LDC,,,Low,,,,4,10,54343953.0,143252.0
+24,Bermuda,BMU,60,Americas,Northern America,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+25,Bhutan,BTN,64,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,LDC,,LLDC,Medium,,,,5,5,25258424.0,590434.0
+26,Bolivia,BOL,68,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Lower middle income,,,LLDC,Medium,,,,2,3,932000.0,1400.0
+27,"Bonaire, Sint Eustatius and Saba",BES,535,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+28,Bosnia and Herzegovina,BIH,70,Europe,Southern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,,High,,,,8,19,194800892.0,427856.0
+29,Botswana,BWA,72,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Upper middle income,,,LLDC,Medium,,,,2,7,14040532.0,52500.0
+30,Bouvet Island,BVT,74,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+31,Brazil,BRA,76,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,High,,,,1,4,6934276.0,5548.05
+32,British Indian Ocean Territory,IOT,86,Africa,Sub-Saharan Africa,,,,African Group,,,,,,,,,,0,0,0.0,0.0
+33,Brunei Darussalam,BRN,96,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+34,Bulgaria,BGR,100,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+35,Burkina Faso,BFA,854,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,Sahel,Crisis,,3,9,8388962.0,45054.0
+36,Burundi,BDI,108,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,,,,4,9,36029751.35,33836.12
+37,Cabo Verde,CPV,132,Africa,Sub-Saharan Africa,AIS,yes,yes,African Group,RBA,Lower middle income,,SIDS,,Medium,,,,0,0,0.0,0.0
+38,Cambodia,KHM,116,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,LDC,,,Medium,,,,3,18,170914310.0,68867.025
+39,"Cameroon, Republic of",CMR,120,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,,Medium,Sahel,,,3,11,8904772.0,27278.5
+40,Canada,CAN,124,Americas,Northern America,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+41,Cayman Islands,CYM,136,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+42,Central African Republic,CAF,140,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,,Crisis,,2,2,4145000.0,420190.0
+43,Chad,TCD,148,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,Sahel,Crisis,,1,7,12215000.0,27069.25
+44,Chile,CHL,152,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,High income,,,,Very High,,,,0,0,0.0,0.0
+45,China,CHN,156,Asia,Eastern Asia,,yes,,Asia-Pacific Group,RBAP,Upper middle income,,,,High,,,,7,13,96754478.0,2118500.0
+46,Christmas Island,CXR,162,Oceania,Australia and New Zealand,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+47,Cocos (Keeling) Islands,CCK,166,Oceania,Australia and New Zealand,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+48,Colombia,COL,170,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,High,,,,3,4,31251.0,16627.0
+49,Comoros,COM,174,Africa,Sub-Saharan Africa,AIS,yes,yes,African Group,RBA,Lower middle income,LDC,SIDS,,Medium,,,,4,10,47141579.0,234358.5
+50,Congo,COG,178,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,,Medium,,,,1,2,3888266.0,45000.0
+51,Dem. Rep. of the Congo,COD,180,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,Crisis,,4,16,239963007.0,20659330.5
+52,Cook Islands,COK,184,Oceania,Polynesia,Pacific,,yes,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+53,Costa Rica,CRI,188,Americas,Latin America and the Caribbean,Caribbean,yes,,GRULAC,RBLAC,Upper middle income,,,,Very High,,,,1,1,10317970.0,0.0
+54,Cote d'Ivoire,CIV,384,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,,Medium,,,,1,1,-1.0,50000.0
+55,Croatia,HRV,191,Europe,Southern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+56,Cuba,CUB,192,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Upper middle income,,SIDS,,High,,,,8,8,17446265.0,351852.0
+57,Curacao,CUW,531,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+58,Cyprus,CYP,196,Asia,Western Asia,,yes,,Asia-Pacific Group,RBEC,High income,,,,Very High,,,,1,4,6400000.0,23065.0
+59,Czechia,CZE,203,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+60,Denmark,DNK,208,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+61,Djibouti,DJI,262,Africa,Sub-Saharan Africa,,yes,,African Group,RBAS,Lower middle income,LDC,,,Low,,,,4,5,8857420.0,29146.0
+62,Dominica,DMA,212,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+63,Dominican Republic,DOM,214,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Upper middle income,,SIDS,,High,,,,2,10,128119160.0,80897.1
+64,Ecuador,ECU,218,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,High,,,,4,14,3014322.7699999986,0.0
+65,Egypt,EGY,818,Africa,Northern Africa,,yes,,African Group,RBAS,Lower middle income,,,,High,,,,6,6,16605716.0,60630.0
+66,El Salvador,SLV,222,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Lower middle income,,,,Medium,,,,1,4,9682192.0,50000.0
+67,Equatorial Guinea,GNQ,226,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Upper middle income,,,,Medium,,,,1,1,3502968.0,5000.0
+68,Eritrea,ERI,232,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,,,1,3,-3.0,469000.0
+69,Estonia,EST,233,Europe,Northern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+70,Eswatini,SWZ,748,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,LLDC,Medium,,,,7,8,5096142.7,20490.0
+71,Ethiopia,ETH,231,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,,,LLDC,Low,,,,5,42,63182499.0,3826545.0000000005
+72,Falkland Islands (Malvinas),FLK,238,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+73,Faroe Islands,FRO,234,Europe,Northern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+74,Fiji,FJI,242,Oceania,Melanesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Upper middle income,,SIDS,,High,,,,0,0,0.0,0.0
+75,Finland,FIN,246,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+76,France,FRA,250,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+77,French Guiana,GUF,254,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+78,French Polynesia,PYF,258,Oceania,Polynesia,Pacific,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+79,French Southern Territories,ATF,260,Africa,Sub-Saharan Africa,,,,African Group,,,,,,,,,,0,0,0.0,0.0
+80,Gabon,GAB,266,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Upper middle income,,,,High,,,,0,0,0.0,0.0
+81,Gambia,GMB,270,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,Sahel,,,2,5,3695118.0,149775.5
+82,Georgia,GEO,268,Asia,Western Asia,,yes,,Eastern European Group,RBEC,Upper middle income,,,,Very High,,,,4,8,5275729.0,6758.0599999999995
+83,Germany,DEU,276,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+84,Ghana,GHA,288,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,,Medium,,,,1,1,500000.0,0.0
+85,Gibraltar,GIB,292,Europe,Southern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+86,Greece,GRC,300,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+87,Greenland,GRL,304,Americas,Northern America,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+88,Grenada,GRD,308,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+89,Guadeloupe,GLP,312,Americas,Latin America and the Caribbean,Caribbean,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+90,Guam,GUM,316,Oceania,Micronesia,Pacific,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+91,Guatemala,GTM,320,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,Medium,,,,1,1,-1.0,1000.0
+92,Guernsey,GGY,831,Europe,Northern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+93,Guinea,GIN,324,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,Sahel,,,2,8,46862567.0,16680.0
+94,Guinea-Bissau,GNB,624,Africa,Sub-Saharan Africa,AIS,yes,yes,African Group,RBA,Low income,LDC,SIDS,,Low,,,,1,4,11650808.0,46930.0
+95,Guyana,GUY,328,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Upper middle income,,SIDS,,High,,,,1,1,1750172.0,10000.0
+96,Haiti,HTI,332,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Lower middle income,LDC,SIDS,,Low,,Crisis,,2,2,8789921.0,84000.0
+97,Heard Island and McDonald Islands,HMD,334,Oceania,Australia and New Zealand,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+98,Holy See,VAT,336,Europe,Southern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+99,Honduras,HND,340,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Lower middle income,,,,Medium,,,,1,1,100000.0,0.0
+100,Hong Kong,HKG,344,Asia,Eastern Asia,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+101,Hungary,HUN,348,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+102,Iceland,ISL,352,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+103,India,IND,356,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,Medium,,,,5,15,20190586.0,136248.0
+104,Indonesia,IDN,360,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,High,,,,10,41,244971913.46,2051122.5
+105,Iran,IRN,364,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,High,,,,3,12,29866592.0,137607.5
+106,Iraq,IRQ,368,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,Upper middle income,,,,Medium,,Crisis,,7,7,25798703.0,1500.0
+107,Ireland,IRL,372,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+108,Isle of Man,IMN,833,Europe,Northern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+109,Israel,ISR,376,Asia,Western Asia,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+110,Italy,ITA,380,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+111,Jamaica,JAM,388,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Upper middle income,,,,High,,,,1,6,10709172.0,25175.0
+112,Japan,JPN,392,Asia,Eastern Asia,,yes,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+113,Jersey,JEY,832,Europe,Northern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+114,Jordan,JOR,400,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,Upper middle income,,,,High,,,,2,6,10559998.0,153000.0
+115,Kazakhstan,KAZ,398,Asia,Central Asia,,yes,,Asia-Pacific Group,RBEC,Upper middle income,,,LLDC,Very High,,,,7,15,48642496.0,384049.0
+116,Kenya,KEN,404,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,,Medium,,,,2,12,179605000.0,49000.0
+117,Kiribati,KIR,296,Oceania,Micronesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Lower middle income,LDC,SIDS,,Medium,,,,1,12,64553424.0,96416.6
+118,"Korea, DPR",PRK,408,Asia,Eastern Asia,,yes,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+119,"Korea, Republic of",KOR,410,Asia,Eastern Asia,,yes,,Asia-Pacific Group,RBAP,High income,,,,,,,,0,0,0.0,0.0
+120,Kosovo,XKX,688,Europe,Eastern Europe,,,,Eastern European Group,RBEC,Upper middle income,,,,,,,,3,19,15570940.0,981.75
+121,Kuwait,KWT,414,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,High income,,,,Very High,,,,0,0,0.0,0.0
+122,Kyrgyzstan,KGZ,417,Asia,Central Asia,,yes,,Asia-Pacific Group,RBEC,Lower middle income,,,,Medium,,,,1,3,493596.0,0.0
+123,Lao PDR,LAO,418,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,LDC,,LLDC,Medium,,,,2,4,12238904.0,300.0
+124,Latvia,LVA,428,Europe,Northern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+125,Lebanon,LBN,422,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,Lower middle income,,,,High,,Crisis,,4,4,63604287.47,1430450.0
+126,Lesotho,LSO,426,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,LDC,,LLDC,Low,,,,2,8,5097000.0,71238.7
+127,Liberia,LBR,430,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,,,2,2,1031498.05,0.0
+128,Libya,LBY,434,Africa,Northern Africa,,yes,,African Group,RBAS,Upper middle income,,,,High,,Crisis,,1,1,655444.0,0.0
+129,Liechtenstein,LIE,438,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+130,Lithuania,LTU,440,Europe,Northern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+131,Luxembourg,LUX,442,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+132,Macao,MAC,446,Asia,Eastern Asia,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+133,Madagascar,MDG,450,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,,,3,14,49085780.0,260685.5
+134,Malawi,MWI,454,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,,,,2,9,21462375.0,258894.0
+135,Malaysia,MYS,458,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Upper middle income,,,,Very High,,,,1,4,17419176.0,0.0
+136,Maldives,MDV,462,Asia,Southern Asia,AIS,yes,yes,Asia-Pacific Group,RBAP,Upper middle income,,SIDS,,High,,,,3,24,119209092.0,109710.0
+137,Mali,MLI,466,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,Sahel,Crisis,,5,18,67574984.0,582845.0
+138,Malta,MLT,470,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+139,Marshall Islands,MHL,584,Oceania,Micronesia,Pacific,yes,yes,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+140,Martinique,MTQ,474,Americas,Latin America and the Caribbean,Caribbean,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+141,Mauritania,MRT,478,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,LDC,,,Medium,Sahel,,,2,4,16657000.0,301731.0
+142,Mauritius,MUS,480,Africa,Sub-Saharan Africa,AIS,yes,yes,African Group,RBA,Upper middle income,,SIDS,,Very High,,,,3,17,223387576.0,778922.0
+143,Mayotte,MYT,175,Africa,Sub-Saharan Africa,,,,African Group,,,,,,,,,,0,0,0.0,0.0
+144,Mexico,MEX,484,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,High,,,,1,9,450000.0,299.0
+145,Federated States of Micronesia,FSM,583,Oceania,Micronesia,Pacific,yes,yes,Asia-Pacific Group,,,,,,,,,,1,9,15988356.0,875.0
+146,Moldova Republic,MDA,498,Europe,Eastern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,LLDC,High,,,,8,19,59778516.0,33610.0
+147,Monaco,MCO,492,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+148,Mongolia,MNG,496,Asia,Eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,LLDC,High,,,,2,2,291888.0,0.0
+149,Montenegro,MNE,499,Europe,Southern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,,Very High,,,,3,7,3013024.0,0.0
+150,Montserrat,MSR,500,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+151,Morocco,MAR,504,Africa,Northern Africa,,yes,,African Group,RBAS,Lower middle income,,,,Medium,,,,6,6,19797449.0,946225.0
+152,Mozambique,MOZ,508,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,,,3,6,1133242.0,1627.1999999999998
+153,Myanmar,MMR,104,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,LDC,,,Medium,,Crisis,,4,32,55754343.0,309270.48
+154,Namibia,NAM,516,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Upper middle income,,,,Medium,,,,3,6,6283198.0,16960.0
+155,Nauru,NRU,520,Oceania,Micronesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Upper middle income,,SIDS,,Medium,,,,1,4,13211872.0,1040.0
+156,Nepal,NPL,524,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,LDC,,LLDC,Medium,,,,1,6,14400000.0,143279.0
+157,Netherlands,NLD,528,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+158,New Caledonia,NCL,540,Oceania,Melanesia,Pacific,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+159,New Zealand,NZL,554,Oceania,Australia and New Zealand,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+160,Nicaragua,NIC,558,Americas,Latin America and the Caribbean,,yes,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+161,Niger,NER,562,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,Sahel,Crisis,20.0,2,2,4146876.0,263534.0
+162,Nigeria,NGA,566,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,,Low,Sahel,,,11,14,750288.0267931938,153919.0
+163,Niue,NIU,570,Oceania,Polynesia,Pacific,,yes,Asia-Pacific Group,,,,,,,,,,1,5,16607815.0,12620.0
+164,Norfolk Island,NFK,574,Oceania,Australia and New Zealand,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+165,North Macedonia,MKD,807,Europe,Southern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,LLDC,High,,,,4,26,142382236.0,187670.0
+166,Northern Mariana Islands,MNP,580,Oceania,Micronesia,Pacific,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+167,Norway,NOR,578,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+168,Oman,OMN,512,Asia,Western Asia,,yes,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+169,Pakistan,PAK,586,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,Low,,,,2,12,29672328.0,361880.0
+170,Palau,PLW,585,Oceania,Micronesia,Pacific,yes,yes,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+171,Prog for Palestinian People,PSE,275,Asia,Western Asia,,,,WEOG,RBAS,Lower middle income,,,,High,,Crisis,,2,2,6557892.45,5.1
+172,Panama,PAN,591,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,High income,,,,Very High,,,,2,3,5148031.0,17500.0
+173,Papua New Guinea,PNG,598,Oceania,Melanesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Lower middle income,,SIDS,,Medium,,,,2,6,23496175.0,60500.0
+174,Paraguay,PRY,600,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,LLDC,High,,,,2,3,15053739.0,0.0
+175,Peru,PER,604,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Upper middle income,,,,High,,,,1,3,5354586.0,14000.0
+176,Philippines,PHL,608,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,Medium,,,,2,19,91119178.0,2015745.6402348112
+177,Pitcairn,PCN,612,Oceania,Polynesia,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+178,Poland,POL,616,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+179,Portugal,PRT,620,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+180,Puerto Rico,PRI,630,Americas,Latin America and the Caribbean,Caribbean,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+181,Qatar,QAT,634,Asia,Western Asia,,yes,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+182,Réunion,REU,638,Africa,Sub-Saharan Africa,,,,African Group,,,,,,,,,,0,0,0.0,0.0
+183,Romania,ROU,642,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+184,Russian Federation,RUS,643,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+185,Rwanda,RWA,646,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,,,,4,5,6660351.0,96405.68
+186,Saint Barthélemy,BLM,652,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+187,"Saint Helena, Ascension and Tristan da Cunha",SHN,654,Africa,Sub-Saharan Africa,,,,,,,,,,,,,,0,0,0.0,0.0
+188,Saint Kitts and Nevis,KNA,659,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+189,Saint Lucia,LCA,662,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+190,Saint Martin (French part),MAF,663,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+191,Saint Pierre and Miquelon,SPM,666,Americas,Northern America,,,,,,,,,,,,,,0,0,0.0,0.0
+192,Saint Vincent and the Grenadines,VCT,670,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+193,Samoa,WSM,882,Oceania,Polynesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Lower middle income,,SIDS,,High,,,,2,10,106257915.0,308580.0
+194,San Marino,SMR,674,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+195,Sao Tome & Principe,STP,678,Africa,Sub-Saharan Africa,AIS,yes,yes,African Group,RBA,Lower middle income,LDC,SIDS,,Medium,,,,3,6,16729838.0,259628.0
+196,Saudi Arabia,SAU,682,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,High income,,,,Very High,,,,1,1,7939225.0,0.0
+197,Senegal,SEN,686,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,LDC,,,Low,Sahel,,,1,1,250000.0,0.0
+198,Serbia,SRB,688,Europe,Southern Europe,,yes,,Eastern European Group,RBEC,Upper middle income,,,,Very High,,,,6,20,66044655.0,33500.0
+199,Seychelles,SYC,690,Africa,Sub-Saharan Africa,AIS,yes,yes,African Group,,,,,,,,,,0,0,0.0,0.0
+200,Sierra Leone,SLE,694,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,,,2,6,6108608.0,0.0
+201,Singapore,SGP,702,Asia,South-eastern Asia,AIS,yes,yes,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+202,Sint Maarten (Dutch part),SXM,534,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+203,Slovakia,SVK,703,Europe,Eastern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+204,Slovenia,SVN,705,Europe,Southern Europe,,yes,,Eastern European Group,,,,,,,,,,0,0,0.0,0.0
+205,Solomon Islands,SLB,90,Oceania,Melanesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Lower middle income,LDC,SIDS,,Medium,,,,1,6,15838356.0,57767.5
+206,Somalia,SOM,706,Africa,Sub-Saharan Africa,,yes,,African Group,RBAS,Low income,LDC,,,,,Crisis,,1,1,3276147.0,66970.0
+207,South Africa,ZAF,710,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Upper middle income,,,,High,,,,4,17,34490333.0,106005.52
+208,South Georgia and the South Sandwich Islands,SGS,239,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+209,South Sudan,SSD,728,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,,Crisis,,7,8,7799699.61,2091385.0
+210,Spain,ESP,724,Europe,Southern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+211,Sri Lanka,LKA,144,Asia,Southern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,High,,,,8,17,11010243.0,61280.0
+212,Sudan,SDN,729,Africa,Northern Africa,,yes,,African Group,RBAS,Low income,LDC,,,Low,,Crisis,,5,5,14083867.0,144502.0
+213,Suriname,SUR,740,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,Upper middle income,,SIDS,,High,,,,1,1,753663.0,19250.0
+214,Svalbard and Jan Mayen,SJM,744,Europe,Northern Europe,,,,WEOG,,,,,,,,,,0,0,0.0,0.0
+215,Sweden,SWE,752,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+216,Switzerland,CHE,756,Europe,Western Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+217,Syria,SYR,760,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,Low income,,,,Medium,,Crisis,,1,1,39482563.0,3808844.0
+218,Tajikistan,TJK,762,Asia,Central Asia,,yes,,Asia-Pacific Group,RBEC,Lower middle income,,,LLDC,Medium,,,,1,11,5409148.25,46992.0
+219,United Republic of Tanzania,TZA,834,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,LDC,,,Low,,,,2,8,50364582.0,0.0
+220,Thailand,THA,764,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Upper middle income,,,,Very High,,,,2,3,2215086.0,0.0
+221,Timor-Leste,TLS,626,Asia,South-eastern Asia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Lower middle income,LDC,SIDS,,Medium,,,,3,7,26534611.0,773591.0
+222,Togo,TGO,768,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,,Low,,,,3,7,14673456.0,10572.499999999998
+223,Tokelau,TKL,772,Oceania,Polynesia,Pacific,,yes,Asia-Pacific Group,,,,SIDS,,,,,,0,0,0.0,0.0
+224,Tonga,TON,776,Oceania,Polynesia,Pacific,yes,yes,Asia-Pacific Group,,,,SIDS,,,,,,0,0,0.0,0.0
+225,Trinidad & Tobago,TTO,780,Americas,Latin America and the Caribbean,Caribbean,yes,yes,GRULAC,RBLAC,High income,,SIDS,,Very High,,,,3,17,60081704.0,2090.0
+226,Tunisia,TUN,788,Africa,Northern Africa,,yes,,African Group,RBAS,Lower middle income,,,,High,,,,4,26,26562618.0,0.0
+227,Turkey,TUR,792,Asia,Western Asia,,yes,,Asia-Pacific Group,RBEC,Upper middle income,,,,Very High,,,,7,7,16153623.0,3487.0
+228,Turkmenistan,TKM,795,Asia,Central Asia,,yes,,Asia-Pacific Group,RBEC,Upper middle income,,,LLDC,High,,,,2,2,8126379.0,0.0
+229,Turks and Caicos Islands,TCA,796,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+230,Tuvalu,TUV,798,Oceania,Polynesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Upper middle income,LDC,SIDS,,Medium,,,,1,9,23757525.0,128480.5
+231,Uganda,UGA,800,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Low,,,,3,9,16410090.0,2501999.0
+232,Ukraine,UKR,804,Europe,Eastern Europe,,yes,,Eastern European Group,RBEC,Lower middle income,,,,High,,Crisis,,4,20,928733639.2480001,11132755.0
+233,United Arab Emirates,ARE,784,Asia,Western Asia,,yes,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+234,United Kingdom of Great Britain and Northern Ireland,GBR,826,Europe,Northern Europe,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+235,United States of America,USA,840,Americas,Northern America,,yes,,WEOG,,,,,,,,,,0,0,0.0,0.0
+236,United States Minor Outlying Islands,UMI,581,Oceania,Micronesia,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+237,Uruguay,URY,858,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,High income,,,,Very High,,,,2,11,14346848.0,1005130.0
+238,Uzbekistan,UZB,860,Asia,Central Asia,,yes,,Asia-Pacific Group,RBEC,Lower middle income,,,LLDC,High,,,,2,3,15569725.0,13465.0
+239,Vanuatu,VUT,548,Oceania,Melanesia,Pacific,yes,yes,Asia-Pacific Group,RBAP,Lower middle income,,SIDS,,Medium,,,,2,6,23768512.0,73486.0
+240,Venezuela,VEN,862,Americas,Latin America and the Caribbean,,yes,,GRULAC,RBLAC,Low income,,,,Medium,,,,0,0,0.0,0.0
+241,Viet Nam,VNM,704,Asia,South-eastern Asia,,yes,,Asia-Pacific Group,RBAP,Lower middle income,,,,High,,,,4,17,28670217.0,2175.0
+242,British Virgin Islands,VGB,92,Americas,Latin America and the Caribbean,Caribbean,,yes,GRULAC,,,,,,,,,,0,0,0.0,0.0
+243,US Virgin Islands,VIR,850,Americas,Latin America and the Caribbean,,,,GRULAC,,,,,,,,,,0,0,0.0,0.0
+244,Wallis and Futuna,WLF,876,Oceania,Polynesia,,,,Asia-Pacific Group,,,,,,,,,,0,0,0.0,0.0
+245,Western Sahara,ESH,732,Africa,Northern Africa,,,,African Group,,,,,,,,,,0,0,0.0,0.0
+246,Yemen,YEM,887,Asia,Western Asia,,yes,,Asia-Pacific Group,RBAS,Lower middle income,LDC,,,Low,,Crisis,,3,17,209587935.0,569286.8
+247,Zambia,ZMB,894,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Low income,LDC,,LLDC,Medium,,,,3,5,13217021.39,5015436.0
+248,Zimbabwe,ZWE,716,Africa,Sub-Saharan Africa,,yes,,African Group,RBA,Lower middle income,,,LLDC,Medium,,,,3,6,65251782.0,869774.0
