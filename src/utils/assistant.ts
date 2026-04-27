@@ -4,9 +4,9 @@ import {
   AssistantProjectSynopsisResponse,
   FilterCatalog,
 } from '../Types';
-import { getAssistantProxyBaseUrl, parseQueryLocally } from './dashboardFilters';
+import { getMoonshotProxyBaseUrl, parseQueryLocally } from './dashboardFilters';
 
-const buildUrl = (path: string) => `${getAssistantProxyBaseUrl()}${path}`;
+const buildUrl = (path: string) => `${getMoonshotProxyBaseUrl()}${path}`;
 const DEFAULT_REQUEST_TIMEOUT_MS = 45000;
 const HEALTH_REQUEST_TIMEOUT_MS = 5000;
 
@@ -37,7 +37,20 @@ const fetchWithTimeout = async (
 const isOkResponse = async (response: Response) => {
   if (response.ok) return response.json();
   const message = await response.text();
-  throw new Error(message || `Request failed with status ${response.status}`);
+
+  try {
+    const parsed = JSON.parse(message);
+    if (parsed?.error && typeof parsed.error === 'string') {
+      throw new Error(parsed.error);
+    }
+    if (parsed?.detail && typeof parsed.detail === 'string') {
+      throw new Error(parsed.detail);
+    }
+  } catch (_error) {
+    // Fall through to the raw response text when the body is not JSON.
+  }
+
+  throw new Error(message || response.statusText || `Request failed with status ${response.status}`);
 };
 
 export const parseQueryWithFallback = async (
@@ -46,7 +59,7 @@ export const parseQueryWithFallback = async (
   filterCatalog: FilterCatalog,
 ): Promise<AppliedFilterIntent> => {
   try {
-    const response = await fetchWithTimeout(buildUrl('/api/assistant/parse-query'), {
+    const response = await fetchWithTimeout(buildUrl('/api/moonshot/parse-query'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +84,7 @@ export const parseQueryWithFallback = async (
 export const fetchProjectSynopsis = async (
   request: AssistantProjectSynopsisRequest,
 ): Promise<AssistantProjectSynopsisResponse> => {
-  const response = await fetchWithTimeout(buildUrl('/api/assistant/project-synopsis'), {
+  const response = await fetchWithTimeout(buildUrl('/api/moonshot/project-synopsis'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -85,7 +98,7 @@ export const fetchProjectSynopsis = async (
 export const isAssistantAvailable = async (): Promise<boolean> => {
   try {
     const response = await fetchWithTimeout(
-      buildUrl('/api/assistant/health'),
+      buildUrl('/api/moonshot/health'),
       {
         method: 'GET',
       },

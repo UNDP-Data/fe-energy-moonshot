@@ -389,8 +389,10 @@ export const getAppliedFilterEntries = (
     label: `${key}: ${getFilterDisplayValue(key, filters[key], filterCatalog)}`,
   }));
 
-export const getAssistantProxyBaseUrl = () => (
-  process.env.REACT_APP_ASSISTANT_PROXY_BASE_URL || ''
+export const getMoonshotProxyBaseUrl = () => (
+  process.env.REACT_APP_MOONSHOT_PROXY_BASE_URL
+  || process.env.REACT_APP_ASSISTANT_PROXY_BASE_URL
+  || ''
 );
 
 export const isKnownFilterKey = (value: string): value is DashboardFilterKey => (

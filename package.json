@@ -88,8 +88,10 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "api": "node server/index.mjs",
-    "api:dev": "node --watch server/index.mjs",
+    "api": "python3 -m uvicorn api.main:app --host 127.0.0.1 --port 3001",
+    "api:dev": "python3 -m uvicorn api.main:app --reload --host 127.0.0.1 --port 3001",
+    "api:sync": "bash scripts/sync-moonshot-api-to-energy-ai-backend.sh",
+    "api:sync:apply": "bash scripts/sync-moonshot-api-to-energy-ai-backend.sh --apply",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",

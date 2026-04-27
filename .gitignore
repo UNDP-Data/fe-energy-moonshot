@@ -2,9 +2,9 @@
 **/.DS_Store
 /node_modules
 /build
-/api
 .env
 .env.*
+!/api/.env.example
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
