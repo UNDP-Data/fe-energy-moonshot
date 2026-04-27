@@ -94,6 +94,8 @@
     "api:sync:apply": "bash scripts/sync-moonshot-api-to-energy-ai-backend.sh --apply",
     "start": "craco start",
     "build": "craco build",
+    "package:gh-pages": "cp build/index.html index.html && cp build/asset-manifest.json asset-manifest.json && cp build/favicon.ico favicon.ico && cp -R build/static/. static/",
+    "build:gh-pages": "npm run build && npm run package:gh-pages",
     "test": "craco test",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer '/build/static/js/*.js'"
