@@ -137,7 +137,7 @@ body {
   color: var(--black);
   display: flex;
   flex-direction: column;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.08;
   margin-left: 0 !important;
   text-decoration: none;
@@ -145,7 +145,7 @@ body {
 
 .undp-site-title.moonshot-header-title,
 .undp-site-title.moonshot-header-title span {
-  font-weight: 900 !important;
+  font-weight: 700 !important;
 }
 
 .undp-header-actions {
