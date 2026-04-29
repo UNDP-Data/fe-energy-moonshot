@@ -1,5 +1,5 @@
 import {
-  useState, useEffect, useRef, useCallback,
+  memo, useState, useEffect, useRef, useCallback,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'd3-format';
@@ -26,7 +26,7 @@ type FieldType = {
   position: string;
 };
 
-const Project = (props:ProjectProps) => {
+const Project = memo((props:ProjectProps) => {
   const {
     project,
     countryLinkDict,
@@ -387,9 +387,11 @@ const Project = (props:ProjectProps) => {
       </Modal>
     </>
   );
-};
+});
 
-export const DataTable = (props: TableProps) => {
+Project.displayName = 'Project';
+
+const DataTableComponent = (props: TableProps) => {
   const {
     projects,
     countryLinkDict,
@@ -399,7 +401,7 @@ export const DataTable = (props: TableProps) => {
 
   return (
     <>
-      <div className='undp-scrollbar' style={{ height: '40rem' }}>
+      <div className='undp-scrollbar moonshot-project-table' style={{ height: '40rem' }}>
         <div className='undp-table-head undp-table-head-sticky'>
           <div style={{ width: '30%' }} className='undp-table-head-cell undp-sticky-head-column'>
             <div className='padding-left-05 padding-right-05'>
@@ -423,9 +425,19 @@ export const DataTable = (props: TableProps) => {
           </div>
         </div>
         {
-          projects.map((project, i) => (<Project key={`${i}project`} countryLinkDict={countryLinkDict} project={project} />))
+          projects.map((project) => (
+            <Project
+              key={project.id || `${project.countryCode}-${project.title}`}
+              countryLinkDict={countryLinkDict}
+              project={project}
+            />
+          ))
         }
       </div>
     </>
   );
 };
+
+export const DataTable = memo(DataTableComponent);
+
+DataTable.displayName = 'DataTable';

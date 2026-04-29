@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "description": "Manual control file for natural-language terms that should map to deterministic dashboard filters. Each entry adds aliases to an existing filter option; entries with unknown filter keys or values are ignored.",
+  "aliases": [
+    {
+      "filterKey": "subCategory",
+      "value": "Transport",
+      "label": "Transport and e-mobility",
+      "aliases": [
+        "e-mobility",
+        "e mobility",
+        "emobility",
+        "electric mobility",
+        "electric vehicle",
+        "electric vehicles",
+        "ev",
+        "evs",
+        "ev charging",
+        "electric bus",
+        "electric buses",
+        "e-bus",
+        "e-buses",
+        "charging infrastructure",
+        "electric transport",
+        "low carbon transport"
+      ]
+    },
+    {
+      "filterKey": "subCategory",
+      "value": "Clean Electricity",
+      "label": "Clean electricity access",
+      "aliases": [
+        "mini-grid",
+        "mini grids",
+        "minigrid",
+        "minigrids",
+        "micro-grid",
+        "micro grids",
+        "microgrid",
+        "microgrids",
+        "off-grid electricity",
+        "off grid electricity",
+        "solar home system",
+        "solar home systems"
+      ]
+    },
+    {
+      "filterKey": "subCategory",
+      "value": "Clean Cooking",
+      "label": "Clean cooking",
+      "aliases": [
+        "improved cooking",
+        "improved stove",
+        "improved stoves",
+        "efficient stove",
+        "efficient stoves",
+        "efficient cookstove",
+        "efficient cookstoves",
+        "clean stove",
+        "clean stoves",
+        "lpg cooking",
+        "electric cooking"
+      ]
+    },
+    {
+      "filterKey": "subCategory",
+      "value": "Productive Use",
+      "label": "Productive use of energy",
+      "aliases": [
+        "productive energy",
+        "productive uses of energy",
+        "livelihood energy",
+        "energy for livelihoods",
+        "energy for businesses",
+        "small business energy",
+        "enterprise energy"
+      ]
+    },
+    {
+      "filterKey": "subCategory",
+      "value": "Policy - Renewable Energy",
+      "label": "Renewable energy policy",
+      "aliases": [
+        "renewable policy",
+        "renewable policies",
+        "renewables regulation",
+        "renewable energy regulation",
+        "renewable energy roadmap",
+        "renewables roadmap"
+      ]
+    },
+    {
+      "filterKey": "subCategory",
+      "value": "Policy - Energy Efficiency",
+      "label": "Energy efficiency policy",
+      "aliases": [
+        "efficiency regulation",
+        "energy efficiency regulation",
+        "efficiency standards",
+        "energy efficiency standards"
+      ]
+    }
+  ]
+}

@@ -12,13 +12,13 @@ export const RTL_LANGUAGES = ['ar'] as const;
 export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
 
 export const LANGUAGE_OPTIONS: Array<{ value: SupportedLanguage; label: string }> = [
-  { value: 'en', label: 'English' },
-  { value: 'es', label: 'Español' },
-  { value: 'fr', label: 'Français' },
-  { value: 'zh', label: '中文' },
-  { value: 'pt', label: 'Português' },
-  { value: 'ru', label: 'Русский' },
-  { value: 'ar', label: 'العربية' },
+  { value: 'en', label: 'EN' },
+  { value: 'es', label: 'ES' },
+  { value: 'fr', label: 'FR' },
+  { value: 'zh', label: 'ZH' },
+  { value: 'pt', label: 'PT' },
+  { value: 'ru', label: 'RU' },
+  { value: 'ar', label: 'AR' },
 ];
 
 export const resources = {

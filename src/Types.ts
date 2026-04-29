@@ -132,6 +132,7 @@ export interface SummaryMetrics {
 export interface RankedProject {
   id: string;
   title: string;
+  link: string;
   countryName: string;
   description: string;
   budget: number;

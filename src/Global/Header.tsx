@@ -27,16 +27,9 @@ function Header(props: Props) {
               width='60'
               height='122'
             />
-            <div className='undp-site-title'>
-              <span
-                style={{
-                  textDecoration: 'none',
-                  color: 'var(--black)',
-                  lineHeight: 1.25,
-                }}
-              >
-                {t('header-sustainable-energy-hub')}
-              </span>
+            <div className='undp-site-title moonshot-header-title'>
+              <span>{t('page-title-energy-moonshot')}</span>
+              <span>{t('page-title-tracker')}</span>
             </div>
           </a>
         </div>
@@ -75,7 +68,6 @@ function Header(props: Props) {
           style={{ width: '320px' }}
         >
           <label className='undp-language-control' htmlFor='language-select'>
-            <span className='undp-language-label'>{t('language')}</span>
             <select
               id='language-select'
               className='undp-language-select'
@@ -122,7 +114,6 @@ function Header(props: Props) {
         </div>
         <div className='undp-mobile-language-control'>
           <label className='undp-language-control' htmlFor='mobile-language-select'>
-            <span className='undp-language-label'>{t('language')}</span>
             <select
               id='mobile-language-select'
               className='undp-language-select'

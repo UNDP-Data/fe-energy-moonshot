@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Select, Tooltip } from 'antd';
+import { Button, Select, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import {
   CountryMetadataRow,
   CtxDataType,
@@ -22,6 +23,121 @@ interface Props {
   countryMetadataByCode: Record<string, CountryMetadataRow>;
 }
 
+const BarFiltersWrapper = styled.div`
+  .bar-filter-block {
+    width: 100%;
+  }
+  .bar-filter-block + .bar-filter-block {
+    margin-top: 0.45rem;
+  }
+  .undp-stacked-chart {
+    margin-bottom: 0.38rem;
+  }
+  .select-wrapper + .undp-stacked-chart {
+    margin-top: 0;
+  }
+  .select-wrapper + .undp-stacked-chart .undp-stacked-chart-label {
+    padding-top: 0.18rem;
+  }
+  .undp-stacked-chart-label {
+    font-size: 0.875rem;
+    padding: 0.32rem 0;
+  }
+  .undp-stacked-chart-value {
+    font-size: 0.875rem;
+    line-height: 1.1;
+    margin-top: 0.15rem;
+  }
+`;
+
+const CompactSelectWrapper = styled.div`
+  &.select-wrapper {
+    margin-bottom: 0.12rem;
+  }
+  .undp-select {
+    border: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    height: 1.55rem !important;
+    width: 100%;
+  }
+  .undp-select.ant-select,
+  .undp-select.ant-select-single,
+  .undp-select.ant-select-outlined {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  .undp-select .ant-select-selector {
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--gray-500) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    height: 1.55rem !important;
+    min-height: 1.55rem !important;
+    overflow: visible !important;
+    padding: 0 1.5rem 0 0 !important;
+    cursor: pointer !important;
+  }
+  .undp-select:hover .ant-select-selector,
+  .undp-select.ant-select-focused .ant-select-selector,
+  .undp-select.ant-select-open .ant-select-selector {
+    border: 0 !important;
+    border-bottom: 1px solid var(--black) !important;
+    box-shadow: none !important;
+  }
+  .undp-select .ant-select-selection-item,
+  .undp-select .ant-select-selection-placeholder {
+    align-items: center;
+    color: var(--black);
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 700;
+    height: 1.55rem !important;
+    line-height: 1.55rem !important;
+    max-width: calc(100% - 1.75rem);
+    padding: 0 !important;
+    cursor: pointer !important;
+    text-transform: capitalize;
+  }
+  .undp-select .ant-select-selection-search-input {
+    height: 1.55rem !important;
+    line-height: 1.55rem !important;
+    cursor: pointer !important;
+    text-transform: none;
+  }
+  .undp-select-title-muted .ant-select-selection-item,
+  .undp-select-title-muted .ant-select-selection-placeholder {
+    color: var(--gray-600);
+    font-weight: 400;
+  }
+  .undp-select .ant-select-selection-placeholder {
+    color: var(--gray-600);
+  }
+  .undp-select .ant-select-selection-search {
+    bottom: 0 !important;
+    inset-inline-start: 0 !important;
+    inset-inline-end: 1.5rem !important;
+    top: 0 !important;
+  }
+  .undp-select .ant-select-arrow {
+    align-items: center;
+    color: var(--black);
+    display: flex;
+    height: 1.55rem !important;
+    inset-inline-end: 0 !important;
+    margin-top: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    cursor: pointer;
+  }
+  .undp-select .ant-select-arrow .anticon,
+  .undp-select .ant-select-arrow svg {
+    display: block;
+    line-height: 1;
+  }
+`;
+
 const EMPTY_VISIBLE_GEO_FILTERS = {
   bureau: 'all',
   economy: 'all',
@@ -33,6 +149,11 @@ const EMPTY_VISIBLE_GEO_FILTERS = {
 const normalizeFundingValue = (value: string) => {
   if (value === 'nonvf') return 'non-vf';
   return value;
+};
+
+const formatDropdownOptionLabel = (label: string) => {
+  if (!label.toLowerCase().startsWith('all ')) return label;
+  return label.replace(/\b[a-z]/g, (character) => character.toUpperCase());
 };
 
 const getSelectedRegionValue = (filters: any) => {
@@ -49,6 +170,7 @@ export const BarFilters = (props: Props) => {
     filters,
     updateDashboardFilter,
     applyDashboardFilters,
+    resetDashboardFilters,
   } = useContext(Context) as CtxDataType;
   const selectedFunding = normalizeFundingValue(filters.funding);
   const selectedGenderMarker = filters.genderMarker;
@@ -307,14 +429,23 @@ export const BarFilters = (props: Props) => {
     );
   };
 
+  const updateSelectOpenState = (index: number, open: boolean) => {
+    setIsSelectOpen((current) => current.map((value, itemIndex) => (
+      itemIndex === index ? open : value
+    )));
+  };
+
+  const getSelectClassName = (_index: number) => 'undp-select';
+
   return (
-    <div>
-      <div className='margin-bottom-07'>
-        <div style={{ width: '100%' }}>
-          <div className='select-wrapper margin-bottom-04'>
+    <BarFiltersWrapper>
+      <div>
+        <div className='bar-filter-block'>
+          <CompactSelectWrapper className='select-wrapper'>
             <Select
+              bordered={false}
               onDropdownVisibleChange={(open) => {
-                setIsSelectOpen([open, isSelectOpen[1], isSelectOpen[2]]);
+                updateSelectOpenState(0, open);
               }}
               showSearch
               filterOption={(input, option) => (
@@ -323,7 +454,8 @@ export const BarFilters = (props: Props) => {
                   .toLowerCase()
                   .includes(input?.toLowerCase())
               )}
-              className='undp-select'
+              className={getSelectClassName(0)}
+              optionLabelProp='label'
               placeholder={t('select-funding')}
               value={selectedFunding}
               onChange={(value: string) => {
@@ -342,7 +474,7 @@ export const BarFilters = (props: Props) => {
                   label={t(item.label)}
                   key={item.value === 'nonvf' ? 'non-vf' : item.value}
                 >
-                  {t(item.label)}
+                  {formatDropdownOptionLabel(t(item.label))}
                 </Select.Option>
               ))}
             </Select>
@@ -353,7 +485,7 @@ export const BarFilters = (props: Props) => {
                 opacity: showSelectTooltip[0] && !isSelectOpen[0] ? 1 : 0,
               }}
             />
-          </div>
+          </CompactSelectWrapper>
           <StackedChart
             id='finance-bar-chart'
             data={fundingBarData}
@@ -362,14 +494,16 @@ export const BarFilters = (props: Props) => {
           />
         </div>
 
-        <div style={{ width: '100%' }}>
-          <div className='select-wrapper margin-bottom-04'>
+        <div className='bar-filter-block'>
+          <CompactSelectWrapper className='select-wrapper'>
             <Select
+              bordered={false}
               onDropdownVisibleChange={(open) => {
-                setIsSelectOpen([isSelectOpen[0], open, isSelectOpen[2]]);
+                updateSelectOpenState(1, open);
               }}
               showSearch
-              className='undp-select'
+              className={getSelectClassName(1)}
+              optionLabelProp='label'
               filterOption={(input, option) => (
                 (option?.label ?? '')
                   .toString()
@@ -398,7 +532,7 @@ export const BarFilters = (props: Props) => {
                           label={item.key === 'countries' ? option.label : t(option.label)}
                           key={option.value}
                         >
-                          {item.key === 'countries' ? option.label : t(option.label)}
+                          {formatDropdownOptionLabel(item.key === 'countries' ? option.label : t(option.label))}
                         </Select.Option>
                       ))}
                     </Select.OptGroup>
@@ -411,7 +545,7 @@ export const BarFilters = (props: Props) => {
                     label={t(item.label)}
                     key={item.value}
                   >
-                    {t(item.label)}
+                    {formatDropdownOptionLabel(t(item.label))}
                   </Select.Option>
                 );
               })}
@@ -425,7 +559,7 @@ export const BarFilters = (props: Props) => {
                 opacity: showSelectTooltip[1] && !isSelectOpen[1] ? 1 : 0,
               }}
             />
-          </div>
+          </CompactSelectWrapper>
           <StackedChart
             id='region-bar-chart'
             data={regionBarData}
@@ -447,14 +581,15 @@ export const BarFilters = (props: Props) => {
           />
         </div>
 
-        <div style={{ width: '100%' }}>
-          <div className='select-wrapper margin-bottom-04'>
+        <div className='bar-filter-block'>
+          <CompactSelectWrapper className='select-wrapper'>
             <Select
+              bordered={false}
               onDropdownVisibleChange={(open) => {
-                setIsSelectOpen([isSelectOpen[0], isSelectOpen[1], open]);
+                updateSelectOpenState(2, open);
               }}
               showSearch
-              className='undp-select'
+              className={getSelectClassName(2)}
               filterOption={(input, option) => (
                 (option?.label ?? '')
                   .toString()
@@ -503,7 +638,7 @@ export const BarFilters = (props: Props) => {
                 opacity: showSelectTooltip[2] && !isSelectOpen[2] ? 1 : 0,
               }}
             />
-          </div>
+          </CompactSelectWrapper>
           <StackedChart
             id='gender-bar-chart'
             data={genderBarData}
@@ -511,7 +646,13 @@ export const BarFilters = (props: Props) => {
             tooltips={tooltips}
           />
         </div>
+        <Button
+          style={{ marginTop: '0.5rem', width: '100%' }}
+          onClick={resetDashboardFilters}
+        >
+          {t('clear-filters')}
+        </Button>
       </div>
-    </div>
+    </BarFiltersWrapper>
   );
 };

@@ -66,6 +66,24 @@ Set these on the deployed backend:
 - `AZURE_OPENAI_API_VERSION`
 - `AZURE_OPENAI_MOONSHOT_PARSE_DEPLOYMENT`
 - `AZURE_OPENAI_MOONSHOT_SYNOPSIS_DEPLOYMENT`
+- `ALLOWED_ORIGINS=https://undp-data.github.io`
+
+Recommended abuse-control settings:
+
+- `MOONSHOT_RATE_LIMIT_WINDOW_SECONDS=300`
+- `MOONSHOT_PARSE_RATE_LIMIT=60`
+- `MOONSHOT_SYNOPSIS_RATE_LIMIT=120`
+
+## Required Azure App Service CORS
+
+Because the production frontend is served from GitHub Pages, Azure App Service
+must allow the published frontend origin at the platform CORS layer.
+
+In the `sea-ai-api` App Service, configure CORS to allow exactly:
+
+- `https://undp-data.github.io`
+
+Do not add a trailing slash.
 
 Optional compatibility vars still supported by the local mirror:
 

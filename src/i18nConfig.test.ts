@@ -37,6 +37,6 @@ describe('i18n config', () => {
     expect(resources.pt.translation.language).toBe('Idioma');
     expect(resources.ru.translation.language).toBe('Язык');
     expect(resources.ar.translation.language).toBe('اللغة');
-    expect(resources.ar.translation['header-sustainable-energy-hub']).toBe('مركز الطاقة المستدامة');
+    expect(resources.ar.translation['header-sustainable-energy-hub']).toBe('متتبع Energy Moonshot');
   });
 });

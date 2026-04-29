@@ -1,9 +1,10 @@
 import {
-  useContext, useEffect, useRef, useState,
+  useCallback, useContext, useLayoutEffect, useMemo, useRef, useState,
 } from 'react';
 import styled from 'styled-components';
-import { geoEqualEarth } from 'd3-geo';
-import { zoom, zoomIdentity } from 'd3-zoom';
+import { easeCubicOut } from 'd3-ease';
+import { geoEqualEarth, geoPath } from 'd3-geo';
+import { ZoomTransform, zoom, zoomIdentity } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import { Select } from 'antd';
@@ -12,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import UNDPColorModule from 'undp-viz-colors';
 import {
   CtxDataType,
+  DashboardFilterKey,
+  DashboardFilters,
   DataType,
   HoverDataType,
   IndicatorMetaDataType,
@@ -49,6 +52,227 @@ const G = styled.g`
   pointer-events: none;
 `;
 
+const MapG = styled.g`
+  path {
+    vector-effect: non-scaling-stroke;
+  }
+`;
+
+const FILTER_FIT_PADDING = 86;
+const FILTER_FIT_MAX_ZOOM = 8;
+const MAP_ZOOM_DURATION = 450;
+
+const DASHBOARD_FILTER_KEYS: DashboardFilterKey[] = [
+  'funding',
+  'genderMarker',
+  'category',
+  'subCategory',
+  'bureau',
+  'economy',
+  'hdiTier',
+  'specialGrouping',
+  'continentRegion',
+  'subRegion',
+  'sahel',
+  'crisis',
+  'countryCode',
+];
+
+const EMPTY_GEOGRAPHIC_FILTERS: Partial<DashboardFilters> = {
+  bureau: 'all',
+  economy: 'all',
+  hdiTier: 'all',
+  specialGrouping: 'all',
+  continentRegion: 'all',
+  subRegion: 'all',
+  sahel: 'all',
+  crisis: 'all',
+  countryCode: 'all',
+};
+
+interface Island {
+  name: string;
+  coordinates: [number, number];
+}
+
+const islands: Island[] = [
+  { name: 'Comoros', coordinates: [43.3333, -11.6455] },
+  { name: 'Sao Tome and Principe', coordinates: [6.6131, 0.1864] },
+  { name: 'Maldives', coordinates: [73.4226, 0.3406] },
+  { name: 'Nauru', coordinates: [166.9315, -0.5228] },
+  { name: 'Tuvalu', coordinates: [179.82, -9.35] },
+  { name: 'Vanuatu', coordinates: [166.9592, -15.3767] },
+  { name: 'Solomon Islands', coordinates: [160.1562, -9.6457] },
+  { name: 'Samoa', coordinates: [-172.1046, -13.759] },
+  { name: 'Micronesia (Federated States of)', coordinates: [158.215, 6.887] },
+  { name: 'Barbados', coordinates: [-59.5432, 13.1939] },
+  { name: 'Kiribati', coordinates: [174.4, -0.7851311643] },
+  { name: 'Timor-Leste', coordinates: [125.7275, -8.8742] },
+  { name: 'Trinidad and Tobago', coordinates: [-61.3151, 10.6918] },
+];
+
+type ProjectedBounds = [[number, number], [number, number]];
+
+const hasActiveDashboardFilters = (filters: DashboardFilters) => DASHBOARD_FILTER_KEYS
+  .some((key) => filters[key] !== 'all');
+
+const getDashboardFilterSignature = (filters: DashboardFilters) => DASHBOARD_FILTER_KEYS
+  .map((key) => `${key}:${filters[key]}`)
+  .join('|');
+
+const getAntimeridianWrapOffset = (
+  lat: number,
+  projection: ReturnType<typeof geoEqualEarth>,
+) => {
+  const leftEdge = projection([-180, lat]);
+  const rightEdge = projection([180, lat]);
+  if (!leftEdge || !rightEdge) return 0;
+  return Math.abs(rightEdge[0] - leftEdge[0]);
+};
+
+const getFeatureWrapOffset = (
+  feature: any,
+  projection: ReturnType<typeof geoEqualEarth>,
+) => {
+  if (feature?.properties?.ISO3 !== 'WSM') return 0;
+  const lat = Number(feature.properties.LAT);
+  return getAntimeridianWrapOffset(Number.isFinite(lat) ? lat : 0, projection);
+};
+
+const projectCoordinate = (
+  coordinates: number[],
+  projection: ReturnType<typeof geoEqualEarth>,
+  xOffset = 0,
+): [number, number] => {
+  const point = projection([coordinates[0], coordinates[1]]) as [number, number];
+  return [point[0] + xOffset, point[1]];
+};
+
+const mergeProjectedBounds = (
+  boundsA: ProjectedBounds | undefined,
+  boundsB: ProjectedBounds | undefined,
+): ProjectedBounds | undefined => {
+  if (!boundsA) return boundsB;
+  if (!boundsB) return boundsA;
+  return [
+    [
+      Math.min(boundsA[0][0], boundsB[0][0]),
+      Math.min(boundsA[0][1], boundsB[0][1]),
+    ],
+    [
+      Math.max(boundsA[1][0], boundsB[1][0]),
+      Math.max(boundsA[1][1], boundsB[1][1]),
+    ],
+  ];
+};
+
+const getProjectedBounds = (
+  features: any[],
+  pathGenerator: any,
+): ProjectedBounds | undefined => features.reduce(
+  (acc: ProjectedBounds | undefined, feature) => {
+    const featureBounds = pathGenerator.bounds(feature) as ProjectedBounds;
+    const values = [
+      featureBounds[0][0],
+      featureBounds[0][1],
+      featureBounds[1][0],
+      featureBounds[1][1],
+    ];
+    if (!values.every(Number.isFinite)) return acc;
+    return mergeProjectedBounds(acc, featureBounds);
+  },
+  undefined,
+);
+
+const getIslandBounds = (
+  activeCountryNames: Set<string>,
+  projection: ReturnType<typeof geoEqualEarth>,
+): ProjectedBounds | undefined => islands.reduce(
+  (acc: ProjectedBounds | undefined, island) => {
+    if (!activeCountryNames.has(island.name)) return acc;
+    const point = projectAntimeridianAwarePoint(island.coordinates, projection);
+    if (!point) return acc;
+    const [x, y] = point;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return acc;
+    const bounds: ProjectedBounds = [[x - 6, y - 6], [x + 6, y + 6]];
+    return mergeProjectedBounds(acc, bounds);
+  },
+  undefined,
+);
+
+const projectAntimeridianAwarePoint = (
+  coordinates: [number, number],
+  projection: ReturnType<typeof geoEqualEarth>,
+) => {
+  const point = projection(coordinates);
+  if (!point) return point;
+  const [lon, lat] = coordinates;
+  if (lon >= -150) return point;
+
+  return [
+    point[0] + getAntimeridianWrapOffset(lat, projection),
+    point[1],
+  ] as [number, number];
+};
+
+const getCountryBboxBounds = (
+  countries: DataType[],
+  projection: ReturnType<typeof geoEqualEarth>,
+): ProjectedBounds | undefined => countries.reduce(
+  (acc: ProjectedBounds | undefined, country) => {
+    const bbox = country.bbox;
+    if (!bbox?.sw || !bbox?.ne) return acc;
+
+    const west = Number(bbox.sw.lon);
+    const east = Number(bbox.ne.lon);
+    const south = Number(bbox.sw.lat);
+    const north = Number(bbox.ne.lat);
+    if (![west, east, south, north].every(Number.isFinite)) return acc;
+    if (west === 0 && east === 0 && south === 0 && north === 0) return acc;
+
+    const longitudes = [west, east];
+    const latitudes = [south, north];
+
+    const projectedPoints = longitudes.flatMap((lon) => latitudes.map((lat) => (
+      projectAntimeridianAwarePoint([lon, lat], projection)
+    ))).filter((point): point is [number, number] => (
+      !!point && point.every(Number.isFinite)
+    ));
+    if (!projectedPoints.length) return acc;
+
+    const xs = projectedPoints.map((point) => point[0]);
+    const ys = projectedPoints.map((point) => point[1]);
+    const bounds: ProjectedBounds = [
+      [Math.min(...xs), Math.min(...ys)],
+      [Math.max(...xs), Math.max(...ys)],
+    ];
+    return mergeProjectedBounds(acc, bounds);
+  },
+  undefined,
+);
+
+const createFitTransform = (
+  bounds: ProjectedBounds,
+  svgWidth: number,
+  svgHeight: number,
+) => {
+  const [[x0, y0], [x1, y1]] = bounds;
+  const boundsWidth = Math.max(x1 - x0, 1);
+  const boundsHeight = Math.max(y1 - y0, 1);
+  const fitPadding = Math.max(FILTER_FIT_PADDING, Math.min(svgWidth, svgHeight) * 0.16);
+  const availableWidth = Math.max(svgWidth - fitPadding * 2, 1);
+  const availableHeight = Math.max(svgHeight - fitPadding * 2, 1);
+  const scale = Math.min(
+    FILTER_FIT_MAX_ZOOM,
+    Math.max(1, Math.min(availableWidth / boundsWidth, availableHeight / boundsHeight)),
+  );
+  const centerX = (x0 + x1) / 2;
+  const centerY = (y0 + y1) / 2;
+  return zoomIdentity
+    .translate(svgWidth / 2 - scale * centerX, svgHeight / 2 - scale * centerY)
+    .scale(scale);
+};
+
 export const Map = (props: Props) => {
   const {
     data,
@@ -59,6 +283,7 @@ export const Map = (props: Props) => {
   } = props;
   const {
     filters,
+    applyDashboardFilters,
     updateDashboardFilter,
     updateXAxisIndicator,
     xAxisIndicator,
@@ -70,7 +295,6 @@ export const Map = (props: Props) => {
   const [hoverData, setHoverData] = useState<HoverDataType | undefined>(
     undefined,
   );
-  const [zoomLevel, setZoomLevel] = useState(1);
   const queryParams = new URLSearchParams(window.location.search);
   const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
     ? 1280
@@ -80,10 +304,16 @@ export const Map = (props: Props) => {
     : 480;
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
-  const projection = geoEqualEarth()
-    .rotate([0, 0])
-    .scale(160)
-    .translate([svgWidth / 2 - 50, svgHeight / 2 + 25]);
+  const projection = useMemo(
+    () => geoEqualEarth()
+      .rotate([0, 0])
+      .scale(160)
+      .translate([svgWidth / 2 - 50, svgHeight / 2 + 25]),
+    [svgHeight, svgWidth],
+  );
+  const pathGenerator = useMemo(() => geoPath(projection), [projection]);
+  const hasActiveFilters = hasActiveDashboardFilters(filters);
+  const filterSignature = getDashboardFilterSignature(filters);
   const xIndicatorMetaData = indicators[
     indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)
   ];
@@ -99,16 +329,17 @@ export const Map = (props: Props) => {
   const zoomBehaviourRef = useRef<any>();
   const options = indicators.map((d) => d.Indicator);
 
-  useEffect(() => {
-    if (zoomBehaviourRef.current && !data.some((el) => el['Alpha-3 code'] === selectedCountryCode)) {
-      select(mapSvg.current)
-        .transition()
-        .duration(750)
-        .call(zoomBehaviourRef.current.transform, zoomIdentity);
-    }
-  }, [data, selectedCountryCode]);
+  const transitionMapTo = useCallback((transform: ZoomTransform) => {
+    if (!zoomBehaviourRef.current || !mapSvg.current) return;
+    select(mapSvg.current)
+      .interrupt()
+      .transition()
+      .ease(easeCubicOut)
+      .duration(MAP_ZOOM_DURATION)
+      .call(zoomBehaviourRef.current.transform, transform);
+  }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
     const zoomBehaviour = zoom()
@@ -118,33 +349,45 @@ export const Map = (props: Props) => {
         [svgWidth + 20, svgHeight],
       ])
       .on('zoom', ({ transform }) => {
-        setZoomLevel(transform.k);
         mapGSelect.attr('transform', transform);
       });
     zoomBehaviourRef.current = zoomBehaviour;
-    mapSvgSelect.call(zoomBehaviour as any);
+    mapSvgSelect.interrupt().call(zoomBehaviour as any);
   }, [svgHeight, svgWidth]);
 
-  interface Island {
-    name: string;
-    coordinates: [number, number];
-  }
+  useLayoutEffect(() => {
+    if (!zoomBehaviourRef.current || !mapSvg.current) return;
+    if (!hasActiveFilters || data.length === 0) {
+      transitionMapTo(zoomIdentity);
+      return;
+    }
 
-  const islands: Island[] = [
-    { name: 'Comoros', coordinates: [43.3333, -11.6455] },
-    { name: 'Sao Tome and Principe', coordinates: [6.6131, 0.1864] },
-    { name: 'Maldives', coordinates: [73.4226, 0.3406] },
-    { name: 'Nauru', coordinates: [166.9315, -0.5228] },
-    { name: 'Tuvalu', coordinates: [179.82, -9.35] },
-    { name: 'Vanuatu', coordinates: [166.9592, -15.3767] },
-    { name: 'Solomon Islands', coordinates: [160.1562, -9.6457] },
-    { name: 'Samoa', coordinates: [-172.1046, -13.759] },
-    { name: 'Micronesia (Federated States of)', coordinates: [158.215, 6.887] },
-    { name: 'Barbados', coordinates: [-59.5432, 13.1939] },
-    { name: 'Kiribati', coordinates: [174.4, -0.7851311643] },
-    { name: 'Timor-Leste', coordinates: [125.7275, -8.8742] },
-    { name: 'Trinidad and Tobago', coordinates: [-61.3151, 10.6918] },
-  ];
+    const activeCountryCodes = new Set(data.map((d) => d['Alpha-3 code']));
+    const activeCountryNames = new Set(data.map((d) => d['Country or Area']));
+    const features = ((geojsonMapData as any).features || []).filter(
+      (feature: any) => activeCountryCodes.has(feature.properties.ISO3),
+    );
+    const countryBboxBounds = getCountryBboxBounds(data, projection);
+    const featureBounds = countryBboxBounds || getProjectedBounds(features, pathGenerator);
+    const islandBounds = getIslandBounds(activeCountryNames, projection);
+    const bounds = mergeProjectedBounds(featureBounds, islandBounds);
+    const nextTransform = bounds
+      ? createFitTransform(bounds, svgWidth, svgHeight)
+      : zoomIdentity;
+
+    transitionMapTo(nextTransform);
+  }, [
+    data,
+    filterSignature,
+    geojsonMapData,
+    hasActiveFilters,
+    pathGenerator,
+    projection,
+    svgHeight,
+    svgWidth,
+    transitionMapTo,
+  ]);
+
   return (
     <div style={{ overflow: 'hidden', backgroundColor: 'var(--black-100),' }}>
       <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} ref={mapSvg}>
@@ -154,10 +397,10 @@ export const Map = (props: Props) => {
           height={svgHeight + 40}
           fill='#f7f7f7'
           onClick={() => {
-            updateDashboardFilter('countryCode', 'all');
+            applyDashboardFilters(EMPTY_GEOGRAPHIC_FILTERS);
           }}
         />
-        <g ref={mapG}>
+        <MapG ref={mapG}>
           {(geojsonMapData as any).features.map((d: any, i: number) => {
             const index = data.findIndex(
               (el: any) => el['Alpha-3 code'] === d.properties.ISO3,
@@ -166,6 +409,7 @@ export const Map = (props: Props) => {
             // const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
             if (index !== -1 || d.properties.NAME === 'Antarctica') return null;
+            const featureWrapOffset = getFeatureWrapOffset(d, projection);
             return (
               <g key={i} opacity={selectedColor ? 0.5 : 1}>
                 {d.geometry.type === 'MultiPolygon'
@@ -174,10 +418,7 @@ export const Map = (props: Props) => {
                     el.forEach((geo: number[][]) => {
                       let path = ' M';
                       geo.forEach((c: number[], k: number) => {
-                        const point = projection([c[0], c[1]]) as [
-                            number,
-                            number,
-                          ];
+                        const point = projectCoordinate(c, projection, featureWrapOffset);
                         if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                         else path = `${path}${point[0]} ${point[1]}`;
                       });
@@ -188,7 +429,7 @@ export const Map = (props: Props) => {
                         key={j}
                         d={masterPath}
                         stroke='#fff'
-                        strokeWidth={0.2 / zoomLevel}
+                        strokeWidth={0.2}
                         onClick={() => {
                           if (
                             availableCountryList.includes(d.properties.ISO3)
@@ -205,10 +446,7 @@ export const Map = (props: Props) => {
                   : d.geometry.coordinates.map((el: any, j: number) => {
                     let path = 'M';
                     el.forEach((c: number[], k: number) => {
-                      const point = projection([c[0], c[1]]) as [
-                          number,
-                          number,
-                        ];
+                      const point = projectCoordinate(c, projection, featureWrapOffset);
                       if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                       else path = `${path}${point[0]} ${point[1]}`;
                     });
@@ -217,7 +455,7 @@ export const Map = (props: Props) => {
                         key={j}
                         d={path}
                         stroke='#fff'
-                        strokeWidth={0.2 / zoomLevel}
+                        strokeWidth={0.2}
                         onClick={() => {
                           if (
                             availableCountryList.includes(d.properties.ISO3)
@@ -247,6 +485,12 @@ export const Map = (props: Props) => {
             const color = val !== undefined ? colorScale(val) : '#f5f9fe';
             // const regionOpacity = selectedRegions === 'all' || selectedRegions === d.region;
             // const countryOpacity = selectedCountries.length === 0 || selectedCountries === d['Country or Area'];
+            const activeFeature = index === -1
+              ? undefined
+              : (geojsonMapData as any).features[index];
+            const featureWrapOffset = activeFeature
+              ? getFeatureWrapOffset(activeFeature, projection)
+              : 0;
 
             return (
               <g
@@ -284,36 +528,11 @@ export const Map = (props: Props) => {
                   });
                 }}
                 onClick={(event) => {
+                  event.stopPropagation();
                   if (!d || d['Alpha-3 code'] === selectedCountryCode) {
                     updateDashboardFilter('countryCode', 'all');
                   } else {
                     updateDashboardFilter('countryCode', d['Alpha-3 code']);
-                    event.stopPropagation();
-
-                    // Get the clicked country path element
-                    const countryPath = event.currentTarget as SVGPathElement;
-
-                    // Get its bounding box.
-                    const bbox = countryPath.getBBox();
-
-                    // Compute a scale factor: we want to fit the country nicely in the view.
-                    // You might adjust the multiplier (here 0.9) to add some margin.
-                    const scale = Math.min(svgWidth / bbox.width, svgHeight / bbox.height)
-                      * 0.6;
-                    // Compute translation to center the country in the SVG.
-                    const translateX = svgWidth / 2 - scale * (bbox.x + bbox.width / 2);
-                    const translateY = svgHeight / 2 - scale * (bbox.y + bbox.height / 2);
-
-                    // Create the new transform.
-                    const newTransform = zoomIdentity
-                      .translate(translateX, translateY)
-                      .scale(scale);
-
-                    // Use the stored zoom behaviour to transition to the new transform.
-                    select(mapSvg.current)
-                      .transition()
-                      .duration(750)
-                      .call(zoomBehaviourRef.current.transform, newTransform);
                   }
                 }}
                 onMouseLeave={() => {
@@ -331,10 +550,7 @@ export const Map = (props: Props) => {
                       el.forEach((geo: number[][]) => {
                         let path = ' M';
                         geo.forEach((c: number[], k: number) => {
-                          const point = projection([c[0], c[1]]) as [
-                            number,
-                            number,
-                          ];
+                          const point = projectCoordinate(c, projection, featureWrapOffset);
                           if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                           else path = `${path}${point[0]} ${point[1]}`;
                         });
@@ -345,7 +561,7 @@ export const Map = (props: Props) => {
                           key={j}
                           d={masterPath}
                           stroke='#fff'
-                          strokeWidth={0.2 / zoomLevel}
+                          strokeWidth={0.2}
                           fill={color}
                         />
                       );
@@ -355,10 +571,7 @@ export const Map = (props: Props) => {
                     ].geometry.coordinates.map((el: any, j: number) => {
                       let path = 'M';
                       el.forEach((c: number[], k: number) => {
-                        const point = projection([c[0], c[1]]) as [
-                          number,
-                          number,
-                        ];
+                        const point = projectCoordinate(c, projection, featureWrapOffset);
                         if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                         else path = `${path}${point[0]} ${point[1]}`;
                       });
@@ -367,7 +580,7 @@ export const Map = (props: Props) => {
                           key={j}
                           d={path}
                           stroke='#fff'
-                          strokeWidth={0.2 / zoomLevel}
+                          strokeWidth={0.2}
                           fill={color}
                         />
                       );
@@ -385,63 +598,60 @@ export const Map = (props: Props) => {
                       )
                     ]['Alpha-3 code'],
               )
-              .map((d: any, i: number) => (
-                <G opacity={selectedColor ? 0 : 1} key={i}>
-                  {d.geometry.type === 'MultiPolygon'
-                    ? d.geometry.coordinates.map((el: any, j: any) => {
-                      let masterPath = '';
-                      el.forEach((geo: number[][]) => {
-                        let path = ' M';
-                        geo.forEach((c: number[], k: number) => {
-                          const point = projection([c[0], c[1]]) as [
-                                number,
-                                number,
-                              ];
-                          if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
+              .map((d: any, i: number) => {
+                const featureWrapOffset = getFeatureWrapOffset(d, projection);
+                return (
+                  <G opacity={selectedColor ? 0 : 1} key={i}>
+                    {d.geometry.type === 'MultiPolygon'
+                      ? d.geometry.coordinates.map((el: any, j: any) => {
+                        let masterPath = '';
+                        el.forEach((geo: number[][]) => {
+                          let path = ' M';
+                          geo.forEach((c: number[], k: number) => {
+                            const point = projectCoordinate(c, projection, featureWrapOffset);
+                            if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
+                            else path = `${path}${point[0]} ${point[1]}`;
+                          });
+                          masterPath += path;
+                        });
+                        return (
+                          <path
+                            key={j}
+                            d={masterPath}
+                            stroke='#212121'
+                            opacity={1}
+                            strokeWidth={1.5}
+                            fillOpacity={0}
+                            fill={COLOR_SCALES.Null}
+                          />
+                        );
+                      })
+                      : d.geometry.coordinates.map((el: any, j: number) => {
+                        let path = 'M';
+                        el.forEach((c: number[], k: number) => {
+                          const point = projectCoordinate(c, projection, featureWrapOffset);
+                          if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                           else path = `${path}${point[0]} ${point[1]}`;
                         });
-                        masterPath += path;
-                      });
-                      return (
-                        <path
-                          key={j}
-                          d={masterPath}
-                          stroke='#212121'
-                          opacity={1}
-                          strokeWidth={1.5 / zoomLevel}
-                          fillOpacity={0}
-                          fill={COLOR_SCALES.Null}
-                        />
-                      );
-                    })
-                    : d.geometry.coordinates.map((el: any, j: number) => {
-                      let path = 'M';
-                      el.forEach((c: number[], k: number) => {
-                        const point = projection([c[0], c[1]]) as [
-                              number,
-                              number,
-                            ];
-                        if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
-                        else path = `${path}${point[0]} ${point[1]}`;
-                      });
-                      return (
-                        <path
-                          key={j}
-                          d={path}
-                          stroke='#212121'
-                          opacity={1}
-                          strokeWidth={1.5 / zoomLevel}
-                          fillOpacity={0}
-                          fill='none'
-                        />
-                      );
-                    })}
-                </G>
-              ))
+                        return (
+                          <path
+                            key={j}
+                            d={path}
+                            stroke='#212121'
+                            opacity={1}
+                            strokeWidth={1.5}
+                            fillOpacity={0}
+                            fill='none'
+                          />
+                        );
+                      })}
+                  </G>
+                );
+              })
             : null}
 
           {islands.filter((island) => data.some((d) => island.name === d['Country or Area'])).map((island) => {
-            const [x, y] = projection(island.coordinates) as [number, number];
+            const [x, y] = projectAntimeridianAwarePoint(island.coordinates, projection) as [number, number];
             return (
               <circle
                 key={island.name}
@@ -496,6 +706,7 @@ export const Map = (props: Props) => {
                   }
                 }}
                 onClick={(event) => {
+                  event.stopPropagation();
                   const d: any = data.find((el: any) => (el['Country or Area']
                     ? el['Country or Area'].toLowerCase()
                           === island.name.toLowerCase()
@@ -504,33 +715,6 @@ export const Map = (props: Props) => {
                     updateDashboardFilter('countryCode', 'all');
                   } else {
                     updateDashboardFilter('countryCode', d['Alpha-3 code']);
-                    event.stopPropagation();
-
-                    // Get the clicked country path element
-                    const countryPath = event.currentTarget as SVGPathElement;
-
-                    // Get its bounding box.
-                    const bbox = countryPath.getBBox();
-
-                    // Compute a scale factor: we want to fit the country nicely in the view.
-                    // You might adjust the multiplier (here 0.9) to add some margin.
-                    const scale = Math.min(svgWidth / bbox.width, svgHeight / bbox.height)
-                      * 0.6;
-
-                    // Compute translation to center the country in the SVG.
-                    const translateX = svgWidth / 2 - scale * (bbox.x + bbox.width / 2);
-                    const translateY = svgHeight / 2 - scale * (bbox.y + bbox.height / 2);
-
-                    // Create the new transform.
-                    const newTransform = zoomIdentity
-                      .translate(translateX, translateY)
-                      .scale(scale);
-
-                    // Use the stored zoom behaviour to transition to the new transform.
-                    select(mapSvg.current)
-                      .transition()
-                      .duration(750)
-                      .call(zoomBehaviourRef.current.transform, newTransform);
                   }
                 }}
                 onMouseLeave={() => {
@@ -539,7 +723,7 @@ export const Map = (props: Props) => {
               />
             );
           })}
-        </g>
+        </MapG>
       </svg>
       <LegendEl>
         <div

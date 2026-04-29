@@ -9,6 +9,7 @@ import {
   RankedProject,
 } from '../Types';
 import { genderMarkers, outputsTaxonomy } from '../Constants';
+import semanticAliasControls from '../config/filterSemanticAliases.json';
 
 export const DEFAULT_DASHBOARD_FILTERS: DashboardFilters = {
   funding: 'all',
@@ -82,9 +83,154 @@ const createOption = (value: string, label = value, aliases: string[] = []) => (
   aliases: Array.from(new Set([value, label, ...aliases].map(normalizeText).filter(Boolean))),
 });
 
+const PREFERRED_BUREAU_ALIASES: Record<string, string[]> = {
+  RBA: [
+    'africa',
+    'african',
+    'african region',
+    'regional bureau for africa',
+    'sub saharan africa',
+    'sub-saharan africa',
+  ],
+  RBLAC: [
+    'latin america',
+    'latin american',
+    'latin america and the caribbean',
+    'latin american and the caribbean',
+    'latin america or latin american and the caribbean',
+    'latin america caribbean',
+    'latin america & caribbean',
+    'lac',
+    'caribbean',
+    'rblac',
+  ],
+  RBAS: [
+    'arab states',
+    'arab state',
+    'arab region',
+    'arab countries',
+    'regional bureau for arab states',
+    'rbas',
+  ],
+  RBEC: [
+    'eastern europe',
+    'cis',
+    'eastern europe and cis',
+    'eastern europe cis',
+    'europe and cis',
+    'commonwealth of independent states',
+    'regional bureau for europe and cis',
+    'rbec',
+  ],
+  RBAP: [
+    'asia',
+    'asian',
+    'asia pacific',
+    'asia-pacific',
+    'asia and the pacific',
+    'asian pacific',
+    'pacific',
+    'regional bureau for asia and the pacific',
+    'rbap',
+  ],
+};
+
+const createBureauOption = (value: string) => (
+  createOption(value, value, PREFERRED_BUREAU_ALIASES[value] || [])
+);
+
+const SUBCATEGORY_ALIASES: Record<string, string[]> = {
+  'Clean Cooking': [
+    'clean cooking',
+    'cooking',
+    'cookstove',
+    'cookstoves',
+    'clean cookstove',
+    'clean cookstoves',
+    'improved cookstove',
+    'improved cookstoves',
+  ],
+  'Clean Electricity': [
+    'clean electricity',
+    'electricity access',
+    'electricity',
+    'energy access electricity',
+    'power access',
+    'clean power',
+    'electrification',
+  ],
+  'Productive Use': [
+    'productive use',
+    'productive uses',
+    'productive use of energy',
+    'pue',
+  ],
+  Solar: ['solar', 'solar pv', 'pv'],
+  Wind: ['wind', 'wind power'],
+  Hydro: ['hydro', 'hydropower'],
+  Geothermal: ['geothermal'],
+  Bioenergy: ['bioenergy', 'biomass'],
+  Efficiency: ['efficiency', 'energy efficiency'],
+  'Policy - Clean Cooking': ['clean cooking policy', 'policy clean cooking', 'clean cookstove policy'],
+  'Policy - Electricity Access': ['electricity access policy', 'energy access policy', 'policy electricity access'],
+  'Policy - Renewable Energy': ['renewable energy policy', 'renewables policy', 'policy renewable energy'],
+  'Policy - Energy Efficiency': ['energy efficiency policy', 'efficiency policy', 'policy energy efficiency'],
+};
+
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  'Energy Access': [
+    'energy access',
+    'access',
+  ],
+  'Energy Transition': [
+    'energy transition',
+    'transition',
+    'renewable energy',
+    'renewables',
+  ],
+  Policy: [
+    'policy',
+    'policies',
+    'regulation',
+    'regulatory',
+  ],
+};
+
 const sortOptions = (options: FilterOption[]) => [...options].sort((left, right) => (
   left.label.localeCompare(right.label)
 ));
+
+interface SemanticAliasControl {
+  filterKey: string;
+  value: string;
+  aliases: string[];
+}
+
+const isDashboardFilterKey = (value: string): value is DashboardFilterKey => (
+  Object.prototype.hasOwnProperty.call(DEFAULT_DASHBOARD_FILTERS, value)
+);
+
+const applySemanticAliasControls = (filterCatalog: FilterCatalog): FilterCatalog => {
+  const controls = (semanticAliasControls as { aliases?: SemanticAliasControl[] }).aliases || [];
+  const optionsByKey = Object.fromEntries(
+    (Object.keys(filterCatalog.optionsByKey) as DashboardFilterKey[]).map((key) => [
+      key,
+      filterCatalog.optionsByKey[key].map((option) => ({ ...option, aliases: [...option.aliases] })),
+    ]),
+  ) as Record<DashboardFilterKey, FilterOption[]>;
+
+  controls.forEach((control) => {
+    if (!isDashboardFilterKey(control.filterKey) || !Array.isArray(control.aliases)) return;
+    const option = optionsByKey[control.filterKey].find((item) => item.value === control.value);
+    if (!option) return;
+    option.aliases = Array.from(new Set([
+      ...option.aliases,
+      ...control.aliases.map(normalizeText).filter(Boolean),
+    ]));
+  });
+
+  return { optionsByKey };
+};
 
 export const normalizeFundingValue = (value: string) => {
   const normalized = normalizeText(value);
@@ -236,6 +382,7 @@ export const rankProjects = (
   .map((project) => ({
     id: project.id,
     title: getProjectTitle(project),
+    link: project.link || '',
     countryName: project.countryName,
     description: project.description || project.projectDescription || '',
     budget: getProjectBudget(project),
@@ -265,14 +412,22 @@ const uniqueMetadataOptions = (
 export const buildFilterCatalog = (countryMetadata: CountryMetadataRow[]): FilterCatalog => {
   const categoryOptions = outputsTaxonomy
     .filter((category) => category.value !== 'all')
-    .map((category) => createOption(category.value, category.value, [category.label]));
+    .map((category) => createOption(
+      category.value,
+      category.value,
+      [category.label, ...(CATEGORY_ALIASES[category.value] || [])],
+    ));
 
   const subCategoryOptions = outputsTaxonomy.flatMap((category) => category.subcategories
     .filter((subCategory) => subCategory.value !== 'all')
     .map((subCategory) => createOption(
       subCategory.value,
       subCategory.value,
-      [subCategory.label, `${category.value} ${subCategory.value}`],
+      [
+        subCategory.label,
+        `${category.value} ${subCategory.value}`,
+        ...(SUBCATEGORY_ALIASES[subCategory.value] || []),
+      ],
     )));
 
   const genderOptions = genderMarkers
@@ -281,7 +436,7 @@ export const buildFilterCatalog = (countryMetadata: CountryMetadataRow[]): Filte
 
   genderOptions.push(createOption('no-marker', 'No marker', ['no marker', 'without marker']));
 
-  return {
+  return applySemanticAliasControls({
     optionsByKey: {
       funding: [
         createOption('vf', 'Vertical funds', ['vf', 'vertical fund', 'vertical funds']),
@@ -291,7 +446,7 @@ export const buildFilterCatalog = (countryMetadata: CountryMetadataRow[]): Filte
       category: sortOptions(categoryOptions),
       subCategory: sortOptions(subCategoryOptions),
       bureau: uniqueMetadataOptions(countryMetadata, (row) => (
-        row.Region ? createOption(row.Region, row.Region) : null
+        row.Region ? createBureauOption(row.Region) : null
       )),
       economy: uniqueMetadataOptions(countryMetadata, (row) => (
         row.Economy ? createOption(row.Economy, row.Economy) : null
@@ -325,10 +480,27 @@ export const buildFilterCatalog = (countryMetadata: CountryMetadataRow[]): Filte
           : null
       )),
     },
-  };
+  });
 };
 
 const tokenizeQuery = (query: string) => normalizeText(query).split(/[^a-z0-9-]+/).filter(Boolean);
+
+const findBestMatchedOption = (
+  options: FilterOption[],
+  normalizedQuery: string,
+) => options.reduce(
+  (bestMatch: { option: FilterOption; aliasLength: number } | undefined, option) => {
+    const matchedAliasLength = option.aliases.reduce((maxLength, alias) => (
+      normalizedQuery.includes(alias) ? Math.max(maxLength, alias.length) : maxLength
+    ), 0);
+    if (!matchedAliasLength) return bestMatch;
+    if (!bestMatch || matchedAliasLength > bestMatch.aliasLength) {
+      return { option, aliasLength: matchedAliasLength };
+    }
+    return bestMatch;
+  },
+  undefined,
+)?.option;
 
 export const parseQueryLocally = (
   query: string,
@@ -339,17 +511,21 @@ export const parseQueryLocally = (
   const filters: Partial<DashboardFilters> = {};
 
   (Object.keys(filterCatalog.optionsByKey) as DashboardFilterKey[]).forEach((key) => {
-    const matchedOption = [...filterCatalog.optionsByKey[key]]
-      .sort((left, right) => (
-        Math.max(...right.aliases.map((alias) => alias.length))
-        - Math.max(...left.aliases.map((alias) => alias.length))
-      ))
-      .find((option) => option.aliases.some((alias) => normalizedQuery.includes(alias)));
+    const matchedOption = findBestMatchedOption(filterCatalog.optionsByKey[key], normalizedQuery);
 
     if (matchedOption) {
       filters[key] = matchedOption.value;
     }
   });
+
+  if (filters.bureau) {
+    const countryWasExplicit = filterCatalog.optionsByKey.countryCode.some((option) => (
+      option.aliases.some((alias) => normalizedQuery.includes(alias))
+    ));
+    if (!countryWasExplicit) {
+      delete filters.countryCode;
+    }
+  }
 
   if (filters.subCategory && !filters.category) {
     const matchedCategory = outputsTaxonomy.find((category) => category.subcategories
@@ -386,7 +562,7 @@ export const getAppliedFilterEntries = (
   .map((key) => ({
     key,
     value: filters[key],
-    label: `${key}: ${getFilterDisplayValue(key, filters[key], filterCatalog)}`,
+    label: getFilterDisplayValue(key, filters[key], filterCatalog),
   }));
 
 export const getMoonshotProxyBaseUrl = () => (

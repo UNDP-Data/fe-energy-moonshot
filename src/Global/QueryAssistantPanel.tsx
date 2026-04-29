@@ -1,4 +1,5 @@
 import {
+  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -10,39 +11,201 @@ import {
   Alert,
   Button,
   Input,
-  Space,
   Tag,
-  Typography,
 } from 'antd';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import { CornerDownLeft } from 'lucide-react';
 import Context from '../Context/Context';
 import {
   CtxDataType,
   FilterCatalog,
+  DashboardFilters,
   ProjectLevelDataType,
   ProjectSynopsisContext,
-  RankedProject,
   SummaryMetrics,
 } from '../Types';
 import {
-  DEFAULT_DASHBOARD_FILTERS,
   getAppliedFilterEntries,
+  DEFAULT_DASHBOARD_FILTERS,
 } from '../utils/dashboardFilters';
 import { fetchProjectSynopsis, parseQueryWithFallback } from '../utils/assistant';
 
-const { Paragraph, Text, Title } = Typography;
 const { TextArea } = Input;
+
+const Panel = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const QueryGrid = styled.div`
+  display: block;
+  margin-bottom: 0.75rem;
+`;
+
+const PromptRow = styled.div`
+  width: 100%;
+`;
+
+const PromptInput = styled(TextArea)`
+  &.ant-input {
+    background:
+      linear-gradient(135deg, rgba(144, 255, 255, 0.22), rgba(255, 255, 255, 0.96) 42%),
+      var(--white);
+    border: 1px solid var(--black);
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+    line-height: 1.45;
+    min-height: 3.5rem;
+    padding: 1rem 3.5rem 0.7rem 1rem;
+    resize: vertical;
+    width: 100%;
+  }
+  &.ant-input::placeholder {
+    color: var(--gray-600);
+  }
+  &.ant-input:hover,
+  &.ant-input:focus {
+    border-color: #1f6fff;
+    box-shadow: 0 0 0 3px rgba(31, 111, 255, 0.12);
+  }
+`;
+
+const PromptInputWrap = styled.div<{ $hasFilters?: boolean }>`
+  position: relative;
+  width: 100%;
+  ${(props) => (props.$hasFilters ? `
+    ${PromptInput}.ant-input {
+      padding-right: min(25rem, 48vw);
+    }
+    @media (max-width: 760px) {
+      ${PromptInput}.ant-input {
+        padding-right: 3.5rem;
+        padding-top: 3.1rem;
+      }
+    }
+  ` : '')}
+`;
+
+const PromptLabel = styled.label`
+  background: var(--white);
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  font-weight: 400;
+  left: 0.85rem;
+  line-height: 1;
+  padding: 0 0.35rem;
+  position: absolute;
+  top: -0.42rem;
+  z-index: 3;
+`;
+
+const InlineSubmitButton = styled(Button)`
+  &.ant-btn {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(31, 111, 255, 0.32);
+    border-radius: 0.65rem;
+    box-shadow: 0 0.18rem 0.55rem rgba(31, 111, 255, 0.12);
+    color: #1f6fff;
+    display: inline-flex;
+    height: 2.25rem;
+    justify-content: center;
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: box-shadow 0.16s ease, transform 0.16s ease, background 0.16s ease;
+    width: 2.25rem;
+    z-index: 2;
+  }
+  &.ant-btn:hover,
+  &.ant-btn:focus {
+    background: rgba(240, 247, 255, 0.96);
+    border-color: rgba(31, 111, 255, 0.58);
+    color: #0058e6;
+    box-shadow: 0 0.28rem 0.75rem rgba(31, 111, 255, 0.18);
+    transform: translateY(-50%) scale(1.04);
+  }
+  &.ant-btn:active {
+    transform: translateY(-50%) scale(0.98);
+  }
+  &.ant-btn .ant-btn-icon {
+    display: inline-flex;
+  }
+`;
+
+const AppliedFilterList = styled.div`
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: flex-end;
+  max-width: min(28rem, calc(100% - 5rem));
+  position: absolute;
+  right: 3.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  .ant-tag {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.76);
+    border-color: rgba(31, 111, 255, 0.22);
+    border-radius: 999px;
+    color: var(--gray-700);
+    display: inline-flex;
+    font-size: 0.7rem;
+    gap: 0.25rem;
+    line-height: 1;
+    margin-inline-end: 0;
+    max-width: 12rem;
+    min-height: 1.45rem;
+    padding: 0.18rem 0.38rem 0.18rem 0.55rem;
+    white-space: nowrap;
+  }
+  .ant-tag .ant-tag-close-icon {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 0.7rem;
+    margin-inline-start: 0.1rem;
+  }
+  .ant-tag span:not(.ant-tag-close-icon) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 760px) {
+    justify-content: flex-start;
+    left: 1rem;
+    max-width: calc(100% - 4.5rem);
+    right: 3.4rem;
+    top: 1.05rem;
+    transform: none;
+  }
+`;
+
+export interface AssistantProjectOverviewState {
+  loading: boolean;
+  text: string;
+  error: string;
+  stale: boolean;
+}
 
 interface Props {
   filterCatalog: FilterCatalog;
   filteredProjects: ProjectLevelDataType[];
-  rankedProjects: RankedProject[];
   projectSynopsisContext: ProjectSynopsisContext;
   summaryMetrics: SummaryMetrics;
-  summaryText: string;
+  onProjectOverviewChange: (_state: AssistantProjectOverviewState) => void;
 }
 
-const buildContextSignature = (filters: any, projectSynopsisContext: ProjectSynopsisContext) => JSON.stringify({
+const buildContextSignature = (
+  filters: any,
+  projectSynopsisContext: ProjectSynopsisContext,
+  locale: string,
+) => JSON.stringify({
+  locale,
   filters,
   totalProjects: projectSynopsisContext.totalProjects,
   topProjectIds: projectSynopsisContext.topProjects.map((project) => project.id),
@@ -50,23 +213,28 @@ const buildContextSignature = (filters: any, projectSynopsisContext: ProjectSyno
 
 const buildFilterSignature = (filters: any) => JSON.stringify(filters);
 
+const logSynopsisStep = (message: string, detail?: Record<string, unknown>) => {
+  // eslint-disable-next-line no-console
+  console.log(`[Moonshot project overview] ${message}`, detail || '');
+};
+
 export const QueryAssistantPanel = (props: Props) => {
   const {
     filterCatalog,
     filteredProjects,
-    rankedProjects,
     projectSynopsisContext,
     summaryMetrics,
-    summaryText,
+    onProjectOverviewChange,
   } = props;
   const {
     filters,
     applyDashboardFilters,
     updateDashboardFilter,
-    resetDashboardFilters,
   } = useContext(Context) as CtxDataType;
   const { i18n, t } = useTranslation();
-  const [query, setQuery] = useState('');
+  const defaultQueryText = t('default-ai-query-text');
+  const defaultOverviewQuery = t('default-project-overview-query');
+  const [query, setQuery] = useState(defaultQueryText);
   const [lastSubmittedQuery, setLastSubmittedQuery] = useState('');
   const [parseLoading, setParseLoading] = useState(false);
   const [synopsisLoading, setSynopsisLoading] = useState(false);
@@ -76,12 +244,15 @@ export const QueryAssistantPanel = (props: Props) => {
   const [unresolvedTerms, setUnresolvedTerms] = useState<string[]>([]);
   const [pendingQuery, setPendingQuery] = useState('');
   const [pendingSignature, setPendingSignature] = useState('');
+  const [pendingFilters, setPendingFilters] = useState<DashboardFilters | null>(null);
   const [lastResolvedSignature, setLastResolvedSignature] = useState('');
   const synopsisRequestIdRef = useRef(0);
+  const inFlightSignatureRef = useRef('');
+  const lastRequestedSignatureRef = useRef('');
 
   const currentSignature = useMemo(
-    () => buildContextSignature(filters, projectSynopsisContext),
-    [filters, projectSynopsisContext],
+    () => buildContextSignature(filters, projectSynopsisContext, i18n.language),
+    [filters, i18n.language, projectSynopsisContext],
   );
   const currentFilterSignature = useMemo(
     () => buildFilterSignature(filters),
@@ -91,31 +262,59 @@ export const QueryAssistantPanel = (props: Props) => {
     () => getAppliedFilterEntries(filters, filterCatalog),
     [filterCatalog, filters],
   );
-  const topProjects = useMemo(
-    () => rankedProjects.slice(0, 5),
-    [rankedProjects],
-  );
   const projectOverviewLoadErrorText = t('project-overview-load-error');
   const queryParseErrorText = t('query-parse-error');
+  const previousDefaultQueryRef = useRef(defaultQueryText);
+  const queryEditedRef = useRef(false);
 
   useEffect(() => {
-    if (lastResolvedSignature && lastResolvedSignature !== currentSignature && synopsisText) {
-      setSynopsisStale(true);
+    if (!queryEditedRef.current || query === previousDefaultQueryRef.current) {
+      setQuery(defaultQueryText);
+      queryEditedRef.current = false;
     }
-  }, [currentSignature, lastResolvedSignature, synopsisText]);
+    previousDefaultQueryRef.current = defaultQueryText;
+  }, [defaultQueryText, query]);
+
+  useEffect(() => {
+    onProjectOverviewChange({
+      loading: synopsisLoading,
+      text: synopsisText,
+      error: synopsisError,
+      stale: synopsisStale,
+    });
+  }, [
+    onProjectOverviewChange,
+    synopsisError,
+    synopsisLoading,
+    synopsisStale,
+    synopsisText,
+  ]);
 
   const runSynopsis = useCallback(async (
     requestId: number,
     effectiveQuery: string,
+    effectiveFilters: DashboardFilters,
+    resolutionSignature: string,
   ) => {
+    const requestStartedAt = typeof window !== 'undefined' ? window.performance.now() : 0;
+    inFlightSignatureRef.current = resolutionSignature;
+    lastRequestedSignatureRef.current = resolutionSignature;
     setSynopsisLoading(true);
     setSynopsisError('');
+    logSynopsisStep('request started', {
+      requestId,
+      resolutionSignature,
+      query: effectiveQuery,
+      filters: effectiveFilters,
+      totalProjects: projectSynopsisContext.totalProjects,
+      topProjects: projectSynopsisContext.topProjects.length,
+    });
 
     try {
       const response = await fetchProjectSynopsis({
         query: effectiveQuery,
         locale: i18n.language,
-        filters,
+        filters: effectiveFilters,
         summaryMetrics,
         projectContext: projectSynopsisContext,
       });
@@ -123,21 +322,36 @@ export const QueryAssistantPanel = (props: Props) => {
       if (synopsisRequestIdRef.current !== requestId) return;
       setSynopsisText(response.synopsis || '');
       setSynopsisStale(false);
-      setLastResolvedSignature(currentSignature);
+      setLastResolvedSignature(resolutionSignature);
+      logSynopsisStep('request completed', {
+        requestId,
+        durationMs: typeof window !== 'undefined'
+          ? Number((window.performance.now() - requestStartedAt).toFixed(1))
+          : undefined,
+        synopsisCharacters: (response.synopsis || '').length,
+      });
     } catch (error: any) {
       if (synopsisRequestIdRef.current !== requestId) return;
       setSynopsisText('');
       setSynopsisError(error?.message || projectOverviewLoadErrorText);
+      setLastResolvedSignature(resolutionSignature);
+      logSynopsisStep('request failed', {
+        requestId,
+        durationMs: typeof window !== 'undefined'
+          ? Number((window.performance.now() - requestStartedAt).toFixed(1))
+          : undefined,
+        error: error?.message || projectOverviewLoadErrorText,
+      });
     } finally {
       if (synopsisRequestIdRef.current === requestId) {
+        inFlightSignatureRef.current = '';
         setSynopsisLoading(false);
         setPendingQuery('');
         setPendingSignature('');
+        setPendingFilters(null);
       }
     }
   }, [
-    currentSignature,
-    filters,
     i18n.language,
     projectOverviewLoadErrorText,
     projectSynopsisContext,
@@ -145,45 +359,107 @@ export const QueryAssistantPanel = (props: Props) => {
   ]);
 
   useEffect(() => {
-    if (!pendingQuery || pendingSignature !== currentFilterSignature) return undefined;
+    if (
+      pendingQuery
+      || synopsisLoading
+      || lastResolvedSignature === currentSignature
+      || inFlightSignatureRef.current === currentSignature
+      || lastRequestedSignatureRef.current === currentSignature
+    ) return undefined;
 
     if (!filteredProjects.length) {
       setSynopsisText('');
-      setSynopsisError('');
+      setSynopsisError(t('project-overview-no-projects'));
       setSynopsisLoading(false);
       setSynopsisStale(false);
       setLastResolvedSignature(currentSignature);
-      setPendingQuery('');
-      setPendingSignature('');
+      inFlightSignatureRef.current = '';
+      lastRequestedSignatureRef.current = currentSignature;
+      logSynopsisStep('auto skipped because no projects match current filters');
       return undefined;
     }
 
     const requestId = synopsisRequestIdRef.current + 1;
     synopsisRequestIdRef.current = requestId;
-    runSynopsis(requestId, pendingQuery);
+    logSynopsisStep('auto requesting overview for current filters', {
+      requestId,
+      filteredProjects: filteredProjects.length,
+      source: lastSubmittedQuery ? 'submitted query' : 'manual filters',
+    });
+    runSynopsis(requestId, lastSubmittedQuery || defaultOverviewQuery, filters, currentSignature);
 
-    return () => {
-      if (synopsisRequestIdRef.current === requestId) {
-        setSynopsisLoading(false);
-      }
-    };
+    return undefined;
+  }, [
+    currentSignature,
+    defaultOverviewQuery,
+    filteredProjects.length,
+    filters,
+    lastResolvedSignature,
+    lastSubmittedQuery,
+    pendingQuery,
+    runSynopsis,
+    synopsisLoading,
+    t,
+  ]);
+
+  useEffect(() => {
+    if (!pendingQuery || !pendingFilters) return undefined;
+
+    if (pendingSignature !== currentFilterSignature) {
+      logSynopsisStep('waiting for filters to settle before requesting overview', {
+        pendingSignature,
+        currentFilterSignature,
+      });
+      return undefined;
+    }
+
+    if (!filteredProjects.length) {
+      setSynopsisText('');
+      setSynopsisError(t('project-overview-no-projects'));
+      setSynopsisLoading(false);
+      setSynopsisStale(false);
+      setLastResolvedSignature(currentSignature);
+      inFlightSignatureRef.current = '';
+      lastRequestedSignatureRef.current = currentSignature;
+      setPendingQuery('');
+      setPendingSignature('');
+      setPendingFilters(null);
+      logSynopsisStep('skipped because no projects match current filters');
+      return undefined;
+    }
+
+    const requestId = synopsisRequestIdRef.current + 1;
+    synopsisRequestIdRef.current = requestId;
+    logSynopsisStep('filters settled; requesting overview', {
+      requestId,
+      filteredProjects: filteredProjects.length,
+    });
+    runSynopsis(requestId, pendingQuery, pendingFilters, currentSignature);
+
+    return undefined;
   }, [
     currentSignature,
     currentFilterSignature,
     filteredProjects.length,
+    pendingFilters,
     pendingQuery,
     pendingSignature,
     runSynopsis,
+    t,
   ]);
 
   const submitQuery = async () => {
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
 
+    const parseStartedAt = typeof window !== 'undefined' ? window.performance.now() : 0;
     setParseLoading(true);
     setSynopsisText('');
     setSynopsisError('');
     setSynopsisStale(false);
+    logSynopsisStep('parse started', {
+      query: trimmedQuery,
+    });
 
     try {
       const parsed = await parseQueryWithFallback(trimmedQuery, i18n.language, filterCatalog);
@@ -196,105 +472,88 @@ export const QueryAssistantPanel = (props: Props) => {
         nextFilters.subCategory = 'all';
       }
 
-      applyDashboardFilters(nextFilters);
       setLastSubmittedQuery(trimmedQuery);
       setUnresolvedTerms(parsed.unresolvedTerms);
       setPendingQuery(trimmedQuery);
       setPendingSignature(buildFilterSignature(nextFilters));
+      setPendingFilters(nextFilters);
+      setSynopsisLoading(true);
+      logSynopsisStep('query parsed; applying filters', {
+        query: trimmedQuery,
+        parseDurationMs: typeof window !== 'undefined'
+          ? Number((window.performance.now() - parseStartedAt).toFixed(1))
+          : undefined,
+        parsedFilters: parsed.filters,
+        nextFilters,
+        unresolvedTerms: parsed.unresolvedTerms,
+      });
+      startTransition(() => {
+        applyDashboardFilters(nextFilters);
+      });
     } catch (error: any) {
       setSynopsisError(error?.message || queryParseErrorText);
+      logSynopsisStep('query parse failed', {
+        parseDurationMs: typeof window !== 'undefined'
+          ? Number((window.performance.now() - parseStartedAt).toFixed(1))
+          : undefined,
+        error: error?.message || queryParseErrorText,
+      });
     } finally {
       setParseLoading(false);
     }
   };
 
-  const refreshSynopsis = () => {
-    const effectiveQuery = lastSubmittedQuery || query.trim();
-    if (!effectiveQuery) return;
-
-    setPendingQuery(effectiveQuery);
-    setPendingSignature(currentFilterSignature);
-    setSynopsisError('');
-  };
-
   return (
-    <div
-      className='margin-bottom-05'
-      style={{
-        border: '1px solid #d9d9d9',
-        borderRadius: '0.75rem',
-        padding: '1rem',
-        background: '#fafafa',
-      }}
-    >
-      <Title level={4} style={{ marginBottom: '0.75rem' }}>
-        {t('ask-dashboard-title')}
-      </Title>
-      <Paragraph style={{ marginBottom: '0.75rem' }}>
-        {t('ask-dashboard-description')}
-      </Paragraph>
-      <TextArea
-        rows={3}
-        placeholder={t('ask-dashboard-placeholder')}
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-      />
-      <Space style={{ marginTop: '0.75rem', marginBottom: '0.75rem' }}>
-        <Button type='primary' loading={parseLoading} onClick={submitQuery}>
-          {t('apply-query')}
-        </Button>
-        <Button onClick={() => {
-          setQuery('');
-          setLastSubmittedQuery('');
-          setSynopsisText('');
-          setSynopsisError('');
-          setSynopsisStale(false);
-          setUnresolvedTerms([]);
-          resetDashboardFilters();
-        }}
-        >
-          {t('clear-filters')}
-        </Button>
-        <Button
-          disabled={!lastSubmittedQuery || synopsisLoading || !filteredProjects.length}
-          onClick={refreshSynopsis}
-        >
-          {t('refresh-project-overview')}
-        </Button>
-      </Space>
-
-      {lastSubmittedQuery ? (
-        <div
-          style={{
-            borderRadius: '0.5rem',
-            background: '#fff',
-            padding: '0.75rem',
-            marginBottom: '0.75rem',
-          }}
-        >
-          <Text strong>{t('latest-query')}</Text>
-          <Paragraph style={{ marginBottom: 0 }}>{lastSubmittedQuery}</Paragraph>
-        </div>
-      ) : null}
-
-      <div className='margin-bottom-04'>
-        <Text strong>{t('applied-filters')}</Text>
-        <div style={{ marginTop: '0.5rem' }}>
-          {appliedFilters.length ? appliedFilters.map((entry) => (
-            <Tag
-              key={`${entry.key}-${entry.value}`}
-              closable
-              onClose={(event) => {
-                event.preventDefault();
-                updateDashboardFilter(entry.key, 'all');
+    <Panel>
+      <QueryGrid>
+        <PromptRow>
+          <PromptInputWrap $hasFilters={appliedFilters.length > 0}>
+            <PromptLabel htmlFor='moonshot-ai-query'>{t('ask-energy-moonshot-ai')}</PromptLabel>
+            <PromptInput
+              id='moonshot-ai-query'
+              autoSize={{ minRows: 1, maxRows: 3 }}
+              placeholder={t('ask-dashboard-placeholder')}
+              value={query}
+              onChange={(event) => {
+                queryEditedRef.current = true;
+                setQuery(event.target.value);
               }}
-              style={{ marginBottom: '0.5rem' }}
-            >
-              {entry.label}
-            </Tag>
-          )) : <Text type='secondary'>{t('no-filters-applied')}</Text>}
-        </div>
-      </div>
+              onPressEnter={(event) => {
+                if (!event.shiftKey) {
+                  event.preventDefault();
+                  submitQuery();
+                }
+              }}
+            />
+            {appliedFilters.length ? (
+              <AppliedFilterList aria-label={t('applied-filters')}>
+                {appliedFilters.map((entry) => (
+                  <Tag
+                    key={`${entry.key}-${entry.value}`}
+                    closable
+                    title={entry.label}
+                    onClose={(event) => {
+                      event.preventDefault();
+                      updateDashboardFilter(entry.key, 'all');
+                    }}
+                  >
+                    {entry.label}
+                  </Tag>
+                ))}
+              </AppliedFilterList>
+            ) : null}
+            <InlineSubmitButton
+              aria-label={t('apply-query')}
+              icon={<CornerDownLeft size={17} strokeWidth={2.25} />}
+              loading={parseLoading}
+              onClick={submitQuery}
+              shape='circle'
+              title={t('apply-query')}
+              type='primary'
+            />
+          </PromptInputWrap>
+        </PromptRow>
+      </QueryGrid>
 
       {unresolvedTerms.length ? (
         <Alert
@@ -304,84 +563,6 @@ export const QueryAssistantPanel = (props: Props) => {
           style={{ marginBottom: '0.75rem' }}
         />
       ) : null}
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: '1rem',
-        }}
-      >
-        <div
-          style={{
-            background: '#fff',
-            borderRadius: '0.5rem',
-            padding: '0.75rem',
-          }}
-        >
-          <Text strong>{t('deterministic-summary')}</Text>
-          <Paragraph style={{ marginTop: '0.5rem', marginBottom: 0 }}>
-            {summaryText}
-          </Paragraph>
-        </div>
-
-        <div
-          style={{
-            background: '#fff',
-            borderRadius: '0.5rem',
-            padding: '0.75rem',
-          }}
-        >
-          <Text strong>{t('project-overview')}</Text>
-          <Paragraph style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-            {synopsisLoading
-              ? t('generating-project-overview')
-              : synopsisText || t('project-overview-placeholder')}
-          </Paragraph>
-          {synopsisStale ? (
-            <Alert
-              type='warning'
-              showIcon
-              message={t('project-overview-stale')}
-            />
-          ) : null}
-          {synopsisError ? (
-            <Alert
-              type='error'
-              showIcon
-              message={synopsisError}
-              style={{ marginTop: '0.5rem' }}
-            />
-          ) : null}
-        </div>
-
-        <div
-          style={{
-            background: '#fff',
-            borderRadius: '0.5rem',
-            padding: '0.75rem',
-          }}
-        >
-          <Text strong>{t('top-projects')}</Text>
-          <div style={{ marginTop: '0.5rem' }}>
-            {topProjects.length ? topProjects.map((project, index) => (
-              <Paragraph key={project.id} style={{ marginBottom: '0.5rem' }}>
-                <Text strong>
-                  {`${index + 1}.`}
-                </Text>
-                {' '}
-                {project.title}
-                {' '}
-                <Text type='secondary'>
-                  (
-                  {project.countryName}
-                  )
-                </Text>
-              </Paragraph>
-            )) : <Text type='secondary'>{t('no-projects-current-filters')}</Text>}
-          </div>
-        </div>
-      </div>
-    </div>
+    </Panel>
   );
 };

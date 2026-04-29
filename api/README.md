@@ -39,6 +39,8 @@ cp api/.env.example api/.env
 ```
 
 4. Set the Azure OpenAI values in `api/.env`.
+   For production-style local testing, also set:
+   `ALLOWED_ORIGINS=https://undp-data.github.io`
 
 5. Run the backend:
 
@@ -54,6 +56,21 @@ npm start
 ```
 
 The frontend dev server proxies `/api/*` to `http://localhost:3001`.
+
+## Abuse controls
+
+Moonshot includes lightweight server-side protections:
+
+- per-IP rate limiting on `parse-query` and `project-synopsis`
+- POST origin enforcement when `ALLOWED_ORIGINS` is configured
+- prompt length caps through request validation
+
+Useful env knobs:
+
+- `ALLOWED_ORIGINS=https://undp-data.github.io`
+- `MOONSHOT_RATE_LIMIT_WINDOW_SECONDS=300`
+- `MOONSHOT_PARSE_RATE_LIMIT=60`
+- `MOONSHOT_SYNOPSIS_RATE_LIMIT=120`
 
 ## Future move into `dsc-energy-ai-backend`
 

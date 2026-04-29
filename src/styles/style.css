@@ -106,49 +106,117 @@ body {
 .table-cell-no-border {
   border-bottom: none !important;
 }
+
+.moonshot-project-table,
+.moonshot-project-table .undp-typography,
+.moonshot-project-table .undp-table-head-cell,
+.moonshot-project-table .undp-table-row-cell,
+.moonshot-project-table a,
+.moonshot-project-table b,
+.moonshot-project-table span {
+  font-size: 0.875rem;
+}
+
+.moonshot-project-table h6.undp-typography {
+  font-size: 1rem;
+}
+
+.moonshot-project-table .undp-table-head-cell {
+  font-size: calc(1rem + 2pt);
+}
+
 .undp-country-header {
   position: relative !important;
 }
 
+.logo-sub-head {
+  gap: 0.45rem;
+}
+
+.moonshot-header-title {
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  font-weight: 900;
+  line-height: 1.08;
+  margin-left: 0 !important;
+  text-decoration: none;
+}
+
+.undp-site-title.moonshot-header-title,
+.undp-site-title.moonshot-header-title span {
+  font-weight: 900 !important;
+}
+
 .undp-header-actions {
+  align-items: center;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
 }
 
 .undp-language-control {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  align-items: center;
+  display: inline-flex;
+  gap: 0.55rem;
 }
 
 html[dir='rtl'] .undp-language-control {
-  align-items: flex-end;
+  flex-direction: row-reverse;
 }
 
 .undp-language-label {
-  color: var(--gray-600);
-  font-size: 0.75rem;
+  color: var(--black);
+  font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
 .undp-language-select {
-  min-width: 7.5rem;
-  border: 1px solid var(--gray-400);
-  border-radius: 0;
+  appearance: none;
   background: var(--white);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--black) 50%),
+    linear-gradient(135deg, var(--black) 50%, transparent 50%);
+  background-position:
+    calc(100% - 0.75rem) 50%,
+    calc(100% - 0.45rem) 50%;
+  background-repeat: no-repeat;
+  background-size: 0.32rem 0.32rem, 0.32rem 0.32rem;
+  border: 0;
+  border-bottom: 2px solid var(--black);
+  border-radius: 0;
   color: var(--black);
-  font-size: 0.95rem;
-  line-height: 1.2;
-  padding: 0.55rem 2rem 0.55rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  min-width: 3.65rem;
+  padding: 0.35rem 1.2rem 0.35rem 0.1rem;
+  text-transform: uppercase;
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+html[dir='rtl'] .undp-language-select {
+  background-position:
+    0.45rem 50%,
+    0.75rem 50%;
+  padding-left: 1.2rem;
+  padding-right: 0.1rem;
+}
+
+.undp-language-select:hover {
+  background-color: var(--dark-yellow);
+  border-bottom-color: var(--dark-yellow);
 }
 
 .undp-language-select:focus {
-  outline: 2px solid #1f6fff;
-  outline-offset: 1px;
+  background-color: var(--dark-yellow);
+  border-bottom-color: var(--black);
+  box-shadow: 0 0 0 2px var(--black);
+  outline: none;
 }
 
 .undp-mobile-language-control {
@@ -401,8 +469,7 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
   }
 
   .undp-language-select {
-    min-width: 6.25rem;
-    font-size: 0.875rem;
-    padding-right: 1.5rem;
+    font-size: 0.8125rem;
+    min-width: 3.25rem;
   }
 }

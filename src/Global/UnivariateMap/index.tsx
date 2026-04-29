@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import { Tooltip } from 'antd';
 import Context from '../../Context/Context';
 import {
   CtxDataType, DataType, IndicatorMetaDataType, IndicatorRange,
@@ -20,6 +21,31 @@ const El = styled.div`
   overflow: auto;
   position: relative;
   background-color: var(--black-100);
+`;
+
+const DisclaimerButton = styled.button`
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--gray-500);
+  border-radius: 50%;
+  color: var(--black);
+  cursor: help;
+  display: flex;
+  font-size: 0.875rem;
+  font-weight: 700;
+  height: 1.75rem;
+  justify-content: center;
+  line-height: 1;
+  position: absolute;
+  right: 1rem;
+  text-transform: none;
+  top: 1rem;
+  width: 1.75rem;
+  z-index: 7;
+  &:focus {
+    outline: 2px solid #1f6fff;
+    outline-offset: 2px;
+  }
 `;
 
 export const UnivariateMap = (props: Props) => {
@@ -46,6 +72,18 @@ export const UnivariateMap = (props: Props) => {
 
   return (
     <El id='graph-node'>
+      <Tooltip
+        title={t('map-disclaimer')}
+        placement='left'
+        overlayStyle={{ maxWidth: '24rem' }}
+      >
+        <DisclaimerButton
+          aria-label={t('map-disclaimer')}
+          type='button'
+        >
+          i
+        </DisclaimerButton>
+      </Tooltip>
       <Map
         data={data}
         geojsonMapData={geojsonMapData}
@@ -53,17 +91,6 @@ export const UnivariateMap = (props: Props) => {
         binningRangeLarge={binningRangeLarge}
         indicators={indicators}
       />
-      <div
-        style={{
-          marginTop: '1rem',
-          fontSize: '0.75rem',
-          color: '#666',
-          fontStyle: 'italic',
-          padding: '0 1rem',
-        }}
-      >
-        {t('map-disclaimer')}
-      </div>
     </El>
   );
 };
