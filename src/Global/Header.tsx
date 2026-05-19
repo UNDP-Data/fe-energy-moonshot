@@ -22,7 +22,11 @@ function Header(props: Props) {
             style={{ textDecoration: 'none' }}
             className='logo-sub-head flex-div flex-vert-align-center'
           >
-            <span aria-label={t('undp-logo-alt')} role='img'>
+            <span
+              aria-label={t('undp-logo-alt')}
+              className='moonshot-header-logo'
+              role='img'
+            >
               <Logo height={122} />
             </span>
             <div className='undp-site-title moonshot-header-title'>

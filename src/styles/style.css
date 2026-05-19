@@ -133,6 +133,14 @@ body {
   gap: 0.45rem;
 }
 
+.moonshot-header-logo {
+  display: flex;
+}
+
+.moonshot-header-logo > div {
+  margin: 0;
+}
+
 .moonshot-header-title {
   color: var(--black);
   display: flex;
