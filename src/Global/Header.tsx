@@ -28,8 +28,9 @@ function Header(props: Props) {
               height='122'
             />
             <div className='undp-site-title moonshot-header-title'>
-              <span>{t('page-title-energy-moonshot')}</span>
-              <span>{t('page-title-tracker')}</span>
+              <span>{t('header-title-sustainable')}</span>
+              <span>{t('header-title-energy')}</span>
+              <span>{t('header-title-tracker')}</span>
             </div>
           </a>
         </div>
