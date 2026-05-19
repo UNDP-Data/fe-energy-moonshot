@@ -22,10 +22,10 @@ const StatCardsDiv = styled.div<WidthProps>`
   color: ${(props) => (props.$active ? 'var(--black)' : 'inherit')};
   cursor: default;
   height: 100%;
-  min-height: 5.6rem;
+  min-height: 5.2rem;
   min-width: 0;
   overflow: hidden;
-  padding: 0.65rem 0.75rem 0.8rem;
+  padding: 0.55rem 0.75rem 0.65rem;
   position: relative;
   transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
   width: 100%;

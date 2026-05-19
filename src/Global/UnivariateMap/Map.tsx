@@ -300,8 +300,8 @@ export const Map = (props: Props) => {
     ? 1280
     : 960;
   const svgHeight = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
-    ? 600
-    : 480;
+    ? 560
+    : 450;
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
   const projection = useMemo(
