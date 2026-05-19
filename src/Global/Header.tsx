@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGE_OPTIONS, SupportedLanguage } from '../i18nConfig';
+import { Logo } from '../Icons';
 
 interface Props {
   language: SupportedLanguage;
@@ -21,12 +22,9 @@ function Header(props: Props) {
             style={{ textDecoration: 'none' }}
             className='logo-sub-head flex-div flex-vert-align-center'
           >
-            <img
-              src='https://design.undp.org/static/media/undp-logo-blue.4f32e17f.svg'
-              alt={t('undp-logo-alt')}
-              width='60'
-              height='122'
-            />
+            <span aria-label={t('undp-logo-alt')} role='img'>
+              <Logo height={122} />
+            </span>
             <div className='undp-site-title moonshot-header-title'>
               <span>{t('header-title-sustainable')}</span>
               <span>{t('header-title-energy')}</span>
