@@ -238,6 +238,8 @@ const App = (props: Props) => {
                       geojsonMapData={geojsonMapData}
                       countryLinkDict={countryLinkDict}
                       projectLevelData={projectLevelData}
+                      language={currentLanguage}
+                      onLanguageChange={setCurrentLanguage}
                     />
                   </div>
                 </div>

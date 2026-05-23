@@ -22,6 +22,7 @@ import {
   IndicatorRange,
   ProjectLevelDataType,
 } from '../Types';
+import { LANGUAGE_OPTIONS, SupportedLanguage } from '../i18nConfig';
 import Context from '../Context/Context';
 import { Cards } from './Cards';
 import { Settings } from './Settings';
@@ -135,6 +136,28 @@ const KpiSummaryRow = styled.div`
   @media (max-width: 1180px) {
     grid-template-columns: 1fr;
   }
+`;
+
+const DashboardTitleRow = styled.div`
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  @media (max-width: 720px) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+`;
+
+const DashboardTitle = styled.h2`
+  margin-bottom: 0 !important;
+`;
+
+const DashboardLanguageControl = styled.label`
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
 `;
 
 const KpiPanel = styled.div`
@@ -274,6 +297,8 @@ interface Props {
   geojsonMapData: any[];
   countryLinkDict: any;
   projectLevelData: ProjectLevelDataType[];
+  language: SupportedLanguage;
+  onLanguageChange: (language: SupportedLanguage) => void;
 }
 
 const buildCountryFallback = (
@@ -310,6 +335,8 @@ export const Global = (props: Props) => {
     geojsonMapData,
     projectLevelData,
     countryLinkDict,
+    language,
+    onLanguageChange,
   } = props;
   const { filters } = useContext(Context) as CtxDataType;
   const { t } = useTranslation();
@@ -584,13 +611,35 @@ export const Global = (props: Props) => {
     <>
       <div id='tracker' className='flex-div flex-wrap padding-top-06'>
         <div style={{ maxWidth: '100%', width: '100%' }}>
-          <h2 className='undp-typography margin-bottom-05 page-title'>
-            <span style={{ color: 'var(--dark-yellow)' }}>
-              {t('page-title-energy-moonshot')}
-            </span>
-            {' '}
-            {t('page-title-tracker')}
-          </h2>
+          <DashboardTitleRow>
+            <DashboardTitle className='undp-typography page-title'>
+              <span style={{ color: 'var(--dark-yellow)' }}>
+                {t('page-title-energy-moonshot')}
+              </span>
+              {' '}
+              {t('page-title-tracker')}
+            </DashboardTitle>
+            <DashboardLanguageControl
+              className='undp-language-control'
+              htmlFor='dashboard-language-select'
+            >
+              <select
+                id='dashboard-language-select'
+                className='undp-language-select'
+                value={language}
+                onChange={(event) => {
+                  onLanguageChange(event.target.value as SupportedLanguage);
+                }}
+                aria-label={t('language')}
+              >
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </DashboardLanguageControl>
+          </DashboardTitleRow>
           <h5 className='undp-typography'>
             {t('tracker-subtitle')}
           </h5>

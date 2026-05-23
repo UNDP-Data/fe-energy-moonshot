@@ -25,6 +25,37 @@ body {
 .vis-div h6 {
   color: var(--gray-700);
 }
+
+.banner-section {
+  --banner-parallax-offset: 0px;
+  height: calc(100vh - 115px);
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-parallax-bg {
+  background-position: center;
+  background-size: cover;
+  inset: -6%;
+  position: absolute;
+  transform: translate3d(0, var(--banner-parallax-offset), 0) scale(1.04);
+  transition: transform 0.08s linear;
+  will-change: transform;
+  z-index: 0;
+}
+
+.banner-section > :not(.banner-parallax-bg) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-parallax-bg {
+    transform: scale(1.04);
+    transition: none;
+  }
+}
+
 .column-flex {
   display: flex;
   flex-direction: column;
