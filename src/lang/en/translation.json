@@ -488,7 +488,7 @@
   "summary-filter-category": "focused on {{category}}",
   "summary-filter-subcategory": "focused on {{subCategory}}",
   "summary-no-results": "No active energy-related projects match the current filters {{scope}}.",
-  "summary-intro": "The UNDP portfolio {{scope}} during the 2022 to 2025 Strategic Plan includes {{projectCount}} across {{countryCount}}.",
+  "summary-intro": "The UNDP portfolio {{scope}} includes {{projectCount}} across {{countryCount}}.",
   "summary-project-singular": "active energy-related project",
   "summary-project-plural": "active energy-related projects",
   "summary-country-singular": "country",

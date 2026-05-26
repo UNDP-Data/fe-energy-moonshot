@@ -488,7 +488,7 @@
   "summary-filter-category": "с фокусом на {{category}}",
   "summary-filter-subcategory": "с фокусом на {{subCategory}}",
   "summary-no-results": "Нет активных энергетических проектов, соответствующих текущим фильтрам {{scope}}.",
-  "summary-intro": "Портфель ПРООН {{scope}} в период Стратегического плана 2022–2025 включает {{projectCount}} в {{countryCount}}.",
+  "summary-intro": "Портфель ПРООН {{scope}} включает {{projectCount}} в {{countryCount}}.",
   "summary-project-singular": "активный энергетический проект",
   "summary-project-plural": "активных энергетических проектов",
   "summary-country-singular": "стране",

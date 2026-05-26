@@ -273,6 +273,53 @@ describe('dashboard assistant utilities', () => {
     expect(summary).toContain('20 direct beneficiaries');
   });
 
+  it('keeps productive-use top categories aligned to energy access categories', () => {
+    const filters: DashboardFilters = {
+      ...DEFAULT_DASHBOARD_FILTERS,
+      bureau: 'RBAP',
+    };
+    const countryMetadataByCode = buildCountryMetadataMap(countryMetadata);
+    const projects = filterProjects([
+      makeProject({
+        id: 'rbap-project',
+        countryCode: 'THA',
+        countryName: 'Thailand',
+        region: 'RBAP',
+        outputs: [
+          {
+            outputCategory: 'Energy Transition',
+            beneficiaryCategory: 'Some Sources',
+            directBeneficiaries: 2000000,
+          },
+          {
+            outputCategory: 'Energy Transition',
+            beneficiaryCategory: 'Solar',
+            directBeneficiaries: 1000000,
+          },
+          {
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Transport',
+            directBeneficiaries: 4000,
+          },
+          {
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Clean Electricity',
+            directBeneficiaries: 500,
+          },
+        ],
+      }),
+    ], filters, countryMetadataByCode);
+
+    const metrics = buildSummaryMetrics(projects, filters, countryMetadataByCode);
+    const summary = generateDeterministicSummary(metrics, filters, countryMetadataByCode);
+
+    expect(metrics.productiveUseBeneficiaries).toBe(4000);
+    expect(metrics.topBeneficiaryCategories).toEqual([{ category: 'Transport', value: 4000 }]);
+    expect(summary).toContain('4,000 people benefit from productive uses of energy, including 4,000 in Transport.');
+    expect(summary).not.toContain('Some Sources');
+    expect(summary).not.toContain('Solar');
+  });
+
   it('omits zero-value deterministic summary clauses and pluralizes correctly', () => {
     const filters: DashboardFilters = {
       ...DEFAULT_DASHBOARD_FILTERS,
@@ -297,6 +344,7 @@ describe('dashboard assistant utilities', () => {
 
     expect(summary).toContain('in the RBAP region and focused on Transport');
     expect(summary).toContain('2 active energy-related projects across 2 countries');
+    expect(summary).not.toContain('Strategic Plan');
     expect(summary).toContain('16.28 million USD');
     expect(summary).toContain('4,076 direct beneficiaries');
     expect(summary).toContain('4,076 people benefit from productive uses of energy, including 4,076 in Transport.');

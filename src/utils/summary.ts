@@ -40,6 +40,20 @@ const sumOutputValues = (
   predicate(output) ? sum + Number(output.directBeneficiaries || 0) : sum
 ), 0);
 
+const NON_PRODUCTIVE_BENEFICIARY_CATEGORIES = new Set([
+  'Clean Electricity',
+  'Clean Cooking',
+  'Other',
+  'Some Sources',
+]);
+
+const isProductiveUseOutput = (
+  output: any,
+  filters: DashboardFilters,
+) => outputMatchesFilters(output, filters)
+  && output.outputCategory === 'Energy Access'
+  && !NON_PRODUCTIVE_BENEFICIARY_CATEGORIES.has(output.beneficiaryCategory);
+
 export const formatSummaryNumber = (value: number, t?: SummaryTranslator) => {
   if (!Number.isFinite(value) || value <= 0) return '0';
   if (value >= 1e9) {
@@ -133,9 +147,7 @@ export const buildSummaryMetrics = (
     );
     metrics.productiveUseBeneficiaries += sumOutputValues(
       project,
-      (output) => outputMatchesFilters(output, filters)
-        && output.outputCategory === 'Energy Access'
-        && !['Clean Electricity', 'Clean Cooking'].includes(output.beneficiaryCategory),
+      (output) => isProductiveUseOutput(output, filters),
     );
 
     if ((project.outputs || []).some((output) => output.outputCategory === 'Policy')) {
@@ -145,13 +157,10 @@ export const buildSummaryMetrics = (
     (project.outputs || []).forEach((output) => {
       if (!outputMatchesFilters(output, filters)) return;
 
+      if (!isProductiveUseOutput(output, filters)) return;
+
       const category = output.beneficiaryCategory;
-      if (
-        !category
-        || ['Other', 'Clean Electricity', 'Clean Cooking'].includes(category)
-      ) {
-        return;
-      }
+      if (!category) return;
 
       beneficiaryCategories.set(
         category,
@@ -307,7 +316,7 @@ export const generateDeterministicSummary = (
     translate(
       t,
       'summary-intro',
-      'The UNDP portfolio {{scope}} during the 2022 to 2025 Strategic Plan includes {{projectCount}} across {{countryCount}}.',
+      'The UNDP portfolio {{scope}} includes {{projectCount}} across {{countryCount}}.',
       {
         scope: scopeText,
         projectCount: formatCountWithNoun(

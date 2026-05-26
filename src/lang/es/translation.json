@@ -488,7 +488,7 @@
   "summary-filter-category": "centrada en {{category}}",
   "summary-filter-subcategory": "centrada en {{subCategory}}",
   "summary-no-results": "Ningún proyecto energético activo coincide con los filtros actuales {{scope}}.",
-  "summary-intro": "La cartera del PNUD {{scope}} durante el Plan Estratégico 2022 a 2025 incluye {{projectCount}} en {{countryCount}}.",
+  "summary-intro": "La cartera del PNUD {{scope}} incluye {{projectCount}} en {{countryCount}}.",
   "summary-project-singular": "proyecto energético activo",
   "summary-project-plural": "proyectos energéticos activos",
   "summary-country-singular": "país",

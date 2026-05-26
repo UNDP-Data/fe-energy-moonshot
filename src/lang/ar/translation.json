@@ -488,7 +488,7 @@
   "summary-filter-category": "تركز على {{category}}",
   "summary-filter-subcategory": "تركز على {{subCategory}}",
   "summary-no-results": "لا توجد مشاريع نشطة مرتبطة بالطاقة تطابق المرشحات الحالية {{scope}}.",
-  "summary-intro": "تتضمن محفظة برنامج الأمم المتحدة الإنمائي {{scope}} خلال الخطة الاستراتيجية 2022 إلى 2025 {{projectCount}} عبر {{countryCount}}.",
+  "summary-intro": "تتضمن محفظة برنامج الأمم المتحدة الإنمائي {{scope}} {{projectCount}} عبر {{countryCount}}.",
   "summary-project-singular": "مشروعًا نشطًا متعلقًا بالطاقة",
   "summary-project-plural": "مشاريع نشطة متعلقة بالطاقة",
   "summary-country-singular": "بلد واحد",

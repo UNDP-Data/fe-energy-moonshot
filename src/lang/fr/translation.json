@@ -488,7 +488,7 @@
   "summary-filter-category": "axé sur {{category}}",
   "summary-filter-subcategory": "axé sur {{subCategory}}",
   "summary-no-results": "Aucun projet énergétique actif ne correspond aux filtres actuels {{scope}}.",
-  "summary-intro": "Le portefeuille du PNUD {{scope}} pendant le Plan stratégique 2022 à 2025 comprend {{projectCount}} dans {{countryCount}}.",
+  "summary-intro": "Le portefeuille du PNUD {{scope}} comprend {{projectCount}} dans {{countryCount}}.",
   "summary-project-singular": "projet énergétique actif",
   "summary-project-plural": "projets énergétiques actifs",
   "summary-country-singular": "pays",

@@ -488,7 +488,7 @@
   "summary-filter-category": "聚焦{{category}}",
   "summary-filter-subcategory": "聚焦{{subCategory}}",
   "summary-no-results": "当前筛选条件{{scope}}下没有匹配的活跃能源相关项目。",
-  "summary-intro": "2022 至 2025 战略计划期间，联合国开发计划署{{scope}}的项目组合包括{{projectCount}}，覆盖{{countryCount}}。",
+  "summary-intro": "联合国开发计划署{{scope}}的项目组合包括{{projectCount}}，覆盖{{countryCount}}。",
   "summary-project-singular": "个活跃能源相关项目",
   "summary-project-plural": "个活跃能源相关项目",
   "summary-country-singular": "个国家",
