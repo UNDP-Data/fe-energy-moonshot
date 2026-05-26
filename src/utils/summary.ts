@@ -85,6 +85,12 @@ const formatCountWithNoun = (
   )}`
 );
 
+const getIsAreVerb = (value: number, t?: SummaryTranslator) => translate(
+  t,
+  Math.round(value) === 1 ? 'summary-verb-is' : 'summary-verb-are',
+  Math.round(value) === 1 ? 'is' : 'are',
+);
+
 const joinClauses = (clauses: string[], t?: SummaryTranslator) => {
   if (clauses.length <= 1) return clauses.join('');
   const andWord = translate(t, 'summary-and', 'and');
@@ -339,36 +345,39 @@ export const generateDeterministicSummary = (
     ),
   ];
 
-  const budgetAndBeneficiaryClauses = [];
-  if (metrics.totalBudget > 0) {
-    budgetAndBeneficiaryClauses.push(translate(
+  const formattedBudget = formatSummaryNumber(metrics.totalBudget, t);
+  const formattedDirectBeneficiaries = formatCountWithNoun(
+    metrics.directBeneficiaries,
+    'summary-direct-beneficiary-singular',
+    'summary-direct-beneficiary-plural',
+    'direct beneficiary',
+    'direct beneficiaries',
+    t,
+  );
+  if (metrics.totalBudget > 0 && metrics.directBeneficiaries > 0) {
+    sentences.push(translate(
       t,
-      'summary-budget-clause',
-      'a total budget of {{budget}} USD',
-      { budget: formatSummaryNumber(metrics.totalBudget, t) },
-    ));
-  }
-  if (metrics.directBeneficiaries > 0) {
-    budgetAndBeneficiaryClauses.push(translate(
-      t,
-      'summary-direct-beneficiaries-clause',
-      '{{beneficiaries}} targeted',
+      'summary-budget-and-beneficiaries',
+      'Together, these projects have a total budget of {{budget}} USD and target {{beneficiaries}}.',
       {
-        beneficiaries: formatCountWithNoun(
-          metrics.directBeneficiaries,
-          'summary-direct-beneficiary-singular',
-          'summary-direct-beneficiary-plural',
-          'direct beneficiary',
-          'direct beneficiaries',
-          t,
-        ),
+        budget: formattedBudget,
+        beneficiaries: formattedDirectBeneficiaries,
       },
     ));
-  }
-  if (budgetAndBeneficiaryClauses.length) {
-    sentences.push(translate(t, 'summary-together', 'Together, these projects have {{clauses}}.', {
-      clauses: joinClauses(budgetAndBeneficiaryClauses, t),
-    }));
+  } else if (metrics.totalBudget > 0) {
+    sentences.push(translate(
+      t,
+      'summary-budget-only',
+      'Together, these projects have a total budget of {{budget}} USD.',
+      { budget: formattedBudget },
+    ));
+  } else if (metrics.directBeneficiaries > 0) {
+    sentences.push(translate(
+      t,
+      'summary-beneficiaries-only',
+      'Together, these projects target {{beneficiaries}}.',
+      { beneficiaries: formattedDirectBeneficiaries },
+    ));
   }
 
   const fundingClauses = [];
@@ -388,20 +397,17 @@ export const generateDeterministicSummary = (
     }));
   }
 
-  const accessClauses = [];
+  const directBenefitClauses = [];
   if (metrics.cleanElectricityBeneficiaries > 0) {
-    accessClauses.push(translate(t, 'summary-clean-electricity-clause', '{{beneficiaries}} gaining access to clean electricity', {
+    directBenefitClauses.push(translate(t, 'summary-clean-electricity-clause', '{{beneficiaries}} {{verb}} gaining access to clean electricity', {
       beneficiaries: formatSummaryNumber(metrics.cleanElectricityBeneficiaries, t),
+      verb: getIsAreVerb(metrics.cleanElectricityBeneficiaries, t),
     }));
   }
   if (metrics.cleanCookingBeneficiaries > 0) {
-    accessClauses.push(translate(t, 'summary-clean-cooking-clause', '{{beneficiaries}} gaining access to clean cooking', {
+    directBenefitClauses.push(translate(t, 'summary-clean-cooking-clause', '{{beneficiaries}} {{verb}} gaining access to clean cooking', {
       beneficiaries: formatSummaryNumber(metrics.cleanCookingBeneficiaries, t),
-    }));
-  }
-  if (accessClauses.length) {
-    sentences.push(translate(t, 'summary-access', 'Of those directly benefiting, {{clauses}}.', {
-      clauses: joinClauses(accessClauses, t),
+      verb: getIsAreVerb(metrics.cleanCookingBeneficiaries, t),
     }));
   }
 
@@ -417,16 +423,16 @@ export const generateDeterministicSummary = (
         categories: joinClauses(topCategories, t),
       })
       : '';
-    sentences.push(translate(t, 'summary-productive-use', '{{beneficiaries}} from productive uses of energy{{categoryClause}}.', {
-      beneficiaries: formatCountWithNoun(
-        metrics.productiveUseBeneficiaries,
-        'summary-person-benefits-singular',
-        'summary-person-benefits-plural',
-        'person benefits',
-        'people benefit',
-        t,
-      ),
+    directBenefitClauses.push(translate(t, 'summary-productive-use-clause', '{{beneficiaries}} {{verb}} benefiting from productive uses of energy{{categoryClause}}', {
+      beneficiaries: formatSummaryNumber(metrics.productiveUseBeneficiaries, t),
+      verb: getIsAreVerb(metrics.productiveUseBeneficiaries, t),
       categoryClause,
+    }));
+  }
+
+  if (directBenefitClauses.length) {
+    sentences.push(translate(t, 'summary-direct-benefit-breakdown', 'Of those directly benefiting, {{clauses}}.', {
+      clauses: joinClauses(directBenefitClauses, t),
     }));
   }
 

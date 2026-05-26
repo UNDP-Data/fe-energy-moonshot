@@ -270,7 +270,8 @@ describe('dashboard assistant utilities', () => {
     expect(metrics.cleanCookingBeneficiaries).toBe(20);
     expect(metrics.cleanElectricityBeneficiaries).toBe(0);
     expect(summary).toContain('1 active energy-related project');
-    expect(summary).toContain('20 direct beneficiaries');
+    expect(summary).toContain('Together, these projects have a total budget of 100 USD and target 20 direct beneficiaries.');
+    expect(summary).toContain('Of those directly benefiting, 20 are gaining access to clean cooking.');
   });
 
   it('keeps productive-use top categories aligned to energy access categories', () => {
@@ -315,7 +316,7 @@ describe('dashboard assistant utilities', () => {
 
     expect(metrics.productiveUseBeneficiaries).toBe(4000);
     expect(metrics.topBeneficiaryCategories).toEqual([{ category: 'Transport', value: 4000 }]);
-    expect(summary).toContain('4,000 people benefit from productive uses of energy, including 4,000 in Transport.');
+    expect(summary).toContain('Of those directly benefiting, 500 are gaining access to clean electricity and 4,000 are benefiting from productive uses of energy, including 4,000 in Transport.');
     expect(summary).not.toContain('Some Sources');
     expect(summary).not.toContain('Solar');
   });
@@ -347,7 +348,8 @@ describe('dashboard assistant utilities', () => {
     expect(summary).not.toContain('Strategic Plan');
     expect(summary).toContain('16.28 million USD');
     expect(summary).toContain('4,076 direct beneficiaries');
-    expect(summary).toContain('4,076 people benefit from productive uses of energy, including 4,076 in Transport.');
+    expect(summary).toContain('Together, these projects have a total budget of 16.28 million USD and target 4,076 direct beneficiaries.');
+    expect(summary).toContain('Of those directly benefiting, 4,076 are benefiting from productive uses of energy, including 4,076 in Transport.');
     expect(summary).toContain('1 project also includes');
     expect(summary).not.toContain('includes 0');
     expect(summary).not.toContain('targeting 0');
