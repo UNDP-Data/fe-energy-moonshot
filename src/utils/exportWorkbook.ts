@@ -76,7 +76,6 @@ const PREFERRED_HDI_ORDER = ['Low', 'Medium', 'High', 'Very High'];
 const PREFERRED_TIER_ORDER = [
   'Access to Energy',
   'Productive Use of Energy',
-  'Energy Transition',
   'Market Development',
   'Capacity Building',
   'Policy and Regulator Frameworks',
@@ -130,8 +129,11 @@ const uniqueByPreferredOrder = (
 };
 
 const isEnergyAccessOutput = (output: any) => (
-  output.outputCategory === 'Energy Access'
-  && ['Clean Electricity', 'Clean Cooking'].includes(textValue(output.beneficiaryCategory))
+  output.outputCategory === 'Energy Transition'
+  || (
+    output.outputCategory === 'Energy Access'
+    && ['Clean Electricity', 'Clean Cooking'].includes(textValue(output.beneficiaryCategory))
+  )
 );
 
 const isProductiveUseOutput = (output: any) => (

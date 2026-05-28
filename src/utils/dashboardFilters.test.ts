@@ -610,4 +610,75 @@ describe('dashboard assistant utilities', () => {
       /^sustainable-energy-tracker-energy-access_clean-cooking-\d{4}-\d{2}-\d{2}\.xlsx$/,
     );
   });
+
+  it('groups energy transition outputs into the Summary Energy Access column', () => {
+    const filterCatalog = buildFilterCatalog(countryMetadata);
+    const countryMetadataByCode = buildCountryMetadataMap(countryMetadata);
+    const projects = [
+      makeProject({
+        id: 'electricity-1',
+        budget: 100,
+        outputs: [
+          {
+            id: 'output-1',
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Clean Electricity',
+            directBeneficiaries: 10,
+          },
+        ],
+      }),
+      makeProject({
+        id: 'solar-1',
+        budget: 200,
+        outputs: [
+          {
+            id: 'output-2',
+            outputCategory: 'Energy Transition',
+            beneficiaryCategory: 'Solar',
+            directBeneficiaries: 25,
+          },
+        ],
+      }),
+      makeProject({
+        id: 'transport-1',
+        budget: 300,
+        outputs: [
+          {
+            id: 'output-3',
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Transport',
+            directBeneficiaries: 40,
+          },
+        ],
+      }),
+    ];
+    const metrics = buildSummaryMetrics(projects, DEFAULT_DASHBOARD_FILTERS, countryMetadataByCode);
+    const args = {
+      countryMetadataByCode,
+      filterCatalog,
+      filters: DEFAULT_DASHBOARD_FILTERS,
+      projects,
+      summaryMetrics: metrics,
+      summaryText: '',
+    };
+
+    expect(buildSummaryRows(args)).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        Region: 'All',
+        Category: 'All',
+        Subcategory: 'All',
+        'VF or Non-VF': 'Total',
+        'Direct Beneficiaries': 75,
+        'Energy Access': 35,
+        'Productive Use': 40,
+      }),
+      expect.objectContaining({
+        Region: 'All',
+        Category: 'Beneficiary Tier',
+        Subcategory: 'Access to Energy',
+        'Direct Beneficiaries': 35,
+        'Energy Access': 35,
+      }),
+    ]));
+  });
 });
