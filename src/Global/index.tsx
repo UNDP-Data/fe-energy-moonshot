@@ -11,6 +11,7 @@ import { nest } from 'd3-collection';
 import sumBy from 'lodash.sumby';
 import { useTranslation } from 'react-i18next';
 import { Alert, Typography } from 'antd';
+import { Download } from 'lucide-react';
 import styled from 'styled-components';
 import {
   CountryGroupDataType,
@@ -47,6 +48,7 @@ import {
   formatSummaryNumber,
   generateDeterministicSummary,
 } from '../utils/summary';
+import { downloadMoonshotResultsWorkbook } from '../utils/exportWorkbook';
 
 const { Link, Paragraph, Text } = Typography;
 
@@ -212,11 +214,50 @@ const ExploreProjectsSection = styled.section`
   margin-top: 1.5rem;
 `;
 
+const ExploreProjectsHeader = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  width: 100%;
+  @media (max-width: 640px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+`;
+
 const ExploreProjectsHeading = styled.h3`
   color: var(--black);
   font-size: 1.625rem;
   line-height: 1.2;
-  margin: 0 0 1rem;
+  margin: 0;
+`;
+
+const WorkbookExportButton = styled.button`
+  align-items: center;
+  background: var(--blue-600);
+  border: 1px solid var(--blue-600);
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 0.4rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 0.45rem 0.75rem;
+  text-transform: uppercase;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  white-space: nowrap;
+  &:hover,
+  &:focus-visible {
+    background: var(--blue-700);
+    border-color: var(--blue-700);
+    color: #fff;
+    outline: none;
+  }
 `;
 
 const TopProjectItem = styled.div`
@@ -704,9 +745,27 @@ export const Global = (props: Props) => {
       </div>
       <hr className='undp-style light' />
       <ExploreProjectsSection>
-        <ExploreProjectsHeading className='undp-typography'>
-          {t('explore-the-projects')}
-        </ExploreProjectsHeading>
+        <ExploreProjectsHeader>
+          <ExploreProjectsHeading className='undp-typography'>
+            {t('explore-the-projects')}
+          </ExploreProjectsHeading>
+          <WorkbookExportButton
+            type='button'
+            onClick={() => downloadMoonshotResultsWorkbook({
+              countryMetadataByCode,
+              filterCatalog,
+              filters,
+              projects: filteredProjectData,
+              summaryMetrics,
+              summaryText,
+            })}
+            aria-label={t('download-projects-xlsx')}
+            title={t('download-projects-xlsx')}
+          >
+            <Download aria-hidden='true' size={15} strokeWidth={2} />
+            {t('download-projects-xlsx')}
+          </WorkbookExportButton>
+        </ExploreProjectsHeader>
         {assistantAvailable ? (
           <Profiler id='ProjectOverviewAndTopProjects' onRender={logRenderPerf}>
             <div

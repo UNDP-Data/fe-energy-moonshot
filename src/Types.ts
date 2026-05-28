@@ -94,6 +94,7 @@ export interface AppliedFilterIntent {
 export interface CountryMetadataRow {
   'Country Name': string;
   'Country Code': string;
+  m49?: string;
   Region: string;
   Economy: string;
   HDI: string;
@@ -104,6 +105,11 @@ export interface CountryMetadataRow {
   Crisis: string;
   'continent-region': string;
   'sub-region': string;
+  'sids-region'?: string;
+  'un-member'?: string;
+  'undp-sids'?: string;
+  'un-region'?: string;
+  'Unnamed: 17'?: string;
   'Project Count'?: number;
   'Output Count'?: number;
   'Budget Total'?: number;

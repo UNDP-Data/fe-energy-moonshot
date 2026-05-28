@@ -16,6 +16,12 @@ import {
   buildSummaryMetrics,
   generateDeterministicSummary,
 } from './summary';
+import {
+  buildCountryRows,
+  buildOutputRows,
+  buildProjectRows,
+  buildSummaryRows,
+} from './exportWorkbook';
 
 const countryMetadata: CountryMetadataRow[] = [
   {
@@ -497,5 +503,74 @@ describe('dashboard assistant utilities', () => {
     expect(normalized[3].outputs[0].beneficiaryCategory).toBe('Solar');
     expect(normalized[3].outputs[0].mwAdded).toBe(1);
     expect(normalized[3].outputs[0].directBeneficiaries).toBe(17500);
+  });
+
+  it('builds filtered workbook rows for summary, outputs, projects, and countries', () => {
+    const filters = {
+      ...DEFAULT_DASHBOARD_FILTERS,
+      category: 'Energy Access',
+      subCategory: 'Clean Cooking',
+    };
+    const filterCatalog = buildFilterCatalog(countryMetadata);
+    const countryMetadataByCode = buildCountryMetadataMap(countryMetadata);
+    const projects = [
+      makeProject({
+        id: 'cook-1',
+        title: 'Cooking project',
+        budget: 500,
+        outputs: [
+          {
+            id: 'output-1',
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Clean Cooking',
+            directBeneficiaries: 100,
+            mwAdded: 0,
+            energySaved: 0,
+            policies: 0,
+            finance: 0,
+            percentFemale: 50,
+            description: 'Clean cooking output',
+          },
+          {
+            id: 'output-2',
+            outputCategory: 'Policy',
+            beneficiaryCategory: 'Policy - Clean Cooking',
+            directBeneficiaries: 0,
+          },
+        ],
+      }),
+    ];
+    const metrics = buildSummaryMetrics(projects, filters, countryMetadataByCode);
+    const summaryText = generateDeterministicSummary(metrics, filters, countryMetadataByCode);
+    const args = {
+      countryMetadataByCode,
+      filterCatalog,
+      filters,
+      projects,
+      summaryMetrics: metrics,
+      summaryText,
+    };
+
+    expect(buildSummaryRows(args).map((row) => row.Metric)).toContain('Deterministic summary');
+    expect(buildOutputRows(projects, filters)).toEqual([
+      expect.objectContaining({
+        'Project ID': 'cook-1',
+        'Output ID': 'output-1',
+        'Beneficiary Category': 'Clean Cooking',
+        'Direct Beneficiaries': 100,
+      }),
+    ]);
+    expect(buildProjectRows(projects, filters)[0]).toEqual(expect.objectContaining({
+      'Project ID': 'cook-1',
+      'Output Count': 1,
+      'Direct Beneficiaries': 100,
+    }));
+    expect(buildCountryRows(args)[0]).toEqual(expect.objectContaining({
+      'Country Code': 'NER',
+      'Project Count': 1,
+      'Output Count': 1,
+      'Budget Total': 500,
+      'Direct Beneficiaries': 100,
+    }));
   });
 });
