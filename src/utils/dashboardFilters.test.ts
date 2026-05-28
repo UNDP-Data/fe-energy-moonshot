@@ -17,6 +17,7 @@ import {
   generateDeterministicSummary,
 } from './summary';
 import {
+  buildFilteredWorkbookFilename,
   buildCountryRows,
   buildOutputRows,
   buildProjectRows,
@@ -551,7 +552,40 @@ describe('dashboard assistant utilities', () => {
       summaryText,
     };
 
-    expect(buildSummaryRows(args).map((row) => row.Metric)).toContain('Deterministic summary');
+    const summaryRows = buildSummaryRows(args);
+    expect(Object.keys(summaryRows[0])).toEqual([
+      'Region',
+      'Category',
+      'Subcategory',
+      'VF or Non-VF',
+      'Direct Beneficiaries',
+      'Energy Access',
+      'Productive Use',
+      'Budget Sum (M USD)',
+      'Project Count',
+      'Country Count',
+    ]);
+    expect(summaryRows).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        Region: 'All',
+        Category: 'All',
+        Subcategory: 'All',
+        'VF or Non-VF': 'Total',
+        'Direct Beneficiaries': 100,
+        'Energy Access': 100,
+        'Productive Use': 0,
+        'Budget Sum (M USD)': 500,
+        'Project Count': 1,
+        'Country Count': 1,
+      }),
+      expect.objectContaining({
+        Region: 'All',
+        Category: 'Beneficiary Category',
+        Subcategory: 'Clean Cooking',
+        'VF or Non-VF': 'Total',
+        'Direct Beneficiaries': 100,
+      }),
+    ]));
     expect(buildOutputRows(projects, filters)).toEqual([
       expect.objectContaining({
         'Project ID': 'cook-1',
@@ -572,5 +606,8 @@ describe('dashboard assistant utilities', () => {
       'Budget Total': 500,
       'Direct Beneficiaries': 100,
     }));
+    expect(buildFilteredWorkbookFilename(args)).toMatch(
+      /^sustainable-energy-tracker-energy-access_clean-cooking-\d{4}-\d{2}-\d{2}\.xlsx$/,
+    );
   });
 });

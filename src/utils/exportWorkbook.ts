@@ -11,7 +11,6 @@ import {
   getProjectDirectBeneficiariesForFilters,
   outputMatchesFilters,
 } from './dashboardFilters';
-import { formatSummaryNumber } from './summary';
 
 type WorkbookRow = Record<string, string | number>;
 type XlsxModule = typeof import('xlsx');
@@ -39,6 +38,51 @@ const numberValue = (value: unknown) => {
 
 const fundingLabel = (isVerticalFunded: boolean) => (isVerticalFunded ? 'VF' : 'Non-VF');
 
+const slugifyFilenamePart = (value: string) => {
+  const slug = value
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return slug || 'all-filters';
+};
+
+export const buildFilteredWorkbookFilename = (args: ExportWorkbookArgs) => {
+  const date = new Date().toISOString().slice(0, 10);
+  const appliedFilters = getAppliedFilterEntries(args.filters, args.filterCatalog);
+  const filterSlug = appliedFilters.length
+    ? appliedFilters.map((filter) => slugifyFilenamePart(filter.label)).join('_')
+    : 'all-projects';
+  return `sustainable-energy-tracker-${filterSlug}-${date}.xlsx`;
+};
+
+const NON_PRODUCTIVE_BENEFICIARY_CATEGORIES = new Set([
+  'Clean Electricity',
+  'Clean Cooking',
+  'Other',
+  'Some Sources',
+]);
+
+const PREFERRED_BUREAU_ORDER = ['RBLAC', 'RBA', 'RBAS', 'RBEC', 'RBAP'];
+const PREFERRED_SPECIAL_GROUP_ORDER = ['SIDS', 'LDC', 'LLDC', 'Sahel', 'Crisis'];
+const PREFERRED_ECONOMY_ORDER = [
+  'Low income',
+  'Lower middle income',
+  'Upper middle income',
+  'High income',
+];
+const PREFERRED_HDI_ORDER = ['Low', 'Medium', 'High', 'Very High'];
+const PREFERRED_TIER_ORDER = [
+  'Access to Energy',
+  'Productive Use of Energy',
+  'Energy Transition',
+  'Market Development',
+  'Capacity Building',
+  'Policy and Regulator Frameworks',
+  'Other',
+];
+
 const addSheet = (
   xlsx: XlsxModule,
   workbook: import('xlsx').WorkBook,
@@ -52,34 +96,231 @@ const addSheet = (
 };
 
 export const buildSummaryRows = ({
-  filterCatalog,
+  countryMetadataByCode,
   filters,
-  summaryMetrics,
-  summaryText,
-}: ExportWorkbookArgs): WorkbookRow[] => {
-  const appliedFilters = getAppliedFilterEntries(filters, filterCatalog);
-  const filterLabel = appliedFilters.length
-    ? appliedFilters.map((filter) => filter.label).join(', ')
-    : 'All projects';
+  projects,
+}: ExportWorkbookArgs): WorkbookRow[] => buildAggregateSummaryRows(
+  projects,
+  filters,
+  countryMetadataByCode,
+);
+
+interface SummaryRegionGroup {
+  label: string;
+  matcher: (_project: ProjectLevelDataType) => boolean;
+}
+
+interface SummaryDimension {
+  category: string;
+  subcategory: string;
+  matcher: (_project: ProjectLevelDataType, _output: any) => boolean;
+}
+
+const uniqueByPreferredOrder = (
+  values: string[],
+  preferredOrder: string[],
+) => {
+  const uniqueValues = Array.from(new Set(values.filter(Boolean)));
+  return [
+    ...preferredOrder.filter((value) => uniqueValues.includes(value)),
+    ...uniqueValues
+      .filter((value) => !preferredOrder.includes(value))
+      .sort((left, right) => left.localeCompare(right)),
+  ];
+};
+
+const isEnergyAccessOutput = (output: any) => (
+  output.outputCategory === 'Energy Access'
+  && ['Clean Electricity', 'Clean Cooking'].includes(textValue(output.beneficiaryCategory))
+);
+
+const isProductiveUseOutput = (output: any) => (
+  output.outputCategory === 'Energy Access'
+  && !NON_PRODUCTIVE_BENEFICIARY_CATEGORIES.has(textValue(output.beneficiaryCategory))
+);
+
+const getBeneficiaryTier = (output: any) => {
+  if (isEnergyAccessOutput(output)) return 'Access to Energy';
+  if (isProductiveUseOutput(output)) return 'Productive Use of Energy';
+  if (output.outputCategory === 'Policy') return 'Policy and Regulator Frameworks';
+  return textValue(output.outputCategory || 'Other');
+};
+
+const buildSummaryRegionGroups = (
+  projects: ProjectLevelDataType[],
+  countryMetadataByCode: Record<string, CountryMetadataRow>,
+): SummaryRegionGroup[] => {
+  const metadataForProject = (project: ProjectLevelDataType) => countryMetadataByCode[project.countryCode];
+  const bureaus = uniqueByPreferredOrder(
+    projects.map((project) => metadataForProject(project)?.Region || project.region),
+    PREFERRED_BUREAU_ORDER,
+  );
+  const continentRegions = uniqueByPreferredOrder(
+    projects.map((project) => metadataForProject(project)?.['continent-region'] || ''),
+    [],
+  );
+  const specialGroups = PREFERRED_SPECIAL_GROUP_ORDER.filter((group) => projects.some((project) => {
+    const metadata = metadataForProject(project);
+    return textValue((metadata as any)?.[group]) || (project.specialGroupings || []).includes(group);
+  }));
 
   return [
-    { Section: 'Overview', Metric: 'Filtered section', Value: filterLabel },
-    { Section: 'Overview', Metric: 'Deterministic summary', Value: summaryText },
-    { Section: 'Metrics', Metric: 'Project count', Value: summaryMetrics.projectCount },
-    { Section: 'Metrics', Metric: 'Country count', Value: summaryMetrics.countryCount },
-    { Section: 'Metrics', Metric: 'Total budget (USD)', Value: summaryMetrics.totalBudget },
-    { Section: 'Metrics', Metric: 'Direct beneficiaries', Value: summaryMetrics.directBeneficiaries },
-    { Section: 'Metrics', Metric: 'VF direct beneficiaries', Value: summaryMetrics.vfBeneficiaries },
-    { Section: 'Metrics', Metric: 'Non-VF direct beneficiaries', Value: summaryMetrics.nonVfBeneficiaries },
-    { Section: 'Metrics', Metric: 'Clean electricity beneficiaries', Value: summaryMetrics.cleanElectricityBeneficiaries },
-    { Section: 'Metrics', Metric: 'Clean cooking beneficiaries', Value: summaryMetrics.cleanCookingBeneficiaries },
-    { Section: 'Metrics', Metric: 'Productive-use beneficiaries', Value: summaryMetrics.productiveUseBeneficiaries },
-    { Section: 'Metrics', Metric: 'Projects with policy/system-benefit outputs', Value: summaryMetrics.policyProjectCount },
-    ...summaryMetrics.topBeneficiaryCategories.map((category, index) => ({
-      Section: 'Top productive-use categories',
-      Metric: `${index + 1}. ${category.category}`,
-      Value: category.value,
+    { label: 'All', matcher: () => true },
+    ...bureaus.map((bureau) => ({
+      label: bureau,
+      matcher: (project: ProjectLevelDataType) => (
+        (metadataForProject(project)?.Region || project.region) === bureau
+      ),
     })),
+    ...specialGroups.map((group) => ({
+      label: group,
+      matcher: (project: ProjectLevelDataType) => (
+        Boolean(textValue((metadataForProject(project) as any)?.[group]))
+        || (project.specialGroupings || []).includes(group)
+      ),
+    })),
+    ...continentRegions.map((region) => ({
+      label: region,
+      matcher: (project: ProjectLevelDataType) => metadataForProject(project)?.['continent-region'] === region,
+    })),
+  ];
+};
+
+const buildSummaryDimensions = (
+  projects: ProjectLevelDataType[],
+  countryMetadataByCode: Record<string, CountryMetadataRow>,
+): SummaryDimension[] => {
+  const metadataForProject = (project: ProjectLevelDataType) => countryMetadataByCode[project.countryCode];
+  const economies = uniqueByPreferredOrder(
+    projects.map((project) => metadataForProject(project)?.Economy || project.incomeGroup),
+    PREFERRED_ECONOMY_ORDER,
+  );
+  const hdiTiers = uniqueByPreferredOrder(
+    projects.map((project) => metadataForProject(project)?.HDI || project.hdiTier),
+    PREFERRED_HDI_ORDER,
+  );
+  const beneficiaryTiers = uniqueByPreferredOrder(
+    projects.flatMap((project) => (project.outputs || []).map(getBeneficiaryTier)),
+    PREFERRED_TIER_ORDER,
+  );
+  const beneficiaryCategories = uniqueByPreferredOrder(
+    projects.flatMap((project) => (project.outputs || [])
+      .map((output) => textValue(output.beneficiaryCategory || 'Other'))),
+    [],
+  );
+
+  return [
+    {
+      category: 'All',
+      subcategory: 'All',
+      matcher: () => true,
+    },
+    ...economies.map((economy) => ({
+      category: 'Economy',
+      subcategory: economy,
+      matcher: (project: ProjectLevelDataType) => (
+        (metadataForProject(project)?.Economy || project.incomeGroup) === economy
+      ),
+    })),
+    ...hdiTiers.map((hdiTier) => ({
+      category: 'HDI',
+      subcategory: hdiTier,
+      matcher: (project: ProjectLevelDataType) => (
+        (metadataForProject(project)?.HDI || project.hdiTier) === hdiTier
+      ),
+    })),
+    ...beneficiaryTiers.map((tier) => ({
+      category: 'Beneficiary Tier',
+      subcategory: tier,
+      matcher: (_project: ProjectLevelDataType, output: any) => getBeneficiaryTier(output) === tier,
+    })),
+    ...beneficiaryCategories.map((beneficiaryCategory) => ({
+      category: 'Beneficiary Category',
+      subcategory: beneficiaryCategory,
+      matcher: (_project: ProjectLevelDataType, output: any) => (
+        textValue(output.beneficiaryCategory || 'Other') === beneficiaryCategory
+      ),
+    })),
+  ];
+};
+
+const aggregateSummaryRow = (
+  region: SummaryRegionGroup,
+  dimension: SummaryDimension,
+  funding: 'Total' | 'VF' | 'Non-VF',
+  projects: ProjectLevelDataType[],
+  filters: DashboardFilters,
+) => {
+  const matchingProjects = projects.filter((project) => {
+    if (!region.matcher(project)) return false;
+    if (funding === 'VF' && !project.verticalFunded) return false;
+    if (funding === 'Non-VF' && project.verticalFunded) return false;
+    return (project.outputs || []).some((output) => (
+      outputMatchesFilters(output, filters)
+      && dimension.matcher(project, output)
+    ));
+  });
+
+  const matchingOutputs = matchingProjects.flatMap((project) => (project.outputs || [])
+    .filter((output) => (
+      outputMatchesFilters(output, filters)
+      && dimension.matcher(project, output)
+    )));
+
+  const directBeneficiaries = matchingOutputs.reduce((sum, output) => (
+    sum + numberValue(output.directBeneficiaries)
+  ), 0);
+  const energyAccess = matchingOutputs.reduce((sum, output) => (
+    isEnergyAccessOutput(output) ? sum + numberValue(output.directBeneficiaries) : sum
+  ), 0);
+  const productiveUse = matchingOutputs.reduce((sum, output) => (
+    isProductiveUseOutput(output) ? sum + numberValue(output.directBeneficiaries) : sum
+  ), 0);
+
+  return {
+    Region: region.label,
+    Category: dimension.category,
+    Subcategory: dimension.subcategory,
+    'VF or Non-VF': funding,
+    'Direct Beneficiaries': directBeneficiaries,
+    'Energy Access': energyAccess,
+    'Productive Use': productiveUse,
+    'Budget Sum (M USD)': matchingProjects.reduce((sum, project) => sum + getProjectBudget(project), 0),
+    'Project Count': matchingProjects.length,
+    'Country Count': new Set(matchingProjects.map((project) => project.countryCode).filter(Boolean)).size,
+  };
+};
+
+const buildAggregateSummaryRows = (
+  projects: ProjectLevelDataType[],
+  filters: DashboardFilters,
+  countryMetadataByCode: Record<string, CountryMetadataRow>,
+) => {
+  const regions = buildSummaryRegionGroups(projects, countryMetadataByCode);
+  const dimensions = buildSummaryDimensions(projects, countryMetadataByCode);
+
+  const rows = regions.flatMap((region) => (['Total', 'VF', 'Non-VF'] as const).flatMap((funding) => (
+    dimensions
+      .map((dimension) => aggregateSummaryRow(region, dimension, funding, projects, filters))
+      .filter((row) => (
+        row['Project Count'] > 0
+        || (row.Region === 'All' && row.Category === 'All' && row.Subcategory === 'All' && row['VF or Non-VF'] === 'Total')
+      ))
+  )));
+
+  return rows.length ? rows : [
+    {
+      Region: 'All',
+      Category: 'All',
+      Subcategory: 'All',
+      'VF or Non-VF': 'Total',
+      'Direct Beneficiaries': 0,
+      'Energy Access': 0,
+      'Productive Use': 0,
+      'Budget Sum (M USD)': 0,
+      'Project Count': 0,
+      'Country Count': 0,
+    },
   ];
 };
 
@@ -191,7 +432,9 @@ export const buildMoonshotResultsWorkbook = async (args: ExportWorkbookArgs) => 
     CreatedDate: new Date(),
   };
 
-  addSheet(xlsx, workbook, 'Summary', buildSummaryRows(args), [28, 42, 120]);
+  addSheet(xlsx, workbook, 'Summary', buildSummaryRows(args), [
+    14, 24, 34, 14, 20, 18, 18, 20, 14, 14,
+  ]);
   addSheet(xlsx, workbook, 'Outputs', buildOutputRows(args.projects, args.filters), [
     14, 44, 36, 14, 14, 22, 14, 14, 28, 24, 20, 24, 18, 12, 14, 12, 12, 22, 90,
   ]);
@@ -206,15 +449,10 @@ export const buildMoonshotResultsWorkbook = async (args: ExportWorkbookArgs) => 
 };
 
 export const downloadMoonshotResultsWorkbook = async (args: ExportWorkbookArgs) => {
-  const date = new Date().toISOString().slice(0, 10);
-  const projectCount = args.summaryMetrics.projectCount;
-  const beneficiaryLabel = formatSummaryNumber(args.summaryMetrics.directBeneficiaries)
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
   const { workbook, xlsx } = await buildMoonshotResultsWorkbook(args);
   xlsx.writeFile(
     workbook,
-    `sustainable-energy-tracker-results-${projectCount}-projects-${beneficiaryLabel}-beneficiaries-${date}.xlsx`,
+    buildFilteredWorkbookFilename(args),
     { compression: true },
   );
 };

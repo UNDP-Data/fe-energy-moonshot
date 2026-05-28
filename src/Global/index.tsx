@@ -222,8 +222,7 @@ const ExploreProjectsHeader = styled.div`
   margin-bottom: 1rem;
   width: 100%;
   @media (max-width: 640px) {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -236,27 +235,24 @@ const ExploreProjectsHeading = styled.h3`
 
 const WorkbookExportButton = styled.button`
   align-items: center;
-  background: var(--blue-600);
-  border: 1px solid var(--blue-600);
-  border-radius: 999px;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--gray-500);
+  border-radius: 50%;
+  color: var(--black);
   cursor: pointer;
-  display: inline-flex;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: 0.4rem;
-  letter-spacing: 0.03em;
+  display: flex;
+  flex: 0 0 auto;
+  height: 1.75rem;
+  justify-content: center;
   line-height: 1;
-  padding: 0.45rem 0.75rem;
-  text-transform: uppercase;
-  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
-  white-space: nowrap;
+  padding: 0;
+  transition: background-color 120ms ease, outline-color 120ms ease;
+  width: 1.75rem;
   &:hover,
   &:focus-visible {
-    background: var(--blue-700);
-    border-color: var(--blue-700);
-    color: #fff;
-    outline: none;
+    background: var(--white);
+    outline: 2px solid var(--blue-600);
+    outline-offset: 2px;
   }
 `;
 
@@ -763,7 +759,6 @@ export const Global = (props: Props) => {
             title={t('download-projects-xlsx')}
           >
             <Download aria-hidden='true' size={15} strokeWidth={2} />
-            {t('download-projects-xlsx')}
           </WorkbookExportButton>
         </ExploreProjectsHeader>
         {assistantAvailable ? (
