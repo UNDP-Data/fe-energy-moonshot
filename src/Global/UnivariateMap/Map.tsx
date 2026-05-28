@@ -11,6 +11,7 @@ import { Select } from 'antd';
 import { scaleThreshold } from 'd3-scale';
 import { useTranslation } from 'react-i18next';
 import UNDPColorModule from 'undp-viz-colors';
+import { Download } from 'lucide-react';
 import {
   CtxDataType,
   DashboardFilterKey,
@@ -48,6 +49,31 @@ const LegendEl = styled.div`
   }
 `;
 
+const ExportButton = styled.button`
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--gray-500);
+  border-radius: 50%;
+  color: var(--black);
+  cursor: pointer;
+  display: flex;
+  height: 1.75rem;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  position: absolute;
+  right: 3.25rem;
+  top: 1rem;
+  width: 1.75rem;
+  z-index: 7;
+  &:hover,
+  &:focus {
+    background: var(--white);
+    outline: 2px solid var(--blue-600);
+    outline-offset: 2px;
+  }
+`;
+
 const G = styled.g`
   pointer-events: none;
 `;
@@ -61,6 +87,8 @@ const MapG = styled.g`
 const FILTER_FIT_PADDING = 86;
 const FILTER_FIT_MAX_ZOOM = 8;
 const MAP_ZOOM_DURATION = 450;
+const EXPORT_SCALE = 2;
+const SVG_XMLNS = 'http://www.w3.org/2000/svg';
 
 const DASHBOARD_FILTER_KEYS: DashboardFilterKey[] = [
   'funding',
@@ -119,6 +147,18 @@ const hasActiveDashboardFilters = (filters: DashboardFilters) => DASHBOARD_FILTE
 const getDashboardFilterSignature = (filters: DashboardFilters) => DASHBOARD_FILTER_KEYS
   .map((key) => `${key}:${filters[key]}`)
   .join('|');
+
+const escapeXml = (value: string) => value
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&apos;');
+
+const slugifyFilePart = (value: string) => value
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '') || 'map';
 
 const getAntimeridianWrapOffset = (
   lat: number,
@@ -329,6 +369,83 @@ export const Map = (props: Props) => {
   const zoomBehaviourRef = useRef<any>();
   const options = indicators.map((d) => d.Indicator);
 
+  const exportMap = useCallback(() => {
+    if (!mapSvg.current) return;
+
+    const clonedMap = mapSvg.current.cloneNode(true) as SVGSVGElement;
+    clonedMap.setAttribute('xmlns', SVG_XMLNS);
+    clonedMap.querySelectorAll('rect[fill="#f7f7f7"]').forEach((rect) => {
+      rect.setAttribute('fill', 'transparent');
+    });
+
+    const legendHeight = 88;
+    const exportWidth = svgWidth;
+    const exportHeight = svgHeight + legendHeight;
+    const legendX = 24;
+    const legendY = svgHeight + 18;
+    const barWidth = 320;
+    const swatchHeight = 10;
+    const swatchWidth = barWidth / colorArray.length;
+    const indicatorLabel = t(xIndicatorMetaData.TranslationKey);
+    const legendSwatches = colorArray.map((color, index) => (
+      `<rect x="${index * swatchWidth}" y="24" width="${swatchWidth}" height="${swatchHeight}" fill="${color}" />`
+    )).join('');
+    const legendLabels = valueArray.map((value, index) => (
+      `<text x="${(index + 1) * swatchWidth}" y="52" text-anchor="middle" font-size="12" fill="#212121">${escapeXml(Math.abs(value) < 1 ? `${value}` : format('~s')(value).replace('G', 'B'))}</text>`
+    )).join('');
+    const serializedMap = clonedMap.innerHTML;
+    const exportSvg = `
+      <svg xmlns="${SVG_XMLNS}" width="${exportWidth}" height="${exportHeight}" viewBox="0 0 ${exportWidth} ${exportHeight}">
+        <style>
+          text { font-family: Arial, sans-serif; }
+          path { vector-effect: non-scaling-stroke; }
+        </style>
+        <g>${serializedMap}</g>
+        <g transform="translate(${legendX}, ${legendY})">
+          <text x="0" y="0" font-size="13" font-weight="700" fill="#212121">${escapeXml(indicatorLabel)}</text>
+          <g>
+            ${legendSwatches}
+            <rect x="0" y="24" width="${barWidth}" height="${swatchHeight}" fill="none" stroke="#212121" stroke-width="0.5" />
+            ${legendLabels}
+          </g>
+        </g>
+      </svg>
+    `.trim();
+
+    const svgBlob = new Blob([exportSvg], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = exportWidth * EXPORT_SCALE;
+      canvas.height = exportHeight * EXPORT_SCALE;
+      const context = canvas.getContext('2d');
+      if (!context) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const link = document.createElement('a');
+      link.download = `sustainable-energy-map-${slugifyFilePart(xAxisIndicator)}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      URL.revokeObjectURL(url);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+    };
+    image.src = url;
+  }, [
+    colorArray,
+    svgHeight,
+    svgWidth,
+    t,
+    valueArray,
+    xAxisIndicator,
+    xIndicatorMetaData,
+  ]);
+
   const transitionMapTo = useCallback((transform: ZoomTransform) => {
     if (!zoomBehaviourRef.current || !mapSvg.current) return;
     select(mapSvg.current)
@@ -389,7 +506,15 @@ export const Map = (props: Props) => {
   ]);
 
   return (
-    <div style={{ overflow: 'hidden', backgroundColor: 'var(--black-100),' }}>
+    <div style={{ overflow: 'hidden', backgroundColor: 'var(--black-100),', position: 'relative' }}>
+      <ExportButton
+        aria-label={t('export-map')}
+        onClick={exportMap}
+        title={t('export-map')}
+        type='button'
+      >
+        <Download aria-hidden='true' size={15} strokeWidth={2} />
+      </ExportButton>
       <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} ref={mapSvg}>
         <rect
           y='-20'
