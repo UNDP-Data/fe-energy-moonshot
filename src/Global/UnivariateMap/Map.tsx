@@ -84,6 +84,84 @@ const MapG = styled.g`
   }
 `;
 
+const MapIndicatorSelectWrapper = styled.div`
+  .undp-select {
+    border: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    height: 1.55rem !important;
+    width: 100%;
+  }
+  .undp-select.ant-select,
+  .undp-select.ant-select-single,
+  .undp-select.ant-select-outlined {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  .undp-select .ant-select-selector {
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--gray-500) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    height: 1.55rem !important;
+    min-height: 1.55rem !important;
+    overflow: visible !important;
+    padding: 0 1.5rem 0 0 !important;
+  }
+  .undp-select:hover .ant-select-selector,
+  .undp-select.ant-select-focused .ant-select-selector,
+  .undp-select.ant-select-open .ant-select-selector {
+    border: 0 !important;
+    border-bottom: 1px solid var(--black) !important;
+    box-shadow: none !important;
+  }
+  .undp-select .ant-select-selection-item,
+  .undp-select .ant-select-selection-placeholder {
+    align-items: center;
+    color: var(--black);
+    cursor: pointer !important;
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 700;
+    height: 1.55rem !important;
+    line-height: 1.55rem !important;
+    max-width: calc(100% - 1.75rem);
+    padding: 0 !important;
+  }
+  .undp-select .ant-select-selection-placeholder {
+    color: var(--gray-600);
+  }
+  .undp-select .ant-select-selection-search {
+    bottom: 0 !important;
+    inset-inline-end: 1.5rem !important;
+    inset-inline-start: 0 !important;
+    top: 0 !important;
+  }
+  .undp-select .ant-select-selection-search-input {
+    cursor: pointer !important;
+    height: 1.55rem !important;
+    line-height: 1.55rem !important;
+  }
+  .undp-select .ant-select-arrow {
+    align-items: center;
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    height: 1.55rem !important;
+    inset-inline-end: 0 !important;
+    margin-top: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+  .undp-select .ant-select-arrow .anticon,
+  .undp-select .ant-select-arrow svg {
+    display: block;
+    line-height: 1;
+  }
+`;
+
 const FILTER_FIT_PADDING = 86;
 const FILTER_FIT_MAX_ZOOM = 8;
 const MAP_ZOOM_DURATION = 450;
@@ -340,8 +418,8 @@ export const Map = (props: Props) => {
     ? 1280
     : 960;
   const svgHeight = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
-    ? 560
-    : 450;
+    ? 476
+    : 383;
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
   const projection = useMemo(
@@ -851,11 +929,10 @@ export const Map = (props: Props) => {
         </MapG>
       </svg>
       <LegendEl>
-        <div
+        <MapIndicatorSelectWrapper
           className='margin-bottom-05'
           style={{ width: '100%', minWidth: '19rem' }}
         >
-          <p className='label'>{t('select-indicator')}</p>
           <Select
             className='undp-select'
             placeholder={t('please-select')}
@@ -871,7 +948,7 @@ export const Map = (props: Props) => {
               </Select.Option>
             ))}
           </Select>
-        </div>
+        </MapIndicatorSelectWrapper>
         <svg width='100%' viewBox={`0 0 ${400} ${30}`}>
           <g>
             {valueArray.map((d, i) => (

@@ -2,6 +2,7 @@ import {
   memo, useState, useEffect, useRef, useCallback,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import { format } from 'd3-format';
 import {
   Modal, Form, Input, message,
@@ -26,6 +27,86 @@ type FieldType = {
   position: string;
 };
 
+const PRODOC_CONTAINER_URL = 'https://sehseadata.blob.core.windows.net/images';
+
+const ProdocButton = styled.button`
+  background: transparent;
+  border: 0;
+  color: var(--blue-600);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  &:disabled {
+    color: var(--gray-600);
+    cursor: wait;
+  }
+`;
+
+const getProjectMetadataValue = (
+  project: ProjectLevelDataType,
+  keys: string[],
+) => {
+  const value = keys
+    .map((key) => (project as any)[key])
+    .find((item) => item !== undefined && item !== null && `${item}`.trim() !== '');
+  return value === undefined || value === null ? '' : `${value}`;
+};
+
+const getProjectNumber = (project: ProjectLevelDataType) => getProjectMetadataValue(project, [
+  'Project Number',
+  'projectNumber',
+  'project number',
+  'project_number',
+  'Project ID',
+  'projectId',
+  'id',
+]);
+
+const getProdocFolder = (project: ProjectLevelDataType) => (project.verticalFunded ? 'VF' : 'Non-VF');
+
+const encodeBlobPath = (blobPath: string) => blobPath
+  .split('/')
+  .map((segment) => encodeURIComponent(segment))
+  .join('/');
+
+const getProdocPrefix = (project: ProjectLevelDataType) => {
+  const projectNumber = getProjectNumber(project);
+  if (!projectNumber) return '';
+  return `Prodocs/${getProdocFolder(project)}/${projectNumber} - `;
+};
+
+const resolveProdocUrl = async (project: ProjectLevelDataType) => {
+  const prefix = getProdocPrefix(project);
+  if (!prefix) return '';
+
+  const listUrl = new URL(PRODOC_CONTAINER_URL);
+  listUrl.searchParams.set('restype', 'container');
+  listUrl.searchParams.set('comp', 'list');
+  listUrl.searchParams.set('prefix', prefix);
+
+  const response = await fetch(listUrl.toString());
+  if (!response.ok) {
+    throw new Error(`Prodoc listing failed with ${response.status}`);
+  }
+
+  const xml = await response.text();
+  const documentXml = new DOMParser().parseFromString(xml, 'application/xml');
+  const blobNames = Array.from(documentXml.getElementsByTagName('Name'))
+    .map((node) => node.textContent || '')
+    .filter((name) => name.startsWith(prefix) && name.toLowerCase().endsWith('.pdf'))
+    .sort((left, right) => {
+      const leftHasDuplicateSuffix = /\(\d+\)\.pdf$/i.test(left);
+      const rightHasDuplicateSuffix = /\(\d+\)\.pdf$/i.test(right);
+      if (leftHasDuplicateSuffix !== rightHasDuplicateSuffix) {
+        return leftHasDuplicateSuffix ? 1 : -1;
+      }
+      return left.localeCompare(right);
+    });
+
+  return blobNames[0] ? `${PRODOC_CONTAINER_URL}/${encodeBlobPath(blobNames[0])}` : '';
+};
+
 const Project = memo((props:ProjectProps) => {
   const {
     project,
@@ -41,6 +122,11 @@ const Project = memo((props:ProjectProps) => {
 
   const userRef = useRef(userData);
   const modalRef = useRef(modalOpen);
+  const status = getProjectMetadataValue(project, ['Status', 'status']);
+  const startYear = getProjectMetadataValue(project, ['Start Year', 'startYear', 'start_year']);
+  const endYear = getProjectMetadataValue(project, ['End Year', 'endYear', 'end_year']);
+  const projectNumber = getProjectNumber(project);
+  const [prodocLoading, setProdocLoading] = useState(false);
 
   const hideModal = () => {
     setModalOpen(false);
@@ -89,6 +175,38 @@ const Project = memo((props:ProjectProps) => {
       });
     }
   }, [messageApi, project.id, t]);
+
+  const handleProdocDownload = useCallback(async () => {
+    setProdocLoading(true);
+    try {
+      const prodocUrl = await resolveProdocUrl(project);
+      if (!prodocUrl) {
+        messageApi.open({
+          type: 'error',
+          content: t('prodoc-not-found'),
+          duration: 5,
+          className: 'undp-message',
+        });
+        return;
+      }
+
+      const link = document.createElement('a');
+      link.href = prodocUrl;
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+      link.download = prodocUrl.split('/').pop() || `${projectNumber}.pdf`;
+      link.click();
+    } catch (error) {
+      messageApi.open({
+        type: 'error',
+        content: t('prodoc-load-error'),
+        duration: 5,
+        className: 'undp-message',
+      });
+    } finally {
+      setProdocLoading(false);
+    }
+  }, [messageApi, project, projectNumber, t]);
 
   return (
     <>
@@ -170,7 +288,7 @@ const Project = memo((props:ProjectProps) => {
             </p>
             <p className='undp-typography'>
               {
-                (project.verticalFunded) && (
+                (typeof project.verticalFunded === 'boolean') && (
                   <>
                     {t('type')}
                     {' - '}
@@ -230,6 +348,48 @@ const Project = memo((props:ProjectProps) => {
                 fieldName='donors'
                 sendUpdate={sendUpdate}
               />
+            </p>
+            <p className='undp-typography'>
+              {t('status')}
+              {' - '}
+              <EditableCell
+                text={status || '__'}
+                fieldName='status'
+                sendUpdate={sendUpdate}
+              />
+            </p>
+            <p className='undp-typography'>
+              {t('start-year')}
+              {' - '}
+              <EditableCell
+                text={startYear || '__'}
+                fieldName='startYear'
+                sendUpdate={sendUpdate}
+              />
+            </p>
+            <p className='undp-typography'>
+              {t('end-year')}
+              {' - '}
+              <EditableCell
+                text={endYear || '__'}
+                fieldName='endYear'
+                sendUpdate={sendUpdate}
+              />
+            </p>
+            <p className='undp-typography'>
+              {t('prodoc-download')}
+              {' - '}
+              {
+                projectNumber ? (
+                  <ProdocButton
+                    type='button'
+                    onClick={handleProdocDownload}
+                    disabled={prodocLoading}
+                  >
+                    {prodocLoading ? t('loading') : t('download')}
+                  </ProdocButton>
+                ) : '__'
+              }
             </p>
           </div>
         </div>

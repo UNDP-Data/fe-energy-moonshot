@@ -258,6 +258,14 @@ export interface ProjectLevelDataType {
   'investment gap'?: number,
   'Partners': string,
   Source_documentation: string,
+  Status?: string,
+  status?: string,
+  'Start Year'?: string | number,
+  startYear?: string | number,
+  'End Year'?: string | number,
+  endYear?: string | number,
+  'Project Number'?: string | number,
+  projectNumber?: string | number,
 }
 export interface ProjectCoordsDataType {
   'projectID_PIMS+': number,
