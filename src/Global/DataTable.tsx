@@ -434,7 +434,7 @@ const Project = memo((props:ProjectProps) => {
                   >
                     {prodocLoading ? t('loading') : t('download')}
                   </ProjectDocumentButton>
-                ) : '__'
+                ) : 'NA'
               }
             </p>
           </div>
