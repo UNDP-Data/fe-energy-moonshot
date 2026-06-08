@@ -76,6 +76,24 @@ const getProdocPrefix = (project: ProjectLevelDataType) => {
   return `Prodocs/${getProdocFolder(project)}/${projectNumber} - `;
 };
 
+const extractUrls = (value: string | null | undefined) => (
+  (value || '').match(/https?:\/\/[^\s]+/g) || []
+).map((url) => url.trim());
+
+const getProjectDetailsUrl = (project: ProjectLevelDataType) => {
+  const urls = extractUrls(project.link);
+  if (!urls.length) return '';
+
+  if (project.verticalFunded) {
+    return urls.find((url) => url.includes('pims.undp.org')) || urls[0];
+  }
+  return urls.find((url) => url.includes('open.undp.org')) || urls[0];
+};
+
+const getProjectDetailsLabelKey = (project: ProjectLevelDataType) => (
+  project.verticalFunded ? 'pims-plus' : 'transparency-portal'
+);
+
 const resolveProdocUrl = async (project: ProjectLevelDataType) => {
   const prefix = getProdocPrefix(project);
   if (!prefix) return '';
@@ -126,6 +144,8 @@ const Project = memo((props:ProjectProps) => {
   const startYear = getProjectMetadataValue(project, ['Start Year', 'startYear', 'start_year']);
   const endYear = getProjectMetadataValue(project, ['End Year', 'endYear', 'end_year']);
   const projectNumber = getProjectNumber(project);
+  const projectDetailsUrl = getProjectDetailsUrl(project);
+  const projectDetailsLabelKey = getProjectDetailsLabelKey(project);
   const [prodocLoading, setProdocLoading] = useState(false);
 
   const hideModal = () => {
@@ -319,17 +339,19 @@ const Project = memo((props:ProjectProps) => {
 
             <p className='undp-typography'>
               {
-                (project.link) ? (
+                projectDetailsUrl ? (
                   <a
-                    href={project.link}
+                    href={projectDetailsUrl}
                     target='_blank'
                     rel='noreferrer'
                   >
-                    {t('link')}
+                    {t('project-details')}
+                    {' - '}
+                    {t(projectDetailsLabelKey)}
                   </a>
                 ) : (
                   <>
-                    {t('link')}
+                    {t('project-details')}
                     {' - '}
                     <EditableCell
                       text='__'
@@ -377,7 +399,7 @@ const Project = memo((props:ProjectProps) => {
               />
             </p>
             <p className='undp-typography'>
-              {t('prodoc-download')}
+              {t('project-document')}
               {' - '}
               {
                 projectNumber ? (
