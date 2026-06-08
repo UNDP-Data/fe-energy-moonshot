@@ -10,7 +10,7 @@ import {
 import { ProjectLevelDataType } from '../Types';
 import { EditableCell } from '../Components/EditableCell';
 import { addProposedEdit } from '../firebase';
-import { resolveProjectDocument } from '../utils/assistant';
+import { buildProjectDocumentDownloadUrl, resolveProjectDocument } from '../utils/assistant';
 
 interface TableProps {
   countryLinkDict: any;
@@ -143,6 +143,17 @@ const resolveProdocUrl = async (project: ProjectLevelDataType) => {
   return response.url || '';
 };
 
+const triggerHiddenDownload = (downloadUrl: string) => {
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.setAttribute('aria-hidden', 'true');
+  iframe.src = downloadUrl;
+  document.body.appendChild(iframe);
+  window.setTimeout(() => {
+    iframe.remove();
+  }, 60000);
+};
+
 const Project = memo((props:ProjectProps) => {
   const {
     project,
@@ -241,18 +252,19 @@ const Project = memo((props:ProjectProps) => {
         return;
       }
 
-      const link = document.createElement('a');
-      link.href = prodocUrl;
-      link.target = '_blank';
-      link.rel = 'noreferrer';
-      link.download = prodocUrl.split('/').pop() || `${projectNumber}.pdf`;
-      logProdocDebug('opening selected prodoc', {
+      const projectTitle = project.title || project.projectTitle || project['Short Title'] || '';
+      const downloadUrl = buildProjectDocumentDownloadUrl({
+        projectId: projectNumber,
+        title: projectTitle,
+        verticalFunded: Boolean(project.verticalFunded),
+      });
+      logProdocDebug('triggering attachment download', {
         projectId: project.id,
         projectNumber,
         prodocUrl,
-        downloadName: link.download,
+        downloadUrl,
       });
-      link.click();
+      triggerHiddenDownload(downloadUrl);
     } catch (error) {
       logProdocDebug('download error', {
         projectId: project.id,

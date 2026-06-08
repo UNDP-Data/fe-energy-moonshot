@@ -111,6 +111,18 @@ export const resolveProjectDocument = async (request: {
   return isOkResponse(response);
 };
 
+export const buildProjectDocumentDownloadUrl = (request: {
+  projectId: string;
+  title: string;
+  verticalFunded: boolean;
+}) => {
+  const url = new URL(buildUrl('/api/moonshot/prodoc/download'), window.location.origin);
+  url.searchParams.set('projectId', request.projectId);
+  url.searchParams.set('title', request.title);
+  url.searchParams.set('verticalFunded', request.verticalFunded ? 'true' : 'false');
+  return url.toString();
+};
+
 export const isAssistantAvailable = async (): Promise<boolean> => {
   try {
     const response = await fetchWithTimeout(
