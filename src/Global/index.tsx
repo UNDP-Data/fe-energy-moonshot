@@ -155,6 +155,20 @@ const DashboardTitleRow = styled.div`
 
 const DashboardTitle = styled.h2`
   margin-bottom: 0 !important;
+  @media (max-width: 640px) {
+    letter-spacing: -0.035em;
+    max-width: 100%;
+  }
+`;
+
+const DashboardSubtitle = styled.h5`
+  color: var(--gray-700);
+  max-width: 58rem;
+  @media (max-width: 640px) {
+    font-size: 1rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.85rem !important;
+  }
 `;
 
 const DashboardLanguageControl = styled.label`
@@ -729,9 +743,9 @@ export const Global = (props: Props) => {
               </select>
             </DashboardLanguageControl>
           </DashboardTitleRow>
-          <h5 className='undp-typography'>
+          <DashboardSubtitle className='undp-typography'>
             {t('tracker-subtitle')}
-          </h5>
+          </DashboardSubtitle>
           {assistantAvailable ? (
             <Profiler id='QueryAssistantPanel' onRender={logRenderPerf}>
               <QueryAssistantPanel

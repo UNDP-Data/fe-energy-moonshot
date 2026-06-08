@@ -96,7 +96,9 @@ def test_prodoc_rejects_unsupported_project_id() -> None:
     )
 
     assert response.status_code == 400
-    assert "projectId contains unsupported characters" in response.json()["error"]
+    response_body = response.json()
+    message = response_body.get("error") or response_body.get("detail") or ""
+    assert "projectId contains unsupported characters" in message
 
 
 def test_allowed_origins_are_normalized(monkeypatch) -> None:

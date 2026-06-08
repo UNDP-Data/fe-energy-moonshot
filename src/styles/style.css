@@ -514,6 +514,37 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
 }
 
 @media (max-width: 960px) {
+  .banner-section {
+    align-items: flex-start !important;
+    box-sizing: border-box;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+
+  .banner-heading {
+    max-width: 48rem;
+  }
+
+  .banner-section h5.undp-typography {
+    max-width: 44rem !important;
+  }
+
+  #million {
+    background-size: 16rem auto, 16rem auto, auto !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+
+  #million > div {
+    max-width: 48rem !important;
+  }
+
+  #million .padding-left-13,
+  #million .padding-right-13 {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
   .vis-div {
     padding: 20px 18px;
   }
@@ -544,15 +575,98 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
 @media (max-width: 640px) {
   .banner-section {
     height: min(72vh, 36rem);
+    justify-content: center;
+    padding-left: 1.15rem !important;
+    padding-right: 1.15rem !important;
+  }
+
+  .moonshot-header-title {
+    font-size: 0.88rem !important;
+    line-height: 1.05;
+  }
+
+  #tracker {
+    padding-top: 1rem !important;
   }
 
   .vis-div {
     padding: 16px 12px;
   }
 
+  .banner-heading {
+    font-size: clamp(2.05rem, 12vw, 3.25rem) !important;
+    letter-spacing: -0.055em;
+    line-height: 0.94 !important;
+    margin-bottom: 0.85rem !important;
+    max-width: 11ch;
+  }
+
+  .banner-section h5.undp-typography {
+    font-size: 1rem !important;
+    line-height: 1.38 !important;
+    max-width: 31rem !important;
+  }
+
+  .banner-section h5.undp-typography b,
+  .banner-section h5.undp-typography strong {
+    line-height: inherit;
+  }
+
+  #million {
+    background:
+      linear-gradient(rgba(246, 246, 246, 0.92), rgba(246, 246, 246, 0.92)),
+      no-repeat -7rem 3rem url("../assets/million-bg-left.png"),
+      no-repeat calc(100% + 7rem) calc(100% - 2rem) url("../assets/million-bg-right.png"),
+      #F6F6F6 !important;
+    background-size: auto, 13rem auto, 13rem auto, auto !important;
+    padding: 3rem 1.15rem !important;
+  }
+
+  #million > div {
+    max-width: 100% !important;
+  }
+
+  #million .page-title {
+    font-size: clamp(1.95rem, 10vw, 2.85rem) !important;
+    letter-spacing: -0.045em;
+    line-height: 1 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #million .padding-left-13,
+  #million .padding-right-13 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #million p.undp-typography,
+  #million ul.undp-typography {
+    font-size: 1rem !important;
+    line-height: 1.48 !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  #million ul.undp-typography {
+    padding-left: 0 !important;
+  }
+
+  #million li {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 0.65rem 0;
+  }
+
+  #million li:first-child {
+    border-top: 0;
+    padding-top: 0.15rem;
+  }
+
   .page-title {
     font-size: clamp(1.85rem, 9vw, 2.6rem) !important;
     line-height: 1.03 !important;
+  }
+
+  #tracker h5.undp-typography {
+    max-width: 100%;
   }
 
   .map {
@@ -631,6 +745,63 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
     max-width: 100%;
     overflow-x: auto;
   }
+
+  .undp-stacked-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .undp-stacked-chart-element {
+    align-items: stretch;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 2.25rem;
+    width: 100% !important;
+  }
+
+  .undp-stacked-chart-label {
+    align-items: center;
+    display: flex;
+    font-size: 0.875rem;
+    justify-content: flex-start;
+    min-width: 0;
+    padding: 0.45rem 0.65rem;
+    text-align: left;
+  }
+
+  .undp-stacked-chart-label-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .undp-stacked-chart-value {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.72);
+    display: flex;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    justify-content: flex-end;
+    margin: 0;
+    min-width: 4rem;
+    padding: 0.45rem 0.65rem;
+    text-align: right;
+  }
+
+  .undp-stacked-chart-overlap,
+  .undp-stacked-chart-overlap-border {
+    display: none;
+  }
+
+  .undp-stacked-chart-tooltip {
+    left: 0.5rem;
+    max-width: calc(100vw - 2rem);
+    top: calc(100% + 0.2rem);
+  }
 }
 
 @media (max-width: 420px) {
@@ -645,5 +816,10 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
 
   .undp-stacked-chart-label {
     font-size: 0.75rem;
+  }
+
+  .undp-stacked-chart-value {
+    font-size: 0.75rem;
+    min-width: 3.4rem;
   }
 }
