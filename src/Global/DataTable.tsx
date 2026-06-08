@@ -29,7 +29,12 @@ type FieldType = {
 
 const PRODOC_CONTAINER_URL = 'https://sehseadata.blob.core.windows.net/images';
 
-const ProdocButton = styled.button`
+const ProjectInfoLink = styled.a`
+  color: var(--blue-600);
+  text-decoration: underline;
+`;
+
+const ProjectDocumentButton = styled.button`
   background: transparent;
   border: 0;
   color: var(--blue-600);
@@ -94,22 +99,69 @@ const getProjectDetailsLabelKey = (project: ProjectLevelDataType) => (
   project.verticalFunded ? 'pims-plus' : 'transparency-portal'
 );
 
+const logProdocDebug = (label: string, detail: Record<string, unknown>) => {
+  // eslint-disable-next-line no-console
+  console.log(`[Moonshot Prodoc] ${label}`, detail);
+};
+
 const resolveProdocUrl = async (project: ProjectLevelDataType) => {
   const prefix = getProdocPrefix(project);
-  if (!prefix) return '';
+  const projectNumber = getProjectNumber(project);
+  const fundingFolder = getProdocFolder(project);
+  const projectTitle = project.title || project.projectTitle || project['Short Title'] || '';
+  if (!prefix) {
+    logProdocDebug('missing prefix', {
+      projectId: project.id,
+      projectNumber,
+      fundingFolder,
+      projectTitle,
+      verticalFunded: project.verticalFunded,
+    });
+    return '';
+  }
 
   const listUrl = new URL(PRODOC_CONTAINER_URL);
   listUrl.searchParams.set('restype', 'container');
   listUrl.searchParams.set('comp', 'list');
   listUrl.searchParams.set('prefix', prefix);
 
+  logProdocDebug('listing request', {
+    projectId: project.id,
+    projectNumber,
+    projectTitle,
+    fundingFolder,
+    verticalFunded: project.verticalFunded,
+    prefix,
+    listUrl: listUrl.toString(),
+    expectedNameStart: `${projectNumber} - `,
+  });
+
   const response = await fetch(listUrl.toString());
+  logProdocDebug('listing response', {
+    projectId: project.id,
+    status: response.status,
+    ok: response.ok,
+    contentType: response.headers.get('content-type'),
+  });
   if (!response.ok) {
     throw new Error(`Prodoc listing failed with ${response.status}`);
   }
 
   const xml = await response.text();
+  logProdocDebug('listing xml received', {
+    projectId: project.id,
+    xmlLength: xml.length,
+    xmlPreview: xml.slice(0, 500),
+  });
   const documentXml = new DOMParser().parseFromString(xml, 'application/xml');
+  const parseErrors = Array.from(documentXml.getElementsByTagName('parsererror'))
+    .map((node) => node.textContent || '');
+  if (parseErrors.length) {
+    logProdocDebug('listing xml parse errors', {
+      projectId: project.id,
+      parseErrors,
+    });
+  }
   const blobNames = Array.from(documentXml.getElementsByTagName('Name'))
     .map((node) => node.textContent || '')
     .filter((name) => name.startsWith(prefix) && name.toLowerCase().endsWith('.pdf'))
@@ -122,7 +174,21 @@ const resolveProdocUrl = async (project: ProjectLevelDataType) => {
       return left.localeCompare(right);
     });
 
-  return blobNames[0] ? `${PRODOC_CONTAINER_URL}/${encodeBlobPath(blobNames[0])}` : '';
+  const selectedBlobName = blobNames[0] || '';
+  const selectedUrl = selectedBlobName
+    ? `${PRODOC_CONTAINER_URL}/${encodeBlobPath(selectedBlobName)}`
+    : '';
+
+  logProdocDebug('listing matches', {
+    projectId: project.id,
+    prefix,
+    matchCount: blobNames.length,
+    blobNames,
+    selectedBlobName,
+    selectedUrl,
+  });
+
+  return selectedUrl;
 };
 
 const Project = memo((props:ProjectProps) => {
@@ -199,8 +265,21 @@ const Project = memo((props:ProjectProps) => {
   const handleProdocDownload = useCallback(async () => {
     setProdocLoading(true);
     try {
+      logProdocDebug('download clicked', {
+        projectId: project.id,
+        projectNumber,
+        title: project.title,
+        verticalFunded: project.verticalFunded,
+        folder: getProdocFolder(project),
+        prefix: getProdocPrefix(project),
+      });
       const prodocUrl = await resolveProdocUrl(project);
       if (!prodocUrl) {
+        logProdocDebug('download not found', {
+          projectId: project.id,
+          projectNumber,
+          prefix: getProdocPrefix(project),
+        });
         messageApi.open({
           type: 'error',
           content: t('prodoc-not-found'),
@@ -215,8 +294,20 @@ const Project = memo((props:ProjectProps) => {
       link.target = '_blank';
       link.rel = 'noreferrer';
       link.download = prodocUrl.split('/').pop() || `${projectNumber}.pdf`;
+      logProdocDebug('opening selected prodoc', {
+        projectId: project.id,
+        projectNumber,
+        prodocUrl,
+        downloadName: link.download,
+      });
       link.click();
     } catch (error) {
+      logProdocDebug('download error', {
+        projectId: project.id,
+        projectNumber,
+        error,
+        message: error instanceof Error ? error.message : `${error}`,
+      });
       messageApi.open({
         type: 'error',
         content: t('prodoc-load-error'),
@@ -340,15 +431,17 @@ const Project = memo((props:ProjectProps) => {
             <p className='undp-typography'>
               {
                 projectDetailsUrl ? (
-                  <a
-                    href={projectDetailsUrl}
-                    target='_blank'
-                    rel='noreferrer'
-                  >
+                  <>
                     {t('project-details')}
                     {' - '}
-                    {t(projectDetailsLabelKey)}
-                  </a>
+                    <ProjectInfoLink
+                      href={projectDetailsUrl}
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      {t(projectDetailsLabelKey)}
+                    </ProjectInfoLink>
+                  </>
                 ) : (
                   <>
                     {t('project-details')}
@@ -403,13 +496,13 @@ const Project = memo((props:ProjectProps) => {
               {' - '}
               {
                 projectNumber ? (
-                  <ProdocButton
+                  <ProjectDocumentButton
                     type='button'
                     onClick={handleProdocDownload}
                     disabled={prodocLoading}
                   >
                     {prodocLoading ? t('loading') : t('download')}
-                  </ProdocButton>
+                  </ProjectDocumentButton>
                 ) : '__'
               }
             </p>
