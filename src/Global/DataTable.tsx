@@ -10,7 +10,7 @@ import {
 import { ProjectLevelDataType } from '../Types';
 import { EditableCell } from '../Components/EditableCell';
 import { addProposedEdit } from '../firebase';
-import { buildProjectDocumentDownloadUrl, resolveProjectDocument } from '../utils/assistant';
+import { buildProjectDocumentDownloadUrl } from '../utils/assistant';
 
 interface TableProps {
   countryLinkDict: any;
@@ -67,14 +67,6 @@ const getProjectNumber = (project: ProjectLevelDataType) => getProjectMetadataVa
   'id',
 ]);
 
-const getProdocFolder = (project: ProjectLevelDataType) => (project.verticalFunded ? 'VF' : 'Non-VF');
-
-const getProdocPrefix = (project: ProjectLevelDataType) => {
-  const projectNumber = getProjectNumber(project);
-  if (!projectNumber) return '';
-  return `Prodocs/${getProdocFolder(project)}/${projectNumber} - `;
-};
-
 const extractUrls = (value: string | null | undefined) => (
   (value || '').match(/https?:\/\/[^\s]+/g) || []
 ).map((url) => url.trim());
@@ -98,49 +90,29 @@ const logProdocDebug = (label: string, detail: Record<string, unknown>) => {
   console.log(`[Moonshot Prodoc] ${label}`, detail);
 };
 
-const resolveProdocUrl = async (project: ProjectLevelDataType) => {
-  const prefix = getProdocPrefix(project);
-  const projectNumber = getProjectNumber(project);
-  const fundingFolder = getProdocFolder(project);
-  const projectTitle = project.title || project.projectTitle || project['Short Title'] || '';
-  if (!prefix) {
-    logProdocDebug('missing prefix', {
-      projectId: project.id,
-      projectNumber,
-      fundingFolder,
-      projectTitle,
-      verticalFunded: project.verticalFunded,
-    });
-    return '';
+const PROJECT_DOCUMENT_URL_KEYS = [
+  'projectDocumentUrl',
+  'projectDocumentURL',
+  'project_document_url',
+  'prodocUrl',
+  'prodocURL',
+  'prodoc_url',
+  'Project Document URL',
+  'Project Document',
+  'projectDocument',
+  'Source_documentation',
+];
+
+const getProjectDocumentUrl = (project: ProjectLevelDataType) => {
+  for (const key of PROJECT_DOCUMENT_URL_KEYS) {
+    const rawValue = (project as any)[key];
+    if (rawValue === undefined || rawValue === null) continue;
+    const normalized = `${rawValue}`.trim();
+    if (!normalized || /^n\/?a$/i.test(normalized)) continue;
+    const [url] = extractUrls(normalized);
+    if (url) return url;
   }
-
-  logProdocDebug('resolver request', {
-    projectId: project.id,
-    projectNumber,
-    projectTitle,
-    fundingFolder,
-    verticalFunded: project.verticalFunded,
-    prefix,
-    endpoint: '/api/moonshot/prodoc',
-    expectedNameStart: `${projectNumber} - `,
-  });
-
-  const response = await resolveProjectDocument({
-    projectId: projectNumber,
-    title: projectTitle,
-    verticalFunded: Boolean(project.verticalFunded),
-  });
-  logProdocDebug('resolver response', {
-    projectId: project.id,
-    projectNumber,
-    prefix,
-    matchCount: Array.isArray(response.matches) ? response.matches.length : 0,
-    matches: response.matches,
-    selectedBlobName: response.blobName,
-    selectedUrl: response.url,
-  });
-
-  return response.url || '';
+  return '';
 };
 
 const triggerHiddenDownload = (downloadUrl: string) => {
@@ -175,6 +147,7 @@ const Project = memo((props:ProjectProps) => {
   const projectNumber = getProjectNumber(project);
   const projectDetailsUrl = getProjectDetailsUrl(project);
   const projectDetailsLabelKey = getProjectDetailsLabelKey(project);
+  const projectDocumentUrl = getProjectDocumentUrl(project);
   const [prodocLoading, setProdocLoading] = useState(false);
 
   const hideModal = () => {
@@ -233,15 +206,12 @@ const Project = memo((props:ProjectProps) => {
         projectNumber,
         title: project.title,
         verticalFunded: project.verticalFunded,
-        folder: getProdocFolder(project),
-        prefix: getProdocPrefix(project),
+        projectDocumentUrl,
       });
-      const prodocUrl = await resolveProdocUrl(project);
-      if (!prodocUrl) {
+      if (!projectDocumentUrl) {
         logProdocDebug('download not found', {
           projectId: project.id,
           projectNumber,
-          prefix: getProdocPrefix(project),
         });
         messageApi.open({
           type: 'error',
@@ -252,16 +222,13 @@ const Project = memo((props:ProjectProps) => {
         return;
       }
 
-      const projectTitle = project.title || project.projectTitle || project['Short Title'] || '';
       const downloadUrl = buildProjectDocumentDownloadUrl({
-        projectId: projectNumber,
-        title: projectTitle,
-        verticalFunded: Boolean(project.verticalFunded),
+        sourceUrl: projectDocumentUrl,
       });
       logProdocDebug('triggering attachment download', {
         projectId: project.id,
         projectNumber,
-        prodocUrl,
+        projectDocumentUrl,
         downloadUrl,
       });
       triggerHiddenDownload(downloadUrl);
@@ -281,7 +248,7 @@ const Project = memo((props:ProjectProps) => {
     } finally {
       setProdocLoading(false);
     }
-  }, [messageApi, project, projectNumber, t]);
+  }, [messageApi, project, projectDocumentUrl, projectNumber, t]);
 
   return (
     <>
@@ -459,7 +426,7 @@ const Project = memo((props:ProjectProps) => {
               {t('project-document')}
               {' - '}
               {
-                projectNumber ? (
+                projectDocumentUrl ? (
                   <ProjectDocumentButton
                     type='button'
                     onClick={handleProdocDownload}

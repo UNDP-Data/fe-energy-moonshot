@@ -266,6 +266,14 @@ export interface ProjectLevelDataType {
   endYear?: string | number,
   'Project Number'?: string | number,
   projectNumber?: string | number,
+  projectDocumentUrl?: string,
+  projectDocumentURL?: string,
+  project_document_url?: string,
+  prodocUrl?: string,
+  prodocURL?: string,
+  prodoc_url?: string,
+  'Project Document URL'?: string,
+  'Project Document'?: string,
 }
 export interface ProjectCoordsDataType {
   'projectID_PIMS+': number,

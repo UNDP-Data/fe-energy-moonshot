@@ -112,14 +112,10 @@ export const resolveProjectDocument = async (request: {
 };
 
 export const buildProjectDocumentDownloadUrl = (request: {
-  projectId: string;
-  title: string;
-  verticalFunded: boolean;
+  sourceUrl: string;
 }) => {
-  const url = new URL(buildUrl('/api/moonshot/prodoc/download'), window.location.origin);
-  url.searchParams.set('projectId', request.projectId);
-  url.searchParams.set('title', request.title);
-  url.searchParams.set('verticalFunded', request.verticalFunded ? 'true' : 'false');
+  const url = new URL(buildUrl('/api/moonshot/prodoc/download-url'), window.location.origin);
+  url.searchParams.set('url', request.sourceUrl);
   return url.toString();
 };
 
