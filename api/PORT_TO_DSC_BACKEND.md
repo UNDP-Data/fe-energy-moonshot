@@ -54,6 +54,7 @@ app.include_router(moonshot_router)
 That exposes:
 
 - `GET /api/moonshot/health`
+- `POST /api/moonshot/prodoc`
 - `POST /api/moonshot/parse-query`
 - `POST /api/moonshot/project-synopsis`
 

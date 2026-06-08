@@ -84,6 +84,12 @@ const PromptInputWrap = styled.div<{ $hasFilters?: boolean }>`
         padding-top: 3.1rem;
       }
     }
+    @media (max-width: 520px) {
+      ${PromptInput}.ant-input {
+        padding-right: 3.5rem;
+        padding-top: 1rem;
+      }
+    }
   ` : '')}
 `;
 
@@ -181,6 +187,12 @@ const AppliedFilterList = styled.div`
     max-width: calc(100% - 4.5rem);
     right: 3.4rem;
     top: 1.05rem;
+    transform: none;
+  }
+  @media (max-width: 520px) {
+    margin-top: 0.35rem;
+    max-width: 100%;
+    position: static;
     transform: none;
   }
 `;

@@ -512,3 +512,138 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
     min-width: 3.25rem;
   }
 }
+
+@media (max-width: 960px) {
+  .vis-div {
+    padding: 20px 18px;
+  }
+
+  .map {
+    height: 340px;
+  }
+
+  .undp-stacked-chart {
+    margin-bottom: 1rem;
+  }
+
+  .undp-stacked-chart-label {
+    font-size: 0.875rem;
+    padding: 0.35rem 0;
+  }
+
+  .undp-stacked-chart-value {
+    font-size: 0.8125rem;
+  }
+
+  .select-tooltip,
+  .undp-stacked-chart-tooltip {
+    max-width: min(18rem, calc(100vw - 2rem));
+  }
+}
+
+@media (max-width: 640px) {
+  .banner-section {
+    height: min(72vh, 36rem);
+  }
+
+  .vis-div {
+    padding: 16px 12px;
+  }
+
+  .page-title {
+    font-size: clamp(1.85rem, 9vw, 2.6rem) !important;
+    line-height: 1.03 !important;
+  }
+
+  .map {
+    height: 300px;
+  }
+
+  .map-legend-container {
+    padding: 0.35rem 0;
+  }
+
+  .rwi-legend {
+    padding-bottom: 0.35rem;
+  }
+
+  .rwi-legend-pattern {
+    max-width: 100%;
+  }
+
+  .moonshot-project-table {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .moonshot-project-table .undp-table-head {
+    display: none !important;
+  }
+
+  .moonshot-project-table .undp-table-row {
+    background: var(--white);
+    border: 1px solid var(--gray-400);
+    border-radius: 0.65rem;
+    display: block !important;
+    margin-bottom: 0.85rem;
+    overflow: hidden;
+  }
+
+  .moonshot-project-table .undp-table-row-cell {
+    border-bottom: 1px solid var(--gray-300) !important;
+    box-sizing: border-box;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .moonshot-project-table .undp-table-row-cell:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .moonshot-project-table .flex-div {
+    display: block !important;
+  }
+
+  .moonshot-project-table h6.undp-typography {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .moonshot-project-table,
+  .moonshot-project-table .undp-typography,
+  .moonshot-project-table .undp-table-row-cell,
+  .moonshot-project-table a,
+  .moonshot-project-table b,
+  .moonshot-project-table span {
+    font-size: 0.875rem;
+    line-height: 1.35;
+  }
+
+  .moonshot-project-table .padding-left-05,
+  .moonshot-project-table .padding-right-05 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .undp-segmented-small.data-platform-segmented.ant-segmented,
+  .undp-segmented-small.data-platform-segmented-small.ant-segmented {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .map {
+    height: 260px;
+  }
+
+  .legend-label {
+    font-size: 0.75rem;
+    padding-right: 0.6rem;
+  }
+
+  .undp-stacked-chart-label {
+    font-size: 0.75rem;
+  }
+}

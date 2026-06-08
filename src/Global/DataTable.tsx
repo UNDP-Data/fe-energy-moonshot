@@ -10,6 +10,7 @@ import {
 import { ProjectLevelDataType } from '../Types';
 import { EditableCell } from '../Components/EditableCell';
 import { addProposedEdit } from '../firebase';
+import { resolveProjectDocument } from '../utils/assistant';
 
 interface TableProps {
   countryLinkDict: any;
@@ -26,8 +27,6 @@ type FieldType = {
   office: string;
   position: string;
 };
-
-const PRODOC_CONTAINER_URL = 'https://sehseadata.blob.core.windows.net/images';
 
 const ProjectInfoLink = styled.a`
   color: var(--blue-600);
@@ -69,11 +68,6 @@ const getProjectNumber = (project: ProjectLevelDataType) => getProjectMetadataVa
 ]);
 
 const getProdocFolder = (project: ProjectLevelDataType) => (project.verticalFunded ? 'VF' : 'Non-VF');
-
-const encodeBlobPath = (blobPath: string) => blobPath
-  .split('/')
-  .map((segment) => encodeURIComponent(segment))
-  .join('/');
 
 const getProdocPrefix = (project: ProjectLevelDataType) => {
   const projectNumber = getProjectNumber(project);
@@ -120,75 +114,33 @@ const resolveProdocUrl = async (project: ProjectLevelDataType) => {
     return '';
   }
 
-  const listUrl = new URL(PRODOC_CONTAINER_URL);
-  listUrl.searchParams.set('restype', 'container');
-  listUrl.searchParams.set('comp', 'list');
-  listUrl.searchParams.set('prefix', prefix);
-
-  logProdocDebug('listing request', {
+  logProdocDebug('resolver request', {
     projectId: project.id,
     projectNumber,
     projectTitle,
     fundingFolder,
     verticalFunded: project.verticalFunded,
     prefix,
-    listUrl: listUrl.toString(),
+    endpoint: '/api/moonshot/prodoc',
     expectedNameStart: `${projectNumber} - `,
   });
 
-  const response = await fetch(listUrl.toString());
-  logProdocDebug('listing response', {
-    projectId: project.id,
-    status: response.status,
-    ok: response.ok,
-    contentType: response.headers.get('content-type'),
+  const response = await resolveProjectDocument({
+    projectId: projectNumber,
+    title: projectTitle,
+    verticalFunded: Boolean(project.verticalFunded),
   });
-  if (!response.ok) {
-    throw new Error(`Prodoc listing failed with ${response.status}`);
-  }
-
-  const xml = await response.text();
-  logProdocDebug('listing xml received', {
+  logProdocDebug('resolver response', {
     projectId: project.id,
-    xmlLength: xml.length,
-    xmlPreview: xml.slice(0, 500),
-  });
-  const documentXml = new DOMParser().parseFromString(xml, 'application/xml');
-  const parseErrors = Array.from(documentXml.getElementsByTagName('parsererror'))
-    .map((node) => node.textContent || '');
-  if (parseErrors.length) {
-    logProdocDebug('listing xml parse errors', {
-      projectId: project.id,
-      parseErrors,
-    });
-  }
-  const blobNames = Array.from(documentXml.getElementsByTagName('Name'))
-    .map((node) => node.textContent || '')
-    .filter((name) => name.startsWith(prefix) && name.toLowerCase().endsWith('.pdf'))
-    .sort((left, right) => {
-      const leftHasDuplicateSuffix = /\(\d+\)\.pdf$/i.test(left);
-      const rightHasDuplicateSuffix = /\(\d+\)\.pdf$/i.test(right);
-      if (leftHasDuplicateSuffix !== rightHasDuplicateSuffix) {
-        return leftHasDuplicateSuffix ? 1 : -1;
-      }
-      return left.localeCompare(right);
-    });
-
-  const selectedBlobName = blobNames[0] || '';
-  const selectedUrl = selectedBlobName
-    ? `${PRODOC_CONTAINER_URL}/${encodeBlobPath(selectedBlobName)}`
-    : '';
-
-  logProdocDebug('listing matches', {
-    projectId: project.id,
+    projectNumber,
     prefix,
-    matchCount: blobNames.length,
-    blobNames,
-    selectedBlobName,
-    selectedUrl,
+    matchCount: Array.isArray(response.matches) ? response.matches.length : 0,
+    matches: response.matches,
+    selectedBlobName: response.blobName,
+    selectedUrl: response.url,
   });
 
-  return selectedUrl;
+  return response.url || '';
 };
 
 const Project = memo((props:ProjectProps) => {

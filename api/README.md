@@ -13,6 +13,7 @@ The purpose of this copy is:
 ## Routes
 
 - `GET /api/moonshot/health`
+- `POST /api/moonshot/prodoc`
 - `POST /api/moonshot/parse-query`
 - `POST /api/moonshot/project-synopsis`
 
@@ -64,6 +65,8 @@ Moonshot includes lightweight server-side protections:
 - per-IP rate limiting on `parse-query` and `project-synopsis`
 - POST origin enforcement when `ALLOWED_ORIGINS` is configured
 - prompt length caps through request validation
+- server-side Prodoc prefix resolution so the browser does not need Azure Blob
+  list permissions or Blob Storage CORS
 
 Useful env knobs:
 

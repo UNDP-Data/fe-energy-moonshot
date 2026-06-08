@@ -47,6 +47,12 @@ const LegendEl = styled.div`
     position: absolute;
     transform: translateY(-100%);
   }
+  @media (max-width: 640px) {
+    box-sizing: border-box;
+    margin: 0.25rem 0 0;
+    right: auto;
+    width: 100%;
+  }
 `;
 
 const ExportButton = styled.button`
@@ -85,6 +91,9 @@ const MapG = styled.g`
 `;
 
 const MapIndicatorSelectWrapper = styled.div`
+  @media (max-width: 420px) {
+    min-width: 0 !important;
+  }
   .undp-select {
     border: 0 !important;
     box-shadow: none !important;

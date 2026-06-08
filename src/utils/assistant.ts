@@ -95,6 +95,22 @@ export const fetchProjectSynopsis = async (
   return isOkResponse(response);
 };
 
+export const resolveProjectDocument = async (request: {
+  projectId: string;
+  title: string;
+  verticalFunded: boolean;
+}) => {
+  const response = await fetchWithTimeout(buildUrl('/api/moonshot/prodoc'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  });
+
+  return isOkResponse(response);
+};
+
 export const isAssistantAvailable = async (): Promise<boolean> => {
   try {
     const response = await fetchWithTimeout(

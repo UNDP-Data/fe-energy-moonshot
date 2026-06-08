@@ -210,6 +210,33 @@ const SummaryBody = styled(Paragraph)`
   }
 `;
 
+const FilterMapRow = styled.div`
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(18rem, 30%) minmax(0, 70%);
+  width: 100%;
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const FilterPanel = styled.div`
+  min-width: 0;
+  width: 100%;
+`;
+
+const MapPanel = styled.div`
+  min-width: 0;
+  width: 100%;
+`;
+
+const MapSurface = styled.div`
+  background-color: var(--gray-200);
+  min-width: 0;
+  overflow: hidden;
+  width: 100%;
+`;
+
 const ExploreProjectsSection = styled.section`
   margin-top: 1.5rem;
 `;
@@ -284,6 +311,31 @@ const ProjectOverviewBody = styled(Paragraph)`
 const ProjectOverviewTitle = styled(Text)`
   &.ant-typography {
     font-size: calc(1rem + 2pt);
+  }
+`;
+
+const ProjectCardsGrid = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-bottom: 0.5rem;
+  @media (max-width: 640px) {
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ProjectSectionCard = styled.div`
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding: 1rem;
+  @media (max-width: 640px) {
+    border-radius: 0.6rem;
+    padding: 0.8rem;
   }
 `;
 
@@ -713,8 +765,8 @@ export const Global = (props: Props) => {
               </Profiler>
             </SummaryPanel>
           </KpiSummaryRow>
-          <div className='flex-div'>
-            <div style={{ maxWidth: '30%', width: '30%' }}>
+          <FilterMapRow>
+            <FilterPanel>
               <Profiler id='BarFilters' onRender={logRenderPerf}>
                 <BarFilters
                   data={filteredProjectData}
@@ -722,9 +774,9 @@ export const Global = (props: Props) => {
                   countryMetadataByCode={countryMetadataByCode}
                 />
               </Profiler>
-            </div>
-            <div style={{ maxWidth: '70%', width: '70%' }}>
-              <div style={{ backgroundColor: 'var(--gray-200)' }}>
+            </FilterPanel>
+            <MapPanel>
+              <MapSurface>
                 <Profiler id='UnivariateMap' onRender={logRenderPerf}>
                   <UnivariateMap
                     availableCountryList={availableCountryList}
@@ -734,9 +786,9 @@ export const Global = (props: Props) => {
                     binningRangeLarge={binningRangeLarge}
                   />
                 </Profiler>
-              </div>
-            </div>
-          </div>
+              </MapSurface>
+            </MapPanel>
+          </FilterMapRow>
         </div>
       </div>
       <hr className='undp-style light' />
@@ -763,22 +815,8 @@ export const Global = (props: Props) => {
         </ExploreProjectsHeader>
         {assistantAvailable ? (
           <Profiler id='ProjectOverviewAndTopProjects' onRender={logRenderPerf}>
-            <div
-              className='margin-bottom-05'
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '1rem',
-              }}
-            >
-              <div
-                style={{
-                  background: '#fff',
-                  border: '1px solid #d9d9d9',
-                  borderRadius: '0.75rem',
-                  padding: '1rem',
-                }}
-              >
+            <ProjectCardsGrid>
+              <ProjectSectionCard>
                 <ProjectOverviewTitle strong>{t('project-overview')}</ProjectOverviewTitle>
                 <ProjectOverviewBody>
                   {projectOverviewState.loading
@@ -803,15 +841,8 @@ export const Global = (props: Props) => {
                     style={{ marginTop: '0.5rem' }}
                   />
                 ) : null}
-              </div>
-              <div
-                style={{
-                  background: '#fff',
-                  border: '1px solid #d9d9d9',
-                  borderRadius: '0.75rem',
-                  padding: '1rem',
-                }}
-              >
+              </ProjectSectionCard>
+              <ProjectSectionCard>
                 <ProjectOverviewTitle strong>{t('top-projects')}</ProjectOverviewTitle>
                 <div style={{ marginTop: '0.5rem' }}>
                   {topProjects.length ? topProjects.map((project, index) => (
@@ -852,8 +883,8 @@ export const Global = (props: Props) => {
                     </TopProjectItem>
                   )) : <Text type='secondary'>{t('no-projects-current-filters')}</Text>}
                 </div>
-              </div>
-            </div>
+              </ProjectSectionCard>
+            </ProjectCardsGrid>
           </Profiler>
         ) : null}
         <div>
