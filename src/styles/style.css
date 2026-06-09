@@ -732,64 +732,37 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
   .undp-segmented-small.data-platform-segmented.ant-segmented,
   .undp-segmented-small.data-platform-segmented-small.ant-segmented {
     max-width: 100%;
-    overflow-x: auto;
+    overflow-x: visible;
+    width: 100%;
   }
 
-  .undp-stacked-chart {
-    display: flex;
+  .undp-segmented-small.data-platform-segmented.ant-segmented .ant-segmented-group,
+  .undp-segmented-small.data-platform-segmented-small.ant-segmented .ant-segmented-group {
     flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .undp-stacked-chart-element {
-    align-items: stretch;
-    background: var(--white);
-    border: 1px solid var(--gray-300);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    min-height: 2.25rem;
     width: 100% !important;
   }
 
-  .undp-stacked-chart-label {
-    align-items: center;
-    display: flex;
-    font-size: 0.875rem;
-    justify-content: flex-start;
-    min-width: 0;
-    padding: 0.45rem 0.65rem;
-    text-align: left;
-  }
-
-  .undp-stacked-chart-label-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .undp-stacked-chart-value {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.72);
-    display: flex;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    justify-content: flex-end;
-    margin: 0;
-    min-width: 4rem;
-    padding: 0.45rem 0.65rem;
-    text-align: right;
-  }
-
-  .undp-stacked-chart-overlap,
-  .undp-stacked-chart-overlap-border {
+  .undp-segmented-small.data-platform-segmented.ant-segmented .ant-segmented-thumb,
+  .undp-segmented-small.data-platform-segmented-small.ant-segmented .ant-segmented-thumb {
     display: none;
   }
 
-  .undp-stacked-chart-tooltip {
-    left: 0.5rem;
-    max-width: calc(100vw - 2rem);
-    top: calc(100% + 0.2rem);
+  .undp-segmented-small.data-platform-segmented.ant-segmented .ant-segmented-item,
+  .undp-segmented-small.data-platform-segmented-small.ant-segmented .ant-segmented-item {
+    width: 100%;
+  }
+
+  .undp-segmented-small.data-platform-segmented.ant-segmented .ant-segmented-item:after,
+  .undp-segmented-small.data-platform-segmented-small.ant-segmented .ant-segmented-item:after {
+    content: none;
+  }
+
+  .undp-segmented-small.data-platform-segmented.ant-segmented .ant-segmented-item-label,
+  .undp-segmented-small.data-platform-segmented-small.ant-segmented .ant-segmented-item-label {
+    line-height: 1.2;
+    min-height: 2.25rem;
+    padding: 0.55rem 0.7rem;
+    text-align: left;
   }
 }
 
