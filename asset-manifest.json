@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/fe-energy-moonshot/static/css/main.afd778a0.css",
-    "main.js": "/fe-energy-moonshot/static/js/main.c0b6bbfd.js",
+    "main.css": "/fe-energy-moonshot/static/css/main.b6ebdcf4.css",
+    "main.js": "/fe-energy-moonshot/static/js/main.1617a976.js",
     "static/js/45.3e836783.chunk.js": "/fe-energy-moonshot/static/js/45.3e836783.chunk.js",
     "static/js/787.1f8a868b.chunk.js": "/fe-energy-moonshot/static/js/787.1f8a868b.chunk.js",
     "static/media/header-bg.jpg": "/fe-energy-moonshot/static/media/header-bg.b0531c215105fd0d4b3d.jpg",
     "static/media/million-bg-left.png": "/fe-energy-moonshot/static/media/million-bg-left.3360df7136643708285b.png",
     "static/media/million-bg-right.png": "/fe-energy-moonshot/static/media/million-bg-right.0d3f52accaaf4a58fca6.png",
     "index.html": "/fe-energy-moonshot/index.html",
-    "main.afd778a0.css.map": "/fe-energy-moonshot/static/css/main.afd778a0.css.map",
-    "main.c0b6bbfd.js.map": "/fe-energy-moonshot/static/js/main.c0b6bbfd.js.map",
+    "main.b6ebdcf4.css.map": "/fe-energy-moonshot/static/css/main.b6ebdcf4.css.map",
+    "main.1617a976.js.map": "/fe-energy-moonshot/static/js/main.1617a976.js.map",
     "45.3e836783.chunk.js.map": "/fe-energy-moonshot/static/js/45.3e836783.chunk.js.map",
     "787.1f8a868b.chunk.js.map": "/fe-energy-moonshot/static/js/787.1f8a868b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.afd778a0.css",
-    "static/js/main.c0b6bbfd.js"
+    "static/css/main.b6ebdcf4.css",
+    "static/js/main.1617a976.js"
   ]
 }
