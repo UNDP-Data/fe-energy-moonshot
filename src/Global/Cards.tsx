@@ -62,7 +62,7 @@ const StatCardsDiv = styled.div<WidthProps>`
   }
   p {
     color: ${(props) => (props.$active ? 'var(--black)' : 'inherit')};
-    margin-bottom: 0;
+    margin: 0.0625rem 0 0;
     overflow-wrap: anywhere;
   }
 `;

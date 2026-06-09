@@ -161,17 +161,6 @@ const DashboardTitle = styled.h2`
   }
 `;
 
-const FilterPanelSubtitle = styled.h5`
-  color: var(--gray-700);
-  font-size: 0.875rem !important;
-  line-height: 1.35 !important;
-  margin: 0 0 0.45rem !important;
-  max-width: 100%;
-  @media (max-width: 640px) {
-    margin-bottom: 0.65rem !important;
-  }
-`;
-
 const DashboardLanguageControl = styled.label`
   flex: 0 0 auto;
   margin-top: 0.1rem;
@@ -779,9 +768,6 @@ export const Global = (props: Props) => {
           </KpiSummaryRow>
           <FilterMapRow>
             <FilterPanel>
-              <FilterPanelSubtitle className='undp-typography'>
-                {t('tracker-subtitle')}
-              </FilterPanelSubtitle>
               <Profiler id='BarFilters' onRender={logRenderPerf}>
                 <BarFilters
                   data={filteredProjectData}

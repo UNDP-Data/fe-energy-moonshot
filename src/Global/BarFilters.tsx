@@ -28,10 +28,10 @@ const BarFiltersWrapper = styled.div`
     width: 100%;
   }
   .bar-filter-block + .bar-filter-block {
-    margin-top: 0.45rem;
+    margin-top: 0.62rem;
   }
   .undp-stacked-chart {
-    margin-bottom: 0.38rem;
+    margin-bottom: 0.48rem;
   }
   .select-wrapper + .undp-stacked-chart {
     margin-top: 0;
