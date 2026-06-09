@@ -41,7 +41,7 @@ const StatCardsDiv = styled.div<WidthProps>`
     font-variant-numeric: tabular-nums;
     font-size: clamp(1.75rem, 3vw, 3rem);
     line-height: 0.95;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.125rem;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;

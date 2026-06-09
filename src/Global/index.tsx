@@ -161,13 +161,14 @@ const DashboardTitle = styled.h2`
   }
 `;
 
-const DashboardSubtitle = styled.h5`
+const FilterPanelSubtitle = styled.h5`
   color: var(--gray-700);
-  max-width: 58rem;
+  font-size: 0.875rem !important;
+  line-height: 1.35 !important;
+  margin: 0 0 0.45rem !important;
+  max-width: 100%;
   @media (max-width: 640px) {
-    font-size: 1rem !important;
-    line-height: 1.35 !important;
-    margin-bottom: 0.85rem !important;
+    margin-bottom: 0.65rem !important;
   }
 `;
 
@@ -743,9 +744,6 @@ export const Global = (props: Props) => {
               </select>
             </DashboardLanguageControl>
           </DashboardTitleRow>
-          <DashboardSubtitle className='undp-typography'>
-            {t('tracker-subtitle')}
-          </DashboardSubtitle>
           {assistantAvailable ? (
             <Profiler id='QueryAssistantPanel' onRender={logRenderPerf}>
               <QueryAssistantPanel
@@ -781,6 +779,9 @@ export const Global = (props: Props) => {
           </KpiSummaryRow>
           <FilterMapRow>
             <FilterPanel>
+              <FilterPanelSubtitle className='undp-typography'>
+                {t('tracker-subtitle')}
+              </FilterPanelSubtitle>
               <Profiler id='BarFilters' onRender={logRenderPerf}>
                 <BarFilters
                   data={filteredProjectData}
