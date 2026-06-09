@@ -171,7 +171,8 @@ const MapIndicatorSelectWrapper = styled.div`
   }
 `;
 
-const FILTER_FIT_PADDING = 86;
+const FILTER_FIT_MIN_PADDING = 18;
+const FILTER_FIT_PADDING_RATIO = 0.04;
 const FILTER_FIT_MAX_ZOOM = 8;
 const MAP_ZOOM_DURATION = 450;
 const EXPORT_SCALE = 2;
@@ -386,7 +387,10 @@ const createFitTransform = (
   const [[x0, y0], [x1, y1]] = bounds;
   const boundsWidth = Math.max(x1 - x0, 1);
   const boundsHeight = Math.max(y1 - y0, 1);
-  const fitPadding = Math.max(FILTER_FIT_PADDING, Math.min(svgWidth, svgHeight) * 0.16);
+  const fitPadding = Math.max(
+    FILTER_FIT_MIN_PADDING,
+    Math.min(svgWidth, svgHeight) * FILTER_FIT_PADDING_RATIO,
+  );
   const availableWidth = Math.max(svgWidth - fitPadding * 2, 1);
   const availableHeight = Math.max(svgHeight - fitPadding * 2, 1);
   const scale = Math.min(

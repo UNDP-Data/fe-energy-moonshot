@@ -78,7 +78,7 @@ body {
 }
 /* map and legend styles */
 .map {
-  height: 400px;
+  height: 340px;
   width: 100%;
   border-bottom: #f7f7f7 1px solid;
 }
@@ -539,7 +539,7 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
   }
 
   .map {
-    height: 340px;
+    height: 289px;
   }
 
   .undp-stacked-chart {
@@ -659,7 +659,7 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
   }
 
   .map {
-    height: 300px;
+    height: 255px;
   }
 
   .map-legend-container {
@@ -768,7 +768,7 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
 
 @media (max-width: 420px) {
   .map {
-    height: 260px;
+    height: 221px;
   }
 
   .legend-label {
