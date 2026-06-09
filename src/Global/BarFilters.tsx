@@ -28,37 +28,37 @@ const BarFiltersWrapper = styled.div`
     width: 100%;
   }
   .bar-filter-block + .bar-filter-block {
-    margin-top: 0.62rem;
+    margin-top: 0.74rem;
   }
   .undp-stacked-chart {
-    margin-bottom: 0.48rem;
+    margin-bottom: 0.58rem;
   }
   .select-wrapper + .undp-stacked-chart {
     margin-top: 0;
   }
   .select-wrapper + .undp-stacked-chart .undp-stacked-chart-label {
-    padding-top: 0.18rem;
+    padding-top: 0.22rem;
   }
   .undp-stacked-chart-label {
     font-size: 0.875rem;
-    padding: 0.32rem 0;
+    padding: 0.38rem 0;
   }
   .undp-stacked-chart-value {
     font-size: 0.875rem;
     line-height: 1.1;
-    margin-top: 0.15rem;
+    margin-top: 0.18rem;
   }
 `;
 
 const CompactSelectWrapper = styled.div`
   &.select-wrapper {
-    margin-bottom: 0.12rem;
+    margin-bottom: 0.14rem;
   }
   .undp-select {
     border: 0 !important;
     box-shadow: none !important;
     cursor: pointer;
-    height: 1.55rem !important;
+    height: 1.86rem !important;
     width: 100%;
   }
   .undp-select.ant-select,
@@ -73,8 +73,8 @@ const CompactSelectWrapper = styled.div`
     border-bottom: 1px solid var(--gray-500) !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    height: 1.55rem !important;
-    min-height: 1.55rem !important;
+    height: 1.86rem !important;
+    min-height: 1.86rem !important;
     overflow: visible !important;
     padding: 0 1.5rem 0 0 !important;
     cursor: pointer !important;
@@ -93,16 +93,16 @@ const CompactSelectWrapper = styled.div`
     display: flex;
     font-size: 0.875rem;
     font-weight: 700;
-    height: 1.55rem !important;
-    line-height: 1.55rem !important;
+    height: 1.86rem !important;
+    line-height: 1.86rem !important;
     max-width: calc(100% - 1.75rem);
     padding: 0 !important;
     cursor: pointer !important;
     text-transform: capitalize;
   }
   .undp-select .ant-select-selection-search-input {
-    height: 1.55rem !important;
-    line-height: 1.55rem !important;
+    height: 1.86rem !important;
+    line-height: 1.86rem !important;
     cursor: pointer !important;
     text-transform: none;
   }
@@ -124,7 +124,7 @@ const CompactSelectWrapper = styled.div`
     align-items: center;
     color: var(--black);
     display: flex;
-    height: 1.55rem !important;
+    height: 1.86rem !important;
     inset-inline-end: 0 !important;
     margin-top: 0 !important;
     top: 0 !important;
