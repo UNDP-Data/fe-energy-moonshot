@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Tooltip } from 'antd';
@@ -17,10 +17,18 @@ interface Props {
 }
 
 const El = styled.div`
-  width: 100%;
-  overflow: auto;
-  position: relative;
   background-color: var(--black-100);
+  display: flex;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  @media (max-width: 960px) {
+    display: block;
+    height: auto;
+    min-height: 0;
+  }
 `;
 
 const DisclaimerButton = styled.button`
@@ -43,7 +51,7 @@ const DisclaimerButton = styled.button`
   width: 1.75rem;
   z-index: 7;
   &:focus {
-    outline: 2px solid #1f6fff;
+    outline: 2px solid var(--moonshot-dashboard-accent, #1f6fff);
     outline-offset: 2px;
   }
 `;
@@ -58,17 +66,75 @@ export const UnivariateMap = (props: Props) => {
   } = props;
 
   const {
+    filters,
     xAxisIndicator,
     updateXAxisIndicator,
   } = useContext(Context) as CtxDataType;
   const { t } = useTranslation();
-  const options = useMemo(() => indicators.map((d) => d.Indicator), [indicators]);
+  const lastPreferredFilterSignatureRef = useRef('');
+  const preferredFilterSignature = `${filters.category}|${filters.subCategory}`;
+  const availableIndicators = useMemo(() => {
+    const filteredIndicators = indicators.filter((indicator) => (
+      data.some((country) => {
+        const value = country.indicators.find((item) => item.indicator === indicator.DataKey);
+        return typeof value?.value === 'number' && value.value > 0;
+      })
+    ));
+
+    return filteredIndicators.length ? filteredIndicators : indicators;
+  }, [data, indicators]);
+
+  const preferredIndicator = useMemo(() => {
+    const findAvailableIndicator = (dataKey: string) => (
+      availableIndicators.find((indicator) => indicator.DataKey === dataKey)
+    );
+
+    if (filters.category === 'Policy' || filters.subCategory.startsWith('Policy')) {
+      return findAvailableIndicator('policies');
+    }
+
+    if (filters.category === 'Energy Transition') {
+      return findAvailableIndicator('mwAdded');
+    }
+
+    if (filters.category === 'Energy Access' || filters.category === 'Productive Use') {
+      return findAvailableIndicator('directBeneficiaries');
+    }
+
+    return undefined;
+  }, [availableIndicators, filters.category, filters.subCategory]);
+
+  const options = useMemo(
+    () => availableIndicators.map((d) => d.Indicator),
+    [availableIndicators],
+  );
 
   useEffect(() => {
-    if (options.findIndex((d) => d === xAxisIndicator) === -1) {
+    if (!options.length) return;
+
+    const preferredFilterChanged = lastPreferredFilterSignatureRef.current !== preferredFilterSignature;
+    lastPreferredFilterSignatureRef.current = preferredFilterSignature;
+
+    if (
+      preferredFilterChanged
+      &&
+      preferredIndicator
+      && xAxisIndicator !== preferredIndicator.Indicator
+    ) {
+      updateXAxisIndicator(preferredIndicator.Indicator);
+      return;
+    }
+
+    if (!options.includes(xAxisIndicator)) {
       updateXAxisIndicator(options[0]);
     }
-  }, [options, updateXAxisIndicator, xAxisIndicator]);
+  }, [
+    options,
+    preferredFilterSignature,
+    preferredIndicator,
+    updateXAxisIndicator,
+    xAxisIndicator,
+  ]);
 
   return (
     <El id='graph-node'>
@@ -89,7 +155,7 @@ export const UnivariateMap = (props: Props) => {
         geojsonMapData={geojsonMapData}
         availableCountryList={availableCountryList}
         binningRangeLarge={binningRangeLarge}
-        indicators={indicators}
+        indicators={availableIndicators}
       />
     </El>
   );

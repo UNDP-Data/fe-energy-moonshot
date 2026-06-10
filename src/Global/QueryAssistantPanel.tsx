@@ -66,8 +66,8 @@ const PromptInput = styled(TextArea)`
   }
   &.ant-input:hover,
   &.ant-input:focus {
-    border-color: #1f6fff;
-    box-shadow: 0 0 0 3px rgba(31, 111, 255, 0.12);
+    border-color: var(--moonshot-dashboard-accent, #1f6fff);
+    box-shadow: 0 0 0 3px var(--moonshot-dashboard-accent-soft, rgba(31, 111, 255, 0.12));
   }
 `;
 
@@ -110,10 +110,10 @@ const InlineSubmitButton = styled(Button)`
   &.ant-btn {
     align-items: center;
     background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(31, 111, 255, 0.32);
+    border: 1px solid var(--moonshot-dashboard-accent-border, rgba(31, 111, 255, 0.32));
     border-radius: 0.65rem;
-    box-shadow: 0 0.18rem 0.55rem rgba(31, 111, 255, 0.12);
-    color: #1f6fff;
+    box-shadow: 0 0.18rem 0.55rem var(--moonshot-dashboard-accent-soft, rgba(31, 111, 255, 0.12));
+    color: var(--moonshot-dashboard-accent, #1f6fff);
     display: inline-flex;
     height: 2.25rem;
     justify-content: center;
@@ -128,9 +128,9 @@ const InlineSubmitButton = styled(Button)`
   &.ant-btn:hover,
   &.ant-btn:focus {
     background: rgba(240, 247, 255, 0.96);
-    border-color: rgba(31, 111, 255, 0.58);
-    color: #0058e6;
-    box-shadow: 0 0.28rem 0.75rem rgba(31, 111, 255, 0.18);
+    border-color: var(--moonshot-dashboard-accent, #1f6fff);
+    color: var(--moonshot-dashboard-accent, #0058e6);
+    box-shadow: 0 0.28rem 0.75rem var(--moonshot-dashboard-accent-soft, rgba(31, 111, 255, 0.18));
     transform: translateY(-50%) scale(1.04);
   }
   &.ant-btn:active {
@@ -156,7 +156,7 @@ const AppliedFilterList = styled.div`
   .ant-tag {
     align-items: center;
     background: rgba(255, 255, 255, 0.76);
-    border-color: rgba(31, 111, 255, 0.22);
+    border-color: var(--moonshot-dashboard-accent-border, rgba(31, 111, 255, 0.22));
     border-radius: 999px;
     color: var(--gray-700);
     display: inline-flex;
@@ -520,7 +520,7 @@ export const QueryAssistantPanel = (props: Props) => {
       <QueryGrid>
         <PromptRow>
           <PromptInputWrap $hasFilters={appliedFilters.length > 0}>
-            <PromptLabel htmlFor='moonshot-ai-query'>{t('ask-energy-moonshot-ai')}</PromptLabel>
+            <PromptLabel className='moonshot-ai-prompt-label' htmlFor='moonshot-ai-query'>{t('ask-energy-moonshot-ai')}</PromptLabel>
             <PromptInput
               id='moonshot-ai-query'
               autoSize={{ minRows: 1, maxRows: 3 }}

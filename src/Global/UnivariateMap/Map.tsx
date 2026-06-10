@@ -3,7 +3,7 @@ import {
 } from 'react';
 import styled from 'styled-components';
 import { easeCubicOut } from 'd3-ease';
-import { geoEqualEarth, geoPath } from 'd3-geo';
+import { geoEqualEarth } from 'd3-geo';
 import { ZoomTransform, zoom, zoomIdentity } from 'd3-zoom';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
@@ -33,25 +33,59 @@ interface Props {
   binningRangeLarge: IndicatorRange;
 }
 
-const LegendEl = styled.div`
+const MapRoot = styled.div`
+  background-color: var(--black-100);
+  flex: 1 1 auto;
+  height: 100%;
+  line-height: 0;
+  min-height: 100%;
+  overflow: hidden;
   position: relative;
-  right: 10px;
-  padding: 0.5rem 0.5rem 0 0.5rem;
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: var(--shadow);
-  width: 360px;
-  margin-left: 1rem;
-  margin-top: -1rem;
-  z-index: 5;
-  @media (min-width: 961px) {
-    position: absolute;
-    transform: translateY(-100%);
-  }
-  @media (max-width: 640px) {
-    box-sizing: border-box;
-    margin: 0.25rem 0 0;
-    right: auto;
+  width: 100%;
+  .moonshot-map-viewport {
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
     width: 100%;
+  }
+  .moonshot-map-svg {
+    inset: 0;
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+  .moonshot-map-legend,
+  button {
+    line-height: normal;
+  }
+  @media (max-width: 960px) {
+    height: auto;
+    min-height: 0;
+    .moonshot-map-viewport {
+      aspect-ratio: 960 / 383;
+      height: auto;
+      min-height: 0;
+    }
+  }
+`;
+
+const LegendEl = styled.div`
+  background-color: rgba(255, 255, 255, 0.5);
+  bottom: 0.6rem;
+  box-sizing: border-box;
+  box-shadow: var(--shadow);
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  position: absolute;
+  right: 1rem;
+  width: 360px;
+  z-index: 5;
+  @media (max-width: 640px) {
+    bottom: 0.4rem;
+    left: 0.4rem;
+    right: 0.4rem;
+    width: auto;
   }
 `;
 
@@ -171,12 +205,35 @@ const MapIndicatorSelectWrapper = styled.div`
   }
 `;
 
-const FILTER_FIT_MIN_PADDING = 18;
-const FILTER_FIT_PADDING_RATIO = 0.04;
+const FILTER_FIT_MIN_PADDING = 10;
+const FILTER_FIT_MIN_PADDING_RATIO = 0.025;
+const FILTER_FIT_MAX_PADDING = 34;
+const FILTER_FIT_MAX_PADDING_RATIO = 0.075;
 const FILTER_FIT_MAX_ZOOM = 8;
+const DEFAULT_SVG_WIDTH = 960;
+const DEFAULT_SVG_HEIGHT = 383;
+const WIDE_SVG_WIDTH = 1280;
+const WIDE_SVG_HEIGHT = 476;
 const MAP_ZOOM_DURATION = 450;
+const EMPTY_VALUE_ARRAY = [0];
 const EXPORT_SCALE = 2;
 const SVG_XMLNS = 'http://www.w3.org/2000/svg';
+const ANTIMERIDIAN_WRAP_LON_THRESHOLD = -150;
+const RIGHT_SIDE_PACIFIC_ISO3 = new Set([
+  'COK',
+  'FJI',
+  'FSM',
+  'KIR',
+  'MHL',
+  'NIU',
+  'NRU',
+  'PLW',
+  'SLB',
+  'TON',
+  'TUV',
+  'VUT',
+  'WSM',
+]);
 
 const DASHBOARD_FILTER_KEYS: DashboardFilterKey[] = [
   'funding',
@@ -229,9 +286,6 @@ const islands: Island[] = [
 
 type ProjectedBounds = [[number, number], [number, number]];
 
-const hasActiveDashboardFilters = (filters: DashboardFilters) => DASHBOARD_FILTER_KEYS
-  .some((key) => filters[key] !== 'all');
-
 const getDashboardFilterSignature = (filters: DashboardFilters) => DASHBOARD_FILTER_KEYS
   .map((key) => `${key}:${filters[key]}`)
   .join('|');
@@ -258,21 +312,21 @@ const getAntimeridianWrapOffset = (
   return Math.abs(rightEdge[0] - leftEdge[0]);
 };
 
-const getFeatureWrapOffset = (
-  feature: any,
-  projection: ReturnType<typeof geoEqualEarth>,
-) => {
-  if (feature?.properties?.ISO3 !== 'WSM') return 0;
-  const lat = Number(feature.properties.LAT);
-  return getAntimeridianWrapOffset(Number.isFinite(lat) ? lat : 0, projection);
-};
+const shouldWrapFeatureAtAntimeridian = (feature: any) => (
+  RIGHT_SIDE_PACIFIC_ISO3.has(feature?.properties?.ISO3)
+);
 
 const projectCoordinate = (
   coordinates: number[],
   projection: ReturnType<typeof geoEqualEarth>,
-  xOffset = 0,
+  wrapAntimeridian = false,
 ): [number, number] => {
-  const point = projection([coordinates[0], coordinates[1]]) as [number, number];
+  const lon = Number(coordinates[0]);
+  const lat = Number(coordinates[1]);
+  const point = projection([lon, lat]) as [number, number];
+  const xOffset = wrapAntimeridian && lon < ANTIMERIDIAN_WRAP_LON_THRESHOLD
+    ? getAntimeridianWrapOffset(Number.isFinite(lat) ? lat : 0, projection)
+    : 0;
   return [point[0] + xOffset, point[1]];
 };
 
@@ -294,20 +348,50 @@ const mergeProjectedBounds = (
   ];
 };
 
-const getProjectedBounds = (
+const collectProjectedGeometryPoints = (
+  coordinates: any,
+  projection: ReturnType<typeof geoEqualEarth>,
+  wrapAntimeridian: boolean,
+  points: [number, number][],
+) => {
+  if (!Array.isArray(coordinates)) return;
+
+  if (
+    coordinates.length >= 2
+    && typeof coordinates[0] === 'number'
+    && typeof coordinates[1] === 'number'
+  ) {
+    const point = projectCoordinate(coordinates, projection, wrapAntimeridian);
+    if (point.every(Number.isFinite)) points.push(point);
+    return;
+  }
+
+  coordinates.forEach((item) => {
+    collectProjectedGeometryPoints(item, projection, wrapAntimeridian, points);
+  });
+};
+
+const getRenderedFeatureBounds = (
   features: any[],
-  pathGenerator: any,
+  projection: ReturnType<typeof geoEqualEarth>,
 ): ProjectedBounds | undefined => features.reduce(
   (acc: ProjectedBounds | undefined, feature) => {
-    const featureBounds = pathGenerator.bounds(feature) as ProjectedBounds;
-    const values = [
-      featureBounds[0][0],
-      featureBounds[0][1],
-      featureBounds[1][0],
-      featureBounds[1][1],
-    ];
-    if (!values.every(Number.isFinite)) return acc;
-    return mergeProjectedBounds(acc, featureBounds);
+    const points: [number, number][] = [];
+    const wrapAntimeridian = shouldWrapFeatureAtAntimeridian(feature);
+    collectProjectedGeometryPoints(
+      feature?.geometry?.coordinates,
+      projection,
+      wrapAntimeridian,
+      points,
+    );
+    if (!points.length) return acc;
+
+    const xs = points.map((point) => point[0]);
+    const ys = points.map((point) => point[1]);
+    return mergeProjectedBounds(acc, [
+      [Math.min(...xs), Math.min(...ys)],
+      [Math.max(...xs), Math.max(...ys)],
+    ]);
   },
   undefined,
 );
@@ -335,7 +419,7 @@ const projectAntimeridianAwarePoint = (
   const point = projection(coordinates);
   if (!point) return point;
   const [lon, lat] = coordinates;
-  if (lon >= -150) return point;
+  if (lon >= ANTIMERIDIAN_WRAP_LON_THRESHOLD) return point;
 
   return [
     point[0] + getAntimeridianWrapOffset(lat, projection),
@@ -387,10 +471,26 @@ const createFitTransform = (
   const [[x0, y0], [x1, y1]] = bounds;
   const boundsWidth = Math.max(x1 - x0, 1);
   const boundsHeight = Math.max(y1 - y0, 1);
-  const fitPadding = Math.max(
-    FILTER_FIT_MIN_PADDING,
-    Math.min(svgWidth, svgHeight) * FILTER_FIT_PADDING_RATIO,
+  const unpaddedScale = Math.min(
+    FILTER_FIT_MAX_ZOOM,
+    Math.max(1, Math.min(svgWidth / boundsWidth, svgHeight / boundsHeight)),
   );
+  const zoomProgress = Math.min(
+    1,
+    Math.max(0, (unpaddedScale - 1) / (FILTER_FIT_MAX_ZOOM - 1)),
+  );
+  const minFitPadding = Math.max(
+    FILTER_FIT_MIN_PADDING,
+    Math.min(svgWidth, svgHeight) * FILTER_FIT_MIN_PADDING_RATIO,
+  );
+  const maxFitPadding = Math.max(
+    minFitPadding,
+    Math.min(
+      FILTER_FIT_MAX_PADDING,
+      Math.min(svgWidth, svgHeight) * FILTER_FIT_MAX_PADDING_RATIO,
+    ),
+  );
+  const fitPadding = minFitPadding + (maxFitPadding - minFitPadding) * Math.sqrt(zoomProgress);
   const availableWidth = Math.max(svgWidth - fitPadding * 2, 1);
   const availableHeight = Math.max(svgHeight - fitPadding * 2, 1);
   const scale = Math.min(
@@ -427,28 +527,39 @@ export const Map = (props: Props) => {
     undefined,
   );
   const queryParams = new URLSearchParams(window.location.search);
-  const svgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
-    ? 1280
-    : 960;
-  const svgHeight = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
-    ? 476
-    : 383;
+  const fallbackSvgWidth = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
+    ? WIDE_SVG_WIDTH
+    : DEFAULT_SVG_WIDTH;
+  const fallbackSvgHeight = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
+    ? WIDE_SVG_HEIGHT
+    : DEFAULT_SVG_HEIGHT;
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [viewportSize, setViewportSize] = useState<{ width: number; height: number }>();
+  const svgWidth = viewportSize?.width || fallbackSvgWidth;
+  const svgHeight = viewportSize?.height || fallbackSvgHeight;
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
+  const projectionScaleRatio = Math.min(
+    svgWidth / fallbackSvgWidth,
+    svgHeight / fallbackSvgHeight,
+  );
   const projection = useMemo(
     () => geoEqualEarth()
       .rotate([0, 0])
-      .scale(160)
-      .translate([svgWidth / 2 - 50, svgHeight / 2 + 25]),
-    [svgHeight, svgWidth],
+      .scale(160 * projectionScaleRatio)
+      .translate([svgWidth / 2, svgHeight / 2]),
+    [projectionScaleRatio, svgHeight, svgWidth],
   );
-  const pathGenerator = useMemo(() => geoPath(projection), [projection]);
-  const hasActiveFilters = hasActiveDashboardFilters(filters);
   const filterSignature = getDashboardFilterSignature(filters);
-  const xIndicatorMetaData = indicators[
-    indicators.findIndex((indicator) => indicator.Indicator === xAxisIndicator)
-  ];
-  const valueArray = binningRangeLarge[xIndicatorMetaData.DataKey];
+  const xIndicatorMetaData = useMemo(
+    () => indicators.find((indicator) => indicator.Indicator === xAxisIndicator) || indicators[0],
+    [indicators, xAxisIndicator],
+  );
+  const valueArray = useMemo(() => (
+    xIndicatorMetaData
+      ? binningRangeLarge[xIndicatorMetaData.DataKey] || EMPTY_VALUE_ARRAY
+      : EMPTY_VALUE_ARRAY
+  ), [binningRangeLarge, xIndicatorMetaData]);
   const colorArray = valueArray.length === 5
     ? UNDPColorModule.sequentialColors.neutralColorsx06
     : UNDPColorModule.sequentialColors.neutralColorsx08;
@@ -548,6 +659,34 @@ export const Map = (props: Props) => {
   }, []);
 
   useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport || typeof ResizeObserver === 'undefined') return undefined;
+
+    const updateViewportSize = () => {
+      const rect = viewport.getBoundingClientRect();
+      const nextWidth = Math.round(rect.width);
+      const nextHeight = Math.round(rect.height);
+      if (nextWidth <= 0 || nextHeight <= 0) return;
+
+      setViewportSize((currentSize) => {
+        if (
+          currentSize
+          && Math.abs(currentSize.width - nextWidth) < 1
+          && Math.abs(currentSize.height - nextHeight) < 1
+        ) {
+          return currentSize;
+        }
+        return { width: nextWidth, height: nextHeight };
+      });
+    };
+
+    updateViewportSize();
+    const observer = new ResizeObserver(updateViewportSize);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
+
+  useLayoutEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
     const zoomBehaviour = zoom()
@@ -565,7 +704,7 @@ export const Map = (props: Props) => {
 
   useLayoutEffect(() => {
     if (!zoomBehaviourRef.current || !mapSvg.current) return;
-    if (!hasActiveFilters || data.length === 0) {
+    if (data.length === 0) {
       transitionMapTo(zoomIdentity);
       return;
     }
@@ -575,10 +714,17 @@ export const Map = (props: Props) => {
     const features = ((geojsonMapData as any).features || []).filter(
       (feature: any) => activeCountryCodes.has(feature.properties.ISO3),
     );
-    const countryBboxBounds = getCountryBboxBounds(data, projection);
-    const featureBounds = countryBboxBounds || getProjectedBounds(features, pathGenerator);
+    const featureCountryCodes = new Set(features.map((feature: any) => feature.properties.ISO3));
+    const missingFeatureCountries = data.filter((country) => (
+      !featureCountryCodes.has(country['Alpha-3 code'])
+    ));
+    const featureBounds = getRenderedFeatureBounds(features, projection);
+    const fallbackBboxBounds = getCountryBboxBounds(missingFeatureCountries, projection);
     const islandBounds = getIslandBounds(activeCountryNames, projection);
-    const bounds = mergeProjectedBounds(featureBounds, islandBounds);
+    const bounds = mergeProjectedBounds(
+      mergeProjectedBounds(featureBounds, fallbackBboxBounds),
+      islandBounds,
+    );
     const nextTransform = bounds
       ? createFitTransform(bounds, svgWidth, svgHeight)
       : zoomIdentity;
@@ -588,8 +734,6 @@ export const Map = (props: Props) => {
     data,
     filterSignature,
     geojsonMapData,
-    hasActiveFilters,
-    pathGenerator,
     projection,
     svgHeight,
     svgWidth,
@@ -597,16 +741,17 @@ export const Map = (props: Props) => {
   ]);
 
   return (
-    <div style={{ overflow: 'hidden', backgroundColor: 'var(--black-100),', position: 'relative' }}>
-      <ExportButton
-        aria-label={t('export-map')}
-        onClick={exportMap}
-        title={t('export-map')}
-        type='button'
-      >
-        <Download aria-hidden='true' size={15} strokeWidth={2} />
-      </ExportButton>
-      <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} ref={mapSvg}>
+    <MapRoot>
+      <div ref={viewportRef} className='moonshot-map-viewport'>
+        <ExportButton
+          aria-label={t('export-map')}
+          onClick={exportMap}
+          title={t('export-map')}
+          type='button'
+        >
+          <Download aria-hidden='true' size={15} strokeWidth={2} />
+        </ExportButton>
+        <svg className='moonshot-map-svg' viewBox={`0 0 ${svgWidth} ${svgHeight}`} ref={mapSvg}>
         <rect
           y='-20'
           width={svgWidth}
@@ -625,7 +770,7 @@ export const Map = (props: Props) => {
             // const countryOpacity = selectedCountries.length === 0 || selectedCountries !== d['Country or Area'];
 
             if (index !== -1 || d.properties.NAME === 'Antarctica') return null;
-            const featureWrapOffset = getFeatureWrapOffset(d, projection);
+            const wrapAntimeridian = shouldWrapFeatureAtAntimeridian(d);
             return (
               <g key={i} opacity={selectedColor ? 0.5 : 1}>
                 {d.geometry.type === 'MultiPolygon'
@@ -634,7 +779,7 @@ export const Map = (props: Props) => {
                     el.forEach((geo: number[][]) => {
                       let path = ' M';
                       geo.forEach((c: number[], k: number) => {
-                        const point = projectCoordinate(c, projection, featureWrapOffset);
+                        const point = projectCoordinate(c, projection, wrapAntimeridian);
                         if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                         else path = `${path}${point[0]} ${point[1]}`;
                       });
@@ -662,7 +807,7 @@ export const Map = (props: Props) => {
                   : d.geometry.coordinates.map((el: any, j: number) => {
                     let path = 'M';
                     el.forEach((c: number[], k: number) => {
-                      const point = projectCoordinate(c, projection, featureWrapOffset);
+                      const point = projectCoordinate(c, projection, wrapAntimeridian);
                       if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                       else path = `${path}${point[0]} ${point[1]}`;
                     });
@@ -704,9 +849,9 @@ export const Map = (props: Props) => {
             const activeFeature = index === -1
               ? undefined
               : (geojsonMapData as any).features[index];
-            const featureWrapOffset = activeFeature
-              ? getFeatureWrapOffset(activeFeature, projection)
-              : 0;
+            const wrapAntimeridian = activeFeature
+              ? shouldWrapFeatureAtAntimeridian(activeFeature)
+              : false;
 
             return (
               <g
@@ -766,7 +911,7 @@ export const Map = (props: Props) => {
                       el.forEach((geo: number[][]) => {
                         let path = ' M';
                         geo.forEach((c: number[], k: number) => {
-                          const point = projectCoordinate(c, projection, featureWrapOffset);
+                          const point = projectCoordinate(c, projection, wrapAntimeridian);
                           if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                           else path = `${path}${point[0]} ${point[1]}`;
                         });
@@ -787,7 +932,7 @@ export const Map = (props: Props) => {
                     ].geometry.coordinates.map((el: any, j: number) => {
                       let path = 'M';
                       el.forEach((c: number[], k: number) => {
-                        const point = projectCoordinate(c, projection, featureWrapOffset);
+                        const point = projectCoordinate(c, projection, wrapAntimeridian);
                         if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                         else path = `${path}${point[0]} ${point[1]}`;
                       });
@@ -815,7 +960,7 @@ export const Map = (props: Props) => {
                     ]['Alpha-3 code'],
               )
               .map((d: any, i: number) => {
-                const featureWrapOffset = getFeatureWrapOffset(d, projection);
+                const wrapAntimeridian = shouldWrapFeatureAtAntimeridian(d);
                 return (
                   <G opacity={selectedColor ? 0 : 1} key={i}>
                     {d.geometry.type === 'MultiPolygon'
@@ -824,7 +969,7 @@ export const Map = (props: Props) => {
                         el.forEach((geo: number[][]) => {
                           let path = ' M';
                           geo.forEach((c: number[], k: number) => {
-                            const point = projectCoordinate(c, projection, featureWrapOffset);
+                            const point = projectCoordinate(c, projection, wrapAntimeridian);
                             if (k !== geo.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                             else path = `${path}${point[0]} ${point[1]}`;
                           });
@@ -845,7 +990,7 @@ export const Map = (props: Props) => {
                       : d.geometry.coordinates.map((el: any, j: number) => {
                         let path = 'M';
                         el.forEach((c: number[], k: number) => {
-                          const point = projectCoordinate(c, projection, featureWrapOffset);
+                          const point = projectCoordinate(c, projection, wrapAntimeridian);
                           if (k !== el.length - 1) path = `${path}${point[0]} ${point[1]}L`;
                           else path = `${path}${point[0]} ${point[1]}`;
                         });
@@ -941,7 +1086,7 @@ export const Map = (props: Props) => {
           })}
         </MapG>
       </svg>
-      <LegendEl>
+      <LegendEl className='moonshot-map-legend'>
         <MapIndicatorSelectWrapper
           className='margin-bottom-05'
           style={{ width: '100%', minWidth: '19rem' }}
@@ -949,7 +1094,7 @@ export const Map = (props: Props) => {
           <Select
             className='undp-select'
             placeholder={t('please-select')}
-            value={xAxisIndicator}
+            value={xIndicatorMetaData?.Indicator}
             onChange={(d) => {
               updateXAxisIndicator(d);
             }}
@@ -1020,8 +1165,9 @@ export const Map = (props: Props) => {
             </g>
           </g>
         </svg>
-      </LegendEl>
+        </LegendEl>
+      </div>
       {hoverData ? <Tooltip data={hoverData} /> : null}
-    </div>
+    </MapRoot>
   );
 };

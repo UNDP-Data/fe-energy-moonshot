@@ -17,9 +17,9 @@ interface WidthProps {
 
 const StatCardsDiv = styled.div<WidthProps>`
   align-content: center;
-  background-color: ${(props) => (props.$active ? 'var(--yellow-bg, #FFE17E)' : 'var(--white)')};
+  background-color: ${(props) => (props.$active ? 'var(--moonshot-dashboard-kpi-active, var(--yellow-bg, #FFE17E))' : 'var(--moonshot-dashboard-surface, var(--white))')};
   box-sizing: border-box;
-  color: ${(props) => (props.$active ? 'var(--black)' : 'inherit')};
+  color: ${(props) => (props.$active ? 'var(--black)' : 'var(--moonshot-dashboard-text, inherit)')};
   cursor: default;
   height: 100%;
   min-height: 5.2rem;
@@ -31,11 +31,11 @@ const StatCardsDiv = styled.div<WidthProps>`
   width: 100%;
   &:hover,
   &:focus-within {
-    background-color: var(--yellow-bg, #FFE17E);
+    background-color: var(--moonshot-dashboard-kpi-active, var(--yellow-bg, #FFE17E));
     color: var(--black);
   }
   h3.undp-typography {
-    color: ${(props) => (props.$active ? 'var(--black)' : 'inherit')};
+    color: ${(props) => (props.$active ? 'var(--black)' : 'var(--moonshot-dashboard-text, inherit)')};
     display: block;
     font-feature-settings: 'tnum' 1;
     font-variant-numeric: tabular-nums;
@@ -47,7 +47,7 @@ const StatCardsDiv = styled.div<WidthProps>`
     text-overflow: ellipsis;
     white-space: nowrap;
     -webkit-text-fill-color: ${(props) => (props.$active ? 'var(--black)' : 'transparent')};
-    -webkit-text-stroke: ${(props) => (props.$active ? '0' : '1px var(--black)')};
+    -webkit-text-stroke: ${(props) => (props.$active ? '0' : '1px var(--moonshot-dashboard-text, var(--black))')};
   }
   &:hover h3.undp-typography,
   &:focus-within h3.undp-typography,
@@ -61,7 +61,7 @@ const StatCardsDiv = styled.div<WidthProps>`
     -webkit-text-stroke: 0;
   }
   p {
-    color: ${(props) => (props.$active ? 'var(--black)' : 'inherit')};
+    color: ${(props) => (props.$active ? 'var(--black)' : 'var(--moonshot-dashboard-text, inherit)')};
     margin: 0.0625rem 0 0;
     overflow-wrap: anywhere;
   }

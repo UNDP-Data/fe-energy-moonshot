@@ -145,6 +145,23 @@ body {
   font-size: calc(1rem + 2pt);
 }
 
+.moonshot-project-table .moonshot-output-scroll {
+  box-sizing: border-box;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.moonshot-project-table .moonshot-output-row {
+  align-items: stretch;
+  min-width: 0;
+}
+
+.moonshot-project-table .moonshot-output-row .undp-table-row-cell {
+  box-sizing: border-box;
+}
+
 .undp-country-header {
   position: relative !important;
 }
@@ -706,6 +723,11 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
 
   .moonshot-project-table .flex-div {
     display: block !important;
+  }
+
+  .moonshot-project-table .moonshot-output-scroll {
+    max-height: none !important;
+    overflow: visible !important;
   }
 
   .moonshot-project-table h6.undp-typography {

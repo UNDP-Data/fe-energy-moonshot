@@ -1,4 +1,10 @@
-import { useContext, useEffect, useMemo } from 'react';
+import {
+  startTransition,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Segmented } from 'antd';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -43,11 +49,22 @@ export const Settings = () => {
   const {
     filters,
     updateDashboardFilter,
+    applyDashboardFilters,
   } = useContext(Context) as CtxDataType;
   const selectedCategory = filters.category;
   const selectedSubCategory = filters.subCategory;
+  const [localCategory, setLocalCategory] = useState(selectedCategory);
+  const [localSubCategory, setLocalSubCategory] = useState(selectedSubCategory);
   // translation
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setLocalCategory(selectedCategory);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    setLocalSubCategory(selectedSubCategory);
+  }, [selectedSubCategory]);
 
   const outputsTaxonomyTranslated = useMemo(() => outputsTaxonomy.map((ot) => ({
     value: ot.value,
@@ -59,19 +76,51 @@ export const Settings = () => {
   })), [t]);
 
   const subCategoriesTaxonomy = useMemo(() => {
-    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === selectedCategory)
+    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === localCategory)
       || outputsTaxonomyTranslated[0];
     return activeOutputsTaxonomy?.subcategories;
-  }, [outputsTaxonomyTranslated, selectedCategory]);
+  }, [outputsTaxonomyTranslated, localCategory]);
 
   useEffect(() => {
     const selectedSubCategoryIsValid = subCategoriesTaxonomy
-      ?.some((subCategory) => subCategory.value === selectedSubCategory);
+      ?.some((subCategory) => subCategory.value === localSubCategory);
 
-    if (selectedSubCategory !== 'all' && !selectedSubCategoryIsValid) {
-      updateDashboardFilter('subCategory', 'all');
+    if (localSubCategory !== 'all' && !selectedSubCategoryIsValid) {
+      setLocalSubCategory('all');
+      startTransition(() => {
+        updateDashboardFilter('subCategory', 'all');
+      });
     }
-  }, [selectedCategory, selectedSubCategory, subCategoriesTaxonomy, updateDashboardFilter]);
+  }, [localSubCategory, subCategoriesTaxonomy, updateDashboardFilter]);
+
+  const handleCategoryChange = (value: string) => {
+    const nextCategory = String(value);
+    const nextTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === nextCategory)
+      || outputsTaxonomyTranslated[0];
+    const currentSubCategoryIsValid = nextTaxonomy?.subcategories
+      ?.some((subCategory) => subCategory.value === localSubCategory);
+    const nextSubCategory = localSubCategory !== 'all' && !currentSubCategoryIsValid
+      ? 'all'
+      : localSubCategory;
+
+    setLocalCategory(nextCategory);
+    setLocalSubCategory(nextSubCategory);
+
+    startTransition(() => {
+      applyDashboardFilters({
+        category: nextCategory,
+        subCategory: nextSubCategory,
+      });
+    });
+  };
+
+  const handleSubCategoryChange = (value: string) => {
+    const nextSubCategory = String(value);
+    setLocalSubCategory(nextSubCategory);
+    startTransition(() => {
+      updateDashboardFilter('subCategory', nextSubCategory);
+    });
+  };
 
   return (
     <SelectorStack>
@@ -89,8 +138,8 @@ export const Settings = () => {
             <Segmented
               className='undp-segmented-small padding-bottom-00 padding-left-00 padding-right-00 data-platform-segmented'
               block
-              onChange={(value) => { updateDashboardFilter('category', String(value)); }}
-              value={selectedCategory}
+              onChange={(value) => { handleCategoryChange(String(value)); }}
+              value={localCategory}
               options={outputsTaxonomyTranslated}
             />
           </SelectorControl>
@@ -111,9 +160,9 @@ export const Settings = () => {
               className='undp-segmented-small data-platform-segmented-small padding-top-00 padding-bottom-00 padding-left-00 padding-right-00'
               block
               style={{ width: '100%' }}
-              disabled={selectedCategory === 'all'}
-              onChange={(value) => { updateDashboardFilter('subCategory', String(value)); }}
-              value={selectedSubCategory}
+              disabled={localCategory === 'all'}
+              onChange={(value) => { handleSubCategoryChange(String(value)); }}
+              value={localSubCategory}
               options={subCategoriesTaxonomy}
             />
           </SelectorControl>

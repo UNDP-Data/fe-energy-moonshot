@@ -1,5 +1,5 @@
 import {
-  memo, useState, useEffect, useRef, useCallback,
+  memo, useState, useEffect, useRef, useCallback, useLayoutEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -149,6 +149,9 @@ const Project = memo((props:ProjectProps) => {
   const projectDetailsLabelKey = getProjectDetailsLabelKey(project);
   const projectDocumentUrl = getProjectDocumentUrl(project);
   const [prodocLoading, setProdocLoading] = useState(false);
+  const titleDescriptionRef = useRef<HTMLDivElement | null>(null);
+  const projectInfoRef = useRef<HTMLDivElement | null>(null);
+  const [outputMaxHeight, setOutputMaxHeight] = useState<number | undefined>();
 
   const hideModal = () => {
     setModalOpen(false);
@@ -158,6 +161,31 @@ const Project = memo((props:ProjectProps) => {
     userRef.current = userData;
     modalRef.current = modalOpen;
   }, [modalOpen, userData]);
+
+  useLayoutEffect(() => {
+    const updateOutputHeight = () => {
+      const titleDescriptionHeight = titleDescriptionRef.current?.offsetHeight || 0;
+      const projectInfoHeight = projectInfoRef.current?.offsetHeight || 0;
+      const nextHeight = Math.max(titleDescriptionHeight, projectInfoHeight);
+      setOutputMaxHeight((currentHeight) => (
+        currentHeight === nextHeight ? currentHeight : nextHeight
+      ));
+    };
+
+    updateOutputHeight();
+
+    if (typeof ResizeObserver === 'undefined') {
+      return undefined;
+    }
+
+    const resizeObserver = new ResizeObserver(updateOutputHeight);
+    if (titleDescriptionRef.current) resizeObserver.observe(titleDescriptionRef.current);
+    if (projectInfoRef.current) resizeObserver.observe(projectInfoRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [project]);
 
   function requestUserData() {
     return new Promise<void>((resolve, reject) => {
@@ -258,278 +286,287 @@ const Project = memo((props:ProjectProps) => {
       <div className='undp-table-row'>
         <div style={{ width: '30%', background: 'transparent' }} className='undp-table-row-cell'>
           <div className='padding-left-05 padding-right-05'>
-            <h6 className='undp-typography'>
-              {
-                (project.title) && (
-                  <EditableCell
-                    text={project.title}
-                    fieldName='title'
-                    sendUpdate={sendUpdate}
-                  />
-                )
-              }
-              {' - '}
-              <EditableCell
-                text={project.id ? project.id : '__'}
-                fieldName='id'
-                sendUpdate={sendUpdate}
-              />
-              {project.genderMarker && ' - '}
-              {
-                (project.genderMarker) && (
-                  <EditableCell
-                    text={project.genderMarker}
-                    fieldName='genderMarker'
-                    sendUpdate={sendUpdate}
-                  />
-                )
-              }
-            </h6>
-            <p className='undp-typography'>
-              {
-                (project.description) && (
-                  <EditableCell
-                    text={project.description}
-                    fieldName='description'
-                    sendUpdate={sendUpdate}
-                  />
-                )
-              }
-            </p>
-          </div>
-        </div>
-        <div style={{ width: '20%', background: 'transparent' }} className='undp-table-row-cell'>
-          <div className='padding-left-05 padding-right-05'>
-            <p className='undp-typography'>
-              {t('country')}
-              {' - '}
-              <b>
+            <div ref={titleDescriptionRef}>
+              <h6 className='undp-typography'>
                 {
-                  countryLinkDict[project.countryCode]
-                    ? (
-                      <a
-                        href={countryLinkDict[project.countryCode]}
-                        target='_blank'
-                        rel='noreferrer'
-                      >
-                        {project.countryName}
-                      </a>
-                    )
-                    : (project.countryName)
-                }
-              </b>
-            </p>
-            <p className='undp-typography'>
-              {t('budget')}
-              {' - '}
-              <EditableCell
-                text={project.budget ? Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B') : '__'}
-                fieldName='budget'
-                sendUpdate={sendUpdate}
-              />
-            </p>
-            <p className='undp-typography'>
-              {
-                (typeof project.verticalFunded === 'boolean') && (
-                  <>
-                    {t('type')}
-                    {' - '}
+                  (project.title) && (
                     <EditableCell
-                      text={t(project.verticalFunded ? 'vf' : 'non-vf')}
-                      fieldName='verticalFunded'
+                      text={project.title}
+                      fieldName='title'
                       sendUpdate={sendUpdate}
                     />
-                  </>
-                )
-              }
-            </p>
-            <p className='undp-typography'>
-              {
-                (project.genderMarker) && (
-                  <>
-                    {t('gender-equality')}
-                    {' - '}
+                  )
+                }
+                {' - '}
+                <EditableCell
+                  text={project.id ? project.id : '__'}
+                  fieldName='id'
+                  sendUpdate={sendUpdate}
+                />
+                {project.genderMarker && ' - '}
+                {
+                  (project.genderMarker) && (
                     <EditableCell
                       text={project.genderMarker}
                       fieldName='genderMarker'
                       sendUpdate={sendUpdate}
                     />
-                  </>
-                )
-              }
-            </p>
-
-            <p className='undp-typography'>
-              {
-                projectDetailsUrl ? (
-                  <>
-                    {t('project-details')}
-                    {' - '}
-                    <ProjectInfoLink
-                      href={projectDetailsUrl}
-                      target='_blank'
-                      rel='noreferrer'
-                    >
-                      {t(projectDetailsLabelKey)}
-                    </ProjectInfoLink>
-                  </>
-                ) : (
-                  <>
-                    {t('project-details')}
-                    {' - '}
+                  )
+                }
+              </h6>
+              <p className='undp-typography'>
+                {
+                  (project.description) && (
                     <EditableCell
-                      text='__'
-                      fieldName='link'
+                      text={project.description}
+                      fieldName='description'
                       sendUpdate={sendUpdate}
                     />
-                  </>
-                )
-              }
-            </p>
-            <p className='undp-typography'>
-              {t('donors')}
-              {' - '}
-              <EditableCell
-                text={project.donors === null ? '__' : project.donors.join(', ')}
-                fieldName='donors'
-                sendUpdate={sendUpdate}
-              />
-            </p>
-            <p className='undp-typography'>
-              {t('status')}
-              {' - '}
-              <EditableCell
-                text={status || '__'}
-                fieldName='status'
-                sendUpdate={sendUpdate}
-              />
-            </p>
-            <p className='undp-typography'>
-              {t('start-year')}
-              {' - '}
-              <EditableCell
-                text={startYear || '__'}
-                fieldName='startYear'
-                sendUpdate={sendUpdate}
-              />
-            </p>
-            <p className='undp-typography'>
-              {t('end-year')}
-              {' - '}
-              <EditableCell
-                text={endYear || '__'}
-                fieldName='endYear'
-                sendUpdate={sendUpdate}
-              />
-            </p>
-            <p className='undp-typography'>
-              {t('project-document')}
-              {' - '}
-              {
-                projectDocumentUrl ? (
-                  <ProjectDocumentButton
-                    type='button'
-                    onClick={handleProdocDownload}
-                    disabled={prodocLoading}
-                  >
-                    {prodocLoading ? t('loading') : t('download')}
-                  </ProjectDocumentButton>
-                ) : 'NA'
-              }
-            </p>
+                  )
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+        <div style={{ width: '20%', background: 'transparent' }} className='undp-table-row-cell'>
+          <div className='padding-left-05 padding-right-05'>
+            <div ref={projectInfoRef}>
+              <p className='undp-typography'>
+                {t('country')}
+                {' - '}
+                <b>
+                  {
+                    countryLinkDict[project.countryCode]
+                      ? (
+                        <a
+                          href={countryLinkDict[project.countryCode]}
+                          target='_blank'
+                          rel='noreferrer'
+                        >
+                          {project.countryName}
+                        </a>
+                      )
+                      : (project.countryName)
+                  }
+                </b>
+              </p>
+              <p className='undp-typography'>
+                {t('budget')}
+                {' - '}
+                <EditableCell
+                  text={project.budget ? Math.abs(project.budget) < 1 ? project.budget && project.budget.toString() : format('~s')(project.budget).replace('G', 'B') : '__'}
+                  fieldName='budget'
+                  sendUpdate={sendUpdate}
+                />
+              </p>
+              <p className='undp-typography'>
+                {
+                  (typeof project.verticalFunded === 'boolean') && (
+                    <>
+                      {t('type')}
+                      {' - '}
+                      <EditableCell
+                        text={t(project.verticalFunded ? 'vf' : 'non-vf')}
+                        fieldName='verticalFunded'
+                        sendUpdate={sendUpdate}
+                      />
+                    </>
+                  )
+                }
+              </p>
+              <p className='undp-typography'>
+                {
+                  (project.genderMarker) && (
+                    <>
+                      {t('gender-equality')}
+                      {' - '}
+                      <EditableCell
+                        text={project.genderMarker}
+                        fieldName='genderMarker'
+                        sendUpdate={sendUpdate}
+                      />
+                    </>
+                  )
+                }
+              </p>
+
+              <p className='undp-typography'>
+                {
+                  projectDetailsUrl ? (
+                    <>
+                      {t('project-details')}
+                      {' - '}
+                      <ProjectInfoLink
+                        href={projectDetailsUrl}
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        {t(projectDetailsLabelKey)}
+                      </ProjectInfoLink>
+                    </>
+                  ) : (
+                    <>
+                      {t('project-details')}
+                      {' - '}
+                      <EditableCell
+                        text='__'
+                        fieldName='link'
+                        sendUpdate={sendUpdate}
+                      />
+                    </>
+                  )
+                }
+              </p>
+              <p className='undp-typography'>
+                {t('donors')}
+                {' - '}
+                <EditableCell
+                  text={project.donors === null ? '__' : project.donors.join(', ')}
+                  fieldName='donors'
+                  sendUpdate={sendUpdate}
+                />
+              </p>
+              <p className='undp-typography'>
+                {t('status')}
+                {' - '}
+                <EditableCell
+                  text={status || '__'}
+                  fieldName='status'
+                  sendUpdate={sendUpdate}
+                />
+              </p>
+              <p className='undp-typography'>
+                {t('start-year')}
+                {' - '}
+                <EditableCell
+                  text={startYear || '__'}
+                  fieldName='startYear'
+                  sendUpdate={sendUpdate}
+                />
+              </p>
+              <p className='undp-typography'>
+                {t('end-year')}
+                {' - '}
+                <EditableCell
+                  text={endYear || '__'}
+                  fieldName='endYear'
+                  sendUpdate={sendUpdate}
+                />
+              </p>
+              <p className='undp-typography'>
+                {t('project-document')}
+                {' - '}
+                {
+                  projectDocumentUrl ? (
+                    <ProjectDocumentButton
+                      type='button'
+                      onClick={handleProdocDownload}
+                      disabled={prodocLoading}
+                    >
+                      {prodocLoading ? t('loading') : t('download')}
+                    </ProjectDocumentButton>
+                  ) : 'NA'
+                }
+              </p>
+            </div>
           </div>
         </div>
         <div style={{ width: '50%', background: 'transparent' }} className='undp-table-row-cell'>
-          {
-            project.outputs.map((o, i) => (
-              <div key={`${i}output`} className='flex-div'>
-                <div
-                  style={{ width: '40%', background: 'transparent' }}
-                  className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
-                >
-                  <p className='undp-typography'>
-                    {
-                      (o.directBeneficiaries) ? (
-                        <>
-                          {t('direct-beneficiaries')}
-                          {' - '}
-                        </>
-                      ) : (
-                        ''
-                      )
+          <div
+            className='moonshot-output-scroll'
+            style={outputMaxHeight ? { maxHeight: outputMaxHeight } : undefined}
+          >
+            {
+              project.outputs.map((o, i) => (
+                <div key={`${i}output`} className='flex-div moonshot-output-row'>
+                  <div
+                    style={{ width: '40%', background: 'transparent' }}
+                    className={`undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`}
+                  >
+                    <p className='undp-typography'>
+                      {
+                        (o.directBeneficiaries) ? (
+                          <>
+                            {t('direct-beneficiaries')}
+                            {' - '}
+                          </>
+                        ) : (
+                          ''
+                        )
+                      }
+                      <EditableCell
+                        text={o.directBeneficiaries ? format('~s')(o.directBeneficiaries).replace('G', 'B') : t('indirect-beneficiaries')}
+                        fieldName='beneficiaries'
+                        outputId={o.id}
+                        sendUpdate={sendUpdate}
+                      />
+                    </p>
+                    <p className='undp-typography'>
+                      {
+                        (o.outputCategory) && (
+                          <>
+                            {t('select-output-type')}
+                            {' - '}
+                            <EditableCell
+                              text={o.outputCategory}
+                              outputId={o.id}
+                              fieldName='outputCategory'
+                              sendUpdate={sendUpdate}
+                            />
+                          </>
+                        )
+                      }
+                    </p>
+                    <p className='undp-typography'>
+                      {
+                        (o.beneficiaryCategory) && (
+                          <>
+                            {t('select-output-sub-type')}
+                            {' - '}
+                            <EditableCell
+                              text={o.beneficiaryCategory}
+                              outputId={o.id}
+                              fieldName='beneficiaryCategory'
+                              sendUpdate={sendUpdate}
+                            />
+                          </>
+                        )
+                      }
+                    </p>
+                    <p className='undp-typography'>
+                      {t('female-percent')}
+                      {' - '}
+                      <EditableCell
+                        text={o.percentFemale === null ? '__' : `${format('.2f')(o.percentFemale)}%`}
+                        fieldName='percentFemale'
+                        outputId={o.id}
+                        sendUpdate={sendUpdate}
+                      />
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: '60%', background: 'transparent' }}
+                    className={
+                      `undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
                     }
-                    <EditableCell
-                      text={o.directBeneficiaries ? format('~s')(o.directBeneficiaries).replace('G', 'B') : t('indirect-beneficiaries')}
-                      fieldName='beneficiaries'
-                      outputId={o.id}
-                      sendUpdate={sendUpdate}
-                    />
-                  </p>
-                  <p className='undp-typography'>
+                  >
                     {
-                      (o.outputCategory) && (
+                      (o.description) && (
                         <>
-                          {t('select-output-type')}
-                          {' - '}
                           <EditableCell
-                            text={o.outputCategory}
+                            text={o.description}
                             outputId={o.id}
-                            fieldName='outputCategory'
+                            fieldName='description'
                             sendUpdate={sendUpdate}
                           />
                         </>
                       )
                     }
-                  </p>
-                  <p className='undp-typography'>
-                    {
-                      (o.beneficiaryCategory) && (
-                        <>
-                          {t('select-output-sub-type')}
-                          {' - '}
-                          <EditableCell
-                            text={o.beneficiaryCategory}
-                            outputId={o.id}
-                            fieldName='beneficiaryCategory'
-                            sendUpdate={sendUpdate}
-                          />
-                        </>
-                      )
-                    }
-                  </p>
-                  <p className='undp-typography'>
-                    {t('female-percent')}
-                    {' - '}
-                    <EditableCell
-                      text={o.percentFemale === null ? '__' : `${format('.2f')(o.percentFemale)}%`}
-                      fieldName='percentFemale'
-                      outputId={o.id}
-                      sendUpdate={sendUpdate}
-                    />
-                  </p>
+                  </div>
                 </div>
-                <div
-                  style={{ width: '60%', background: 'transparent' }}
-                  className={
-                    `undp-table-row-cell ${i === project.outputs.length - 1 ? 'table-cell-no-border' : ''}`
-                  }
-                >
-                  {
-                    (o.description) && (
-                      <>
-                        <EditableCell
-                          text={o.description}
-                          outputId={o.id}
-                          fieldName='description'
-                          sendUpdate={sendUpdate}
-                        />
-                      </>
-                    )
-                  }
-                </div>
-              </div>
-            ))
-          }
+              ))
+            }
+          </div>
         </div>
       </div>
       <Modal

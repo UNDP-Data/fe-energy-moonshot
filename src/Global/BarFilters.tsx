@@ -6,6 +6,7 @@ import {
   CountryMetadataRow,
   CtxDataType,
   getAssetPath,
+  IndicatorMetaDataType,
   ProjectLevelDataType,
 } from '../Types';
 import StackedChart from '../Components/StackedChart';
@@ -15,23 +16,41 @@ import {
   genderMarkers,
   fundingTaxonomy,
 } from '../Constants';
-import { getProjectDirectBeneficiariesForFilters } from '../utils/dashboardFilters';
+import {
+  getProjectDirectBeneficiariesForFilters,
+  outputMatchesFilters,
+} from '../utils/dashboardFilters';
 
 interface Props {
   data: ProjectLevelDataType[];
   countryList: string[];
   countryMetadataByCode: Record<string, CountryMetadataRow>;
+  indicators: IndicatorMetaDataType[];
 }
 
 const BarFiltersWrapper = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  min-height: 100%;
+  padding: 0.35rem 0.5rem 0.6rem 0;
+  width: 100%;
+  .bar-filters-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    width: 100%;
+  }
   .bar-filter-block {
     width: 100%;
   }
   .bar-filter-block + .bar-filter-block {
-    margin-top: 0.74rem;
+    margin-top: clamp(0.45rem, 1.6vh, 0.95rem);
   }
   .undp-stacked-chart {
-    margin-bottom: 0.58rem;
+    margin-bottom: clamp(0.42rem, 1.2vh, 0.72rem);
   }
   .select-wrapper + .undp-stacked-chart {
     margin-top: 0;
@@ -41,12 +60,32 @@ const BarFiltersWrapper = styled.div`
   }
   .undp-stacked-chart-label {
     font-size: 0.875rem;
-    padding: 0.38rem 0;
+    padding: clamp(0.32rem, 0.9vh, 0.48rem) 0;
   }
   .undp-stacked-chart-value {
     font-size: 0.875rem;
     line-height: 1.1;
-    margin-top: 0.18rem;
+    margin-top: clamp(0.12rem, 0.5vh, 0.22rem);
+  }
+  @media (max-width: 960px) {
+    height: auto;
+    min-height: 0;
+    .bar-filters-content {
+      display: block;
+      min-height: 0;
+    }
+    .bar-filter-block + .bar-filter-block {
+      margin-top: 0.74rem;
+    }
+    .undp-stacked-chart {
+      margin-bottom: 0.58rem;
+    }
+    .undp-stacked-chart-label {
+      padding: 0.38rem 0;
+    }
+    .undp-stacked-chart-value {
+      margin-top: 0.18rem;
+    }
   }
 `;
 
@@ -171,6 +210,7 @@ export const BarFilters = (props: Props) => {
     updateDashboardFilter,
     applyDashboardFilters,
     resetDashboardFilters,
+    xAxisIndicator,
   } = useContext(Context) as CtxDataType;
   const selectedFunding = normalizeFundingValue(filters.funding);
   const selectedGenderMarker = filters.genderMarker;
@@ -184,7 +224,12 @@ export const BarFilters = (props: Props) => {
   ]);
   const [isSelectOpen, setIsSelectOpen] = useState([false, false, false]);
 
-  const { countryList, data, countryMetadataByCode } = props;
+  const {
+    countryList,
+    data,
+    countryMetadataByCode,
+    indicators,
+  } = props;
 
   useEffect(() => {
     fetch(getAssetPath('/data/moonshot-toolips.json'))
@@ -202,9 +247,32 @@ export const BarFilters = (props: Props) => {
       });
   }, []);
 
-  const getProjectBeneficiaries = useCallback((item: ProjectLevelDataType) => (
-    getProjectDirectBeneficiariesForFilters(item, filters)
-  ), [filters]);
+  const selectedIndicator = useMemo(
+    () => indicators.find((indicator) => indicator.Indicator === xAxisIndicator) || indicators[0],
+    [indicators, xAxisIndicator],
+  );
+
+  const getProjectIndicatorValue = useCallback((item: ProjectLevelDataType) => {
+    if (!selectedIndicator) return 0;
+
+    const indicatorName = selectedIndicator.DataKey;
+
+    if (indicatorName === 'nProj') return 1;
+
+    if (selectedIndicator.AggregationLevel === 'outputs') {
+      return (item.outputs || []).reduce((sum, output) => (
+        outputMatchesFilters(output, filters)
+          ? sum + Number(output[indicatorName] || 0)
+          : sum
+      ), 0);
+    }
+
+    if (indicatorName === 'directBeneficiaries') {
+      return getProjectDirectBeneficiariesForFilters(item, filters);
+    }
+
+    return Number(item[indicatorName as keyof ProjectLevelDataType] || 0);
+  }, [filters, selectedIndicator]);
 
   const getChartSegmentKey = (chartData: Record<string, any>, label: string) => {
     const entry = Object.entries(chartData).find(([segmentLabel]) => segmentLabel === label);
@@ -228,11 +296,11 @@ export const BarFilters = (props: Props) => {
 
     return data.reduce((acc, item) => {
       if (item.hdiTier && acc[item.hdiTier]) {
-        acc[item.hdiTier].value += getProjectBeneficiaries(item);
+        acc[item.hdiTier].value += getProjectIndicatorValue(item);
       }
       return acc;
     }, taxonomy);
-  }, [data, getProjectBeneficiaries]);
+  }, [data, getProjectIndicatorValue]);
 
   const computeRegionBarData = useCallback(() => {
     const taxonomy = (countryGroupingsTaxonomy[1]?.options ?? [])
@@ -251,11 +319,11 @@ export const BarFilters = (props: Props) => {
 
     return data.reduce((acc, item) => {
       if (item.region && acc[t(`${item.region}code`) as string]) {
-        acc[t(`${item.region}code`) as string].value += getProjectBeneficiaries(item);
+        acc[t(`${item.region}code`) as string].value += getProjectIndicatorValue(item);
       }
       return acc;
     }, taxonomy);
-  }, [data, getProjectBeneficiaries, t]);
+  }, [data, getProjectIndicatorValue, t]);
 
   const computeGroupingsBarData = useCallback(() => {
     const order: { [key: string]: number } = {
@@ -286,31 +354,31 @@ export const BarFilters = (props: Props) => {
       }, {});
 
     return data.reduce((acc, item) => {
-      const totalDirectBeneficiaries = getProjectBeneficiaries(item);
+      const selectedIndicatorValue = getProjectIndicatorValue(item);
 
       (item.specialGroupings || []).forEach((grouping) => {
         const normalizedGrouping = grouping === 'LLDCs' ? 'LLDC' : grouping;
         if (acc[normalizedGrouping]) {
-          acc[normalizedGrouping].value += totalDirectBeneficiaries;
+          acc[normalizedGrouping].value += selectedIndicatorValue;
         }
 
         if ((item.specialGroupings || []).length > 1) {
           if ((item.specialGroupings || []).includes('SIDS') && acc.LDC) {
-            acc.LDC.overlap += totalDirectBeneficiaries;
+            acc.LDC.overlap += selectedIndicatorValue;
           }
           if ((item.specialGroupings || []).includes('LLDCs') && acc.LLDC) {
-            acc.LLDC.overlap += totalDirectBeneficiaries;
+            acc.LLDC.overlap += selectedIndicatorValue;
           }
         }
       });
 
       if (!(item.specialGroupings || []).length) {
-        acc.Other.value += totalDirectBeneficiaries;
+        acc.Other.value += selectedIndicatorValue;
       }
 
       return acc;
     }, taxonomy);
-  }, [data, getProjectBeneficiaries]);
+  }, [data, getProjectIndicatorValue]);
 
   const computeGenderBarData = useCallback(() => {
     const taxonomy = genderMarkers
@@ -333,17 +401,17 @@ export const BarFilters = (props: Props) => {
     };
 
     return data.reduce((acc, item) => {
-      const totalDirectBeneficiaries = getProjectBeneficiaries(item);
+      const selectedIndicatorValue = getProjectIndicatorValue(item);
 
       if (item.genderMarker && acc[item.genderMarker]) {
-        acc[item.genderMarker].value += totalDirectBeneficiaries;
+        acc[item.genderMarker].value += selectedIndicatorValue;
       } else if (!item.genderMarker) {
-        acc[t('no-marker')].value += totalDirectBeneficiaries;
+        acc[t('no-marker')].value += selectedIndicatorValue;
       }
 
       return acc;
     }, taxonomy);
-  }, [data, getProjectBeneficiaries, t]);
+  }, [data, getProjectIndicatorValue, t]);
 
   const computeFundingBarData = useCallback(() => {
     const taxonomy = fundingTaxonomy
@@ -360,15 +428,15 @@ export const BarFilters = (props: Props) => {
       }, {});
 
     return data.reduce((acc, item) => {
-      const totalDirectBeneficiaries = getProjectBeneficiaries(item);
+      const selectedIndicatorValue = getProjectIndicatorValue(item);
       if (item.verticalFunded) {
-        acc[t(fundingTaxonomy[1].label)].value += totalDirectBeneficiaries;
+        acc[t(fundingTaxonomy[1].label)].value += selectedIndicatorValue;
       } else {
-        acc[t(fundingTaxonomy[2].label)].value += totalDirectBeneficiaries;
+        acc[t(fundingTaxonomy[2].label)].value += selectedIndicatorValue;
       }
       return acc;
     }, taxonomy);
-  }, [data, getProjectBeneficiaries, t]);
+  }, [data, getProjectIndicatorValue, t]);
 
   const hdiBarData = useMemo(() => computeHdiBarData(), [computeHdiBarData]);
   const regionBarData = useMemo(() => computeRegionBarData(), [computeRegionBarData]);
@@ -439,7 +507,7 @@ export const BarFilters = (props: Props) => {
 
   return (
     <BarFiltersWrapper>
-      <div>
+      <div className='bar-filters-content'>
         <div className='bar-filter-block'>
           <CompactSelectWrapper className='select-wrapper'>
             <Select

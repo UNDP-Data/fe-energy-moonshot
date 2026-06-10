@@ -129,7 +129,7 @@ const KpiSummaryRow = styled.div`
   display: grid;
   gap: 0.8rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.35rem;
   overflow: hidden;
   width: 100%;
   > * {
@@ -153,6 +153,17 @@ const DashboardTitleRow = styled.div`
   }
 `;
 
+const DashboardActions = styled.div`
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 0.7rem;
+  margin-top: 0.1rem;
+  @media (max-width: 720px) {
+    align-self: flex-start;
+  }
+`;
+
 const DashboardTitle = styled.h2`
   margin-bottom: 0 !important;
   @media (max-width: 640px) {
@@ -163,7 +174,20 @@ const DashboardTitle = styled.h2`
 
 const DashboardLanguageControl = styled.label`
   flex: 0 0 auto;
-  margin-top: 0.1rem;
+`;
+
+const DashboardScope = styled.div`
+  --moonshot-dashboard-text: var(--black);
+  --moonshot-dashboard-muted: var(--gray-700);
+  --moonshot-dashboard-surface: #fff;
+  --moonshot-dashboard-surface-soft: var(--gray-200);
+  --moonshot-dashboard-border: #d9d9d9;
+  --moonshot-dashboard-input-bg: var(--white);
+  --moonshot-dashboard-accent: #1f6fff;
+  --moonshot-dashboard-accent-soft: rgba(31, 111, 255, 0.12);
+  --moonshot-dashboard-accent-border: rgba(31, 111, 255, 0.28);
+  --moonshot-dashboard-kpi-active: var(--yellow-bg, #FFE17E);
+  color: var(--moonshot-dashboard-text);
 `;
 
 const KpiPanel = styled.div`
@@ -181,9 +205,9 @@ const SummaryPanel = styled.div`
 `;
 
 const SummaryCard = styled.div`
-  background: #fff;
+  background: var(--moonshot-dashboard-surface);
   box-sizing: border-box;
-  border: 1px solid #d9d9d9;
+  border: 1px solid var(--moonshot-dashboard-border);
   border-radius: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -195,7 +219,7 @@ const SummaryCard = styled.div`
 `;
 
 const SummaryTitle = styled.h3`
-  color: var(--black);
+  color: var(--moonshot-dashboard-text);
   font-size: 0.75rem;
   line-height: 1.2;
   margin: 0 0 0.35rem;
@@ -215,6 +239,7 @@ const SummaryBody = styled(Paragraph)`
 `;
 
 const FilterMapRow = styled.div`
+  align-items: stretch;
   display: grid;
   gap: 0;
   grid-template-columns: minmax(18rem, 30%) minmax(0, 70%);
@@ -225,17 +250,23 @@ const FilterMapRow = styled.div`
 `;
 
 const FilterPanel = styled.div`
+  align-self: stretch;
+  display: flex;
   min-width: 0;
   width: 100%;
 `;
 
 const MapPanel = styled.div`
+  align-self: stretch;
+  display: flex;
   min-width: 0;
   width: 100%;
 `;
 
 const MapSurface = styled.div`
-  background-color: var(--gray-200);
+  background-color: var(--moonshot-dashboard-surface-soft);
+  display: flex;
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
   width: 100%;
@@ -258,7 +289,7 @@ const ExploreProjectsHeader = styled.div`
 `;
 
 const ExploreProjectsHeading = styled.h3`
-  color: var(--black);
+  color: var(--moonshot-dashboard-text);
   font-size: 1.625rem;
   line-height: 1.2;
   margin: 0;
@@ -266,10 +297,10 @@ const ExploreProjectsHeading = styled.h3`
 
 const WorkbookExportButton = styled.button`
   align-items: center;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid var(--gray-500);
+  background: var(--moonshot-dashboard-surface);
+  border: 1px solid var(--moonshot-dashboard-border);
   border-radius: 50%;
-  color: var(--black);
+  color: var(--moonshot-dashboard-text);
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
@@ -281,8 +312,8 @@ const WorkbookExportButton = styled.button`
   width: 1.75rem;
   &:hover,
   &:focus-visible {
-    background: var(--white);
-    outline: 2px solid var(--blue-600);
+    background: var(--moonshot-dashboard-input-bg);
+    outline: 2px solid var(--moonshot-dashboard-accent);
     outline-offset: 2px;
   }
 `;
@@ -292,7 +323,7 @@ const TopProjectItem = styled.div`
 `;
 
 const TopProjectMeta = styled.div`
-  color: var(--gray-700);
+  color: var(--moonshot-dashboard-muted);
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem 0.9rem;
@@ -330,8 +361,8 @@ const ProjectCardsGrid = styled.div`
 `;
 
 const ProjectSectionCard = styled.div`
-  background: #fff;
-  border: 1px solid #d9d9d9;
+  background: var(--moonshot-dashboard-surface);
+  border: 1px solid var(--moonshot-dashboard-border);
   border-radius: 0.75rem;
   box-sizing: border-box;
   min-width: 0;
@@ -701,7 +732,7 @@ export const Global = (props: Props) => {
   }, [filterSignature, filteredProjectData.length, mapData.length]);
 
   return (
-    <>
+    <DashboardScope className='moonshot-dashboard'>
       <div id='tracker' className='flex-div flex-wrap padding-top-06'>
         <div style={{ maxWidth: '100%', width: '100%' }}>
           <DashboardTitleRow>
@@ -712,26 +743,28 @@ export const Global = (props: Props) => {
               {' '}
               {t('page-title-tracker')}
             </DashboardTitle>
-            <DashboardLanguageControl
-              className='undp-language-control'
-              htmlFor='dashboard-language-select'
-            >
-              <select
-                id='dashboard-language-select'
-                className='undp-language-select'
-                value={language}
-                onChange={(event) => {
-                  onLanguageChange(event.target.value as SupportedLanguage);
-                }}
-                aria-label={t('language')}
+            <DashboardActions>
+              <DashboardLanguageControl
+                className='undp-language-control'
+                htmlFor='dashboard-language-select'
               >
-                {LANGUAGE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </DashboardLanguageControl>
+                <select
+                  id='dashboard-language-select'
+                  className='undp-language-select'
+                  value={language}
+                  onChange={(event) => {
+                    onLanguageChange(event.target.value as SupportedLanguage);
+                  }}
+                  aria-label={t('language')}
+                >
+                  {LANGUAGE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </DashboardLanguageControl>
+            </DashboardActions>
           </DashboardTitleRow>
           {assistantAvailable ? (
             <Profiler id='QueryAssistantPanel' onRender={logRenderPerf}>
@@ -773,6 +806,7 @@ export const Global = (props: Props) => {
                   data={filteredProjectData}
                   countryList={countryList}
                   countryMetadataByCode={countryMetadataByCode}
+                  indicators={indicators}
                 />
               </Profiler>
             </FilterPanel>
@@ -894,6 +928,6 @@ export const Global = (props: Props) => {
           </Profiler>
         </div>
       </ExploreProjectsSection>
-    </>
+    </DashboardScope>
   );
 };

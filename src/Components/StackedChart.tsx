@@ -43,31 +43,32 @@ const StackedChart = (props: Props) => {
     [dataArray],
   );
 
-  function formatBigNumber(num: number) {
-    // If the number is less than 1000, just return it as a string
-    if (num < 1e3) return num.toString();
+  function formatCompactNumber(num: number) {
+    if (!Number.isFinite(num)) return '0';
 
-    // Define the scales and their corresponding suffixes
-    const scales = [
-      { value: 1e9, suffix: 'B' },
-      { value: 1e6, suffix: 'M' },
-      { value: 1e3, suffix: 'K' },
-    ];
+    const absoluteValue = Math.abs(num);
+    const sign = num < 0 ? '-' : '';
 
-    // Loop over each scale
-    for (const scale of scales) {
-      if (num >= scale.value) {
-        const quotient = num / scale.value;
-        // Count digits in the integer part of quotient
-        const intDigits = Math.floor(quotient).toString().length;
-        // Determine factor for truncating to 3 significant digits
-        const factor = Math.pow(10, Math.max(0, 3 - intDigits));
-        const truncated = Math.floor(quotient * factor) / factor;
-        return truncated + scale.suffix;
-      }
+    if (absoluteValue < 1000) {
+      return `${sign}${absoluteValue.toLocaleString(undefined, { maximumFractionDigits: 1 })}`;
     }
 
-    return num.toString();
+    const scales = [
+      { value: 1e9, suffix: 'b' },
+      { value: 1e6, suffix: 'm' },
+      { value: 1e3, suffix: 'k' },
+    ];
+
+    const scale = scales.find((item) => absoluteValue >= item.value);
+    if (!scale) return `${num}`;
+
+    const scaledValue = absoluteValue / scale.value;
+    const formattedValue = scaledValue.toLocaleString(undefined, {
+      maximumFractionDigits: scaledValue >= 100 ? 0 : 1,
+      minimumFractionDigits: 0,
+    });
+
+    return `${sign}${formattedValue}${scale.suffix}`;
   }
 
   const measureWidths = useCallback(() => {
@@ -226,13 +227,13 @@ const StackedChart = (props: Props) => {
                             </span>
                           )}
                         <span className='undp-stacked-chart-tooltip-value'>
-                          {`${Math.round(value / 1000000)}M`}
+                          {formatCompactNumber(value)}
                         </span>
                       </div>
                     </div>
 
                     <Label
-                      text={`${formatBigNumber(value)}`}
+                      text={`${formatCompactNumber(value)}`}
                       className='undp-stacked-chart-value'
                     />
                   </div>
