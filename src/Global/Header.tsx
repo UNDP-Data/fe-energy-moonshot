@@ -68,7 +68,6 @@ function Header(props: Props) {
         </div>
         <div
           className='undp-nav-div undp-header-actions'
-          style={{ width: '320px' }}
         >
           <label className='undp-language-control' htmlFor='language-select'>
             <select

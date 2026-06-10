@@ -1089,7 +1089,7 @@ export const Map = (props: Props) => {
       <LegendEl className='moonshot-map-legend'>
         <MapIndicatorSelectWrapper
           className='margin-bottom-05'
-          style={{ width: '100%', minWidth: '19rem' }}
+          style={{ width: '100%', minWidth: 0 }}
         >
           <Select
             className='undp-select'

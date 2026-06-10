@@ -1,6 +1,19 @@
 body {
   margin: 0px;
 }
+
+html,
+body,
+#root,
+.undp-container {
+  max-width: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 /* color legend styles for charts */
 .legend-container {
   display: flex;
@@ -503,10 +516,32 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
 }
 
 @media (max-width: 768px) {
+  html,
+  body,
+  #root,
+  .undp-container {
+    overflow-x: hidden;
+    overflow-x: clip;
+    width: 100%;
+  }
+
+  .bodyEl,
+  .moonshot-dashboard,
+  #tracker,
+  #million,
+  .banner-section,
+  .undp-country-header,
+  .undp-header-bg,
+  .undp-mobile-nav {
+    max-width: 100vw;
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
   .undp-header-actions {
     width: auto !important;
     margin-left: auto;
-    margin-right: 3.5rem;
+    margin-right: 0;
   }
 
   .undp-language-label {
@@ -754,7 +789,8 @@ html[dir='rtl'] .undp-stacked-chart-tooltip {
   .undp-segmented-small.data-platform-segmented.ant-segmented,
   .undp-segmented-small.data-platform-segmented-small.ant-segmented {
     max-width: 100%;
-    overflow-x: visible;
+    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
   }
 
