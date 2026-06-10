@@ -57,16 +57,6 @@ const getProjectMetadataValue = (
   return value === undefined || value === null ? '' : `${value}`;
 };
 
-const getProjectNumber = (project: ProjectLevelDataType) => getProjectMetadataValue(project, [
-  'Project Number',
-  'projectNumber',
-  'project number',
-  'project_number',
-  'Project ID',
-  'projectId',
-  'id',
-]);
-
 const extractUrls = (value: string | null | undefined) => (
   (value || '').match(/https?:\/\/[^\s]+/g) || []
 ).map((url) => url.trim());
@@ -84,11 +74,6 @@ const getProjectDetailsUrl = (project: ProjectLevelDataType) => {
 const getProjectDetailsLabelKey = (project: ProjectLevelDataType) => (
   project.verticalFunded ? 'pims-plus' : 'transparency-portal'
 );
-
-const logProdocDebug = (label: string, detail: Record<string, unknown>) => {
-  // eslint-disable-next-line no-console
-  console.log(`[Moonshot Prodoc] ${label}`, detail);
-};
 
 const PROJECT_DOCUMENT_URL_KEYS = [
   'projectDocumentUrl',
@@ -144,7 +129,6 @@ const Project = memo((props:ProjectProps) => {
   const status = getProjectMetadataValue(project, ['Status', 'status']);
   const startYear = getProjectMetadataValue(project, ['Start Year', 'startYear', 'start_year']);
   const endYear = getProjectMetadataValue(project, ['End Year', 'endYear', 'end_year']);
-  const projectNumber = getProjectNumber(project);
   const projectDetailsUrl = getProjectDetailsUrl(project);
   const projectDetailsLabelKey = getProjectDetailsLabelKey(project);
   const projectDocumentUrl = getProjectDocumentUrl(project);
@@ -229,18 +213,7 @@ const Project = memo((props:ProjectProps) => {
   const handleProdocDownload = useCallback(async () => {
     setProdocLoading(true);
     try {
-      logProdocDebug('download clicked', {
-        projectId: project.id,
-        projectNumber,
-        title: project.title,
-        verticalFunded: project.verticalFunded,
-        projectDocumentUrl,
-      });
       if (!projectDocumentUrl) {
-        logProdocDebug('download not found', {
-          projectId: project.id,
-          projectNumber,
-        });
         messageApi.open({
           type: 'error',
           content: t('prodoc-not-found'),
@@ -253,20 +226,8 @@ const Project = memo((props:ProjectProps) => {
       const downloadUrl = buildProjectDocumentDownloadUrl({
         sourceUrl: projectDocumentUrl,
       });
-      logProdocDebug('triggering attachment download', {
-        projectId: project.id,
-        projectNumber,
-        projectDocumentUrl,
-        downloadUrl,
-      });
       triggerHiddenDownload(downloadUrl);
     } catch (error) {
-      logProdocDebug('download error', {
-        projectId: project.id,
-        projectNumber,
-        error,
-        message: error instanceof Error ? error.message : `${error}`,
-      });
       messageApi.open({
         type: 'error',
         content: t('prodoc-load-error'),
@@ -276,7 +237,7 @@ const Project = memo((props:ProjectProps) => {
     } finally {
       setProdocLoading(false);
     }
-  }, [messageApi, project, projectDocumentUrl, projectNumber, t]);
+  }, [messageApi, projectDocumentUrl, t]);
 
   return (
     <>

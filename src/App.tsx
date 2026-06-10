@@ -39,8 +39,6 @@ import {
 
 import './styles/style.css';
 
-/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
-
 const VizAreaEl = styled.div`
   display: flex;
   max-width: 1220px;
@@ -80,29 +78,7 @@ const App = (props: Props) => {
 
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const startFilterTransitionLog = useCallback((label: string, payload: unknown) => {
-    if (typeof window === 'undefined') return;
-    const startedAt = window.performance.now();
-    const id = ((window as any).__moonshotFilterPerfId || 0) + 1;
-    (window as any).__moonshotFilterPerfId = id;
-    (window as any).__moonshotFilterPerf = {
-      completed: false,
-      id,
-      label,
-      payload,
-      startedAt,
-      steps: [],
-    };
-    // eslint-disable-next-line no-console
-    console.groupCollapsed(`[Moonshot filter transition #${id}] ${label} started`);
-    // eslint-disable-next-line no-console
-    console.log('dispatch payload', payload, {
-      startedAt: `${startedAt.toFixed(1)}ms`,
-    });
-  }, []);
-
   const updateDashboardFilter = useCallback((key: DashboardFilterKey, value: string) => {
-    startFilterTransitionLog(`updateDashboardFilter(${key})`, { key, value });
     dispatch({
       type: 'UPDATE_DASHBOARD_FILTER',
       payload: {
@@ -110,23 +86,21 @@ const App = (props: Props) => {
         value,
       },
     });
-  }, [startFilterTransitionLog]);
+  }, []);
 
   const applyDashboardFilters = useCallback((filters: Partial<DashboardFilters>) => {
-    startFilterTransitionLog('applyDashboardFilters', filters);
     dispatch({
       type: 'APPLY_DASHBOARD_FILTERS',
       payload: filters,
     });
-  }, [startFilterTransitionLog]);
+  }, []);
 
   const resetDashboardFilters = useCallback(() => {
-    startFilterTransitionLog('resetDashboardFilters', DEFAULT_DASHBOARD_FILTERS);
     dispatch({
       type: 'RESET_DASHBOARD_FILTERS',
       payload: DEFAULT_DASHBOARD_FILTERS,
     });
-  }, [startFilterTransitionLog]);
+  }, []);
 
   const updateXAxisIndicator = useCallback((xAxisIndicator: string) => {
     dispatch({

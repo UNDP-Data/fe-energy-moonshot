@@ -55,8 +55,10 @@ export const Settings = () => {
   const selectedSubCategory = filters.subCategory;
   const [localCategory, setLocalCategory] = useState(selectedCategory);
   const [localSubCategory, setLocalSubCategory] = useState(selectedSubCategory);
-  // translation
   const { t } = useTranslation();
+  const subCategoryRowClassName = localCategory === 'all'
+    ? 'margin-left-auto margin-right-auto moonshot-subcategory-row-disabled'
+    : 'margin-left-auto margin-right-auto';
 
   useEffect(() => {
     setLocalCategory(selectedCategory);
@@ -76,7 +78,8 @@ export const Settings = () => {
   })), [t]);
 
   const subCategoriesTaxonomy = useMemo(() => {
-    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === localCategory)
+    const activeCategory = localCategory === 'all' ? 'Energy Access' : localCategory;
+    const activeOutputsTaxonomy = outputsTaxonomyTranslated.find((category) => category.value === activeCategory)
       || outputsTaxonomyTranslated[0];
     return activeOutputsTaxonomy?.subcategories;
   }, [outputsTaxonomyTranslated, localCategory]);
@@ -99,7 +102,7 @@ export const Settings = () => {
       || outputsTaxonomyTranslated[0];
     const currentSubCategoryIsValid = nextTaxonomy?.subcategories
       ?.some((subCategory) => subCategory.value === localSubCategory);
-    const nextSubCategory = localSubCategory !== 'all' && !currentSubCategoryIsValid
+    const nextSubCategory = nextCategory === 'all' || (localSubCategory !== 'all' && !currentSubCategoryIsValid)
       ? 'all'
       : localSubCategory;
 
@@ -126,7 +129,6 @@ export const Settings = () => {
     <SelectorStack>
       <div
         style={{
-        /*   maxWidth: '1200px', */
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
@@ -147,11 +149,10 @@ export const Settings = () => {
       </div>
       <div
         style={{
-          /* maxWidth: '1200px', */
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
-        className='margin-left-auto margin-right-auto'
+        className={subCategoryRowClassName}
       >
         <SelectorRow>
           <SelectorLabel>{t('subcategories')}</SelectorLabel>

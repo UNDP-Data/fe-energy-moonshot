@@ -1,10 +1,8 @@
 import {
-  Profiler,
   useContext,
   useDeferredValue,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { nest } from 'd3-collection';
@@ -51,78 +49,6 @@ import {
 import { downloadMoonshotResultsWorkbook } from '../utils/exportWorkbook';
 
 const { Link, Paragraph, Text } = Typography;
-
-const getFilterSignature = (filters: CtxDataType['filters']) => JSON.stringify(filters);
-
-const getActiveFilterPerfMark = () => {
-  if (typeof window === 'undefined') return undefined;
-  return (window as any).__moonshotFilterPerf;
-};
-
-const logFilterPerfStep = (label: string, startedAt: number, detail?: Record<string, unknown>) => {
-  const mark = getActiveFilterPerfMark();
-  if (!mark || mark.completed) return;
-  const endedAt = window.performance.now();
-  const duration = endedAt - startedAt;
-  const elapsed = endedAt - mark.startedAt;
-  const step = {
-    label,
-    durationMs: Number(duration.toFixed(1)),
-    elapsedMs: Number(elapsed.toFixed(1)),
-    detail: detail || {},
-  };
-  mark.steps = [...(mark.steps || []), step];
-  // eslint-disable-next-line no-console
-  console.log(`[Moonshot filter transition #${mark.id}] ${label}`, {
-    duration: `${duration.toFixed(1)}ms`,
-    elapsed: `${elapsed.toFixed(1)}ms`,
-    ...(detail || {}),
-  });
-};
-
-const measureFilterPerfStep = <T,>(
-  label: string,
-  callback: () => T,
-  getDetail?: (_result: T) => Record<string, unknown>,
-): T => {
-  const startedAt = typeof window !== 'undefined' ? window.performance.now() : 0;
-  const result = callback();
-  if (typeof window !== 'undefined') {
-    logFilterPerfStep(label, startedAt, getDetail ? getDetail(result) : undefined);
-  }
-  return result;
-};
-
-const logRenderPerf = (
-  componentName: string,
-  phase: 'mount' | 'update' | 'nested-update',
-  actualDuration: number,
-  _baseDuration: number,
-  startTime: number,
-  commitTime: number,
-) => {
-  if (phase !== 'update') return;
-  const mark = getActiveFilterPerfMark();
-  if (!mark || mark.completed) return;
-  const elapsed = commitTime - mark.startedAt;
-  const step = {
-    label: `render ${componentName}`,
-    durationMs: Number(actualDuration.toFixed(1)),
-    elapsedMs: Number(elapsed.toFixed(1)),
-    detail: {
-      commitAt: `${commitTime.toFixed(1)}ms`,
-      renderStartedAt: `${startTime.toFixed(1)}ms`,
-    },
-  };
-  mark.steps = [...(mark.steps || []), step];
-  // eslint-disable-next-line no-console
-  console.log(`[Moonshot filter transition #${mark.id}] render ${componentName}`, {
-    duration: `${actualDuration.toFixed(1)}ms`,
-    elapsed: `${elapsed.toFixed(1)}ms`,
-    actualDuration: `${actualDuration.toFixed(1)}ms`,
-    commitAt: `${commitTime.toFixed(1)}ms`,
-  });
-};
 
 const KpiSummaryRow = styled.div`
   align-items: stretch;
@@ -464,8 +390,6 @@ export const Global = (props: Props) => {
   } = props;
   const { filters } = useContext(Context) as CtxDataType;
   const { t } = useTranslation();
-  const filterSignature = useMemo(() => getFilterSignature(filters), [filters]);
-  const lastCompletedFilterSignatureRef = useRef('');
   const [assistantAvailable, setAssistantAvailable] = useState(false);
   const [projectOverviewState, setProjectOverviewState] = useState<AssistantProjectOverviewState>({
     loading: false,
@@ -492,83 +416,42 @@ export const Global = (props: Props) => {
   }, []);
 
   const countryMetadataByCode = useMemo(
-    () => measureFilterPerfStep(
-      'buildCountryMetadataMap',
-      () => buildCountryMetadataMap(countryMetadata),
-      (result) => ({ countryMetadataRows: Object.keys(result).length }),
-    ),
+    () => buildCountryMetadataMap(countryMetadata),
     [countryMetadata],
   );
 
   const filteredProjectData = useMemo(
-    () => measureFilterPerfStep(
-      'filterProjects',
-      () => filterProjects(projectLevelData, filters, countryMetadataByCode),
-      (result) => ({
-        inputProjects: projectLevelData.length,
-        outputProjects: result.length,
-      }),
-    ),
+    () => filterProjects(projectLevelData, filters, countryMetadataByCode),
     [countryMetadataByCode, filters, projectLevelData],
   );
   const deferredTableProjects = useDeferredValue(filteredProjectData);
 
   const availableCountryList = useMemo(
-    () => measureFilterPerfStep(
-      'availableCountryList',
-      () => Array.from(new Set(filteredProjectData.map((project) => project.countryCode))),
-      (result) => ({ countries: result.length }),
-    ),
+    () => Array.from(new Set(filteredProjectData.map((project) => project.countryCode))),
     [filteredProjectData],
   );
 
   const rankedProjects = useMemo(
-    () => measureFilterPerfStep(
-      'rankProjects',
-      () => rankProjects(filteredProjectData, filters),
-      (result) => ({ rankedProjects: result.length }),
-    ),
+    () => rankProjects(filteredProjectData, filters),
     [filteredProjectData, filters],
   );
 
   const summaryMetrics = useMemo(
-    () => measureFilterPerfStep(
-      'buildSummaryMetrics',
-      () => buildSummaryMetrics(filteredProjectData, filters, countryMetadataByCode),
-      (result) => ({
-        projectCount: result.projectCount,
-        countryCount: result.countryCount,
-      }),
-    ),
+    () => buildSummaryMetrics(filteredProjectData, filters, countryMetadataByCode),
     [countryMetadataByCode, filteredProjectData, filters],
   );
 
   const summaryText = useMemo(
-    () => measureFilterPerfStep(
-      'generateDeterministicSummary',
-      () => generateDeterministicSummary(summaryMetrics, filters, countryMetadataByCode, t),
-      (result) => ({ summaryCharacters: result.length }),
-    ),
+    () => generateDeterministicSummary(summaryMetrics, filters, countryMetadataByCode, t),
     [countryMetadataByCode, filters, summaryMetrics, t],
   );
 
   const projectSynopsisContext = useMemo(
-    () => measureFilterPerfStep(
-      'buildProjectSynopsisContext',
-      () => buildProjectSynopsisContext(filteredProjectData, filters),
-      (result) => ({
-        totalProjects: result.totalProjects,
-        topProjects: result.topProjects.length,
-      }),
-    ),
+    () => buildProjectSynopsisContext(filteredProjectData, filters),
     [filteredProjectData, filters],
   );
   const topProjects = useMemo(
-    () => measureFilterPerfStep(
-      'topProjects slice',
-      () => rankedProjects.slice(0, 5),
-      (result) => ({ topProjects: result.length }),
-    ),
+    () => rankedProjects.slice(0, 5),
     [rankedProjects],
   );
   const projectOverviewStrongPhrases = useMemo(
@@ -580,57 +463,57 @@ export const Global = (props: Props) => {
   );
 
   const mapData = useMemo(() => {
-    return measureFilterPerfStep('build mapData', () => {
-      const groupedData = nest()
-        .key((project: any) => project.countryCode)
-        .entries(filteredProjectData);
+    const groupedData = nest()
+      .key((project: any) => project.countryCode)
+      .entries(filteredProjectData);
 
-      return groupedData.map((country: any) => {
-        const firstProject = country.values[0] as ProjectLevelDataType;
-        const metadata = countryMetadataByCode[country.key];
-        const countryGroup = countryGroupData.find((row) => row['Alpha-3 code'] === country.key)
-          || buildCountryFallback(country.key, firstProject, metadata);
-        const region = firstProject.region || metadata?.Region || '';
-        const numberOfProjects = country.values.length;
+    return groupedData.map((country: any) => {
+      const firstProject = country.values[0] as ProjectLevelDataType;
+      const metadata = countryMetadataByCode[country.key];
+      const countryGroup = countryGroupData.find((row) => row['Alpha-3 code'] === country.key)
+        || buildCountryFallback(country.key, firstProject, metadata);
+      const region = firstProject.region || metadata?.Region || '';
+      const numberOfProjects = country.values.length;
 
-        const indicatorValues = indicators.map((indicator) => {
-          const indicatorName = indicator.DataKey;
+      const indicatorValues = indicators.map((indicator) => {
+        const indicatorName = indicator.DataKey;
 
-          if (indicator.AggregationLevel === 'outputs') {
-            return {
-              indicator: indicatorName,
-              value: sumBy(country.values, (project: ProjectLevelDataType) => (
+        if (indicator.AggregationLevel === 'outputs') {
+          return {
+            indicator: indicatorName,
+            value: sumBy(country.values, (project: ProjectLevelDataType) => (
               sumBy(project.outputs || [], (output: any) => (
                 outputMatchesFilters(output, filters) ? Number(output[indicatorName] || 0) : 0
               ))
-              )),
-            };
-          }
-
-          return {
-            indicator: indicatorName,
-            value: indicatorName === 'directBeneficiaries'
-              ? sumBy(country.values, (project: ProjectLevelDataType) => (
-                getProjectDirectBeneficiariesForFilters(project, filters)
-              ))
-              : sumBy(country.values, (project: ProjectLevelDataType) => Number(project[indicatorName as keyof ProjectLevelDataType] || 0)),
+            )),
           };
-        });
-
-        const projectCountIndex = indicatorValues.findIndex((indicator) => indicator.indicator === 'nProj');
-        if (projectCountIndex !== -1) {
-          indicatorValues[projectCountIndex].value = numberOfProjects;
         }
 
         return {
-          ...countryGroup,
-          region,
-          indicatorsAvailable: indicatorValues.map((indicator) => indicator.indicator),
-          indicators: indicatorValues,
-          numberProjects: numberOfProjects,
-        } as DataType;
+          indicator: indicatorName,
+          value: indicatorName === 'directBeneficiaries'
+            ? sumBy(country.values, (project: ProjectLevelDataType) => (
+              getProjectDirectBeneficiariesForFilters(project, filters)
+            ))
+            : sumBy(country.values, (project: ProjectLevelDataType) => (
+              Number(project[indicatorName as keyof ProjectLevelDataType] || 0)
+            )),
+        };
       });
-    }, (result) => ({ mapCountries: result.length }));
+
+      const projectCountIndex = indicatorValues.findIndex((indicator) => indicator.indicator === 'nProj');
+      if (projectCountIndex !== -1) {
+        indicatorValues[projectCountIndex].value = numberOfProjects;
+      }
+
+      return {
+        ...countryGroup,
+        region,
+        indicatorsAvailable: indicatorValues.map((indicator) => indicator.indicator),
+        indicators: indicatorValues,
+        numberProjects: numberOfProjects,
+      } as DataType;
+    });
   }, [
     countryGroupData,
     countryMetadataByCode,
@@ -639,97 +522,54 @@ export const Global = (props: Props) => {
     indicators,
   ]);
 
-  const countryList = useMemo(() => measureFilterPerfStep(
-    'countryList',
+  const countryList = useMemo(
     () => projectLevelData.reduce((accum: string[], projectData) => {
       if (!accum.includes(projectData.countryCode)) {
         accum.push(projectData.countryCode);
       }
       return accum;
     }, []),
-    (result) => ({ countries: result.length }),
-  ), [projectLevelData]);
+    [projectLevelData],
+  );
 
   const binningRangeLarge = useMemo(() => {
-    return measureFilterPerfStep('build binningRangeLarge', () => {
-      const ranges: IndicatorRange = mapData.reduce((accum: IndicatorRange, country) => {
-        country.indicatorsAvailable.forEach((indicatorName: string) => {
-          const value = country.indicators.find((indicator) => indicator.indicator === indicatorName);
-          if (value && typeof value.value === 'number') {
-            accum[indicatorName].push(value.value);
-          }
-        });
-        return accum;
-      }, indicators.reduce((accum, indicator: IndicatorMetaDataType) => ({
-        ...accum,
-        [indicator.DataKey]: [],
-      }), {} as IndicatorRange));
-
-      indicators.forEach((indicator: IndicatorMetaDataType) => {
-        ranges[indicator.DataKey].sort((left: number, right: number) => left - right);
-        const q = Math.ceil((ranges[indicator.DataKey].length - 1) / 9);
-        let i = 1;
-        const legendArray = [];
-
-        if (!ranges[indicator.DataKey].length || q <= 0) {
-          ranges[indicator.DataKey] = [0];
-          return;
+    const ranges: IndicatorRange = mapData.reduce((accum: IndicatorRange, country) => {
+      country.indicatorsAvailable.forEach((indicatorName: string) => {
+        const value = country.indicators.find((indicator) => indicator.indicator === indicatorName);
+        if (value && typeof value.value === 'number') {
+          accum[indicatorName].push(value.value);
         }
-
-        do {
-          const currentValue = ranges[indicator.DataKey][i * q];
-          const numstr = Math.ceil(currentValue || 0).toString();
-          const num = parseInt(numstr[0] + '0'.repeat(Math.max(numstr.length - 1, 0)), 10);
-          legendArray.push(num);
-          i += 1;
-        } while (i * q < ranges[indicator.DataKey].length - 1);
-
-        ranges[indicator.DataKey] = Array.from(new Set(legendArray.length ? legendArray : [0]));
       });
+      return accum;
+    }, indicators.reduce((accum, indicator: IndicatorMetaDataType) => ({
+      ...accum,
+      [indicator.DataKey]: [],
+    }), {} as IndicatorRange));
 
-      return ranges;
-    }, (result) => ({ indicatorRanges: Object.keys(result).length }));
-  }, [indicators, mapData]);
+    indicators.forEach((indicator: IndicatorMetaDataType) => {
+      ranges[indicator.DataKey].sort((left: number, right: number) => left - right);
+      const q = Math.ceil((ranges[indicator.DataKey].length - 1) / 9);
+      let i = 1;
+      const legendArray = [];
 
-  useEffect(() => {
-    const mark = getActiveFilterPerfMark();
-    if (!mark || mark.completed || lastCompletedFilterSignatureRef.current === filterSignature) return undefined;
-    lastCompletedFilterSignatureRef.current = filterSignature;
-    const frameId = window.requestAnimationFrame(() => {
-      const elapsed = window.performance.now() - mark.startedAt;
-      mark.steps = [
-        ...(mark.steps || []),
-        {
-          label: 'first rendered frame',
-          durationMs: Number(elapsed.toFixed(1)),
-          elapsedMs: Number(elapsed.toFixed(1)),
-          detail: {
-            filteredProjects: filteredProjectData.length,
-            mapCountries: mapData.length,
-          },
-        },
-      ];
-      // eslint-disable-next-line no-console
-      console.log(`[Moonshot filter transition #${mark.id}] first rendered frame`, {
-        elapsed: `${elapsed.toFixed(1)}ms`,
-        filteredProjects: filteredProjectData.length,
-        mapCountries: mapData.length,
-      });
-      // eslint-disable-next-line no-console
-      console.table((mark.steps || []).map((step: any) => ({
-        step: step.label,
-        durationMs: step.durationMs,
-        elapsedMs: step.elapsedMs,
-        detail: JSON.stringify(step.detail || {}),
-      })));
-      // eslint-disable-next-line no-console
-      console.log(`[Moonshot filter transition #${mark.id}] total`, `${elapsed.toFixed(1)}ms`);
-      mark.completed = true;
-      // eslint-disable-next-line no-console
-      console.groupEnd();
+      if (!ranges[indicator.DataKey].length || q <= 0) {
+        ranges[indicator.DataKey] = [0];
+        return;
+      }
+
+      do {
+        const currentValue = ranges[indicator.DataKey][i * q];
+        const numstr = Math.ceil(currentValue || 0).toString();
+        const num = parseInt(numstr[0] + '0'.repeat(Math.max(numstr.length - 1, 0)), 10);
+        legendArray.push(num);
+        i += 1;
+      } while (i * q < ranges[indicator.DataKey].length - 1);
+
+      ranges[indicator.DataKey] = Array.from(new Set(legendArray.length ? legendArray : [0]));
     });
-    return () => window.cancelAnimationFrame(frameId);
-  }, [filterSignature, filteredProjectData.length, mapData.length]);
+
+    return ranges;
+  }, [indicators, mapData]);
 
   return (
     <DashboardScope className='moonshot-dashboard'>
@@ -767,60 +607,48 @@ export const Global = (props: Props) => {
             </DashboardActions>
           </DashboardTitleRow>
           {assistantAvailable ? (
-            <Profiler id='QueryAssistantPanel' onRender={logRenderPerf}>
-              <QueryAssistantPanel
-                filterCatalog={filterCatalog}
-                filteredProjects={filteredProjectData}
-                projectSynopsisContext={projectSynopsisContext}
-                summaryMetrics={summaryMetrics}
-                onProjectOverviewChange={setProjectOverviewState}
-              />
-            </Profiler>
+            <QueryAssistantPanel
+              filterCatalog={filterCatalog}
+              filteredProjects={filteredProjectData}
+              projectSynopsisContext={projectSynopsisContext}
+              summaryMetrics={summaryMetrics}
+              onProjectOverviewChange={setProjectOverviewState}
+            />
           ) : null}
-          <Profiler id='Settings' onRender={logRenderPerf}>
-            <Settings />
-          </Profiler>
+          <Settings />
           <KpiSummaryRow>
             <KpiPanel>
-              <Profiler id='Cards' onRender={logRenderPerf}>
-                <Cards data={mapData} />
-              </Profiler>
+              <Cards data={mapData} />
             </KpiPanel>
             <SummaryPanel>
-              <Profiler id='SummaryCard' onRender={logRenderPerf}>
-                <SummaryCard>
-                  <SummaryTitle className='undp-typography'>
-                    {t('portfolio-overview')}
-                  </SummaryTitle>
-                  <SummaryBody>
-                    {renderSummaryWithBoldNumbers(summaryText)}
-                  </SummaryBody>
-                </SummaryCard>
-              </Profiler>
+              <SummaryCard>
+                <SummaryTitle className='undp-typography'>
+                  {t('portfolio-overview')}
+                </SummaryTitle>
+                <SummaryBody>
+                  {renderSummaryWithBoldNumbers(summaryText)}
+                </SummaryBody>
+              </SummaryCard>
             </SummaryPanel>
           </KpiSummaryRow>
           <FilterMapRow>
             <FilterPanel>
-              <Profiler id='BarFilters' onRender={logRenderPerf}>
-                <BarFilters
-                  data={filteredProjectData}
-                  countryList={countryList}
-                  countryMetadataByCode={countryMetadataByCode}
-                  indicators={indicators}
-                />
-              </Profiler>
+              <BarFilters
+                data={filteredProjectData}
+                countryList={countryList}
+                countryMetadataByCode={countryMetadataByCode}
+                indicators={indicators}
+              />
             </FilterPanel>
             <MapPanel>
               <MapSurface>
-                <Profiler id='UnivariateMap' onRender={logRenderPerf}>
-                  <UnivariateMap
-                    availableCountryList={availableCountryList}
-                    geojsonMapData={geojsonMapData}
-                    data={mapData}
-                    indicators={indicators}
-                    binningRangeLarge={binningRangeLarge}
-                  />
-                </Profiler>
+                <UnivariateMap
+                  availableCountryList={availableCountryList}
+                  geojsonMapData={geojsonMapData}
+                  data={mapData}
+                  indicators={indicators}
+                  binningRangeLarge={binningRangeLarge}
+                />
               </MapSurface>
             </MapPanel>
           </FilterMapRow>
@@ -849,83 +677,79 @@ export const Global = (props: Props) => {
           </WorkbookExportButton>
         </ExploreProjectsHeader>
         {assistantAvailable ? (
-          <Profiler id='ProjectOverviewAndTopProjects' onRender={logRenderPerf}>
-            <ProjectCardsGrid>
-              <ProjectSectionCard>
-                <ProjectOverviewTitle strong>{t('project-overview')}</ProjectOverviewTitle>
-                <ProjectOverviewBody>
-                  {projectOverviewState.loading
-                    ? t('generating-project-overview')
-                    : renderSummaryWithBoldNumbers(
-                      projectOverviewState.text || t('project-overview-placeholder'),
-                      projectOverviewStrongPhrases,
-                    )}
-                </ProjectOverviewBody>
-                {projectOverviewState.stale ? (
-                  <Alert
-                    type='warning'
-                    showIcon
-                    message={t('project-overview-stale')}
-                  />
-                ) : null}
-                {projectOverviewState.error ? (
-                  <Alert
-                    type='error'
-                    showIcon
-                    message={projectOverviewState.error}
-                    style={{ marginTop: '0.5rem' }}
-                  />
-                ) : null}
-              </ProjectSectionCard>
-              <ProjectSectionCard>
-                <ProjectOverviewTitle strong>{t('top-projects')}</ProjectOverviewTitle>
-                <div style={{ marginTop: '0.5rem' }}>
-                  {topProjects.length ? topProjects.map((project, index) => (
-                    <TopProjectItem key={project.id}>
-                      <Paragraph style={{ marginBottom: 0 }}>
+          <ProjectCardsGrid>
+            <ProjectSectionCard>
+              <ProjectOverviewTitle strong>{t('project-overview')}</ProjectOverviewTitle>
+              <ProjectOverviewBody>
+                {projectOverviewState.loading
+                  ? t('generating-project-overview')
+                  : renderSummaryWithBoldNumbers(
+                    projectOverviewState.text || t('project-overview-placeholder'),
+                    projectOverviewStrongPhrases,
+                  )}
+              </ProjectOverviewBody>
+              {projectOverviewState.stale ? (
+                <Alert
+                  type='warning'
+                  showIcon
+                  message={t('project-overview-stale')}
+                />
+              ) : null}
+              {projectOverviewState.error ? (
+                <Alert
+                  type='error'
+                  showIcon
+                  message={projectOverviewState.error}
+                  style={{ marginTop: '0.5rem' }}
+                />
+              ) : null}
+            </ProjectSectionCard>
+            <ProjectSectionCard>
+              <ProjectOverviewTitle strong>{t('top-projects')}</ProjectOverviewTitle>
+              <div style={{ marginTop: '0.5rem' }}>
+                {topProjects.length ? topProjects.map((project, index) => (
+                  <TopProjectItem key={project.id}>
+                    <Paragraph style={{ marginBottom: 0 }}>
+                      <Text strong>
+                        {`${index + 1}.`}
+                      </Text>
+                      {' '}
+                      {project.link ? (
+                        <Link href={project.link} target='_blank' rel='noreferrer'>
+                          {project.title}
+                        </Link>
+                      ) : project.title}
+                      {' '}
+                      <Text type='secondary'>
+                        (
+                        {project.countryName}
+                        )
+                      </Text>
+                    </Paragraph>
+                    <TopProjectMeta>
+                      <Text type='secondary'>
+                        {t('direct-beneficiaries-short')}
+                        {': '}
+                        <Text strong>{formatSummaryNumber(project.directBeneficiaries)}</Text>
+                      </Text>
+                      <Text type='secondary'>
+                        {t('budget-short')}
+                        {': '}
                         <Text strong>
-                          {`${index + 1}.`}
+                          {formatSummaryNumber(project.budget)}
+                          {' '}
+                          USD
                         </Text>
-                        {' '}
-                        {project.link ? (
-                          <Link href={project.link} target='_blank' rel='noreferrer'>
-                            {project.title}
-                          </Link>
-                        ) : project.title}
-                        {' '}
-                        <Text type='secondary'>
-                          (
-                          {project.countryName}
-                          )
-                        </Text>
-                      </Paragraph>
-                      <TopProjectMeta>
-                        <Text type='secondary'>
-                          {t('direct-beneficiaries-short')}
-                          {': '}
-                          <Text strong>{formatSummaryNumber(project.directBeneficiaries)}</Text>
-                        </Text>
-                        <Text type='secondary'>
-                          {t('budget-short')}
-                          {': '}
-                          <Text strong>
-                            {formatSummaryNumber(project.budget)}
-                            {' '}
-                            USD
-                          </Text>
-                        </Text>
-                      </TopProjectMeta>
-                    </TopProjectItem>
-                  )) : <Text type='secondary'>{t('no-projects-current-filters')}</Text>}
-                </div>
-              </ProjectSectionCard>
-            </ProjectCardsGrid>
-          </Profiler>
+                      </Text>
+                    </TopProjectMeta>
+                  </TopProjectItem>
+                )) : <Text type='secondary'>{t('no-projects-current-filters')}</Text>}
+              </div>
+            </ProjectSectionCard>
+          </ProjectCardsGrid>
         ) : null}
         <div>
-          <Profiler id='DataTable' onRender={logRenderPerf}>
-            <DataTable countryLinkDict={countryLinkDict} projects={deferredTableProjects} />
-          </Profiler>
+          <DataTable countryLinkDict={countryLinkDict} projects={deferredTableProjects} />
         </div>
       </ExploreProjectsSection>
     </DashboardScope>

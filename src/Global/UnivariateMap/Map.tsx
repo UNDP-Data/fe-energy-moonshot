@@ -63,6 +63,7 @@ const MapRoot = styled.div`
   @media (max-width: 960px) {
     height: auto;
     min-height: 0;
+    overflow: visible;
     .moonshot-map-viewport {
       aspect-ratio: 960 / 383;
       height: auto;
@@ -82,9 +83,11 @@ const LegendEl = styled.div`
   width: 360px;
   z-index: 5;
   @media (max-width: 640px) {
-    bottom: 0.4rem;
-    left: 0.4rem;
-    right: 0.4rem;
+    bottom: auto;
+    left: auto;
+    margin: 0.5rem 0.4rem 0;
+    position: static;
+    right: auto;
     width: auto;
   }
 `;
@@ -396,6 +399,31 @@ const getRenderedFeatureBounds = (
   undefined,
 );
 
+const getRenderedFeatureVisualCenterX = (
+  features: any[],
+  projection: ReturnType<typeof geoEqualEarth>,
+) => {
+  const centers = features
+    .map((feature) => {
+      const points: [number, number][] = [];
+      collectProjectedGeometryPoints(
+        feature?.geometry?.coordinates,
+        projection,
+        shouldWrapFeatureAtAntimeridian(feature),
+        points,
+      );
+      if (!points.length) return undefined;
+      const xs = points.map((point) => point[0]);
+      return (Math.min(...xs) + Math.max(...xs)) / 2;
+    })
+    .filter((center): center is number => (
+      typeof center === 'number' && Number.isFinite(center)
+    ));
+
+  if (!centers.length) return undefined;
+  return centers.reduce((sum, center) => sum + center, 0) / centers.length;
+};
+
 const getIslandBounds = (
   activeCountryNames: Set<string>,
   projection: ReturnType<typeof geoEqualEarth>,
@@ -467,6 +495,7 @@ const createFitTransform = (
   bounds: ProjectedBounds,
   svgWidth: number,
   svgHeight: number,
+  visualCenterX?: number,
 ) => {
   const [[x0, y0], [x1, y1]] = bounds;
   const boundsWidth = Math.max(x1 - x0, 1);
@@ -499,8 +528,15 @@ const createFitTransform = (
   );
   const centerX = (x0 + x1) / 2;
   const centerY = (y0 + y1) / 2;
+  const targetCenterX = Number.isFinite(visualCenterX) ? visualCenterX as number : centerX;
+  const targetTranslateX = svgWidth / 2 - scale * targetCenterX;
+  const minTranslateX = fitPadding - scale * x0;
+  const maxTranslateX = svgWidth - fitPadding - scale * x1;
+  const translateX = minTranslateX <= maxTranslateX
+    ? Math.min(maxTranslateX, Math.max(minTranslateX, targetTranslateX))
+    : svgWidth / 2 - scale * centerX;
   return zoomIdentity
-    .translate(svgWidth / 2 - scale * centerX, svgHeight / 2 - scale * centerY)
+    .translate(translateX, svgHeight / 2 - scale * centerY)
     .scale(scale);
 };
 
@@ -689,11 +725,13 @@ export const Map = (props: Props) => {
   useLayoutEffect(() => {
     const mapGSelect = select(mapG.current);
     const mapSvgSelect = select(mapSvg.current);
+    const translatePaddingX = svgWidth * 2;
+    const translatePaddingY = svgHeight * 2;
     const zoomBehaviour = zoom()
       .scaleExtent([1, 12])
       .translateExtent([
-        [-20, 0],
-        [svgWidth + 20, svgHeight],
+        [-translatePaddingX, -translatePaddingY],
+        [svgWidth + translatePaddingX, svgHeight + translatePaddingY],
       ])
       .on('zoom', ({ transform }) => {
         mapGSelect.attr('transform', transform);
@@ -725,8 +763,12 @@ export const Map = (props: Props) => {
       mergeProjectedBounds(featureBounds, fallbackBboxBounds),
       islandBounds,
     );
+    const hasWrappedPacificFeatures = features.some(shouldWrapFeatureAtAntimeridian);
+    const visualCenterX = hasWrappedPacificFeatures
+      ? getRenderedFeatureVisualCenterX(features, projection)
+      : undefined;
     const nextTransform = bounds
-      ? createFitTransform(bounds, svgWidth, svgHeight)
+      ? createFitTransform(bounds, svgWidth, svgHeight, visualCenterX)
       : zoomIdentity;
 
     transitionMapTo(nextTransform);
@@ -1085,7 +1127,8 @@ export const Map = (props: Props) => {
             );
           })}
         </MapG>
-      </svg>
+        </svg>
+      </div>
       <LegendEl className='moonshot-map-legend'>
         <MapIndicatorSelectWrapper
           className='margin-bottom-05'
@@ -1165,8 +1208,7 @@ export const Map = (props: Props) => {
             </g>
           </g>
         </svg>
-        </LegendEl>
-      </div>
+      </LegendEl>
       {hoverData ? <Tooltip data={hoverData} /> : null}
     </MapRoot>
   );

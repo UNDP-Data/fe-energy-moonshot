@@ -225,11 +225,6 @@ const buildContextSignature = (
 
 const buildFilterSignature = (filters: any) => JSON.stringify(filters);
 
-const logSynopsisStep = (message: string, detail?: Record<string, unknown>) => {
-  // eslint-disable-next-line no-console
-  console.log(`[Moonshot project overview] ${message}`, detail || '');
-};
-
 export const QueryAssistantPanel = (props: Props) => {
   const {
     filterCatalog,
@@ -308,19 +303,10 @@ export const QueryAssistantPanel = (props: Props) => {
     effectiveFilters: DashboardFilters,
     resolutionSignature: string,
   ) => {
-    const requestStartedAt = typeof window !== 'undefined' ? window.performance.now() : 0;
     inFlightSignatureRef.current = resolutionSignature;
     lastRequestedSignatureRef.current = resolutionSignature;
     setSynopsisLoading(true);
     setSynopsisError('');
-    logSynopsisStep('request started', {
-      requestId,
-      resolutionSignature,
-      query: effectiveQuery,
-      filters: effectiveFilters,
-      totalProjects: projectSynopsisContext.totalProjects,
-      topProjects: projectSynopsisContext.topProjects.length,
-    });
 
     try {
       const response = await fetchProjectSynopsis({
@@ -335,25 +321,11 @@ export const QueryAssistantPanel = (props: Props) => {
       setSynopsisText(response.synopsis || '');
       setSynopsisStale(false);
       setLastResolvedSignature(resolutionSignature);
-      logSynopsisStep('request completed', {
-        requestId,
-        durationMs: typeof window !== 'undefined'
-          ? Number((window.performance.now() - requestStartedAt).toFixed(1))
-          : undefined,
-        synopsisCharacters: (response.synopsis || '').length,
-      });
     } catch (error: any) {
       if (synopsisRequestIdRef.current !== requestId) return;
       setSynopsisText('');
       setSynopsisError(error?.message || projectOverviewLoadErrorText);
       setLastResolvedSignature(resolutionSignature);
-      logSynopsisStep('request failed', {
-        requestId,
-        durationMs: typeof window !== 'undefined'
-          ? Number((window.performance.now() - requestStartedAt).toFixed(1))
-          : undefined,
-        error: error?.message || projectOverviewLoadErrorText,
-      });
     } finally {
       if (synopsisRequestIdRef.current === requestId) {
         inFlightSignatureRef.current = '';
@@ -387,17 +359,11 @@ export const QueryAssistantPanel = (props: Props) => {
       setLastResolvedSignature(currentSignature);
       inFlightSignatureRef.current = '';
       lastRequestedSignatureRef.current = currentSignature;
-      logSynopsisStep('auto skipped because no projects match current filters');
       return undefined;
     }
 
     const requestId = synopsisRequestIdRef.current + 1;
     synopsisRequestIdRef.current = requestId;
-    logSynopsisStep('auto requesting overview for current filters', {
-      requestId,
-      filteredProjects: filteredProjects.length,
-      source: lastSubmittedQuery ? 'submitted query' : 'manual filters',
-    });
     runSynopsis(requestId, lastSubmittedQuery || defaultOverviewQuery, filters, currentSignature);
 
     return undefined;
@@ -418,10 +384,6 @@ export const QueryAssistantPanel = (props: Props) => {
     if (!pendingQuery || !pendingFilters) return undefined;
 
     if (pendingSignature !== currentFilterSignature) {
-      logSynopsisStep('waiting for filters to settle before requesting overview', {
-        pendingSignature,
-        currentFilterSignature,
-      });
       return undefined;
     }
 
@@ -436,16 +398,11 @@ export const QueryAssistantPanel = (props: Props) => {
       setPendingQuery('');
       setPendingSignature('');
       setPendingFilters(null);
-      logSynopsisStep('skipped because no projects match current filters');
       return undefined;
     }
 
     const requestId = synopsisRequestIdRef.current + 1;
     synopsisRequestIdRef.current = requestId;
-    logSynopsisStep('filters settled; requesting overview', {
-      requestId,
-      filteredProjects: filteredProjects.length,
-    });
     runSynopsis(requestId, pendingQuery, pendingFilters, currentSignature);
 
     return undefined;
@@ -464,14 +421,10 @@ export const QueryAssistantPanel = (props: Props) => {
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
 
-    const parseStartedAt = typeof window !== 'undefined' ? window.performance.now() : 0;
     setParseLoading(true);
     setSynopsisText('');
     setSynopsisError('');
     setSynopsisStale(false);
-    logSynopsisStep('parse started', {
-      query: trimmedQuery,
-    });
 
     try {
       const parsed = await parseQueryWithFallback(trimmedQuery, i18n.language, filterCatalog);
@@ -490,26 +443,11 @@ export const QueryAssistantPanel = (props: Props) => {
       setPendingSignature(buildFilterSignature(nextFilters));
       setPendingFilters(nextFilters);
       setSynopsisLoading(true);
-      logSynopsisStep('query parsed; applying filters', {
-        query: trimmedQuery,
-        parseDurationMs: typeof window !== 'undefined'
-          ? Number((window.performance.now() - parseStartedAt).toFixed(1))
-          : undefined,
-        parsedFilters: parsed.filters,
-        nextFilters,
-        unresolvedTerms: parsed.unresolvedTerms,
-      });
       startTransition(() => {
         applyDashboardFilters(nextFilters);
       });
     } catch (error: any) {
       setSynopsisError(error?.message || queryParseErrorText);
-      logSynopsisStep('query parse failed', {
-        parseDurationMs: typeof window !== 'undefined'
-          ? Number((window.performance.now() - parseStartedAt).toFixed(1))
-          : undefined,
-        error: error?.message || queryParseErrorText,
-      });
     } finally {
       setParseLoading(false);
     }
