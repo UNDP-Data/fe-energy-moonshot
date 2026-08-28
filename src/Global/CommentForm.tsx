@@ -42,7 +42,7 @@ export const CommentForm = () => {
   }
 
   return (
-    <div>
+    <div data-walkthrough-target='feedback-form'>
       {contextHolder}
       <h4>
         {t('feedback-title')}

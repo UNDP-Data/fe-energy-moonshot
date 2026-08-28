@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import {
   CountryMetadataRow,
   DashboardFilters,
@@ -8,6 +9,7 @@ import {
   buildFilterCatalog,
   DEFAULT_DASHBOARD_FILTERS,
   filterProjects,
+  getMoonshotProxyBaseUrl,
   normalizeProjectLevelData,
   parseQueryLocally,
   rankProjects,
@@ -149,6 +151,19 @@ const makeProject = (overrides: Partial<ProjectLevelDataType>): ProjectLevelData
 });
 
 describe('dashboard assistant utilities', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('reads the assistant proxy base URL from Vite env variables', () => {
+    vi.stubEnv('VITE_MOONSHOT_PROXY_BASE_URL', 'https://moonshot.example');
+    expect(getMoonshotProxyBaseUrl()).toBe('https://moonshot.example');
+
+    vi.stubEnv('VITE_MOONSHOT_PROXY_BASE_URL', '');
+    vi.stubEnv('VITE_ASSISTANT_PROXY_BASE_URL', 'https://assistant.example');
+    expect(getMoonshotProxyBaseUrl()).toBe('https://assistant.example');
+  });
+
   it('parses structured filters from a clean cooking LDC query', () => {
     const filterCatalog = buildFilterCatalog(countryMetadata);
     const parsed = parseQueryLocally('Show non-VF clean cooking work in LDCs', filterCatalog);
@@ -234,6 +249,53 @@ describe('dashboard assistant utilities', () => {
     ]);
 
     expect(ranked[0].link).toBe('https://example.com/project');
+  });
+
+  it('ranks top projects by direct beneficiaries before budget', () => {
+    const ranked = rankProjects([
+      makeProject({
+        id: 'largest-budget',
+        title: 'Largest budget',
+        budget: 5000,
+        outputs: [
+          {
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Clean Electricity',
+            directBeneficiaries: 50,
+          },
+        ],
+      }),
+      makeProject({
+        id: 'largest-beneficiaries',
+        title: 'Largest beneficiaries',
+        budget: 100,
+        outputs: [
+          {
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Clean Electricity',
+            directBeneficiaries: 500,
+          },
+        ],
+      }),
+      makeProject({
+        id: 'tie-break-budget',
+        title: 'Tie break budget',
+        budget: 300,
+        outputs: [
+          {
+            outputCategory: 'Energy Access',
+            beneficiaryCategory: 'Clean Electricity',
+            directBeneficiaries: 50,
+          },
+        ],
+      }),
+    ]);
+
+    expect(ranked.map((project) => project.id)).toEqual([
+      'largest-beneficiaries',
+      'largest-budget',
+      'tie-break-budget',
+    ]);
   });
 
   it('builds deterministic summary metrics from the filtered output slice', () => {

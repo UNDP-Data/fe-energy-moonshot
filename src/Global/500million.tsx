@@ -9,6 +9,7 @@ function Million() {
     <section
       id='million'
       className='flex-div flex-column flex-hor-align-center padding-top-12 padding-left-10 padding-right-10 padding-bottom-12'
+      data-walkthrough-target='energy-for-development'
       style={{
         background: `no-repeat 0% center url(${bgLeft}), no-repeat 100% center url(${bgRight}), #F6F6F6`,
       }}
@@ -20,7 +21,7 @@ function Million() {
           marginRight: 'auto',
         }}
         >
-        <h2 className='undp-typography margin-bottom-05 page-title'>
+        <h2 className='undp-typography margin-bottom-05 page-title' data-walkthrough-target='energy-for-development-title'>
           {t('million-title')}
         </h2>
         <div

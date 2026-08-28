@@ -8,7 +8,6 @@ import {
   useState,
 } from 'react';
 import {
-  Alert,
   Button,
   Input,
   Tag,
@@ -248,7 +247,6 @@ export const QueryAssistantPanel = (props: Props) => {
   const [synopsisText, setSynopsisText] = useState('');
   const [synopsisError, setSynopsisError] = useState('');
   const [synopsisStale, setSynopsisStale] = useState(false);
-  const [unresolvedTerms, setUnresolvedTerms] = useState<string[]>([]);
   const [pendingQuery, setPendingQuery] = useState('');
   const [pendingSignature, setPendingSignature] = useState('');
   const [pendingFilters, setPendingFilters] = useState<DashboardFilters | null>(null);
@@ -438,7 +436,6 @@ export const QueryAssistantPanel = (props: Props) => {
       }
 
       setLastSubmittedQuery(trimmedQuery);
-      setUnresolvedTerms(parsed.unresolvedTerms);
       setPendingQuery(trimmedQuery);
       setPendingSignature(buildFilterSignature(nextFilters));
       setPendingFilters(nextFilters);
@@ -454,13 +451,14 @@ export const QueryAssistantPanel = (props: Props) => {
   };
 
   return (
-    <Panel>
+    <Panel data-walkthrough-target='ai-query-panel'>
       <QueryGrid>
         <PromptRow>
           <PromptInputWrap $hasFilters={appliedFilters.length > 0}>
             <PromptLabel className='moonshot-ai-prompt-label' htmlFor='moonshot-ai-query'>{t('ask-energy-moonshot-ai')}</PromptLabel>
             <PromptInput
               id='moonshot-ai-query'
+              data-walkthrough-target='ai-query-input'
               autoSize={{ minRows: 1, maxRows: 3 }}
               placeholder={t('ask-dashboard-placeholder')}
               value={query}
@@ -494,6 +492,7 @@ export const QueryAssistantPanel = (props: Props) => {
             ) : null}
             <InlineSubmitButton
               aria-label={t('apply-query')}
+              data-walkthrough-target='ai-query-submit'
               icon={<CornerDownLeft size={17} strokeWidth={2.25} />}
               loading={parseLoading}
               onClick={submitQuery}
@@ -505,14 +504,6 @@ export const QueryAssistantPanel = (props: Props) => {
         </PromptRow>
       </QueryGrid>
 
-      {unresolvedTerms.length ? (
-        <Alert
-          type='info'
-          showIcon
-          message={t('ignored-unsupported-terms', { terms: unresolvedTerms.join(', ') })}
-          style={{ marginBottom: '0.75rem' }}
-        />
-      ) : null}
     </Panel>
   );
 };

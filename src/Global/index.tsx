@@ -573,10 +573,10 @@ export const Global = (props: Props) => {
 
   return (
     <DashboardScope className='moonshot-dashboard'>
-      <div id='tracker' className='flex-div flex-wrap padding-top-06'>
+      <div id='tracker' className='flex-div flex-wrap padding-top-06' data-walkthrough-target='dashboard'>
         <div style={{ maxWidth: '100%', width: '100%' }}>
           <DashboardTitleRow>
-            <DashboardTitle className='undp-typography page-title'>
+            <DashboardTitle className='undp-typography page-title' data-walkthrough-target='dashboard-title'>
               <span style={{ color: 'var(--dark-yellow)' }}>
                 {t('page-title-energy-moonshot')}
               </span>
@@ -586,6 +586,7 @@ export const Global = (props: Props) => {
             <DashboardActions>
               <DashboardLanguageControl
                 className='undp-language-control'
+                data-walkthrough-target='dashboard-language'
                 htmlFor='dashboard-language-select'
               >
                 <select
@@ -617,10 +618,10 @@ export const Global = (props: Props) => {
           ) : null}
           <Settings />
           <KpiSummaryRow>
-            <KpiPanel>
+            <KpiPanel data-walkthrough-target='kpi-cards'>
               <Cards data={mapData} />
             </KpiPanel>
-            <SummaryPanel>
+            <SummaryPanel data-walkthrough-target='portfolio-overview'>
               <SummaryCard>
                 <SummaryTitle className='undp-typography'>
                   {t('portfolio-overview')}
@@ -632,7 +633,7 @@ export const Global = (props: Props) => {
             </SummaryPanel>
           </KpiSummaryRow>
           <FilterMapRow>
-            <FilterPanel>
+            <FilterPanel data-walkthrough-target='filter-panel'>
               <BarFilters
                 data={filteredProjectData}
                 countryList={countryList}
@@ -640,7 +641,7 @@ export const Global = (props: Props) => {
                 indicators={indicators}
               />
             </FilterPanel>
-            <MapPanel>
+            <MapPanel data-walkthrough-target='map'>
               <MapSurface>
                 <UnivariateMap
                   availableCountryList={availableCountryList}
@@ -655,12 +656,13 @@ export const Global = (props: Props) => {
         </div>
       </div>
       <hr className='undp-style light' />
-      <ExploreProjectsSection>
+      <ExploreProjectsSection data-walkthrough-target='explore-projects'>
         <ExploreProjectsHeader>
           <ExploreProjectsHeading className='undp-typography'>
             {t('explore-the-projects')}
           </ExploreProjectsHeading>
           <WorkbookExportButton
+            data-walkthrough-target='workbook-export'
             type='button'
             onClick={() => downloadMoonshotResultsWorkbook({
               countryMetadataByCode,
@@ -678,7 +680,7 @@ export const Global = (props: Props) => {
         </ExploreProjectsHeader>
         {assistantAvailable ? (
           <ProjectCardsGrid>
-            <ProjectSectionCard>
+            <ProjectSectionCard data-walkthrough-target='project-overview-card'>
               <ProjectOverviewTitle strong>{t('project-overview')}</ProjectOverviewTitle>
               <ProjectOverviewBody>
                 {projectOverviewState.loading
@@ -704,7 +706,7 @@ export const Global = (props: Props) => {
                 />
               ) : null}
             </ProjectSectionCard>
-            <ProjectSectionCard>
+            <ProjectSectionCard data-walkthrough-target='top-projects-card'>
               <ProjectOverviewTitle strong>{t('top-projects')}</ProjectOverviewTitle>
               <div style={{ marginTop: '0.5rem' }}>
                 {topProjects.length ? topProjects.map((project, index) => (
@@ -748,7 +750,7 @@ export const Global = (props: Props) => {
             </ProjectSectionCard>
           </ProjectCardsGrid>
         ) : null}
-        <div>
+        <div data-walkthrough-target='project-table'>
           <DataTable countryLinkDict={countryLinkDict} projects={deferredTableProjects} />
         </div>
       </ExploreProjectsSection>

@@ -1,4 +1,4 @@
-import headerBg from '../assets/header-bg.jpg';
+import headerBg from '../assets/header-bg.webp';
 import { useTranslation } from 'react-i18next';
 
 function Banner() {
@@ -7,6 +7,7 @@ function Banner() {
   return (
     <section
       className='banner-section flex-div flex-column flex-hor-align-center padding-left-10'
+      data-walkthrough-target='hero'
     >
       <div
         aria-hidden='true'
@@ -15,6 +16,7 @@ function Banner() {
       />
       <h1
         className='undp-typography banner-heading margin-bottom-05'
+        data-walkthrough-target='hero-title'
         style={{ color: 'var(--white)' }}
       >
         {t('banner-title')}

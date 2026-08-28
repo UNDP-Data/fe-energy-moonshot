@@ -1,5 +1,5 @@
 import {
-  useCallback, useContext, useLayoutEffect, useMemo, useRef, useState,
+  useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState,
 } from 'react';
 import styled from 'styled-components';
 import { easeCubicOut } from 'd3-ease';
@@ -569,10 +569,61 @@ export const Map = (props: Props) => {
   const fallbackSvgHeight = queryParams.get('showSettings') === 'false' && window.innerWidth > 960
     ? WIDE_SVG_HEIGHT
     : DEFAULT_SVG_HEIGHT;
+  const mapRootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportSize, setViewportSize] = useState<{ width: number; height: number }>();
   const svgWidth = viewportSize?.width || fallbackSvgWidth;
   const svgHeight = viewportSize?.height || fallbackSvgHeight;
+  const getCountryHoverData = useCallback((d: DataType, xPosition: number, yPosition: number): HoverDataType => ({
+    country: d['Country or Area'],
+    continent: d.region,
+    peopleDirectlyBenefiting: d.indicators.filter(
+      (ind) => ind.indicator === 'directBeneficiaries',
+    )[0].value,
+    grantAmount: d.indicators.filter(
+      (ind) => ind.indicator === 'budget',
+    )[0].value,
+    numberProjects: d.numberProjects,
+    xPosition,
+    yPosition,
+  }), []);
+
+  useEffect(() => {
+    const root = mapRootRef.current;
+    if (!root) return undefined;
+    const handleWalkthroughHover = (event: Event) => {
+      const customEvent = event as CustomEvent<{ clientX?: number; clientY?: number }>;
+      const target = customEvent.target instanceof Element
+        ? customEvent.target.closest('[data-walkthrough-hover-country-code], [data-walkthrough-hover-country]')
+        : null;
+      if (!(target instanceof HTMLElement || target instanceof SVGElement)) return;
+      const countryCode = target.getAttribute('data-walkthrough-hover-country-code');
+      const countryName = target.getAttribute('data-walkthrough-hover-country');
+      const matchedCountry = data.find((item) => (
+        countryCode
+          ? item['Alpha-3 code'] === countryCode
+          : item['Country or Area']?.toLowerCase() === countryName?.toLowerCase()
+      ));
+      if (!matchedCountry) return;
+      const rect = target.getBoundingClientRect();
+      setHoverData(getCountryHoverData(
+        matchedCountry,
+        customEvent.detail?.clientX ?? rect.left + rect.width / 2,
+        customEvent.detail?.clientY ?? rect.top + rect.height / 2,
+      ));
+    };
+    const handleWalkthroughHoverClear = () => {
+      setHoverData(undefined);
+    };
+    root.addEventListener('moonshot-walkthrough-hover', handleWalkthroughHover);
+    root.addEventListener('moonshot-walkthrough-hover-clear', handleWalkthroughHoverClear);
+    document.addEventListener('moonshot-walkthrough-hover-clear', handleWalkthroughHoverClear);
+    return () => {
+      root.removeEventListener('moonshot-walkthrough-hover', handleWalkthroughHover);
+      root.removeEventListener('moonshot-walkthrough-hover-clear', handleWalkthroughHoverClear);
+      document.removeEventListener('moonshot-walkthrough-hover-clear', handleWalkthroughHoverClear);
+    };
+  }, [data, getCountryHoverData]);
   const mapSvg = useRef<SVGSVGElement>(null);
   const mapG = useRef<SVGGElement>(null);
   const projectionScaleRatio = Math.min(
@@ -783,10 +834,11 @@ export const Map = (props: Props) => {
   ]);
 
   return (
-    <MapRoot>
+    <MapRoot ref={mapRootRef}>
       <div ref={viewportRef} className='moonshot-map-viewport'>
         <ExportButton
           aria-label={t('export-map')}
+          data-walkthrough-target='map-export'
           onClick={exportMap}
           title={t('export-map')}
           type='button'
@@ -898,6 +950,7 @@ export const Map = (props: Props) => {
             return (
               <g
                 key={i}
+                data-walkthrough-hover-country-code={d['Alpha-3 code']}
                 opacity={selectedColor && selectedColor !== color ? 0.1 : 1}
                 onMouseEnter={(event) => {
                   setHoverData({
@@ -1058,6 +1111,7 @@ export const Map = (props: Props) => {
             return (
               <circle
                 key={island.name}
+                data-walkthrough-hover-country={island.name}
                 cx={x}
                 cy={y}
                 r={5}
@@ -1132,6 +1186,7 @@ export const Map = (props: Props) => {
       <LegendEl className='moonshot-map-legend'>
         <MapIndicatorSelectWrapper
           className='margin-bottom-05'
+          data-walkthrough-target='map-indicator'
           style={{ width: '100%', minWidth: 0 }}
         >
           <Select

@@ -396,8 +396,8 @@ export const rankProjects = (
     primaryOutputCategories: getPrimaryOutputCategories(project, filters),
   }))
   .sort((left, right) => (
-    right.budget - left.budget
-    || right.directBeneficiaries - left.directBeneficiaries
+    right.directBeneficiaries - left.directBeneficiaries
+    || right.budget - left.budget
     || left.title.localeCompare(right.title)
   ));
 
@@ -572,8 +572,8 @@ export const getAppliedFilterEntries = (
   }));
 
 export const getMoonshotProxyBaseUrl = () => (
-  process.env.REACT_APP_MOONSHOT_PROXY_BASE_URL
-  || process.env.REACT_APP_ASSISTANT_PROXY_BASE_URL
+  import.meta.env.VITE_MOONSHOT_PROXY_BASE_URL
+  || import.meta.env.VITE_ASSISTANT_PROXY_BASE_URL
   || ''
 );
 

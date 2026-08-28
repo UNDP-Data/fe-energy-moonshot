@@ -1,10 +1,4 @@
 import trEn from './lang/en/translation.json';
-import trEs from './lang/es/translation.json';
-import trFr from './lang/fr/translation.json';
-import trZh from './lang/zh/translation.json';
-import trPt from './lang/pt/translation.json';
-import trRu from './lang/ru/translation.json';
-import trAr from './lang/ar/translation.json';
 
 export const SUPPORTED_LANGUAGES = ['en', 'es', 'fr', 'zh', 'pt', 'ru', 'ar'] as const;
 export const RTL_LANGUAGES = ['ar'] as const;
@@ -25,25 +19,17 @@ export const resources = {
   en: {
     translation: trEn,
   },
-  es: {
-    translation: trEs,
-  },
-  fr: {
-    translation: trFr,
-  },
-  zh: {
-    translation: trZh,
-  },
-  pt: {
-    translation: trPt,
-  },
-  ru: {
-    translation: trRu,
-  },
-  ar: {
-    translation: trAr,
-  },
 };
+
+const translationLoaders = {
+  en: () => Promise.resolve(trEn),
+  es: () => import('./lang/es/translation.json').then((module) => module.default),
+  fr: () => import('./lang/fr/translation.json').then((module) => module.default),
+  zh: () => import('./lang/zh/translation.json').then((module) => module.default),
+  pt: () => import('./lang/pt/translation.json').then((module) => module.default),
+  ru: () => import('./lang/ru/translation.json').then((module) => module.default),
+  ar: () => import('./lang/ar/translation.json').then((module) => module.default),
+} satisfies Record<SupportedLanguage, () => Promise<Record<string, string>>>;
 
 export const isSupportedLanguage = (language?: string): language is SupportedLanguage => (
   !!language && SUPPORTED_LANGUAGES.includes(language as SupportedLanguage)
@@ -65,4 +51,8 @@ export const getInitialLanguage = (preferredLanguage?: string, storedLanguage?: 
 
 export const getLanguageDirection = (language: string) => (
   RTL_LANGUAGES.includes(language as typeof RTL_LANGUAGES[number]) ? 'rtl' : 'ltr'
+);
+
+export const loadTranslationResources = async (language: SupportedLanguage) => (
+  translationLoaders[language]()
 );

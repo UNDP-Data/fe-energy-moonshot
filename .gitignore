@@ -2,6 +2,14 @@
 **/.DS_Store
 /node_modules
 /build
+/static
+/asset-manifest.json
+/favicon.ico
+/robots.txt
+/_headers
+/_redirects
+.pytest_cache/
+**/__pycache__/
 .env
 .env.*
 !/api/.env.example
@@ -9,3 +17,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+outputs/
+local-walkthrough/

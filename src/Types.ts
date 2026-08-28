@@ -309,8 +309,7 @@ export interface OutputsTaxonomy {
 export interface IndicatorRange {
   [key: string]: number[],
 }
-// export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://raw.githubusercontent.com/UNDP-Data/Energy-Hub-Dashboard/development/public' : '.';
-export const ROOT_DIR = process.env.NODE_ENV === 'production' ? 'https://undp-data.github.io/fe-energy-moonshot' : '/fe-energy-moonshot';
+export const ROOT_DIR = import.meta.env.PROD ? 'https://undp-data.github.io/fe-energy-moonshot' : '/fe-energy-moonshot';
 
 export const getAssetPath = (assetPath: string) => {
   const normalizedAssetPath = assetPath.startsWith('/') ? assetPath : `/${assetPath}`;

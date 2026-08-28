@@ -128,6 +128,7 @@ export const Settings = () => {
   return (
     <SelectorStack>
       <div
+        data-walkthrough-target='beneficiary-categories'
         style={{
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -148,6 +149,7 @@ export const Settings = () => {
         </SelectorRow>
       </div>
       <div
+        data-walkthrough-target='subcategory-selector'
         style={{
           marginLeft: 'auto',
           marginRight: 'auto',

@@ -41,7 +41,7 @@ export const Tooltip = (props: Props) => {
   // translation
   const { t } = useTranslation();
   return (
-    <TooltipEl x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
+    <TooltipEl className='undp-map-tooltip' x={data.xPosition} y={data.yPosition} verticalAlignment={data.yPosition > window.innerHeight / 2 ? 'top' : 'bottom'} horizontalAlignment={data.xPosition > window.innerWidth / 2 ? 'left' : 'right'}>
       <div className='flex-div flex-wrap' style={{ alignItems: 'baseline' }}>
         <h5 className='undp-typography bold margin-bottom-02 bold'>
           {data.country}

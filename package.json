@@ -33,12 +33,13 @@
     "@types/lodash.range": "^3.2.6",
     "@types/lodash.sortby": "^4.7.6",
     "@types/lodash.uniqby": "^4.7.6",
-    "@types/node": "^12.20.28",
+    "@types/node": "^22.10.0",
     "@types/react": "^18.0.27",
     "@types/react-csv": "^1.1.2",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.14",
     "antd": "^5.1.6",
+    "cors": "^2.8.5",
     "d3-array": "^3.1.1",
     "d3-axis": "^3.0.0",
     "d3-brush": "^3.0.0",
@@ -53,7 +54,6 @@
     "d3-shape": "^3.1.0",
     "d3-transition": "^3.0.1",
     "d3-zoom": "^3.0.0",
-    "cors": "^2.8.5",
     "dom-to-image": "^2.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
@@ -80,7 +80,6 @@
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.2.0",
-    "react-scripts": "5.0.1",
     "stacked-barchart": "github:dianaow/stacked-barchart",
     "styled-components": "^5.3.1",
     "undp-viz-colors": "^1.0.5",
@@ -92,13 +91,16 @@
     "api:dev": "python3 -m uvicorn api.main:app --reload --host 127.0.0.1 --port 3001",
     "api:sync": "bash scripts/sync-moonshot-api-to-energy-ai-backend.sh",
     "api:sync:apply": "bash scripts/sync-moonshot-api-to-energy-ai-backend.sh --apply",
-    "start": "craco start",
-    "build": "craco build",
-    "package:gh-pages": "cp build/index.html index.html && cp build/asset-manifest.json asset-manifest.json && cp build/favicon.ico favicon.ico && cp -R build/static/. static/",
-    "build:gh-pages": "npm run build && npm run package:gh-pages",
-    "test": "craco test",
-    "eject": "react-scripts eject",
-    "analyze": "source-map-explorer '/build/static/js/*.js'"
+    "start": "vite --host 127.0.0.1 --port 3000",
+    "build": "vite build",
+    "build:fast": "vite build",
+    "package:gh-pages": "npm run build",
+    "build:gh-pages": "npm run build",
+    "build:gh-pages:fast": "npm run build:fast",
+    "walkthrough:playwright": "node local-walkthrough/scripts/run-walkthrough-playwright.mjs",
+    "walkthrough:export-service": "node local-walkthrough/scripts/walkthrough-export-service.mjs",
+    "test": "vitest run",
+    "analyze": "source-map-explorer 'build/assets/*.js'"
   },
   "eslintConfig": {
     "extends": [
@@ -119,7 +121,6 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
     "@types/lodash.sumby": "^4.6.7",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
@@ -129,8 +130,13 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "jsdom": "^27.3.0",
+    "playwright": "^1.60.0",
     "prettier": "2.4.1",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vite": "^8.0.16",
+    "vitest": "^4.0.15"
   },
   "homepage": "https://undp-data.github.io/fe-energy-moonshot/"
 }

@@ -508,7 +508,7 @@ export const BarFilters = (props: Props) => {
   return (
     <BarFiltersWrapper>
       <div className='bar-filters-content'>
-        <div className='bar-filter-block'>
+        <div className='bar-filter-block' data-walkthrough-target='funding-filter'>
           <CompactSelectWrapper className='select-wrapper'>
             <Select
               bordered={false}
@@ -562,7 +562,7 @@ export const BarFilters = (props: Props) => {
           />
         </div>
 
-        <div className='bar-filter-block'>
+        <div className='bar-filter-block' data-walkthrough-target='region-filter'>
           <CompactSelectWrapper className='select-wrapper'>
             <Select
               bordered={false}
@@ -649,7 +649,7 @@ export const BarFilters = (props: Props) => {
           />
         </div>
 
-        <div className='bar-filter-block'>
+        <div className='bar-filter-block' data-walkthrough-target='gender-filter'>
           <CompactSelectWrapper className='select-wrapper'>
             <Select
               bordered={false}
